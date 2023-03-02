@@ -49,7 +49,15 @@ export default function Dashboard({ navigation }) {
           navigation.navigate('Meter')
         }
       >
-        Home page
+        Meter
+      </Button>
+      <Button
+        mode="outlined"
+        onPress={() =>
+          navigation.navigate('Date')
+        }
+      >
+        Date and time
       </Button>
     </Background>
   )

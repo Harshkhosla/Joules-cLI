@@ -14,7 +14,8 @@ import {
   Eligible,
   Car,
   House,
-  Meter
+  Meter,
+  Date
 } from './src/screens';
 
 const Stack = createStackNavigator()
@@ -44,6 +45,7 @@ export default function App() {
           <Stack.Screen name="Car" component={Car} />
           <Stack.Screen name="House" component={House} />
           <Stack.Screen name="Meter" component={Meter} />
+          <Stack.Screen name="Date" component={Date} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
