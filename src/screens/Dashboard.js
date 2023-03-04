@@ -59,6 +59,14 @@ export default function Dashboard({ navigation }) {
       >
         Date and time
       </Button>
+      <Button
+        mode="outlined"
+        onPress={() =>
+          navigation.navigate('Home')
+        }
+      >
+        Home page
+      </Button>
     </Background>
   )
 }
