@@ -66,6 +66,24 @@ const requestOptions = {
 //         console.error(error);
 //     }
 // }
+const SampleClick=()=>{
+  fetch("http://192.168.1.1/genericArgs?username=Redmi&password=123456789", {
+
+  method: "GET",
+  headers: {
+      "content-type": "application/json",
+  },
+})
+  .then(response => response.json())
+  .then(response => {
+    dispatch(saveData(response))
+      // setSettingsData(response);/
+      console.log("kj");
+  })
+  .catch(error => {
+      // console.log(error, "joih");
+  });
+}
     return (
       <Background>
          {/* <BackButton goBack={navigation.goBack} /> */}
@@ -82,7 +100,7 @@ const requestOptions = {
       />
   <Button
   mode="contained"
-  onPress={Click}
+  onPress={SampleClick}
  >
         Navigating to Car section
     </Button>

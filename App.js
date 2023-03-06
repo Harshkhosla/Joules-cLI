@@ -39,13 +39,12 @@ export default function App() {
             name="ResetPasswordScreen"
             component={ResetPasswordScreen}
           />
-          
           <Stack.Screen name="HomePage" component={HomePage} />
           <Stack.Screen name="Load" component={Load} />
           <Stack.Screen name="Eligible" component={Eligible} />
           <Stack.Screen name="Car" component={Car} />
           <Stack.Screen name="House" component={House} />
-          <Stack.Screen name="Meter" component={Meter} />
+          {/* <Stack.Screen name="Meter" component={Meter} /> */}
           <Stack.Screen name="Date" component={Date} />
           <Stack.Screen name="Home" component={Home} />
         </Stack.Navigator>

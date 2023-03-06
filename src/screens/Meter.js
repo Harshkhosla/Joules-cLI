@@ -14,17 +14,6 @@ import RNSpeedometer from 'react-native-speedometer'
 export default function Meter({ navigation }) {
     const [state, setState] = useState();
     const [data,setData] =useState();
-    // console.log(data);
-    // useEffect(()=>{
-    //     setInterval(() => {
-    //       const res =   fetch('https://api.thingspeak.com/channels/2034222/feeds.json?api_key=P7G58EFGWC7MP4EI&results=2 ')
-    //       const data =  response.json();
-    //       console.log(data);
-    //       setState(data?.feeds);
-        
-
-    //     }, 1000);
-    // },[5])
     setInterval(() => {
       
         const allCarBrand = async () => {

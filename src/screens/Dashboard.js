@@ -43,14 +43,14 @@ export default function Dashboard({ navigation }) {
       >
         Entering 
       </Button>
-      <Button
+      {/* <Button
         mode="outlined"
         onPress={() =>
           navigation.navigate('Meter')
         }
       >
         Meter
-      </Button>
+      </Button> */}
       <Button
         mode="outlined"
         onPress={() =>
