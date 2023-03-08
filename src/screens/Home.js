@@ -6,12 +6,17 @@ import Button from '../components/Button'
 import Background from '../components/Background';
 import BackButton from '../components/BackButton'
 import RNSpeedometer from 'react-native-speedometer'
-// import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+// import FontAwesome5 from 'react-native-vector-icons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+// import { Icon } from 'react-native-paper/lib/typescript/components/Avatar/Avatar';
+import Icon from "../components/Icon";
 
 
 export default function Eligible({ navigation }) {
-  const [state, setState] = useState();
+  const [state, setState] = useState()
+    const [datas,setDatas]= useState("On") 
   const [data,setData] =useState(9);
+  const regular_icon_btn = <FontAwesome5.Button name={'comments'} />;
     const [user, setUserData] = React.useState({ field1: 'balanced_mode_on', field2: "" });
     console.log(user);
     setInterval(() => {
@@ -69,10 +74,19 @@ const requestOptions = {
 };
     return (
       <Background>
+       <Header style={styles.header}>Charger Status :{datas}</Header>
          <SafeAreaView style={styles.container}>
           <RNSpeedometer  style={styles.labels} value={data} size={400}/>
         </SafeAreaView>
-        {/* <FontAwesome5 name={'comments'} />; */}
+        <View style={styles.containerr}>
+        <Icon style={styles.button}></Icon>
+    <Icon style={styles.button}></Icon>
+    <Icon style={styles.button}></Icon>
+    <Icon style={styles.button}></Icon>
+      
+    </View>
+  
+   
   <Button
   mode="contained"
   onPress={Click}
@@ -109,8 +123,8 @@ const requestOptions = {
             },
             {
               name: 'Very Slow',
-              labelColor: '#C5C5C5',
-              activeBarColor: '#C5C5C5',
+              labelColor: '#ff2900',
+              activeBarColor: '#ff2900',
             },
             {
               name: 'Slow',
@@ -133,6 +147,30 @@ const requestOptions = {
               activeBarColor: '#00ff6b',
             },
           ],
+          header:{
+            fontSize: 20,
+            fontWeight: 'bold',
+            paddingVertical: 3,
+          },
+          containerr: {
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '80%',
+            alignSelf: 'center',
+          },
+          button: {
+            width: '48%',
+            aspectRatio: 1, // Set the width and height to be equal to create a square
+            borderRadius: 8,
+            backgroundColor: '#eee',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: 8,
+          },
         
   })
+  
+
   

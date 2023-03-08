@@ -3,6 +3,8 @@ import { Provider } from 'react-native-paper'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { theme } from './src/core/theme'
+import { Store } from './src/Redux/Store'
+// import { Provider } from 'react-redux'
 import {
   StartScreen,
   LoginScreen,
@@ -23,6 +25,8 @@ const Stack = createStackNavigator()
 
 export default function App() {
   return (
+    <Provider Store={Store}>
+
     <Provider theme={theme}>
       <NavigationContainer>
         <Stack.Navigator
@@ -38,7 +42,7 @@ export default function App() {
           <Stack.Screen
             name="ResetPasswordScreen"
             component={ResetPasswordScreen}
-          />
+            />
           <Stack.Screen name="HomePage" component={HomePage} />
           <Stack.Screen name="Load" component={Load} />
           <Stack.Screen name="Eligible" component={Eligible} />
@@ -50,5 +54,6 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
+            </Provider>
   )
 }
