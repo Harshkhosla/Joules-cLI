@@ -16,8 +16,9 @@ export default function Load({ navigation }) {
   const [text, onChangeText] = React.useState('');
   const OnClick = () => {
     console.log(text);
-    const house_voltage = text / 0.22;
+    const sample  = text / 0.22;
     // console.log(sample);
+    const house_voltage=Math.floor(sample)
     {
       text < "10" ? Alert.alert('Alert Title', 'Connect to the nearest Discom', [
         {

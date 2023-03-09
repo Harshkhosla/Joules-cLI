@@ -72,9 +72,9 @@ export const SetDate = (user) => {
 export const CarDetails = (value) => {
     return (dispatch) => {
         console.log(value);
-        const [{ Battery_Pack: batteryPack }, { Car: car }, { House_voltage: house_Voltage }] = value;
+        const [{ Battery_Pack: batteryPack }, { Car: car }, { House_voltage: house_Ampere}] = value;
         fetch("https://api.thingspeak.com/update?api_key=YC54O11IV85P4S7O&field2=" + JSON.stringify({
-            batteryPack, car, house_Voltage
+            batteryPack, car, house_Ampere
         }), {
             method: "POST",
             headers: {
