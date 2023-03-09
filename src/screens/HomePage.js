@@ -3,10 +3,12 @@ import Logo from '../components/Logo'
 import Header from '../components/Header'
 import Paragraph from '../components/Paragraph'
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button, Linking ,
+import {
+  Text, View, StyleSheet, Button, Linking,
   AppRegistry,
-  TouchableOpacity,} from 'react-native';
-  import { PermissionsAndroid } from 'react-native';
+  TouchableOpacity,
+} from 'react-native';
+import { PermissionsAndroid } from 'react-native';
 
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
@@ -17,11 +19,11 @@ export default function Dashboard({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [text, setText] = useState('Not yet scanned')
- const [Data, setData ]= useState("HGHG");
-// useEffect(()=>{
-//   console.log(Data?.channel);
+  const [Data, setData] = useState("HGHG");
+  // useEffect(()=>{
+  //   console.log(Data?.channel);
 
-// },[sampleHit])
+  // },[sampleHit])
 
 
   const handleBarCodeScanned = ({ type, data }) => {
@@ -58,56 +60,56 @@ export default function Dashboard({ navigation }) {
     //     }
     // }
 
- 
+
   };
-  const connetToWifi = (SSID ,password) => {
-      WifiManager.setEnabled(true);
-      WifiManager.disconnect();
-      // WifiManager.forceWifiUsage(true);
-      PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: "",
-          message: "",
-          buttonNegative: "",
-          buttonPositive: "",
-        },
-      ).then((granted) => {
-        //console.log(granted);
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          //console.log("granted");
-          RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
-            interval: 10000,
-            fastInterval: 5000,
-          })
-            .catch((err) => {
-              //console.log("not permitted to enable location");
-            });
-        } else {
-          //console.log("not granted");
-          // Permission denied
-        }
-        // expected output: "Success!"
-      });
-    
-    WifiManager.connectToProtectedSSID(SSID, password , false).then(
+  const connetToWifi = (SSID, password) => {
+    WifiManager.setEnabled(true);
+    WifiManager.disconnect();
+    // WifiManager.forceWifiUsage(true);
+    PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: "",
+        message: "",
+        buttonNegative: "",
+        buttonPositive: "",
+      },
+    ).then((granted) => {
+      //console.log(granted);
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        //console.log("granted");
+        RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
+          interval: 10000,
+          fastInterval: 5000,
+        })
+          .catch((err) => {
+            //console.log("not permitted to enable location");
+          });
+      } else {
+        //console.log("not granted");
+        // Permission denied
+      }
+      // expected output: "Success!"
+    });
+
+    WifiManager.connectToProtectedSSID(SSID, password, false).then(
       () => {
-          console.log(SSID);
-            console.warn("Connected successfully!");
-        },
-        () => {
-            console.warn("Connection failed!");
-        }
+        console.log(SSID);
+        console.warn("Connected successfully!");
+      },
+      () => {
+        console.warn("Connection failed!");
+      }
     );
     WifiManager.getCurrentWifiSSID().then(
-    ssid => {
+      ssid => {
         console.warn("Your current connected wifi SSID is " + ssid);
-    },
-    () => {
+      },
+      () => {
         console.warn("Cannot get current SSID!");
-    }
+      }
     );
-}
+  }
 
   // Check permissions and return the screens
   onSuccess = e => {
@@ -117,57 +119,57 @@ export default function Dashboard({ navigation }) {
       t: "",
       p: "",
     };
-    
- const cleanedWifiString = e.data
- .replace(/(\r\n\t|\n|\r\t)/gm, "")
- .replace("WIFI:", "")
- .replace(";;", "");
-const scannedWifiValues = cleanedWifiString.split(";");
-scannedWifiValues.forEach((value) => {
- const keyValue = value.split(":");
- parsedWifiFields[keyValue[0].toLocaleLowerCase()] = keyValue[1] || "";
-});
-let fields = [
- {
-   title: "SSID",
-   value: parsedWifiFields.s,
- },
- {
-   title: "encryption",
-   value: parsedWifiFields.t,
- },
- {
-   title: "password",
-   value: parsedWifiFields.p,
- },
-];
-console.log(fields);
-connetToWifi(parsedWifiFields.s,parsedWifiFields.p)
+
+    const cleanedWifiString = e.data
+      .replace(/(\r\n\t|\n|\r\t)/gm, "")
+      .replace("WIFI:", "")
+      .replace(";;", "");
+    const scannedWifiValues = cleanedWifiString.split(";");
+    scannedWifiValues.forEach((value) => {
+      const keyValue = value.split(":");
+      parsedWifiFields[keyValue[0].toLocaleLowerCase()] = keyValue[1] || "";
+    });
+    let fields = [
+      {
+        title: "SSID",
+        value: parsedWifiFields.s,
+      },
+      {
+        title: "encryption",
+        value: parsedWifiFields.t,
+      },
+      {
+        title: "password",
+        value: parsedWifiFields.p,
+      },
+    ];
+    console.log(fields);
+    connetToWifi(parsedWifiFields.s, parsedWifiFields.p)
   };
-  
+
   return (
     <View style={styles.container}>
       <View style={styles.barcodebox}>
-      <QRCodeScanner
-        onRead={this.onSuccess}
-        // flashMode={RNCamera.Constants.FlashMode.torch}
-        topContent={
-          <Text style={styles.centerText}>
-            Go to{' '}
-            <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on
-            your computer and scan the QR code.
-          </Text>
-        }
-        bottomContent={
-          <TouchableOpacity style={styles.buttonTouchable}>
-            <Text style={styles.buttonText}>OK. Got it!</Text>
-          </TouchableOpacity>
-        }
-      />
+        <QRCodeScanner
+          onRead={this.onSuccess}
+          // flashMode={RNCamera.Constants.FlashMode.torch}
+          topContent={
+            <Text style={styles.centerText}>
+              Go to{' '}
+              <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on
+              your computer and scan the QR code.
+            </Text>
+          }
+          bottomContent={
+            <TouchableOpacity style={styles.buttonTouchable}>
+              <Text style={styles.buttonText}>OK. Got it!</Text>
+            </TouchableOpacity>
+          }
+        />
       </View>
       <Text style={styles.maintext}>{text}</Text>
 
-<Header>{Data}</Header>
+      <Header>{Data}</Header>
       {/* {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} color='tomato' />} */}
       <Button
         onPress={connetToWifi}

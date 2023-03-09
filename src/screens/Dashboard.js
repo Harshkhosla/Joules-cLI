@@ -9,7 +9,7 @@ import BackButton from '../components/BackButton'
 export default function Dashboard({ navigation }) {
   return (
     <Background>
-      
+
       {/* <BackButton goBack={navigation.goBack} /> */}
       <Logo />
       <Header>Let’s start</Header>
@@ -27,7 +27,7 @@ export default function Dashboard({ navigation }) {
       >
         Logout
       </Button> */}
-       <Button
+      <Button
         mode="outlined"
         onPress={() =>
           navigation.navigate('Load')
@@ -41,7 +41,7 @@ export default function Dashboard({ navigation }) {
           navigation.navigate('HomePage')
         }
       >
-        Entering 
+        Entering
       </Button>
       {/* <Button
         mode="outlined"

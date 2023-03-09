@@ -12,7 +12,7 @@ export default function StartScreen({ navigation }) {
       <Logo />
       <Header>JOULS</Header>
       <Paragraph>
-       Sample test 
+        Sample test
       </Paragraph>
       <Button
         mode="contained"
