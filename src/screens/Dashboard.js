@@ -43,6 +43,14 @@ export default function Dashboard({ navigation }) {
       >
         Entering
       </Button>
+      <Button
+        mode="outlined"
+        onPress={() =>
+          navigation.navigate('Wifi')
+        }
+      >
+        Wifi
+      </Button>
       {/* <Button
         mode="outlined"
         onPress={() =>
@@ -51,14 +59,14 @@ export default function Dashboard({ navigation }) {
       >
         Meter
       </Button> */}
-      <Button
+      {/* <Button
         mode="outlined"
         onPress={() =>
           navigation.navigate('Date')
         }
       >
         Date and time
-      </Button>
+      </Button> */}
       <Button
         mode="outlined"
         onPress={() =>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Header from '../components/Header';
-import { SafeAreaView, StyleSheet, TextInput, Alert } from 'react-native';
+import { SafeAreaView, StyleSheet,  TouchableOpacity, TextInput, Alert } from 'react-native';
 import { Text, View, Linking } from 'react-native';
 import Button from '../components/Button'
 import Background from '../components/Background';
@@ -12,61 +12,80 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Icon from "../components/Icon";
 import { useDispatch, useSelector } from 'react-redux';
 import { Click } from '../Redux/Action';
-
+import Ecomode from "../components/Ecomode"
+import Normal from "../components/Normal"
+import Steady from "../components/Steady"
+import Scedule from "../components/Scedule"
 
 export default function Eligible({ navigation }) {
   const dispatch = useDispatch()
   const [state, setState] = useState()
-  const [datas, setDatas] = useState("On")
+  const [datas, setDatas] = useState("Connect you charger")
   const [data, setData] = useState(9);
-  const regular_icon_btn = <FontAwesome5.Button name={'comments'} />;
   const [user, setUserData] = React.useState({ field1: 'eco_mode_off', field2: "" });
   console.log(user);
-  setInterval(() => {
+  setTimeout(function(){
+    setDatas("Charger is connected")
+   
+  }, 5000);
 
-    const allCarBrand = async () => {
-      try {
-        const response = await fetch(
-          "https://api.thingspeak.com/channels/2034222/feeds.json?api_key=P7G58EFGWC7MP4EI&results=1"
-        );
-        const data = await response.json();
-        console.log(data);
-        setState(data?.feeds);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    const sampleData = state?.map((val, key) => {
-      return <>
-        {val?.field1}
-      </>;
-    })
-    const dataa = sampleData?.[0]?.props?.children
-    setData(dataa);
-    allCarBrand();
-  }, 30000);
+  // setTimeout(function(){
+  //   setDatas("Charging Status ON")
+   
+  // }, 13000);
+  const Sample=()=>{
+    
+    navigation.navigate('Date')
+  }
+  // setInterval(() => {
+  //   const allCarBrand = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         "https://api.thingspeak.com/channels/2053997/feeds.json?api_key=1KDB6MPTULJSH4I1&results=2 "
+  //       );
+  //       const data = await response.json();
+  //       // console.log(data);
+  //       setState(data?.feeds);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   const sampleData = state?.map((val, key) => {
+  //     return <>
+  //       {val?.field8}
+  //     </>;
+  //   })
+  //   const dataa = sampleData?.[0]?.props?.children
+  //   // console.log(dataa,"ekcheb");
+  //   setData(dataa);
+  //   allCarBrand();
+  // }, 35000);
 
   const Clickk = () => {
     dispatch(Click(user))
   }
 
 
-  const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ postName: user })
-  };
+ 
   return (
     <Background>
-      <Header style={styles.header}>Charger Status :{datas}</Header>
+      <Header style={styles.header}>{datas}</Header>
       <SafeAreaView style={styles.container}>
         <RNSpeedometer style={styles.labels} value={data} size={400} />
       </SafeAreaView>
       <View style={styles.containerr}>
-        <Icon style={styles.button}></Icon>
-        <Icon style={styles.button}></Icon>
-        <Icon style={styles.button}></Icon>
-        <Icon style={styles.button}></Icon>
+      <TouchableOpacity onPress={Sample}>
+        <Ecomode  style={styles.button}></Ecomode>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={"Sample"}>
+        <Scedule  style={styles.button}></Scedule>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={"Sample"}>
+        <Steady  style={styles.button}></Steady>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={"Sample"}>
+        <Normal  style={styles.button}></Normal>
+        </TouchableOpacity>
 
       </View>
 
@@ -139,7 +158,7 @@ const styles = StyleSheet.create({
   containerr: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
     width: '80%',
     alignSelf: 'center',

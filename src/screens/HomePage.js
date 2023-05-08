@@ -9,11 +9,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { PermissionsAndroid } from 'react-native';
-
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
 import WifiManager from "react-native-wifi-reborn";
 // import wifi from 'react-native-android-wifi';
+
 
 export default function Dashboard({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
@@ -22,7 +22,6 @@ export default function Dashboard({ navigation }) {
   const [Data, setData] = useState("HGHG");
   // useEffect(()=>{
   //   console.log(Data?.channel);
-
   // },[sampleHit])
 
 
@@ -32,7 +31,6 @@ export default function Dashboard({ navigation }) {
     connetToWifi()
     // alert( `barecode ${type}and data ${Linking.openURL(`${data}`)}has been done`)
     console.log('Type: ' + type + '\nData: ' + data)
-
     //   onPressChangeWifi = async() => {
     //     const checkpermission = await PermissionsAndroid.check(
     //         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION

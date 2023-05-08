@@ -21,7 +21,7 @@ export const Click = (user) => {
     return (dispatch) => {
         // console.log(user,"ekvhjwejh");
         const { field1, field2 } = user;
-        fetch("https://api.thingspeak.com/update?api_key=YC54O11IV85P4S7O&field1=" + JSON.stringify({
+        fetch("https://api.thingspeak.com/update?api_key=YC54O11IV85P4S7O&field2=" + JSON.stringify({
             field1,
         }), {
             method: "POST",
@@ -46,9 +46,10 @@ export const Click = (user) => {
 export const SetDate = (user) => {
     return (dispatch) => {
 
-        const { field1, field2 } = user;
-        fetch("https://api.thingspeak.com/update?api_key=YQVCR2JG4XJJO80B&field1=" + JSON.stringify({
-            field1, field2
+        const { field1:date, field2:time } = user;
+        // console.log(field1);
+        fetch(`https://api.thingspeak.com/update?api_key=YC54O11IV85P4S7O&field1=${"schedule_mode_on"}&field3=` + JSON.stringify({
+            date, time
         }), {
             method: "POST",
             headers: {
@@ -73,7 +74,7 @@ export const CarDetails = (value) => {
     return (dispatch) => {
         console.log(value);
         const [{ Battery_Pack: batteryPack }, { Car: car }, { House_voltage: house_Ampere}] = value;
-        fetch("https://api.thingspeak.com/update?api_key=YC54O11IV85P4S7O&field2=" + JSON.stringify({
+        fetch("https://api.thingspeak.com/update?api_key=YC54O11IV85P4S7O&field1=" + JSON.stringify({
             batteryPack, car, house_Ampere
         }), {
             method: "POST",

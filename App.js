@@ -17,8 +17,10 @@ import {
   Car,
   House,
   Date,
-  Home
+  Wifi,
+  Home,
 } from './src/screens';
+import Splash from './src/screens/Splash'
 
 const Stack = createStackNavigator()
 
@@ -34,7 +36,9 @@ export default function App() {
             headerShown: false,
           }}
         >
-          <Stack.Screen name="StartScreen" component={StartScreen} />
+          
+          <Stack.Screen  options={{headerShown: false}}  name="Splash" component={Splash}     />
+          {/* <Stack.Screen name="StartScreen" component={StartScreen} /> */}
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
           <Stack.Screen name="Dashboard" component={Dashboard} />
@@ -46,6 +50,7 @@ export default function App() {
           <Stack.Screen name="House" component={House} />
           <Stack.Screen name="Date" component={Date} />
           <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Wifi" component={Wifi} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

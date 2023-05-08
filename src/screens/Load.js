@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import { SafeAreaView, StyleSheet, TextInput, Alert } from 'react-native';
 import { Text, View, Linking } from 'react-native';
 import Button from '../components/Button'
-import Background from '../components/backgroundstation';
+import Background from '../components/Background';
 import BackButton from '../components/BackButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { setName } from '../Redux/Action';
@@ -52,7 +52,7 @@ export default function Load({ navigation }) {
         styles={styles.button}
         onPress={OnClick
         }>
-        JHJ
+        OK
       </Button>
     </Background>
   )
@@ -64,9 +64,12 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+    color: 'black',
+  
   },
   button: {
     height: 40,
     width: 200,
+   
   }
 });
