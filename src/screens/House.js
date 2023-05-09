@@ -28,8 +28,8 @@ export default function House({ navigation }) {
     />
       <Button style={ styles.bottomView}
         mode="contained"
-        onPress={() => navigation.replace('House')}
-      >to home </Button>
+        onPress={() => navigation.replace('Home')}
+      >too home </Button>
       </View>
     </Background>
   )
