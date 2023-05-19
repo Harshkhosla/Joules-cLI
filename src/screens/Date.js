@@ -11,7 +11,7 @@ import { SetDate } from '../Redux/Action';
 // import DatePicker from 'react-native-date-picker'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { onChange } from 'react-native-reanimated';
-import { Click } from '../Redux/Action';
+// import { Click } from '../Redux/Action';
 
 
 export default function Eligible({ navigation }) {
@@ -102,7 +102,7 @@ export default function Eligible({ navigation }) {
           .catch((err) => {
             console.log(err,"cvdsavs");         
           });
-          dispatch(Click(userr))
+          // dispatch(Click(userr))
     // dispatch(SetDate(user))
   }
   return (

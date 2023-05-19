@@ -1,38 +1,114 @@
-import React, { useState } from 'react'
+import React, { useState ,useEffect } from 'react'
 import Header from '../components/Header';
 import { SafeAreaView, StyleSheet,  TouchableOpacity, TextInput, Alert } from 'react-native';
 import { Text, View, Linking } from 'react-native';
+// import mqtt from "mqtt";
+// var mqtt    = require('react-native-mqtt');
+import { Client, Message } from 'react-native-paho-mqtt';
 import Button from '../components/Button'
 import Background from '../components/Background';
 import BackButton from '../components/BackButton'
 import RNSpeedometer from 'react-native-speedometer'
+// import MQTT from 'react-native-native-mqtt';
 // import FontAwesome5 from 'react-native-vector-icons';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+// import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 // import { Icon } from 'react-native-paper/lib/typescript/components/Avatar/Avatar';
 import Icon from "../components/Icon";
 import { useDispatch, useSelector } from 'react-redux';
 import { Click } from '../Redux/Action';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Ecomode from "../components/Ecomode"
 import Normal from "../components/Normal"
 import Steady from "../components/Steady"
 import Scedule from "../components/Scedule"
 
-export default function Eligible({ navigation }) {
+export default function Home({ navigation }) {
   const dispatch = useDispatch()
   const [state, setState] = useState()
+  console.log(state);
   const [datas, setDatas] = useState("Connect you charger")
   const [data, setData] = useState(9);
-  const [user, setUserData] = React.useState({ field1: 'eco_mode_off', field2: "" });
-  console.log(user);
+  const [user, setUserData] = React.useState("");
+  console.log(user,"harsh authtoken");
   setTimeout(function(){
     setDatas("Charger is connected")
    
   }, 5000);
+  const imagesAllData=useSelector(state=>state?.userReducers)  
+
+  useEffect(()=>{
+    const mEmail =  AsyncStorage.getItem('Authtoken');
+    console.log(mEmail,"here is the token stored");
+    setUserData(imagesAllData?.authtoken)
+  },[imagesAllData])
+
 
   // setTimeout(function(){
   //   setDatas("Charging Status ON")
    
   // }, 13000);
+  const myStorage = {
+    setItem: (key, item) => {
+      myStorage[key] = item;
+    },
+    getItem: (key) => myStorage[key],
+    removeItem: (key) => {
+      delete myStorage[key];
+    },
+  };
+
+  useEffect(() => {
+
+
+    const client = new Client({ uri: 'ws://192.168.100.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage});
+
+
+    const onConnect = () => {
+      console.log("Connected to MQTT broker");
+
+      // Subscribe to a topic
+      client.subscribe("Message");
+
+      // Publish a message to a topic
+      const message = new Message('your-message');
+      message.destinationName = 'Message';
+      client.send(message);
+    };
+
+    const onConnectionLost = (responseObject) => {
+      if (responseObject.errorCode !== 0) {
+        console.log("Disconnected from MQTT broker");
+      }
+    };
+
+    const onMessageArrived = (message) => {
+      console.log("Received message:", message.payloadString);
+    };
+
+    client.onConnectionLost = onConnectionLost;
+    client.onMessageArrived = onMessageArrived;
+
+    client.connect()
+      .then(onConnect)
+      .catch((error) => {
+        console.log("Failed to connect:", error);
+      });
+
+    // Cleanup function
+    return () => {
+      client.disconnect();
+    };
+
+
+
+
+  }, []);
+
+
+
+
+
+
   const Sample=()=>{
     
     navigation.navigate('Date')

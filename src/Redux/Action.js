@@ -57,30 +57,99 @@ export const SetDate = (user) => {
       });
   }
 }
-
+// ------------------------------------------------SENDING DATA TO MQTT AND NODE JS BOTH ---------------------------------------------------//
 export const CarDetails = (value) => {
   return (dispatch) => {
     console.log(value);
     const [{ Battery_Pack: batteryPack }, { Car: car }, { House_voltage: house_Ampere }] = value;
-    fetch("https://api.thingspeak.com/update?api_key=YC54O11IV85P4S7O&field1=" + JSON.stringify({
-      batteryPack, car, house_Ampere
-    }), {
+    // fetch("https://api.thingspeak.com/update?api_key=YC54O11IV85P4S7O&field1=" + JSON.stringify({
+    //   batteryPack, car, house_Ampere
+    // }), {
+    //   method: "POST",
+    //   headers: {
+    //     "content-type": "application/json",
+    //   },
+    // })
+    //   .then((response) => response.json())
+    //   .then((response) => {
+    //     toast.success(response?.toast)
+    //     console.log(response, "casdvas")
+    //     if (!response?.success) {
+    //       throw Error(response.error)
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err, "cvdsavs");
+    //   });
+
+    
+    const client = new Client({ uri: 'ws://192.168.100.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    // set event handlers
+    client.on('connectionLost', (responseObject) => {
+      if (responseObject.errorCode !== 0) {
+        console.log(responseObject.errorMessage);
+      }
+    });
+    const onConnect = () => {
+
+      client.on('messageReceived', (message) => {
+        console.log(message?.payloadString);
+      });
+    }
+
+    client.connect()
+      .then(() => {
+        // Once a connection has been made, make a subscription and send a message.
+        console.log('onConnect');
+        return client.subscribe('topic_1');
+      })
+      .then(() => {
+        const message = new Message(batteryPack);
+        message.destinationName = 'topic_1';
+        const car_data = new Message(car);
+        sample.destinationName = 'message';
+        const House_voltage = new Message(house_Ampere);
+        sample.destinationName = 'message';
+        client.send(message);
+        client.send(car_data);
+        client.send(House_voltage);
+      }).then(() => {
+        onConnect()
+      })
+      .catch((responseObject) => {
+        if (responseObject.errorCode !== 0) {
+          console.log('onConnectionLost:' + responseObject.errorMessage);
+        }
+      })
+
+    fetch(`https://backend-production-e1c2.up.railway.app/api/notes/addnote`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
+        // "Authorization": AsyncStorage.getItem('Authtoken').replaceAll('"', ""),
       },
+
+      body: JSON.stringify({
+        title,
+
+      }),
     })
       .then((response) => response.json())
+
       .then((response) => {
-        toast.success(response?.toast)
-        console.log(response, "casdvas")
-        if (!response?.success) {
+        //  console.log(response.sucess) 
+        toast.success(response?.sucess)
+
+        if (!response?.sucess) {
           throw Error(response.error)
         }
+        //  console.log(response);       
       })
       .catch((err) => {
-        console.log(err, "cvdsavs");
-      });
+        // setError(err.message);
+        //  toast.error(err);     
+
+      })
   }
 }
 
@@ -316,7 +385,7 @@ export const signItUp = (field, navigation) => {
       }
 
       // Navigate to the home screen
-      navigation.navigate('Load');
+      navigation.navigate('Home');
     } catch (err) {
       console.log(err, "cvdsavs");
       // setError(err.message);

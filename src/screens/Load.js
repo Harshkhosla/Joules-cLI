@@ -29,7 +29,7 @@ export default function Load({ navigation }) {
         { text: 'OK', onPress: () => console.log('OK Pressed') },
       ]) :
         dispatch(setName(house_voltage))
-      navigation.navigate('Eligible')
+      // navigation.navigate('Eligible')
     }
   }
   return (
