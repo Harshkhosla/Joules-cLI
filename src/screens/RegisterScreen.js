@@ -8,34 +8,24 @@ import Button from '../components/Button'
 import TextInput from '../components/TextInput'
 import BackButton from '../components/BackButton'
 import { theme } from '../core/theme'
+import { useDispatch, useSelector } from 'react-redux';
 import { emailValidator } from '../helpers/emailValidator'
 import { passwordValidator } from '../helpers/passwordValidator'
 import { nameValidator } from '../helpers/nameValidator'
+import { loginuser } from '../Redux/Action';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function RegisterScreen({ navigation }) {
-  // const [name, setName] = useState({ value: '', error: '' })
-  // const [email, setEmail] = useState({ value: '', error: '' })
-  // const [password, setPassword] = useState({ value: '', error: '' })
+ 
 
-  // const onSignUpPressed = () => {
-  //   const nameError = nameValidator(name.value)
-  //   const emailError = emailValidator(email.value)
-  //   const passwordError = passwordValidator(password.value)
-  //   if (emailError || passwordError || nameError) {
-  //     setName({ ...name, error: nameError })
-  //     setEmail({ ...email, error: emailError })
-  //     setPassword({ ...password, error: passwordError })
-  //     return
-  //   }
-  //   navigation.reset({
-  //     index: 0,
-  //     routes: [{ name: 'Dashboard' }],
-  //   })
-  // }
-
-
+  const dispatch = useDispatch()
   // const navigation = useNavigation();
+  const [data, setData] = useState({
+    name:"",
+    email:"",
+    password:''
+  });
+  console.log(data);
   const [name, setName] = useState("");
   const [badName, setBadName] = useState(false);
   const [email, setEmail] = useState("");
@@ -48,49 +38,50 @@ export default function RegisterScreen({ navigation }) {
   const [badConfirmPassword, setBadConfirmPassword] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
-  const signupp = () => {
-    console.log(name);
-    setButtonDisabled(true);
-    if (name == "") {
-      setBadName(true);
-      setButtonDisabled(false);
-    } else {
-      setBadName(false);
-      if (email == "") {
-        setBadEmail(true);
-        setButtonDisabled(false);
-      } else {
-        setBadEmail(false);
-        if (mobile == "") {
-          setBadMobile(true);
-          setButtonDisabled(false);
-        } else {
-          setBadMobile(false);
-          if (password == "") {
-            setBadPassword(true);
-            setButtonDisabled(false);
-          } else {
-            setBadPassword(false);
-            if (confirmPassword == "") {
-              setBadConfirmPassword(true);
-              setButtonDisabled(false);
-            } else {
-              saveData();
-              setBadConfirmPassword(false);
+  // const signupp = () => {
+  //   console.log(name);
+  //   setButtonDisabled(true);
+  //   if (name == "") {
+  //     setBadName(true);
+  //     setButtonDisabled(false);
+  //   } else {
+  //     setBadName(false);
+  //     if (email == "") {
+  //       setBadEmail(true);
+  //       setButtonDisabled(false);
+  //     } else {
+  //       setBadEmail(false);
+  //       if (mobile == "") {
+  //         setBadMobile(true);
+  //         setButtonDisabled(false);
+  //       } else {
+  //         setBadMobile(false);
+  //         if (password == "") {
+  //           setBadPassword(true);
+  //           setButtonDisabled(false);
+  //         } else {
+  //           setBadPassword(false);
+  //           if (confirmPassword == "") {
+  //             setBadConfirmPassword(true);
+  //             setButtonDisabled(false);
+  //           } else {
+  //             saveData();
+  //             setBadConfirmPassword(false);
               
-            }
-          }
-        }
-      }
-    }
-  };
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // };
 
   const saveData = async () => {
-    await AsyncStorage.setItem("NAME", name);
-    await AsyncStorage.setItem("EMAIL", email);
-    // await AsyncStorage.setItem("MOBILE", mobile);
-    await AsyncStorage.setItem("PASSWORD", password);
-    console.log(":yes");
+    dispatch(loginuser(data))
+    await AsyncStorage.setItem("NAME", "sample");
+    // await AsyncStorage.setItem("EMAIL", data.email);
+    // // await AsyncStorage.setItem("MOBILE", mobile);
+    // await AsyncStorage.setItem("PASSWORD", data.password);
+    // console.log(":yes");
     // navigation.goBack();
   };
   return (
@@ -101,9 +92,10 @@ export default function RegisterScreen({ navigation }) {
       <TextInput
         label="Name"
         returnKeyType="next"
-        value={name}
+        // name="password"
+        value={data.name}
           onChangeText={(txt) => {
-            setName(txt);
+            setData((prevData) => ({ ...prevData, name: txt }));
           }}
         error={!!name.error}
         errorText={name.error}
@@ -111,9 +103,10 @@ export default function RegisterScreen({ navigation }) {
       <TextInput
         label="Email"
         returnKeyType="next"
-        value={email}
+        name="email"
+        value={data.email}
           onChangeText={(txt) => {
-            setEmail(txt);
+            setData((prevData) => ({ ...prevData, email: txt }));
           }}
         error={!!email.error}
         errorText={email.error}
@@ -125,9 +118,10 @@ export default function RegisterScreen({ navigation }) {
       <TextInput
         label="Password"
         returnKeyType="done"
-        value={password}
+        name="password"
+        value={data.password}
           onChangeText={(txt) => {
-            setPassword(txt);
+            setData((prevData) => ({ ...prevData, password: txt }));
           }}
         error={!!password.error}
         errorText={password.error}

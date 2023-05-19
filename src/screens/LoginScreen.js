@@ -1,20 +1,41 @@
-import React, { useState } from 'react'
+import React, { useState ,  useEffect} from 'react'
 import { TouchableOpacity, StyleSheet, View } from 'react-native'
 import { Text } from 'react-native-paper'
 import Background from '../components/Background'
 import Logo from '../components/Logo'
+import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Header from '../components/Header'
+// import { useNavigation } from '@react-navigation/native';
 import Button from '../components/Button'
 import TextInput from '../components/TextInput'
 import BackButton from '../components/BackButton'
 import { theme } from '../core/theme'
 import { emailValidator } from '../helpers/emailValidator'
 import { passwordValidator } from '../helpers/passwordValidator'
+import { signItUp } from '../Redux/Action';
+import {authtoken} from '../Redux/Reducers'
+// import { useDispatch, useSelector } from "react-redux";
 
 export default function LoginScreen({ navigation }) {
-
+  const dispatch = useDispatch()
   // const navigation = useNavigation();
+  const [data, setData] = useState({
+    email:"",
+    password:''
+  });
+  const[sample,setSample]=useState("")
+  console.log(sample,"   ,,,helllo i an in loginScreen");
+  
+  
+  const imagesAllData=useSelector(state=>state?.userReducers)   
+  
+  console.log(imagesAllData,"goodharsh");
+  useEffect(()=>{
+    const mEmail =  AsyncStorage.getItem('Authtoken');
+    console.warn(mEmail);
+    setSample(imagesAllData?.authtoken)
+  },[imagesAllData])
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [badEmail, setBadEmail] = useState(false);
@@ -24,13 +45,13 @@ export default function LoginScreen({ navigation }) {
 
   const login = () => {
     setModalVisible(true);
-    if (email == "") {
+    if (data.email == "") {
       setModalVisible(false);
       setBadEmail(true)
     }
     else{
       setBadEmail(false)
-      if (password == "") {
+      if (data.password == "") {
         setModalVisible(false);
         setBadPassword(true)
       }
@@ -44,50 +65,26 @@ export default function LoginScreen({ navigation }) {
   }
 
   const getData = async () => {
-    const mEmail = await AsyncStorage.getItem('EMAIL');
-    console.log(mEmail);
+    // if(data="sample"){
+
+    // }else{
+
+    // }
+    dispatch(signItUp(data, navigation))
+    const mEmail = await AsyncStorage.getItem('Authtoken');
+    console.log(mEmail ,"herahe");
     const mPass = await AsyncStorage.getItem('PASSWORD');
-    if(mEmail===email && mPass===password){
+    if(mEmail===data.email && mPass===data.password){
       setModalVisible(false);
       navigation.navigate('Load');
     }
     else{
       setModalVisible(false);
-      // Toast.show('Email or Password is wrong !', Toast.LONG);
       console.log('HARSH');
     }
   };
   
 
-  // const onLoginPressed = () => {
-  //   const emailError = emailValidator(email.value)
-  //   const passwordError = passwordValidator(password.value)
-  //   if (emailError || passwordError) {
-  //     setEmail({ ...email, error: emailError })
-  //     setPassword({ ...password, error: passwordError })
-  //     return
-  //   }else {
-  //     setTimeout(() => {
-  //       // setBadPassword(false);
-  //       getData();
-  //     }, 2000);
-  //   }
-  
-  // }
-
-  // const getData = async () => {
-  //   const mEmail = await AsyncStorage.getItem('EMAIL');
-  //   const mPass = await AsyncStorage.getItem('PASSWORD');
-  //   if(mEmail===email && mPass===password){
-  //     // setModalVisible(false);
-  //     navigation.navigate('HomePage');
-  //   }
-  //   else{
-  //     // setModalVisible(false);
-  //     // Toast.show('Email or Password is wrong !', Toast.LONG);
-  //     navigation.navigate('Home');
-  //   }
-  // };
 
   return (
     <Background>
@@ -97,9 +94,10 @@ export default function LoginScreen({ navigation }) {
       <TextInput
         label="Email"
         returnKeyType="next"
-        value={email}
+        value={data.email}
+        name="email"
         onChangeText={(txt) => {
-          setEmail(txt);
+          setData((prevData) => ({ ...prevData, email: txt }));
         }}
         error={!!email.error}
         errorText={email.error}
@@ -111,9 +109,10 @@ export default function LoginScreen({ navigation }) {
       <TextInput
         label="Password"
         returnKeyType="done"
-        value={password}
+        value={data.password}
+        name="password"
         onChangeText={(txt) => {
-          setPassword(txt);
+          setData((prevData) => ({ ...prevData, password: txt }));
         }}
         error={!!password.error}
         errorText={password.error}
@@ -126,7 +125,7 @@ export default function LoginScreen({ navigation }) {
           <Text style={styles.forgot}>Forgot your password?</Text>
         </TouchableOpacity>
       </View>
-      <Button mode="contained" onPress={login}>
+      <Button mode="contained" onPress={getData}>
         Login
       </Button>
       <View style={styles.row}>
