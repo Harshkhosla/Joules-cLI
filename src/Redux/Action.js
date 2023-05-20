@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsynStorage from '@react-native-async-storage/async-storage';
 export const SET_USER_NAME = "SET_USER_NAME";
 export const SET_USER_EMAIL = "SET_USER_EMAIL";
 export const SET_AUTH_TOKEN = "SET_AUTH_TOKEN";
@@ -82,7 +82,7 @@ export const CarDetails = (value) => {
     //     console.log(err, "cvdsavs");
     //   });
 
-    
+
     const client = new Client({ uri: 'ws://192.168.100.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
     // set event handlers
     client.on('connectionLost', (responseObject) => {
@@ -377,7 +377,7 @@ export const signItUp = (field, navigation) => {
       const data = await response.json();
       console.log(data, "casdvas");
       const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '');
-      AsyncStorage.setItem("Authtoken", authtoken);
+      await AsynStorage.setItem("Authtoken", authtoken);
       dispatch(setAuthtoken(authtoken));
 
       if (!data?.success) {
@@ -385,7 +385,7 @@ export const signItUp = (field, navigation) => {
       }
 
       // Navigate to the home screen
-      navigation.navigate('Home');
+      navigation.navigate('Load');
     } catch (err) {
       console.log(err, "cvdsavs");
       // setError(err.message);

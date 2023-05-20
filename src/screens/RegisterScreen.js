@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Text } from 'react-native-paper'
 import Background from '../components/Background'
 import Logo from '../components/Logo'
+import LogoLogin from '../components/LoginLogo'
 import Header from '../components/Header'
 import Button from '../components/Button'
 import TextInput from '../components/TextInput'
@@ -77,7 +78,7 @@ export default function RegisterScreen({ navigation }) {
 
   const saveData = async () => {
     dispatch(loginuser(data))
-    await AsyncStorage.setItem("NAME", "sample");
+    // await AsyncStorage.setItem("NAME", "sample");
     // await AsyncStorage.setItem("EMAIL", data.email);
     // // await AsyncStorage.setItem("MOBILE", mobile);
     // await AsyncStorage.setItem("PASSWORD", data.password);
@@ -88,6 +89,7 @@ export default function RegisterScreen({ navigation }) {
     <Background>
       <BackButton goBack={navigation.goBack} />
       <Logo />
+      <LogoLogin/>
       <Header>Create Account</Header>
       <TextInput
         label="Name"

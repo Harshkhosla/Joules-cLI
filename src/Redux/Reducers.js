@@ -14,7 +14,7 @@ function userReducers(state = initialState, action) {
       case SET_USER_EMAIL:
         return { ...state, email: action.payload };
       case SET_AUTH_TOKEN:
-        console.log("harshsample",action);
+        // console.log("harshsample",action);
         return { ...state, authtoken: action.payload };
       default:
         return state;

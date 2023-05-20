@@ -1,12 +1,15 @@
 import React from 'react';
 import Header from '../components/Header';
-import { SafeAreaView, StyleSheet, TextInput, Alert } from 'react-native';
+import { SafeAreaView, StyleSheet,  Alert } from 'react-native';
 import { Text, View, Linking } from 'react-native';
 import Button from '../components/Button'
 import Background from '../components/Background';
+import TextInput from '../components/TextInput'
 import BackButton from '../components/BackButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { setName } from '../Redux/Action';
+import Logo from '../components/Logo';
+import Loadcomponent from '../components/Loadcomponent';
 
 
 export default function Load({ navigation }) {
@@ -36,17 +39,20 @@ export default function Load({ navigation }) {
     <Background>
 
       <BackButton goBack={navigation.goBack} />
+      <Logo/>
+      <Loadcomponent/>
       <Header>
-        What is the Maximum electrical sanctioned Load Of Your Home ?
+        What is the maximum electrical sanctioned load Of your home ?
       </Header>
 
       <TextInput
-        label="Name"
-        style={styles.input}
+        label="Enter electrical sanctioned load"
+        // style={styles.input}
         onChangeText={onChangeText}
         value={text}
         keyboardType="numeric"
       />
+     
       <Button
         mode="contained"
         styles={styles.button}

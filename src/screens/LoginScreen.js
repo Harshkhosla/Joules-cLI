@@ -3,6 +3,7 @@ import { TouchableOpacity, StyleSheet, View } from 'react-native'
 import { Text } from 'react-native-paper'
 import Background from '../components/Background'
 import Logo from '../components/Logo'
+import Sideline from '../components/Sideline'
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Header from '../components/Header'
@@ -11,6 +12,7 @@ import Button from '../components/Button'
 import TextInput from '../components/TextInput'
 import BackButton from '../components/BackButton'
 import { theme } from '../core/theme'
+import LogoLogin from '../components/LoginLogo'
 import { emailValidator } from '../helpers/emailValidator'
 import { passwordValidator } from '../helpers/passwordValidator'
 import { signItUp } from '../Redux/Action';
@@ -67,30 +69,35 @@ export default function LoginScreen({ navigation }) {
   const getData = async () => {
     // if(data="sample"){
 
-    // }else{
-
-    // }
-    dispatch(signItUp(data, navigation))
-    const mEmail = await AsyncStorage.getItem('Authtoken');
-    console.log(mEmail ,"herahe");
-    const mPass = await AsyncStorage.getItem('PASSWORD');
-    if(mEmail===data.email && mPass===data.password){
-      setModalVisible(false);
-      navigation.navigate('Load');
-    }
-    else{
-      setModalVisible(false);
-      console.log('HARSH');
-    }
-  };
-  
-
-
-  return (
-    <Background>
-      <BackButton goBack={navigation.goBack} />
+      // }else{
+        
+        // }
+        dispatch(signItUp(data, navigation))
+        const mEmail = await AsyncStorage.getItem('Authtoken');
+        console.log(mEmail ,"herahe");
+        const mPass = await AsyncStorage.getItem('PASSWORD');
+        if(mEmail===data.email && mPass===data.password){
+          setModalVisible(false);
+          navigation.navigate('Load');
+        }
+        else{
+          setModalVisible(false);
+          console.log('HARSH');
+        }
+      };
+      
+      
+      
+      return (
+        <Background>
+      {/* <BackButton goBack={navigation.goBack} /> */}
+      {/* <Sideline/> */}
       <Logo />
-      <Header>Welcome back.</Header>
+      <LogoLogin/>
+      <Header>Welcome back</Header>
+      {/* <View style={styles.email}>
+        <Text>Email </Text>
+      </View> */}
       <TextInput
         label="Email"
         returnKeyType="next"
@@ -129,10 +136,14 @@ export default function LoginScreen({ navigation }) {
         Login
       </Button>
       <View style={styles.row}>
+        <Text>Or Log in With </Text>
+      </View>
+      <View style={styles.row}>
         <Text>Don’t have an account? </Text>
         <TouchableOpacity onPress={() => navigation.replace('RegisterScreen')}>
           <Text style={styles.link}>Sign up</Text>
         </TouchableOpacity>
+        
       </View>
     </Background>
   )
@@ -143,17 +154,24 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'flex-end',
     marginBottom: 24,
+    
   },
   row: {
     flexDirection: 'row',
     marginTop: 4,
   },
   forgot: {
-    fontSize: 13,
-    color: theme.colors.secondary,
+    // fontSize: 13,
+    fontWeight: 'bold',
+    color: theme.colors.primary,
   },
   link: {
     fontWeight: 'bold',
     color: theme.colors.primary,
   },
+  email:{
+    fontWeight: 'bold',
+    width: '100%',
+    alignItems: 'flex-start',
+  }
 })
