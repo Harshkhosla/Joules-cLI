@@ -2,14 +2,11 @@ import React, { useState ,useEffect } from 'react'
 import Header from '../components/Header';
 import { SafeAreaView, StyleSheet,  TouchableOpacity, TextInput, Alert } from 'react-native';
 import { Text, View, Linking } from 'react-native';
-// import mqtt from "mqtt";
-// var mqtt    = require('react-native-mqtt');
 import { Client, Message } from 'react-native-paho-mqtt';
 import Button from '../components/Button'
 import Background from '../components/Background';
 import BackButton from '../components/BackButton'
 import RNSpeedometer from 'react-native-speedometer'
-// import MQTT from 'react-native-native-mqtt';
 // import FontAwesome5 from 'react-native-vector-icons';
 // import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 // import { Icon } from 'react-native-paper/lib/typescript/components/Avatar/Avatar';

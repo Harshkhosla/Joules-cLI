@@ -1,5 +1,5 @@
 {
-  "name": "AwesomeProject",
+  "name": "joulsconnect",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -30,9 +30,7 @@
     "react-native-gesture-handler": "^2.8.0",
     "react-native-modal-datetime-picker": "^14.0.1",
     "react-native-modern-datepicker": "^1.0.0-beta.91",
-    "react-native-mqtt": "^0.1.0-beta4",
     "react-native-mqtt-client": "^0.0.1",
-    "react-native-native-mqtt": "^0.1.8",
     "react-native-paho-mqtt": "^0.1.1",
     "react-native-paper": "^4.4.1",
     "react-native-permissions": "^3.6.1",
@@ -43,7 +41,6 @@
     "react-native-speedometer": "^1.0.5",
     "react-native-status-bar-height": "^2.6.0",
     "react-native-vector-icons": "^9.2.0",
-    "react-native-wifi-hotspot": "^1.0.0",
     "react-native-wifi-reborn": "^4.7.0",
     "react-redux": "^8.0.5",
     "redux": "^4.2.1",

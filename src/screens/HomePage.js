@@ -12,7 +12,7 @@ import { PermissionsAndroid } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
 import WifiManager from "react-native-wifi-reborn";
-// import wifi from 'react-native-android-wifi';
+// import wifi from 'react-native-android-wifi';     
 
 
 export default function Dashboard({ navigation }) {
