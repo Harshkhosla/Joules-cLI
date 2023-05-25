@@ -19,6 +19,7 @@ import {
   Date,
   Wifi,
   Home,
+  Flat,
 } from './src/screens';
 import Splash from './src/screens/Splash'
 
@@ -51,6 +52,7 @@ export default function App() {
           <Stack.Screen name="Date" component={Date} />
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Wifi" component={Wifi} />
+          <Stack.Screen name="Flat" component={Flat} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

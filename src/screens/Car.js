@@ -23,10 +23,10 @@ export default function Car({ navigation }) {
   ]);
 
   const Samplerun = () => {
-    console.log("ckehbcv");
-    console.log(value);
+    // console.log("ckehbcv");
+    // console.log(value);
     dispatch(CarDetails(value));
-    () => navigation.replace('Home')
+    () => navigation.replace('Flat')
   }
 
   return (
@@ -46,7 +46,7 @@ export default function Car({ navigation }) {
       />
       <Button
         mode="contained"
-        onPress={() => navigation.replace('Home')}
+        onPress={() => navigation.replace('Flat')}
       >to home </Button>
     </Background>
   )

@@ -14,35 +14,35 @@ import RNSpeedometer from 'react-native-speedometer'
 export default function Meter({ navigation }) {
   const [state, setState] = useState();
   const [data, setData] = useState();
-  setInterval(() => {
+  // setInterval(() => {
 
-    const allCarBrand = async () => {
-      try {
-        const response = await fetch(
-          "https://api.thingspeak.com/channels/2034222/feeds.json?api_key=P7G58EFGWC7MP4EI&results=1"
-        );
-        const data = await response.json();
-        console.log(data);
+  //   const allCarBrand = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         "https://api.thingspeak.com/channels/2034222/feeds.json?api_key=P7G58EFGWC7MP4EI&results=1"
+  //       );
+  //       const data = await response.json();
+  //       console.log(data);
 
-        // if (!data.success) {
-        //   throw new Error(data.message);
-        // }
-        setState(data?.feeds);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    const sampleData = state?.map((val, key) => {
-      return <>
-        {val?.field1}
-      </>;
-    })
-    console.log(sampleData?.[0]?.props?.children, "fbdkehb");
-    const dataa = sampleData?.[0]?.props?.children
-    setData(dataa);
-    // console.log(data);
-    allCarBrand();
-  }, 25000);
+  //       // if (!data.success) {
+  //       //   throw new Error(data.message);
+  //       // }
+  //       setState(data?.feeds);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   const sampleData = state?.map((val, key) => {
+  //     return <>
+  //       {val?.field1}
+  //     </>;
+  //   })
+  //   console.log(sampleData?.[0]?.props?.children, "fbdkehb");
+  //   const dataa = sampleData?.[0]?.props?.children
+  //   setData(dataa);
+  //   // console.log(data);
+  //   allCarBrand();
+  // }, 25000);
   return (
     <Background>
 

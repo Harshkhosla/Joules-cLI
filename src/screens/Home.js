@@ -7,10 +7,6 @@ import Button from '../components/Button'
 import Background from '../components/Background';
 import BackButton from '../components/BackButton'
 import RNSpeedometer from 'react-native-speedometer'
-// import FontAwesome5 from 'react-native-vector-icons';
-// import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-// import { Icon } from 'react-native-paper/lib/typescript/components/Avatar/Avatar';
-import Icon from "../components/Icon";
 import { useDispatch, useSelector } from 'react-redux';
 import { Click } from '../Redux/Action';
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -25,25 +21,20 @@ export default function Home({ navigation }) {
   console.log(state);
   const [datas, setDatas] = useState("Connect you charger")
   const [data, setData] = useState(9);
-  const [user, setUserData] = React.useState("");
+  const [user, setUserData] = React.useState("Charging Mode: Eco_Mode");
   console.log(user,"harsh authtoken");
   setTimeout(function(){
     setDatas("Charger is connected")
    
   }, 5000);
-  const imagesAllData=useSelector(state=>state?.userReducers)  
+  const imagesAllData=useSelector(state=>state?.userReducers?.authtoken)  
 
   useEffect(()=>{
     const mEmail =  AsyncStorage.getItem('Authtoken');
-    console.log(mEmail,"here is the token stored");
-    setUserData(imagesAllData?.authtoken)
+    console.log(imagesAllData,"here is the token stored");
+    setUserData(imagesAllData)
   },[imagesAllData])
 
-
-  // setTimeout(function(){
-  //   setDatas("Charging Status ON")
-   
-  // }, 13000);
   const myStorage = {
     setItem: (key, item) => {
       myStorage[key] = item;
@@ -54,85 +45,64 @@ export default function Home({ navigation }) {
     },
   };
 
-  useEffect(() => {
+  // useEffect(() => {
 
 
-    const client = new Client({ uri: 'ws://192.168.100.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage});
+  //   const client = new Client({ uri: 'ws://192.168.100.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage});
 
 
-    const onConnect = () => {
-      console.log("Connected to MQTT broker");
+  //   const onConnect = () => {
+  //     console.log("Connected to MQTT broker");
 
-      // Subscribe to a topic
-      client.subscribe("Message");
+  //     // Subscribe to a topic
+  //     client.subscribe("Message");
 
-      // Publish a message to a topic
-      const message = new Message('your-message');
-      message.destinationName = 'Message';
-      client.send(message);
-    };
+  //     // Publish a message to a topic
+  //     const message = new Message('your-message');
+  //     message.destinationName = 'Message';
+  //     client.send(message);
+  //   };
 
-    const onConnectionLost = (responseObject) => {
-      if (responseObject.errorCode !== 0) {
-        console.log("Disconnected from MQTT broker");
-      }
-    };
-
-    const onMessageArrived = (message) => {
-      console.log("Received message:", message.payloadString);
-    };
-
-    client.onConnectionLost = onConnectionLost;
-    client.onMessageArrived = onMessageArrived;
-
-    client.connect()
-      .then(onConnect)
-      .catch((error) => {
-        console.log("Failed to connect:", error);
-      });
-
-    // Cleanup function
-    return () => {
-      client.disconnect();
-    };
-
-
-
-
-  }, []);
-
-
-
-
-
-
-  const Sample=()=>{
-    
-    navigation.navigate('Date')
-  }
-  // setInterval(() => {
-  //   const allCarBrand = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         "https://api.thingspeak.com/channels/2053997/feeds.json?api_key=1KDB6MPTULJSH4I1&results=2 "
-  //       );
-  //       const data = await response.json();
-  //       // console.log(data);
-  //       setState(data?.feeds);
-  //     } catch (error) {
-  //       console.log(error);
+  //   const onConnectionLost = (responseObject) => {
+  //     if (responseObject.errorCode !== 0) {
+  //       console.log("Disconnected from MQTT broker");
   //     }
   //   };
-  //   const sampleData = state?.map((val, key) => {
-  //     return <>
-  //       {val?.field8}
-  //     </>;
-  //   })
-  //   const dataa = sampleData?.[0]?.props?.children
-  //   // console.log(dataa,"ekcheb");
-  //   setData(dataa);
-  //   allCarBrand();
-  // }, 35000);
+
+  //   const onMessageArrived = (message) => {
+  //     console.log("Received message:", message.payloadString);
+  //   };
+
+  //   client.onConnectionLost = onConnectionLost;
+  //   client.onMessageArrived = onMessageArrived;
+
+  //   client.connect()
+  //     .then(onConnect)
+  //     .catch((error) => {
+  //       console.log("Failed to connect:", error);
+  //     });
+
+  //   // Cleanup function
+  //   return () => {
+  //     client.disconnect();
+  //   };
+
+
+
+
+  // }, []);
+
+
+
+
+
+
+  const Sample=(event)=>{
+    // console.log(event,"sample data");
+    console.log("hello here");
+    
+    navigation.navigate('Load')
+  }
 
   const Clickk = () => {
     dispatch(Click(user))
@@ -142,7 +112,7 @@ export default function Home({ navigation }) {
  
   return (
     <Background>
-      <Header style={styles.header}>{datas}</Header>
+      <Header style={styles.header}>harsh</Header>
       <SafeAreaView style={styles.container}>
         <RNSpeedometer style={styles.labels} value={data} size={400} />
       </SafeAreaView>
@@ -150,7 +120,7 @@ export default function Home({ navigation }) {
       <TouchableOpacity onPress={Sample}>
         <Ecomode  style={styles.button}></Ecomode>
         </TouchableOpacity>
-        <TouchableOpacity onPress={"Sample"}>
+        <TouchableOpacity onPress={"happy"}>
         <Scedule  style={styles.button}></Scedule>
         </TouchableOpacity>
         <TouchableOpacity onPress={"Sample"}>
@@ -159,7 +129,6 @@ export default function Home({ navigation }) {
         <TouchableOpacity onPress={"Sample"}>
         <Normal  style={styles.button}></Normal>
         </TouchableOpacity>
-
       </View>
 
 

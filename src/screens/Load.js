@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../components/Header';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView, StyleSheet,  Alert } from 'react-native';
-import { Text, View, Linking } from 'react-native';
 import Button from '../components/Button'
 import Background from '../components/Background';
 import TextInput from '../components/TextInput'
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setName } from '../Redux/Action';
 import Logo from '../components/Logo';
 import Loadcomponent from '../components/Loadcomponent';
+import { log } from 'react-native-reanimated';
 
 
 export default function Load({ navigation }) {
@@ -32,9 +33,13 @@ export default function Load({ navigation }) {
         { text: 'OK', onPress: () => console.log('OK Pressed') },
       ]) :
         dispatch(setName(house_voltage))
-      // navigation.navigate('Eligible')
+      navigation.navigate('Eligible')
     }
   }
+  // const data =async()=>{
+  //   const mEmail = await AsyncStorage.getItem('Authtoken');
+  //   console.log(mEmail,"googmorning");
+  // }
   return (
     <Background>
 

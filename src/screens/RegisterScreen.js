@@ -10,9 +10,6 @@ import TextInput from '../components/TextInput'
 import BackButton from '../components/BackButton'
 import { theme } from '../core/theme'
 import { useDispatch, useSelector } from 'react-redux';
-import { emailValidator } from '../helpers/emailValidator'
-import { passwordValidator } from '../helpers/passwordValidator'
-import { nameValidator } from '../helpers/nameValidator'
 import { loginuser } from '../Redux/Action';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -27,57 +24,10 @@ export default function RegisterScreen({ navigation }) {
     password:''
   });
   console.log(data);
-  const [name, setName] = useState("");
-  const [badName, setBadName] = useState(false);
-  const [email, setEmail] = useState("");
-  const [badEmail, setBadEmail] = useState(false);
-  const [mobile, setMobile] = useState("");
-  const [badMobile, setBadMobile] = useState(false);
-  const [password, setPassword] = useState("");
-  const [badPassword, setBadPassword] = useState(false);
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [badConfirmPassword, setBadConfirmPassword] = useState(false);
-  const [buttonDisabled, setButtonDisabled] = useState(false);
 
-  // const signupp = () => {
-  //   console.log(name);
-  //   setButtonDisabled(true);
-  //   if (name == "") {
-  //     setBadName(true);
-  //     setButtonDisabled(false);
-  //   } else {
-  //     setBadName(false);
-  //     if (email == "") {
-  //       setBadEmail(true);
-  //       setButtonDisabled(false);
-  //     } else {
-  //       setBadEmail(false);
-  //       if (mobile == "") {
-  //         setBadMobile(true);
-  //         setButtonDisabled(false);
-  //       } else {
-  //         setBadMobile(false);
-  //         if (password == "") {
-  //           setBadPassword(true);
-  //           setButtonDisabled(false);
-  //         } else {
-  //           setBadPassword(false);
-  //           if (confirmPassword == "") {
-  //             setBadConfirmPassword(true);
-  //             setButtonDisabled(false);
-  //           } else {
-  //             saveData();
-  //             setBadConfirmPassword(false);
-              
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  // };
 
   const saveData = async () => {
-    dispatch(loginuser(data))
+    dispatch(loginuser(data, navigation))
     // await AsyncStorage.setItem("NAME", "sample");
     // await AsyncStorage.setItem("EMAIL", data.email);
     // // await AsyncStorage.setItem("MOBILE", mobile);
@@ -99,8 +49,8 @@ export default function RegisterScreen({ navigation }) {
           onChangeText={(txt) => {
             setData((prevData) => ({ ...prevData, name: txt }));
           }}
-        error={!!name.error}
-        errorText={name.error}
+        // error={!!name.error}
+        // errorText={name.error}
       />
       <TextInput
         label="Email"
@@ -110,8 +60,8 @@ export default function RegisterScreen({ navigation }) {
           onChangeText={(txt) => {
             setData((prevData) => ({ ...prevData, email: txt }));
           }}
-        error={!!email.error}
-        errorText={email.error}
+        // error={!!email.error}
+        // errorText={email.error}
         autoCapitalize="none"
         autoCompleteType="email"
         textContentType="emailAddress"
@@ -125,8 +75,8 @@ export default function RegisterScreen({ navigation }) {
           onChangeText={(txt) => {
             setData((prevData) => ({ ...prevData, password: txt }));
           }}
-        error={!!password.error}
-        errorText={password.error}
+        // error={!!password.error}
+        // errorText={password.error}
         secureTextEntry
       />
       <Button

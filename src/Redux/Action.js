@@ -1,4 +1,4 @@
-import AsynStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export const SET_USER_NAME = "SET_USER_NAME";
 export const SET_USER_EMAIL = "SET_USER_EMAIL";
 export const SET_AUTH_TOKEN = "SET_AUTH_TOKEN";
@@ -47,7 +47,7 @@ export const SetDate = (user) => {
       .then((response) => response.json())
       .then((response) => {
         toast.success(response?.toast)
-        console.log(response, "casdvas")
+        // console.log(response, "casdvas")
         if (!response?.success) {
           throw Error(response.error)
         }
@@ -60,7 +60,7 @@ export const SetDate = (user) => {
 // ------------------------------------------------SENDING DATA TO MQTT AND NODE JS BOTH ---------------------------------------------------//
 export const CarDetails = (value) => {
   return (dispatch) => {
-    console.log(value);
+    // console.log(value);
     const [{ Battery_Pack: batteryPack }, { Car: car }, { House_voltage: house_Ampere }] = value;
     // fetch("https://api.thingspeak.com/update?api_key=YC54O11IV85P4S7O&field1=" + JSON.stringify({
     //   batteryPack, car, house_Ampere
@@ -164,7 +164,7 @@ export const CarDetails = (value) => {
 
 export const setName = (title) => {
   // debugger;
-  console.log(title, "coming hear");
+  // console.log(title, "coming hear");
   return (dispatch) => {
     // const { authtoken, field2 } = user;
     // console.log(authtoken,"ekvhjwejh");
@@ -252,7 +252,7 @@ export const setName = (title) => {
 
 export const Click = (user) => {
   // debugger;
-  console.log(user, "coming hear");
+  // console.log(user, "coming hear");
   return (dispatch) => {
     // const { authtoken, field2 } = user;
     // console.log(authtoken,"ekvhjwejh");
@@ -268,6 +268,7 @@ export const Click = (user) => {
 
       client.on('messageReceived', (message) => {
         console.log(message?.payloadString);
+        dispatch(setAuthtoken(message?.payloadString));
       });
     }
 
@@ -278,8 +279,11 @@ export const Click = (user) => {
         return client.subscribe('topic_1');
       })
       .then(() => {
-        const message = new Message("sample");
-        message.destinationName = 'topic_1';
+        const sampleee ={
+          "Charging Modes": "mode_on", "unit": "Celsius", "sensor": "temperature"
+        }
+        const message = new Message(JSON.stringify(sampleee));
+        message.destinationName = 'Charging Modes';
         const sample = new Message("harsh sexy");
         sample.destinationName = 'message';
         client.send(message);
@@ -310,46 +314,50 @@ export const Click = (user) => {
 
 
 
-export const loginuser = (input) => {
+export const loginuser = (input, navigation) => {
   // debugger;
-  console.log("harsh", input);
-  return (dispatch) => {
+  // console.log("harsh", input);
+  return async(dispatch) => {
     const { name, email, password } = input;
-    console.log(name);
-    fetch(`https://backend-production-e1c2.up.railway.app/api/auth/createuser`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json"
-      },
-
-      body: JSON.stringify(
-        {
-          name, email, password
-        })
-    })
-
-      .then(response => response.json())
-      .then(response => {
-
-        if (!response?.success) {
-          throw Error(JSON.stringify(response))
-
-        }
-        console.warn("vhvjh", response.authtoken);
-
-
-      })
-      .catch((error) => {
-        console.log(error);
-
+    try {
+      const response = await fetch(`https://backend-production-e1c2.up.railway.app/api/auth/createuser`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
       });
+
+        
+
+        const data = await response.json();
+      console.log(data, "casdvas");
+      const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '');
+      await AsyncStorage.setItem("Authtoken", authtoken);
+      dispatch(setAuthtoken(authtoken));
+
+      if (!data?.success) {
+        throw new Error(data.error);
+      }
+
+      // Navigate to the home screen
+      navigation.navigate('Load');
+    } catch (err) {
+      console.log(err, "cvdsavs");
+      // setError(err.message);
+      // toast.error(err?.message);
+    }
 
   }
 }
 
 
 
-
+// https://backend-production-e1c2.up.railway.app/api/auth/createuser`
 
 // ------------------------------------------------------CREATING LOGIN AUTHTOKEN AND SENDING IT -----------------------------------------//
 
@@ -359,7 +367,7 @@ export const loginuser = (input) => {
 export const signItUp = (field, navigation) => {
   return async (dispatch) => {
     const { email, password } = field;
-    console.log("harsh", email);
+    // console.log("harsh", email);
     // const navigation = useNavigation(); // Get the navigation object
 
     try {
@@ -377,7 +385,7 @@ export const signItUp = (field, navigation) => {
       const data = await response.json();
       console.log(data, "casdvas");
       const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '');
-      await AsynStorage.setItem("Authtoken", authtoken);
+      await AsyncStorage.setItem("Authtoken", authtoken);
       dispatch(setAuthtoken(authtoken));
 
       if (!data?.success) {
@@ -385,7 +393,7 @@ export const signItUp = (field, navigation) => {
       }
 
       // Navigate to the home screen
-      navigation.navigate('Load');
+      navigation.navigate('Home');
     } catch (err) {
       console.log(err, "cvdsavs");
       // setError(err.message);
