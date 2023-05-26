@@ -7,7 +7,7 @@ import Background from '../components/Background';
 import DropDownPicker from 'react-native-dropdown-picker';
 import BackButton from '../components/BackButton'
 import { useDispatch, useSelector } from 'react-redux';
-import { CarDetails } from '../Redux/Action';
+import { setCar } from '../Redux/Action';
 
 
 export default function Car({ navigation }) {
@@ -18,15 +18,16 @@ export default function Car({ navigation }) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
-    { label: 'Tata nexon gv', value: [{ Battery_Pack: '30.2KWH' }, { Car: "Tata nexon gv" }, { House_voltage: Data }] },
-    { label: 'Tata Nexon EV Max', value: [{ Battery_Pack: '40.5kWh' }, { Car: "Tata Nexon EV Max" }, { House_voltage: Data }] }
+    { label: 'Tata nexon EV', value: { Battery_Pack: '30.2',Car: "Tata nexon EV" }},
+    { label: 'Tata Nexon EV Max', value: { Battery_Pack: '40.5' ,Car: "Tata Nexon EV Max" } }
   ]);
 
   const Samplerun = () => {
     // console.log("ckehbcv");
     // console.log(value);
-    dispatch(CarDetails(value));
-    () => navigation.replace('Flat')
+    dispatch(setCar(value));
+    navigation.navigate('Flat')
+    // () => navigation.replace('Flat')
   }
 
   return (
@@ -46,7 +47,8 @@ export default function Car({ navigation }) {
       />
       <Button
         mode="contained"
-        onPress={() => navigation.replace('Flat')}
+        onPress={Samplerun}
+        style={{ marginTop: 96 }}
       >to home </Button>
     </Background>
   )

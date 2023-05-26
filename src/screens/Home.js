@@ -1,39 +1,42 @@
-import React, { useState ,useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
-import { SafeAreaView, StyleSheet,  TouchableOpacity, TextInput, Alert } from 'react-native';
+import { SafeAreaView, StyleSheet, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { Text, View, Linking } from 'react-native';
-import { Client, Message } from 'react-native-paho-mqtt';
-import Button from '../components/Button'
+import Button from '../components/Button';
 import Background from '../components/Background';
-import BackButton from '../components/BackButton'
-import RNSpeedometer from 'react-native-speedometer'
 import { useDispatch, useSelector } from 'react-redux';
-import { Click } from '../Redux/Action';
+
+import RNSpeedometer from 'react-native-speedometer'
+import { Click, Clicked , EcoMode, ScheduleMode} from '../Redux/Action';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Ecomode from "../components/Ecomode"
-import Normal from "../components/Normal"
-import Steady from "../components/Steady"
-import Scedule from "../components/Scedule"
+import PersonIcon from '../components/PersonIcon';
+import Modes from '../components/Modes';
+import Modes1 from '../components/Modes1';
+// import CircularProgress from 'react-native-circular-progress-indicator';
 
 export default function Home({ navigation }) {
-  const dispatch = useDispatch()
-  const [state, setState] = useState()
+  const dispatch = useDispatch();
+  const [state, setState] = useState();
   console.log(state);
-  const [datas, setDatas] = useState("Connect you charger")
-  const [data, setData] = useState(9);
+  const [datas, setDatas] = useState("Connect your charger");
   const [user, setUserData] = React.useState("Charging Mode: Eco_Mode");
-  console.log(user,"harsh authtoken");
-  setTimeout(function(){
-    setDatas("Charger is connected")
-   
-  }, 5000);
-  const imagesAllData=useSelector(state=>state?.userReducers?.authtoken)  
+  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+  const [isSwitchOn1, setIsSwitchOn1] = React.useState(false);
 
-  useEffect(()=>{
-    const mEmail =  AsyncStorage.getItem('Authtoken');
-    console.log(imagesAllData,"here is the token stored");
-    setUserData(imagesAllData)
-  },[imagesAllData])
+  // const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+  console.log(user, "harsh authtoken");
+  setTimeout(function () {
+    setDatas("Charger is connected");
+  }, 5000);
+
+  const imagesAllData = useSelector(state => state?.userReducers?.authtoken);
+  console.log(imagesAllData);
+
+  useEffect(() => {
+    const mEmail = AsyncStorage.getItem('Authtoken');
+    console.log(imagesAllData, "here is the token stored");
+    setUserData(imagesAllData);
+  }, [imagesAllData]);
 
   const myStorage = {
     setItem: (key, item) => {
@@ -45,153 +48,110 @@ export default function Home({ navigation }) {
     },
   };
 
-  // useEffect(() => {
-
-
-  //   const client = new Client({ uri: 'ws://192.168.100.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage});
-
-
-  //   const onConnect = () => {
-  //     console.log("Connected to MQTT broker");
-
-  //     // Subscribe to a topic
-  //     client.subscribe("Message");
-
-  //     // Publish a message to a topic
-  //     const message = new Message('your-message');
-  //     message.destinationName = 'Message';
-  //     client.send(message);
-  //   };
-
-  //   const onConnectionLost = (responseObject) => {
-  //     if (responseObject.errorCode !== 0) {
-  //       console.log("Disconnected from MQTT broker");
-  //     }
-  //   };
-
-  //   const onMessageArrived = (message) => {
-  //     console.log("Received message:", message.payloadString);
-  //   };
-
-  //   client.onConnectionLost = onConnectionLost;
-  //   client.onMessageArrived = onMessageArrived;
-
-  //   client.connect()
-  //     .then(onConnect)
-  //     .catch((error) => {
-  //       console.log("Failed to connect:", error);
-  //     });
-
-  //   // Cleanup function
-  //   return () => {
-  //     client.disconnect();
-  //   };
-
-
-
-
-  // }, []);
-
-
-
-
-
-
-  const Sample=(event)=>{
-    // console.log(event,"sample data");
+  const Sample = (data) => {
+    console.log(data ,"hello");
     console.log("hello here");
-    
-    navigation.navigate('Load')
-  }
-
+    setIsSwitchOn(!isSwitchOn);
+    dispatch(Click(imagesAllData));
+    // navigation.navigate('Load');
+  };
+  const Samplee = (data) => {
+    console.log(data ,"hello");
+    console.log("hello here");
+    setIsSwitchOn1(!isSwitchOn1);
+    dispatch(Clicked());
+  };
+  const Sampleed = (data) => {
+    console.log(data ,"hello");
+    console.log("hello here");
+    setIsSwitchOn1(!isSwitchOn1);
+    dispatch(EcoMode());
+  };
+  
+  const Sampleeeed = (data) => {
+    console.log(data ,"hello");
+    console.log("hello here");
+    setIsSwitchOn1(!isSwitchOn1);
+    dispatch(ScheduleMode());
+  };
+  
   const Clickk = () => {
-    dispatch(Click(user))
-  }
+    navigation.navigate('Load');
+    // dispatch(Click(imagesAllData));
+  };
 
 
- 
   return (
     <Background>
-      <Header style={styles.header}>harsh</Header>
+      <PersonIcon />
+      <Header style={styles.header}>{imagesAllData}</Header>
       <SafeAreaView style={styles.container}>
-        <RNSpeedometer style={styles.labels} value={data} size={400} />
+        <RNSpeedometer style={styles.labels} value={"79"} size={400} />
       </SafeAreaView>
-      <View style={styles.containerr}>
-      <TouchableOpacity onPress={Sample}>
-        <Ecomode  style={styles.button}></Ecomode>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={"happy"}>
-        <Scedule  style={styles.button}></Scedule>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={"Sample"}>
-        <Steady  style={styles.button}></Steady>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={"Sample"}>
-        <Normal  style={styles.button}></Normal>
-        </TouchableOpacity>
+      {/* <CircularProgress
+  value={97}
+  radius={120}
+  inActiveStrokeOpacity={0.5}
+  activeStrokeWidth={15}
+  inActiveStrokeWidth={20}
+  progressValueStyle={{ fontWeight: '100', color: 'white' }}
+  activeStrokeSecondaryColor="yellow"
+  inActiveStrokeColor="black"
+  duration={5000}
+  dashedStrokeConfig={{
+    count: 50,
+    width: 4,
+  }}
+/> */}
+      <View style={styles.container}>
+        <View style={styles.row}>
+          <Modes onToggleSwitch={Sample} isSwitchOn={isSwitchOn}data ={"Slow Mode"}style={styles.mode} />
+          <Modes1 style={[styles.mode, styles.lastMode]} onToggleSwitch={Samplee} isSwitchOn={isSwitchOn1}  data ={"Balance Mode"}/>
+        </View>
+        <View style={styles.row}>
+          <Modes style={styles.mode} onToggleSwitch={Sampleed}  data ={"Eco Mode"} />
+          <Modes style={[styles.mode, styles.lastMode]} onToggleSwitch={Sampleeeed}  data ={"Schedule Mode"} />
+        </View>
+      </View>
+      <View style={styles.textSample}>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>Energy consumed</Text>
+          <Header>23k</Header>
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>Cost of Charging</Text>
+          <Header>23k</Header>
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>Charging
+          <Text> </Text> time</Text>
+          <Header>23k</Header>
+        </View>
       </View>
 
-
-      <Button
-        mode="contained"
-        onPress={Clickk}
-      >
-        Navigating to Car section
+      <Button mode="contained" onPress={Clickk}>
+        Stop Charging
       </Button>
     </Background>
-  )
+  );
 }
+
 const styles = StyleSheet.create({
-  input: {
-    borderWidth: 1,
-    borderColor: 'black',
-    width: 300,
-    height: 50,
-    padding: 10,
-    margin: 10
-  },
   container: {
     flex: 1,
   },
-  textInput: {
-    borderBottomWidth: 0.3,
-    borderBottomColor: 'black',
-    height: 25,
-    fontSize: 16,
-    marginVertical: 50,
-    marginHorizontal: 20,
-  }, labels: [
-    {
-      name: 'Too Slow',
-      labelColor: '#ff2900',
-      activeBarColor: '#ff2900',
-    },
-    {
-      name: 'Very Slow',
-      labelColor: '#ff2900',
-      activeBarColor: '#ff2900',
-    },
-    {
-      name: 'Slow',
-      labelColor: '#f4ab44',
-      activeBarColor: '#f4ab44',
-    },
-    {
-      name: 'Normal',
-      labelColor: '#f2cf1f',
-      activeBarColor: '#f2cf1f',
-    },
-    {
-      name: 'Fast',
-      labelColor: '#14eb6e',
-      activeBarColor: '#14eb6e',
-    },
-    {
-      name: 'Unbelievably Fast',
-      labelColor: '#00ff6b',
-      activeBarColor: '#00ff6b',
-    },
-  ],
+  textSample: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  textContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  text: {
+    color: 'green',
+  },
   header: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -214,7 +174,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 8,
   },
-
-})
-
-
+  row: {
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  mode: {
+    marginLeft: 10,
+    paddingLeft:90
+  },
+  lastMode: {
+    marginLeft: 0,
+  },
+});

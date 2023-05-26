@@ -10,7 +10,6 @@ import { SetDate } from '../Redux/Action';
 // import DatePicker from 'react-native-modern-datepicker';
 // import DatePicker from 'react-native-date-picker'
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { onChange } from 'react-native-reanimated';
 // import { Click } from '../Redux/Action';
 
 

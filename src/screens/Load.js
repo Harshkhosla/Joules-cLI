@@ -7,10 +7,11 @@ import Background from '../components/Background';
 import TextInput from '../components/TextInput'
 import BackButton from '../components/BackButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { setName } from '../Redux/Action';
+import { setLoad } from '../Redux/Action';
 import Logo from '../components/Logo';
 import Loadcomponent from '../components/Loadcomponent';
-import { log } from 'react-native-reanimated';
+import EvCharging from '../components/EvCharging';
+import Loago1 from '../components/Loago1';
 
 
 export default function Load({ navigation }) {
@@ -32,7 +33,7 @@ export default function Load({ navigation }) {
         },
         { text: 'OK', onPress: () => console.log('OK Pressed') },
       ]) :
-        dispatch(setName(house_voltage))
+        dispatch(setLoad(house_voltage))
       navigation.navigate('Eligible')
     }
   }
@@ -44,9 +45,10 @@ export default function Load({ navigation }) {
     <Background>
 
       <BackButton goBack={navigation.goBack} />
-      <Logo/>
+      <Loago1/>
       <Loadcomponent/>
-      <Header>
+      <Header  style={[styles.header, { marginTop: -170 }]}>
+      
         What is the maximum electrical sanctioned load Of your home ?
       </Header>
 
@@ -65,6 +67,7 @@ export default function Load({ navigation }) {
         }>
         OK
       </Button>
+      <EvCharging/>
     </Background>
   )
 }
@@ -81,6 +84,16 @@ const styles = StyleSheet.create({
   button: {
     height: 40,
     width: 200,
+    marginTop: 10,
    
-  }
+  },sample:{
+    marginTop: 10,
+  },header: {
+    // fontSize: 20,
+    // fontWeight: 'bold',
+    fontSize: 21,
+    color: "#118615",
+    fontWeight: 'bold',
+    paddingVertical: 12,
+  },
 });

@@ -3,22 +3,26 @@ import Background from '../components/Background'
 import BackButton from '../components/BackButton'
 import Logo from '../components/Logo'
 import Header from '../components/Header'
-import TextInput from '../components/TextInput'
 import Button from '../components/Button'
 import { emailValidator } from '../helpers/emailValidator'
-import CheckBox from '../components/CheckBox'
 import Elegiblity from '../components/Elegiblity'
+import { View } from 'react-native';
+import { RadioButton, Text } from 'react-native-paper';
+import { setFlat } from '../Redux/Action';
+import { useDispatch, useSelector } from 'react-redux';
+import { Click } from '../Redux/Action';
 
 export default function Flat({ navigation }) {
-  const [email, setEmail] = useState({ value: '', error: '' })
-  const [isChecked, setIsChecked] = useState(false) 
+  
+  const imagesAllData = useSelector(state => state?.userReducers);
+  console.log(imagesAllData);
 
+  const [value, setValue] = React.useState('');
+  const dispatch = useDispatch()
   const sendResetPasswordEmail = () => {
-    const emailError = emailValidator(email.value)
-    if (emailError) {
-      setEmail({ ...email, error: emailError })
-      return
-    }
+    console.log(value);
+    dispatch(setFlat(value))
+    dispatch(Click(imagesAllData));
     navigation.navigate('Home')
   }
 
@@ -28,20 +32,13 @@ export default function Flat({ navigation }) {
       <BackButton goBack={navigation.goBack} />
       <Elegiblity/>
       <Header>Where do You live?</Header>
-      <TextInput
-        label="E-mail address"
-        returnKeyType="done"
-        value={email.value}
-        onChangeText={(text) => setEmail({ value: text, error: '' })}
-        error={!!email.error}
-        errorText={email.error}
-        autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        keyboardType="email-address"
-        description="You will receive email with password reset link."
-        
-      />
+    <View>
+  <RadioButton.Group onValueChange={value => setValue(value)} value={value}>
+    <RadioButton.Item label="Apartments" value="Apartments"/>
+    <RadioButton.Item label="Individual House" value="Individual House"/>
+ 
+  </RadioButton.Group>
+</View>
       
       <Button
         mode="contained"

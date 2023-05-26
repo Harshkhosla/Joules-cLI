@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
     width: 160,
     height: 70,
     marginBottom: 80,
+    // bottom: 90 + getStatusBarHeight(),
   },
   // container: {
   //   position: 'absolute',

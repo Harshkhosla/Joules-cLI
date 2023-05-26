@@ -2,6 +2,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const SET_USER_NAME = "SET_USER_NAME";
 export const SET_USER_EMAIL = "SET_USER_EMAIL";
 export const SET_AUTH_TOKEN = "SET_AUTH_TOKEN";
+export const SET_USER_CAR="SET_USER_CAR";
+export const SET_USER_FLAT="SET_USER_FLAT";
+
 import { Client, Message } from 'react-native-paho-mqtt';
 
 const myStorage = {
@@ -16,13 +19,27 @@ const myStorage = {
 
 
 
-// export const setName = (house_voltage) => {
-//     console.log(house_voltage);
-//     return {
-//         type: SET_USER_NAME,
-//         payload: house_voltage
-//     }
-// }
+export const setLoad = (house_voltage) => {
+    console.log(house_voltage);
+    return {
+        type: SET_USER_NAME,
+        payload: house_voltage
+    }
+}
+export const setCar = (user_Car) => {
+    // console.log(house_voltage);
+    return {
+        type: SET_USER_CAR,
+        payload: user_Car
+    }
+}
+export const setFlat = (user_Flat) => {
+    // console.log(house_voltage);
+    return {
+        type: SET_USER_FLAT,
+        payload: user_Flat
+    }
+}
 
 export const setEmail = email => dispatch => {
   dispatch({
@@ -276,18 +293,18 @@ export const Click = (user) => {
       .then(() => {
         // Once a connection has been made, make a subscription and send a message.
         console.log('onConnect');
-        return client.subscribe('topic_1');
+        return client.subscribe('Jouls_Ecotech_User_Notifications');
       })
       .then(() => {
-        const sampleee ={
-          "Charging Modes": "mode_on", "unit": "Celsius", "sensor": "temperature"
-        }
-        const message = new Message(JSON.stringify(sampleee));
-        message.destinationName = 'Charging Modes';
-        const sample = new Message("harsh sexy");
-        sample.destinationName = 'message';
+        // const sampleee ={
+        //   "Charging Modes": "mode_on", "unit": "Celsius", "sensor": "temperature"
+        // }
+        const message = new Message(JSON.stringify(user));
+        message.destinationName = 'Jouls_Ecotech_User_ID';
+        // const sample = new Message("Balanced_Mode");
+        // sample.destinationName = 'Jouls_Ecotech_User_Charging Modes';
         client.send(message);
-        client.send(sample);
+        // client.send(sample);
       }).then(() => {
         onConnect()
       })
@@ -418,4 +435,170 @@ export const setAuthtoken = (authtoken) => {
 
 
 
-// ----------------------------------------------------
+// ----------------------------------------------------//
+
+
+
+export const Clicked = (user) => {
+  // debugger;
+  // console.log(user, "coming hear");
+  return (dispatch) => {
+    // const { authtoken, field2 } = user;
+    // console.log(authtoken,"ekvhjwejh");
+
+    const client = new Client({ uri: 'ws://192.168.100.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    // set event handlers
+    client.on('connectionLost', (responseObject) => {
+      if (responseObject.errorCode !== 0) {
+        console.log(responseObject.errorMessage);
+      }
+    });
+    const onConnect = () => {
+
+      client.on('messageReceived', (message) => {
+        console.log(message?.payloadString);
+        dispatch(setAuthtoken(message?.payloadString));
+      });
+    }
+
+    client.connect()
+      .then(() => {
+        // Once a connection has been made, make a subscription and send a message.
+        console.log('onConnect');
+        return client.subscribe('Jouls_Ecotech_User_Notifications');
+      })
+      .then(() => {
+        const sampleee ={
+          "Charging Mode": "Balanced_Mode"
+        }
+        // const message = new Message(JSON.stringify(user));
+        // message.destinationName = 'Jouls_Ecotech_User_ID';
+        const sample = new Message(JSON.stringify(sampleee));
+        sample.destinationName = 'Jouls_Ecotech_User_Charging Modes';
+        // client.send(message);
+        client.send(sample);
+      }).then(() => {
+        onConnect()
+      })
+      .catch((responseObject) => {
+        if (responseObject.errorCode !== 0) {
+          console.log('onConnectionLost:' + responseObject.errorMessage);
+        }
+      })
+
+
+    //   client.onConnectionLost = onConnectionLost;
+    //   client.onMessageArrived = onMessageArrived;
+  }
+}
+
+
+
+
+//----------------------------------------------------------------------------------//
+
+export const EcoMode = (user) => {
+  // debugger;
+  // console.log(user, "coming hear");
+  return (dispatch) => {
+    // const { authtoken, field2 } = user;
+    // console.log(authtoken,"ekvhjwejh");
+
+    const client = new Client({ uri: 'ws://192.168.100.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    // set event handlers
+    client.on('connectionLost', (responseObject) => {
+      if (responseObject.errorCode !== 0) {
+        console.log(responseObject.errorMessage);
+      }
+    });
+    const onConnect = () => {
+
+      client.on('messageReceived', (message) => {
+        console.log(message?.payloadString);
+        dispatch(setAuthtoken(message?.payloadString));
+      });
+    }
+
+    client.connect()
+      .then(() => {
+        // Once a connection has been made, make a subscription and send a message.
+        console.log('onConnect');
+        return client.subscribe('Jouls_Ecotech_User_Notifications');
+      })
+      .then(() => {
+        const sampleee ={
+          "Charging Mode": "Eco_Mode"
+        }
+        // const message = new Message(JSON.stringify(user));
+        // message.destinationName = 'Jouls_Ecotech_User_ID';
+        const sample = new Message(JSON.stringify(sampleee));
+        sample.destinationName = 'Jouls_Ecotech_User_Charging Modes';
+        // client.send(message);
+        client.send(sample);
+      }).then(() => {
+        onConnect()
+      })
+      .catch((responseObject) => {
+        if (responseObject.errorCode !== 0) {
+          console.log('onConnectionLost:' + responseObject.errorMessage);
+        }
+      })
+
+
+    //   client.onConnectionLost = onConnectionLost;
+    //   client.onMessageArrived = onMessageArrived;
+  }
+}
+//---------------------------------------------------------------------------------------------------------------------------//
+export const ScheduleMode = (user) => {
+  // debugger;
+  // console.log(user, "coming hear");
+  return (dispatch) => {
+    // const { authtoken, field2 } = user;
+    // console.log(authtoken,"ekvhjwejh");
+
+    const client = new Client({ uri: 'ws://192.168.100.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    // set event handlers
+    client.on('connectionLost', (responseObject) => {
+      if (responseObject.errorCode !== 0) {
+        console.log(responseObject.errorMessage);
+      }
+    });
+    const onConnect = () => {
+
+      client.on('messageReceived', (message) => {
+        console.log(message?.payloadString);
+        dispatch(setAuthtoken(message?.payloadString));
+      });
+    }
+
+    client.connect()
+      .then(() => {
+        // Once a connection has been made, make a subscription and send a message.
+        console.log('onConnect');
+        return client.subscribe('Jouls_Ecotech_User_Notifications');
+      })
+      .then(() => {
+        const sampleee ={
+          "Charging Mode": "Schedule_Mode"
+        }
+        // const message = new Message(JSON.stringify(user));
+        // message.destinationName = 'Jouls_Ecotech_User_ID';
+        const sample = new Message(JSON.stringify(sampleee));
+        sample.destinationName = 'Jouls_Ecotech_User_Charging Modes';
+        // client.send(message);
+        client.send(sample);
+      }).then(() => {
+        onConnect()
+      })
+      .catch((responseObject) => {
+        if (responseObject.errorCode !== 0) {
+          console.log('onConnectionLost:' + responseObject.errorMessage);
+        }
+      })
+
+
+    //   client.onConnectionLost = onConnectionLost;
+    //   client.onMessageArrived = onMessageArrived;
+  }
+}
