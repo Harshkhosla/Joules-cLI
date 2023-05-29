@@ -5,11 +5,14 @@ import { Text, View, Linking } from 'react-native';
 import Button from '../components/Button'
 import Background from '../components/Background';
 import { useDispatch, useSelector } from 'react-redux';
+import { Click, Clicked, EcoMode, ScheduleMode, BalanceMode } from '../Redux/Action';
 import { SetDate } from '../Redux/Action';
 // import DateTimePickerModal from "react-native-modal-datetime-picker";
 // import DatePicker from 'react-native-modern-datepicker';
 // import DatePicker from 'react-native-date-picker'
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Loago1 from '../components/Loago1';
+import Logo from '../components/Logo';
 // import { Click } from '../Redux/Action';
 
 
@@ -24,89 +27,71 @@ export default function Eligible({ navigation }) {
   const [storingTime,setStoringTime]=useState()
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [userr, setUserDataa] = React.useState({ field1: 'eco_mode_off', field2: "" });
+  
+  const [scheduleData, setScheduleData] = useState({ Date: null, Time: null,"Charging Mode": "Schedule_Mode", });
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
 
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
+  // const hideDatePicker = () => {
+  //   setDatePickerVisibility(false);
+  // };
 
-  const handleConfirm = (date) => {
-    console.warn("A date has been picked: ", date);
-    hideDatePicker();
-  };
-  const [user, setUserData] = React.useState({ field1: '', field2: "" });
-  console.log(user);
+  // const handleConfirm = (date) => {
+  //   console.warn("A date has been picked: ", date);
+  //   hideDatePicker();
+  // };
+  // const [user, setUserData] = React.useState({ field1: '', field2: "" });
+  // console.log(user);
   
-  
-  const SampleClick = () => {
-    fetch("http://192.168.1.1/genericArgs?username=Redmi&password=123456789", {
-
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
-      .then(response => response.json())
-      .then(response => {
-        dispatch(saveData(response))
-        // setSettingsData(response);/
-        console.log("kj");
-      })
-      .catch(error => {
-        // console.log(error, "joih");
-      });
-  }
   
   const onChange=(event, selectedDate)=>{
     setShow(false)
     setSample(false)
     const currentDate=selectedDate||date;
     setDate(currentDate)
-    console.log(date);
+    // console.log(date,"hello");
     let tempDate =new Date(currentDate);
-    let fDate =tempDate.getDate()+':'+(tempDate.getMonth()+1)+':'+tempDate.getFullYear();
+    let fDate =tempDate.getDate()+'-'+(tempDate.getMonth()+1)+'-'+tempDate.getFullYear();
     let fTime = tempDate.getHours()+":"+tempDate.getMinutes()+":"+tempDate.getSeconds();
     console.log(fDate);
-    console.log(fTime);
-    setStoringDate(fDate)
-    setStoringTime(fTime)
-    console.log(userr);
+    console.log(fTime,"hear");
+   setScheduleData(prevState => ({
+      ...prevState,
+      Date: fDate
+    }));
+    // setStoringTime(fTime)
+    // console.log(userr);
+  }
+  const onChangee=(event, selectedDate)=>{
+    setShow(false)
+    setSample(false)
+    const currentDate=selectedDate||date;
+    setDate(currentDate)
+    // console.log(date,"hello");
+    let tempDate =new Date(currentDate);
+    let fDate =tempDate.getDate()+'-'+(tempDate.getMonth()+1)+'-'+tempDate.getFullYear();
+    let fTime = tempDate.getHours()+":"+tempDate.getMinutes()+":"+tempDate.getSeconds();
+    console.log(fDate);
+    console.log(fTime,"hear");
+    // setStoringDate(fDate)
+    setScheduleData(prevState => ({
+      ...prevState,
+      Time: fTime
+    }));
+    // console.log(userr);
   }
 
-  
-  const Clicked= () => {   
-    console.log("Button clicked");   
-    const field1=    storingDate;
-    const field2= storingTime;
-    console.log(field1);
-         fetch("https://api.thingspeak.com/update?api_key=YC54O11IV85P4S7O&field6="+ JSON.stringify({
-          field1,field2
-        }), {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          }, 
-        })
-          .then((response) => response.json())                
-          .then((response) => {
-            // toast.success(response?.toast)
-            console.log(response,"casdvas")
-            if (!response?.success) {
-              throw Error(response.error)
-            }  
-          })
-          .catch((err) => {
-            console.log(err,"cvdsavs");         
-          });
-          // dispatch(Click(userr))
-    // dispatch(SetDate(user))
+  const Clicked=()=>{
+    dispatch(ScheduleMode(scheduleData));
+    navigation.navigate('Home')
   }
+
   return (
     <Background>
-      {/* <BackButton goBack={navigation.goBack} /> */}
+      <Logo></Logo>
+      <Header >To start the slow mode you need to set the given parameters!!! </Header>
 
      
      
@@ -114,28 +99,36 @@ export default function Eligible({ navigation }) {
         mode="contained"
         onPress={()=>setShow(true)}
         >
-     kvjnvkj
+     Set Date
       </Button>
-      <TextInput
+      <Header>{scheduleData?.Date}</Header>
+      {/* <Header>{storingTime}</Header> */}
+      {/* <TextInput
         style={styles.input}
         onPress={()=>setShow(true)}
         // value={text}
-      />
+      /> */}
       <Button
         mode="contained"
         onPress={()=>setSample(true)}
         >
-        Select time
+        Set Time
       </Button>
+      <Header>{scheduleData?.Time}</Header> 
+      {/* <TextInput
+        style={styles.input}
+        onPress={()=>setShow(true)}
+        // value={text}
+      /> */}
 
-     {show==true ? <DateTimePicker display="spinner" value={date} onChange={onChange}/>:console.log("vewjk")}
-     {sample==true ? <DateTimePicker display="spinner" timeZoneOffsetInSeconds={3600}  mode="time" value={time} onChange={onChange}/>:console.log("vewjk")}
+     {show==true ? <DateTimePicker display="spinner" value={date} onChange={onChange}/>:<Header></Header>}
+     {sample==true ? <DateTimePicker display="spinner" timeZoneOffsetInSeconds={3600}  mode="time" value={time} onChange={onChangee}/>:console.log("vewjk",time)}
 
       <Button title="Show Date Picker" onPress={showDatePicker} />
       
       <Button
         mode="contained"
-        onPress={Clicked()}
+        onPress={Clicked}
       >
         OK
       </Button>
@@ -150,6 +143,14 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 10,
     margin: 10
-  },
+  },sample:{
+    fontSize: 21,
+    // color: theme.colors.primary,
+    fontWeight: 'bold',
+    paddingVertical: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    
+  }
 
 })

@@ -23,7 +23,7 @@ export default function Flat({ navigation }) {
     console.log(value);
     dispatch(setFlat(value))
     dispatch(Click(imagesAllData));
-    navigation.navigate('Home')
+    navigation.navigate('HomePage')
   }
 
   return (

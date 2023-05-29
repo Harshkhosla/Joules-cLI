@@ -3,8 +3,9 @@ import Logo from '../components/Logo'
 import Header from '../components/Header'
 import Paragraph from '../components/Paragraph'
 import React, { useState, useEffect } from 'react';
+import Button from '../components/Button';
 import {
-  Text, View, StyleSheet, Button, Linking,
+  Text, View, StyleSheet, Linking,
   AppRegistry,
   TouchableOpacity,
 } from 'react-native';
@@ -25,6 +26,11 @@ export default function Dashboard({ navigation }) {
   // },[sampleHit])
 
 
+
+  const Clickk = () => {
+    navigation.navigate('Home');
+    // dispatch(Click(imagesAllData));
+  };
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     setText(data)
@@ -174,6 +180,9 @@ export default function Dashboard({ navigation }) {
         title='Connect to Wifi'
         color='#841584'
       />
+      <Button mode="contained" onPress={Clickk}>
+        Done
+      </Button>
     </View>
   )
 }

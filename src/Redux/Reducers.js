@@ -1,4 +1,4 @@
-import { SET_USER_EMAIL, SET_USER_NAME, SET_AUTH_TOKEN, SET_USER_CAR,SET_USER_FLAT } from './Action';
+import { SET_USER_EMAIL, SET_USER_NAME, SET_AUTH_TOKEN, SET_USER_CAR,SET_USER_FLAT,SET_MODE_VALUE,SET_STATE_VALUE,SET_USER_ENERGY } from './Action';
 
 
 const initialState = {
@@ -7,7 +7,10 @@ const initialState = {
     authtoken:"",
     Battery_Pack:"",
     House:"",
-    Car:""
+    Car:"",
+    modeValue:"",
+    StateValue:"",
+    SetEnergy:""
 }
 
 function userReducers(state = initialState, action) {
@@ -17,11 +20,20 @@ function userReducers(state = initialState, action) {
         case SET_USER_EMAIL:
           return { ...state, email: action.payload };
           case SET_USER_CAR:
-        console.log("harshsample",action);
+        // console.log("harshsample",action);
         return { ...state, Battery_Pack: action.payload.Battery_Pack ,Car:action.payload.Car};
           case SET_USER_FLAT:
-        console.log("harshsample",action);
+        // console.log("harshsample",action);
         return { ...state, House: action.payload };
+          case SET_MODE_VALUE:
+        // console.log("harshsahgmple",action);
+        return { ...state, modeValue: action.payload };
+          case SET_STATE_VALUE:
+        // console.log("harshsahgmple",action);
+        return { ...state, StateValue: action.payload };
+          case SET_USER_ENERGY:
+        // console.log("harshsahgmple",action);
+        return { ...state, SetEnergy: action.payload };
       case SET_AUTH_TOKEN:
         // console.log("harshsample",action);
         return { ...state, authtoken: action.payload };

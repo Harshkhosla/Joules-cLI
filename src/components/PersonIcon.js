@@ -6,7 +6,7 @@ import { Avatar } from 'react-native-paper';
 export default function PersonIcon({ goBack }) {
   return (
     <TouchableOpacity  style={styles.container}>
-      <Avatar.Image size={40} source={require('../assets/arrow_back.png')} />
+      <Avatar.Image size={50} source={require('../assets/harsh45.jpg')} />
     </TouchableOpacity>
   )
 }

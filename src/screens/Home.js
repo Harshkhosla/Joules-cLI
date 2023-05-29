@@ -1,42 +1,83 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
-import { SafeAreaView, StyleSheet, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { SafeAreaView, StyleSheet, TouchableOpacity, Image,TextInput, Alert } from 'react-native';
 import { Text, View, Linking } from 'react-native';
 import Button from '../components/Button';
 import Background from '../components/Background';
 import { useDispatch, useSelector } from 'react-redux';
-
 import RNSpeedometer from 'react-native-speedometer'
-import { Click, Clicked , EcoMode, ScheduleMode} from '../Redux/Action';
+import { Click, Clicked, EcoMode, ScheduleMode, BalanceMode, StopChargingMode } from '../Redux/Action';
+import Svg, { Path, Defs, ClipPath, Rect } from 'react-native-svg';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import PersonIcon from '../components/PersonIcon';
+// import FastImage from 'react-native-fast-image';
 import Modes from '../components/Modes';
 import Modes1 from '../components/Modes1';
-// import CircularProgress from 'react-native-circular-progress-indicator';
 
 export default function Home({ navigation }) {
   const dispatch = useDispatch();
   const [state, setState] = useState();
   console.log(state);
+  const [gifTime, setGifTime] = useState(0);
+
+  const increaseGifTime = () => {
+    // Here, you can update the GIF time based on the received data
+    const newData = 1000; // Replace with your logic to retrieve the new data
+
+    // Increase the GIF time by adding the new data to the existing time
+    setGifTime(gifTime + newData);
+  };
   const [datas, setDatas] = useState("Connect your charger");
   const [user, setUserData] = React.useState("Charging Mode: Eco_Mode");
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);
   const [isSwitchOn1, setIsSwitchOn1] = React.useState(false);
-
+  const [button1, setButton1] = React.useState("false");
+  const [button2, setButton2] = React.useState("false");
+  const [button3, setButton3] = React.useState("false");
+  const [button4, setButton4] = React.useState("false");
+  const [stateValue, SetStateValue] = useState("")
+  const [stateMode, SetStateMode] = useState("23")
+  const [stateEnergy, SetStateEnergy] = useState("23")
   // const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
-  console.log(user, "harsh authtoken");
+  // console.log(user, "harsh authtoken");
   setTimeout(function () {
     setDatas("Charger is connected");
   }, 5000);
 
-  const imagesAllData = useSelector(state => state?.userReducers?.authtoken);
-  console.log(imagesAllData);
 
+  const imagesAllData = useSelector(state => state?.userReducers?.StateValue);
+  const SampleData = useSelector(state => state?.userReducers?.modeValue);
+  const SampleDataaa = useSelector(state => state?.userReducers?.SetEnergy);
   useEffect(() => {
-    const mEmail = AsyncStorage.getItem('Authtoken');
-    console.log(imagesAllData, "here is the token stored");
-    setUserData(imagesAllData);
+    console.log("harsheeheuhheddhe", SampleData);
+    console.log("hhhhhh", imagesAllData);
+    // const mEmail = AsyncStorage.getItem('Authtoken');
+    // console.log(imagesAllData, "here is the token stored");
+    SetStateValue(imagesAllData);
+    SetStateMode(SampleData)
   }, [imagesAllData]);
+  // const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+  // const getRandomNumber = (min, max) => {
+  //   return Math.floor(Math.random() * 100); // Generate a random number between 0 and 100
+  // };
+  useEffect(() => {
+    console.log("harsheeheuhheddhe", SampleData);
+    console.log("hhhhhh", imagesAllData);
+    // const mEmail = AsyncStorage.getItem('Authtoken');
+    // console.log(imagesAllData, "here is the token stored");
+    // SetStateValue(imagesAllData);
+    SetStateMode(SampleData)
+    // const randomValue = getRandomNumber(0, 100);
+  }, [SampleData]);
+  useEffect(() => {
+    console.log("harsheeheuhheddhe", SampleData);
+    console.log("hhhhhh", imagesAllData);
+    // const mEmail = AsyncStorage.getItem('Authtoken');
+    // console.log(imagesAllData, "here is the token stored");
+    // SetStateValue(imagesAllData);
+    SetStateEnergy(SampleDataaa)
+    // const randomValue = getRandomNumber(0, 100);
+  }, [SampleDataaa]);
 
   const myStorage = {
     setItem: (key, item) => {
@@ -49,45 +90,117 @@ export default function Home({ navigation }) {
   };
 
   const Sample = (data) => {
-    console.log(data ,"hello");
+    console.log(data, "hello");
     console.log("hello here");
+    if (button1 == "true") {
+
+      setButton1("false")
+    } else {
+      setButton1("true")
+      setButton2("false")
+      setButton3("false")
+      setButton4("false")
+    }
     setIsSwitchOn(!isSwitchOn);
-    dispatch(Click(imagesAllData));
+    dispatch(BalanceMode());
     // navigation.navigate('Load');
   };
   const Samplee = (data) => {
-    console.log(data ,"hello");
+    console.log(data, "hello");
     console.log("hello here");
-    setIsSwitchOn1(!isSwitchOn1);
-    dispatch(Clicked());
-  };
-  const Sampleed = (data) => {
-    console.log(data ,"hello");
-    console.log("hello here");
+    if (button2 == "true") {
+
+      setButton2("false")
+    } else {
+      setButton2("true")
+      setButton1("false")
+      setButton3("false")
+      setButton4("false")
+    }
     setIsSwitchOn1(!isSwitchOn1);
     dispatch(EcoMode());
   };
-  
-  const Sampleeeed = (data) => {
-    console.log(data ,"hello");
+  const Sampleed = (data) => {
+    console.log(data, "hello");
     console.log("hello here");
+    if (button3 == "true") {
+
+      setButton3("false")
+    } else {
+      setButton3("true")
+      setButton1("false")
+      setButton2("false")
+      setButton4("false")
+    }
     setIsSwitchOn1(!isSwitchOn1);
-    dispatch(ScheduleMode());
-  };
-  
-  const Clickk = () => {
-    navigation.navigate('Load');
-    // dispatch(Click(imagesAllData));
+    navigation.navigate('Date');
+    // dispatch(ScheduleMode());
   };
 
+  const Sampleeeed = (data) => {
+    console.log(data, "hello");
+    console.log("hello here");
+    if (button4 == "true") {
+
+      setButton4("false")
+    } else {
+      setButton4("true")
+      setButton1("false")
+      setButton2("false")
+      setButton3("false")
+    }
+    setIsSwitchOn1(!isSwitchOn1);
+    dispatch(Clicked());
+    //
+  };
+
+  const Clickk = () => {
+    navigation.navigate('Load');
+    // dispatch(StopChargingMode());
+  };
+  // const [chargingLevel, setChargingLevel] = useState(0);
+
+  // const updateChargingLevel = (newLevel) => {
+  //   setChargingLevel(newLevel);
+  // };
+
+  const getImageColor = () => {
+    if (chargingLevel >= 80) {
+      return 'green'; // Fill the image with green color
+    } else {
+      return 'white'; // Fill the image with white color
+    }
+  };
 
   return (
     <Background>
-      <PersonIcon />
+      {/* <PersonIcon /> */}
       <Header style={styles.header}>{imagesAllData}</Header>
       <SafeAreaView style={styles.container}>
-        <RNSpeedometer style={styles.labels} value={"79"} size={400} />
+        {/* <CircularProgress
+  value={97}
+  radius={120}
+  inActiveStrokeOpacity={0.5}
+  activeStrokeWidth={15}
+  inActiveStrokeWidth={20}
+  progressValueStyle={{ fontWeight: '100', color: 'white' }}
+  activeStrokeSecondaryColor="yellow"
+  inActiveStrokeColor="black"
+  duration={5000}
+  dashedStrokeConfig={{
+    count: 50,
+    width: 4,
+  }}
+/> */}
+
+        {/* <RNSpeedometer style={styles.labels} value={"23"} size={400} />
+         */}
+         <Image source={require('../assets/gif1.gif')} style={styles.image} />
       </SafeAreaView>
+      <Header>{stateMode}</Header>
+         
+      
+
       {/* <CircularProgress
   value={97}
   radius={120}
@@ -103,7 +216,7 @@ export default function Home({ navigation }) {
     width: 4,
   }}
 /> */}
-      <View style={styles.container}>
+      {/* <View style={styles.container}>
         <View style={styles.row}>
           <Modes onToggleSwitch={Sample} isSwitchOn={isSwitchOn}data ={"Slow Mode"}style={styles.mode} />
           <Modes1 style={[styles.mode, styles.lastMode]} onToggleSwitch={Samplee} isSwitchOn={isSwitchOn1}  data ={"Balance Mode"}/>
@@ -112,20 +225,61 @@ export default function Home({ navigation }) {
           <Modes style={styles.mode} onToggleSwitch={Sampleed}  data ={"Eco Mode"} />
           <Modes style={[styles.mode, styles.lastMode]} onToggleSwitch={Sampleeeed}  data ={"Schedule Mode"} />
         </View>
+      </View> */}
+      
+      <Text>
+
+        {stateValue}
+      </Text>
+      <View style={styles.modesContainer}>
+        <TouchableOpacity onPress={Sample} style={button1 == "true" ? styles.modeContainer : styles.modeContainer2}>
+          <View style={styles.modeInnerContainer}>
+            <Text style={button1 == "true" ? styles.modeText : styles.modeText1}>Balanced Mode</Text>
+            {/* <Text style={styles.modeText}> Mode</Text> */}
+            <Text style={button1 == "true" ? styles.modeStatus : styles.modeStatus1}>{button1 == "true" ? "ON" : "OFF"}</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={Samplee} style={button2 == "true" ? styles.modeContainer : styles.modeContainer2}>
+          <View style={styles.modeInnerContainer}>
+            <Text style={button2 == "true" ? styles.modeText : styles.modeText1}>Eco{'\n'}Mode</Text>
+            {/* <Text style={styles.modeText}> Mode</Text> */}
+            <Text style={button2 == "true" ? styles.modeStatus : styles.modeStatus1}>{button2 == "true" ? "ON" : "OFF"}</Text>
+          </View>
+        </TouchableOpacity>
+        {/* </View> */}
+
+        {/* <View style={styles.modesContainer}> */}
+        <TouchableOpacity onPress={Sampleed} style={button3 == "true" ? styles.modeContainer : styles.modeContainer2}>
+          <View style={styles.modeInnerContainer}>
+            <Text style={button3 == "true" ? styles.modeText : styles.modeText1}>Schedule Mode </Text>
+            {/* <Text style={styles.modeText}> Mode</Text> */}
+            <Text style={button3 == "true" ? styles.modeStatus : styles.modeStatus1}>{button3 == "true" ? "ON" : "OFF"}</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={Sampleeeed} style={button4 == "true" ? styles.modeContainer : styles.modeContainer2}>
+          <View style={styles.modeInnerContainer}>
+            <Text style={button4 == "true" ? styles.modeText : styles.modeText1}>Slow Mode</Text>
+            {/* <Text style={styles.modeText}>Mode</Text> */}
+            <Text style={button4 == "true" ? styles.modeStatus : styles.modeStatus1}>{button4 == "true" ? "ON" : "OFF"}</Text>
+          </View>
+        </TouchableOpacity>
       </View>
+
+
+
       <View style={styles.textSample}>
         <View style={styles.textContainer}>
           <Text style={styles.text}>Energy consumed</Text>
-          <Header>23k</Header>
+          <Header style={styles.energy}>{stateEnergy}</Header>
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.text}>Cost of Charging</Text>
-          <Header>23k</Header>
+          <Header style={styles.energy}>0</Header>
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.text}>Charging
-          <Text> </Text> time</Text>
-          <Header>23k</Header>
+            <Text> </Text> time</Text>
+          <Header style={styles.energy}>0 Min</Header>
         </View>
       </View>
 
@@ -180,9 +334,93 @@ const styles = StyleSheet.create({
   },
   mode: {
     marginLeft: 10,
-    paddingLeft:90
+    paddingLeft: 90
   },
   lastMode: {
     marginLeft: 0,
   },
+  modesContainer: {
+
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+    // borderRadius: 10, // Add border radius for rounded corners
+    // overflow: 'hidden',
+  }, modeContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    backgroundColor: 'green',
+    borderRadius: 25,
+    overflow: 'hidden',
+    height: 100,
+    width: 90,
+    marginHorizontal: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modeContainer2: {
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    // backgroundColor: 'red',
+    borderRadius: 25,
+    overflow: 'hidden',
+    height: 100,
+    width: 90,
+    marginHorizontal: 5,
+    borderWidth: 1,
+    borderColor: "#118615",
+    justifyContent: 'center',
+    alignItems: 'center',
+
+  },
+  modeInnerContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    // paddingHorizontal: 10,
+
+  },
+  modeText: {
+    color: 'white',
+    fontSize: 14,
+    marginBottom: 0,
+    textAlign: 'center',
+    // paddingHorizontal: 10,
+    lineHeight: 20,
+  },
+  modeText1: {
+    color: 'black',
+    fontSize: 14,
+    marginBottom: 0,
+    textAlign: 'center',
+
+    // paddingHorizontal: 10,
+    lineHeight: 20,
+  },
+  modeStatus: {
+    color: 'white',
+    marginTop: 10,
+    fontSize: 15,
+  },
+  modeStatus1: {
+    color: 'black',
+    marginTop: 10,
+    fontSize: 15,
+  },
+  energy:{
+    marginBottom: 10,
+  }
+
+
+
+
+
+
+
+  ,image:{
+    width: 290,
+    height: 190,
+    marginBottom: 90,
+    marginTop: 1,
+  }
+
 });
