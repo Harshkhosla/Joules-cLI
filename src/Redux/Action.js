@@ -127,7 +127,7 @@ export const CarDetails = (value) => {
     //   });
 
 
-    const client = new Client({ uri: 'ws://192.168.100.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    const client = new Client({ uri: 'ws://192.168.151.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
     // set event handlers
     client.on('connectionLost', (responseObject) => {
       if (responseObject.errorCode !== 0) {
@@ -213,7 +213,7 @@ export const setName = (title) => {
     // const { authtoken, field2 } = user;
     // console.log(authtoken,"ekvhjwejh");
 
-    const client = new Client({ uri: 'ws://192.168.100.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    const client = new Client({ uri: 'ws://192.168.151.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
     // set event handlers
     client.on('connectionLost', (responseObject) => {
       if (responseObject.errorCode !== 0) {
@@ -301,7 +301,7 @@ export const Click = (user) => {
     // const { authtoken, field2 } = user;
     // console.log(authtoken,"ekvhjwejh");
 
-    const client = new Client({ uri: 'ws://192.168.100.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    const client = new Client({ uri: 'ws://192.168.151.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
     // set event handlers
     client.on('connectionLost', (responseObject) => {
       if (responseObject.errorCode !== 0) {
@@ -487,7 +487,7 @@ export const Clicked = (user) => {
     // const { authtoken, field2 } = user;
     // console.log(authtoken,"ekvhjwejh");
 
-    const client = new Client({ uri: 'ws://192.168.100.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    const client = new Client({ uri: 'ws://192.168.151.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
     // set event handlers
     client.on('connectionLost', (responseObject) => {
       if (responseObject.errorCode !== 0) {
@@ -545,7 +545,7 @@ export const EcoMode = (user) => {
     // const { authtoken, field2 } = user;
     // console.log(authtoken,"ekvhjwejh");
 
-    const client = new Client({ uri: 'ws://192.168.100.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    const client = new Client({ uri: 'ws://192.168.151.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
     // set event handlers
     client.on('connectionLost', (responseObject) => {
       if (responseObject.errorCode !== 0) {
@@ -617,7 +617,7 @@ export const ScheduleMode = (user) => {
     // const { date, time } = user;
     // console.log(date,"ekvhjwejh");
 
-    const client = new Client({ uri: 'ws://192.168.100.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    const client = new Client({ uri: 'ws://192.168.151.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
     // set event handlers
     client.on('connectionLost', (responseObject) => {
       if (responseObject.errorCode !== 0) {
@@ -694,7 +694,7 @@ export const BalanceMode = (user) => {
     // const { authtoken, field2 } = user;
     // console.log(authtoken,"ekvhjwejh");
 
-    const client = new Client({ uri: 'ws://192.168.100.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    const client = new Client({ uri: 'ws://192.168.151.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
     // set event handlers
     client.on('connectionLost', (responseObject) => {
       if (responseObject.errorCode !== 0) {
@@ -707,7 +707,7 @@ export const BalanceMode = (user) => {
         if (message.destinationName === 'Jouls_Ecotech_User_Notifications') {
           const updatedMessages = [...topic1State.messages, message.payloadString];
           topic1State.messages = updatedMessages;
-          const sample=message.payloadString
+          // const sample=message.payloadString
           dispatch(setStateValue( message.payloadString));
           console.log('Jouls_Ecotech_User_Notifications:', message.payloadString);
         } else if (message.destinationName === 'Jouls_Ecotech_User_Output') {
@@ -793,7 +793,86 @@ export const StopChargingMode = (user) => {
     // const { authtoken, field2 } = user;
     // console.log(authtoken,"ekvhjwejh");
 
-    const client = new Client({ uri: 'ws://192.168.100.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    const client = new Client({ uri: 'ws://192.168.151.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    // set event handlers
+    client.on('connectionLost', (responseObject) => {
+      if (responseObject.errorCode !== 0) {
+        console.log(responseObject.errorMessage);
+      }
+    });
+    const onConnect = () => {
+
+      client.on('messageReceived', (message) => {
+        if (message.destinationName === 'Jouls_Ecotech_User_Notifications') {
+          const updatedMessages = [...topic1State.messages, message.payloadString];
+          topic1State.messages = updatedMessages;
+          // const sample=message.payloadString
+          dispatch(setStateValue( message.payloadString));
+          console.log('Jouls_Ecotech_User_Notifications:', message.payloadString);
+        } else if (message.destinationName === 'Jouls_Ecotech_User_Output') {
+          const updatedMessages = [...topic2State.messages, message.payloadString];
+          topic2State.messages = updatedMessages;
+          dispatch(setModeValue( message?.payloadString));
+          console.log('Jouls_Ecotech_User_Output:', message.payloadString);
+        }else if (message.destinationName === 'Jouls_Ecotech_User_Energy') {
+          const updatedMessages = [...topic3State.messages, message.payloadString];
+          topic3State.messages = updatedMessages;
+          dispatch(setEnergy( message?.payloadString));
+          console.log('Jouls_Ecotech_User_Energy:', message.payloadString);
+        }
+      });
+    }
+
+    client.connect()
+      .then(() => {
+        console.log('onConnect');
+        return Promise.all([
+          client.subscribe('Jouls_Ecotech_User_Notifications'), // Topic 1
+          client.subscribe('Jouls_Ecotech_User_Output'), // Topic 2
+          client.subscribe('Jouls_Ecotech_User_Energy') // Topic 3
+        ]);
+      })
+      .then(() => {
+        const sampleee ={
+          "Charging Mode": "Stop Charging"
+        }
+        // const message = new Message(JSON.stringify(user));
+        // message.destinationName = 'Jouls_Ecotech_User_ID';
+        const sample = new Message(JSON.stringify(sampleee));
+        sample.destinationName = 'Jouls_Ecotech_User_Charging Modes';
+        // client.send(message);
+        client.send(sample);
+      }).then(() => {
+        onConnect()
+      })
+      .catch((responseObject) => {
+        if (responseObject.errorCode !== 0) {
+          console.log('onConnectionLost:' + responseObject.errorMessage);
+        }
+      })
+
+
+    //   client.onConnectionLost = onConnectionLost;
+    //   client.onMessageArrived = onMessageArrived;
+  }
+}
+
+
+
+
+
+
+
+// ------------------------------------------------------------------- resolve the changes in the py code----------------------------.//
+
+export const ResolveMode = (user) => {
+  // debugger;
+  // console.log(user, "coming hear");
+  return (dispatch) => {
+    // const { authtoken, field2 } = user;
+    // console.log(authtoken,"ekvhjwejh");
+
+    const client = new Client({ uri: 'ws://192.168.151.111:9001/', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
     // set event handlers
     client.on('connectionLost', (responseObject) => {
       if (responseObject.errorCode !== 0) {
@@ -816,7 +895,7 @@ export const StopChargingMode = (user) => {
       })
       .then(() => {
         const sampleee ={
-          "Charging Mode": "Stop Charging"
+          "Charging Mode": "Resolve"
         }
         // const message = new Message(JSON.stringify(user));
         // message.destinationName = 'Jouls_Ecotech_User_ID';

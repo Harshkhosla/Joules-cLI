@@ -1,20 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
-import { SafeAreaView, StyleSheet, TouchableOpacity, Image,TextInput, Alert } from 'react-native';
+import { SafeAreaView, StyleSheet, TouchableOpacity, Image, TextInput, Alert } from 'react-native';
 import { Text, View, Linking } from 'react-native';
 import Button from '../components/Button';
 import Background from '../components/Background';
 import { useDispatch, useSelector } from 'react-redux';
 import RNSpeedometer from 'react-native-speedometer'
-import { Click, Clicked, EcoMode, ScheduleMode, BalanceMode, StopChargingMode } from '../Redux/Action';
+import { Click, Clicked, EcoMode, ScheduleMode, BalanceMode, ResolveMode,StopChargingMode, setStateValue } from '../Redux/Action';
 import Svg, { Path, Defs, ClipPath, Rect } from 'react-native-svg';
+import Lottie from 'lottie-react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import PersonIcon from '../components/PersonIcon';
+import { Animated, Easing } from 'react-native';
+
 // import FastImage from 'react-native-fast-image';
 import Modes from '../components/Modes';
 import Modes1 from '../components/Modes1';
+import { black } from 'react-native-paper/lib/typescript/styles/colors';
+import Hamburger from '../components/Hamburger';
 
 export default function Home({ navigation }) {
+  const animationProgress = useRef(new Animated.Value(0))
+
+  useEffect(() => {
+    Animated.timing(animationProgress.current, {
+      toValue: 1,
+      duration: 5000,
+      easing: Easing.linear,
+      useNativeDriver: false
+    }).start();
+  }, [])
   const dispatch = useDispatch();
   const [state, setState] = useState();
   console.log(state);
@@ -49,20 +64,21 @@ export default function Home({ navigation }) {
   const SampleData = useSelector(state => state?.userReducers?.modeValue);
   const SampleDataaa = useSelector(state => state?.userReducers?.SetEnergy);
   useEffect(() => {
-    console.log("harsheeheuhheddhe", SampleData);
-    console.log("hhhhhh", imagesAllData);
+    // console.log("harsheeheuhheddhe", SampleData);
+    // console.log("hhhhhh", imagesAllData);
     // const mEmail = AsyncStorage.getItem('Authtoken');
     // console.log(imagesAllData, "here is the token stored");
     SetStateValue(imagesAllData);
-    SetStateMode(SampleData)
+    // SetStateMode(SampleData)
+    console.log(imagesAllData,"CHARGING POWER");
   }, [imagesAllData]);
   // const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
   // const getRandomNumber = (min, max) => {
   //   return Math.floor(Math.random() * 100); // Generate a random number between 0 and 100
   // };
   useEffect(() => {
-    console.log("harsheeheuhheddhe", SampleData);
-    console.log("hhhhhh", imagesAllData);
+    // console.log("harsheeheuhheddhe", SampleData);
+    // console.log("hhhhhh", imagesAllData);
     // const mEmail = AsyncStorage.getItem('Authtoken');
     // console.log(imagesAllData, "here is the token stored");
     // SetStateValue(imagesAllData);
@@ -100,6 +116,7 @@ export default function Home({ navigation }) {
       setButton2("false")
       setButton3("false")
       setButton4("false")
+      // SetStateValue("Charging Started")
     }
     setIsSwitchOn(!isSwitchOn);
     dispatch(BalanceMode());
@@ -155,8 +172,22 @@ export default function Home({ navigation }) {
   };
 
   const Clickk = () => {
-    navigation.navigate('Load');
-    // dispatch(StopChargingMode());
+    // navigation.navigate('Load');
+    dispatch(StopChargingMode());
+    setButton2("false")
+      setButton1("false")
+      setButton3("false")
+      setButton4("false")
+    SetStateValue("Charging Stopped")
+  };
+  const Resolve = () => {
+    // navigation.navigate('Load');
+    dispatch(ResolveMode());
+    SetStateValue("Resolving Issue")
+    setButton2("false")
+      setButton1("false")
+      setButton3("false")
+      setButton4("false")
   };
   // const [chargingLevel, setChargingLevel] = useState(0);
 
@@ -172,65 +203,99 @@ export default function Home({ navigation }) {
     }
   };
 
+
+  const [gifXPosition, setGifXPosition] = useState(new Animated.Value(32));
+  const data = "93"
+
+
+  useEffect(() => {
+    const newData = 1000; // Replace with your logic to retrieve the new data
+    setGifTime(gifTime + newData);
+  }, []);
+
+  // useEffect(() => {
+  //   moveGifAutomatically(stateValue);
+  // }, [stateValue]);
+
+
+
+  useEffect(() => {
+    // Update the position of the GIF based on the provided data
+    moveGifAutomatically(data);
+  }, [data]);
+
+  const moveGifAutomatically = (data) => {
+    // Calculate the new position based on the data
+    const newPosition = calculateNewPosition(data);
+
+    // Animate the GIF to the new position
+    Animated.timing(gifXPosition, {
+      toValue: newPosition,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const calculateNewPosition = (data) => {
+    // Perform any necessary calculations based on the provided data
+    // and return the new position for the GIF
+    // Example: return data * 10;
+  };
+
   return (
     <Background>
-      {/* <PersonIcon /> */}
-      <Header style={styles.header}>{imagesAllData}</Header>
+      
+      <PersonIcon></PersonIcon>
+      <Hamburger></Hamburger>
+      <Header style={styles.header}>{stateValue==""?"Charging Status":stateValue}</Header>
       <SafeAreaView style={styles.container}>
-        {/* <CircularProgress
-  value={97}
-  radius={120}
-  inActiveStrokeOpacity={0.5}
-  activeStrokeWidth={15}
-  inActiveStrokeWidth={20}
-  progressValueStyle={{ fontWeight: '100', color: 'white' }}
-  activeStrokeSecondaryColor="yellow"
-  inActiveStrokeColor="black"
-  duration={5000}
-  dashedStrokeConfig={{
-    count: 50,
-    width: 4,
-  }}
-/> */}
 
-        {/* <RNSpeedometer style={styles.labels} value={"23"} size={400} />
-         */}
-         <Image source={require('../assets/gif1.gif')} style={styles.image} />
+        {/* <RNSpeedometer style={styles.labels} value={"23"} size={400} /> */}
+
+        <View style={styles.containerefdf}>
+          {/* <Image
+            source={require('../assets/loading.gif')}
+            style={{ width: 100, height: 100 }}
+          />
+          <Image
+            style={{ width: 100, height: 80 }}
+            source={{ uri: "https://media.geeksforgeeks.org/wp-content/uploads/20220221170632/ezgifcomgifmaker1.gif" }}
+          /> */}
+        </View>
       </SafeAreaView>
-      <Header>{stateMode}</Header>
-         
-      
 
-      {/* <CircularProgress
-  value={97}
-  radius={120}
-  inActiveStrokeOpacity={0.5}
-  activeStrokeWidth={15}
-  inActiveStrokeWidth={20}
-  progressValueStyle={{ fontWeight: '100', color: 'white' }}
-  activeStrokeSecondaryColor="yellow"
-  inActiveStrokeColor="black"
-  duration={5000}
-  dashedStrokeConfig={{
-    count: 50,
-    width: 4,
-  }}
-/> */}
-      {/* <View style={styles.container}>
-        <View style={styles.row}>
-          <Modes onToggleSwitch={Sample} isSwitchOn={isSwitchOn}data ={"Slow Mode"}style={styles.mode} />
-          <Modes1 style={[styles.mode, styles.lastMode]} onToggleSwitch={Samplee} isSwitchOn={isSwitchOn1}  data ={"Balance Mode"}/>
-        </View>
-        <View style={styles.row}>
-          <Modes style={styles.mode} onToggleSwitch={Sampleed}  data ={"Eco Mode"} />
-          <Modes style={[styles.mode, styles.lastMode]} onToggleSwitch={Sampleeeed}  data ={"Schedule Mode"} />
-        </View>
-      </View> */}
-      
-      <Text>
 
-        {stateValue}
-      </Text>
+      <View style={styles.modesContainer}>
+
+      <TouchableOpacity style={styles.modeContainered}>
+
+<Header>Power Used</Header>
+<Text style={styles.sample}>House  : 0 kW</Text>
+<Text style={styles.sample}>Charger  : {stateMode==""?"0 kW":stateMode}</Text>
+{/* <View style={styles.modesContainer}>
+  <Header>rgjng</Header>
+</View> */}
+{/* <TouchableOpacity style={styles.powerCon}> */}
+{/* <Text>Power Used</Text> */}
+{/* </TouchableOpacity> */}
+
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.modeContainered}>
+
+      <Image
+            source={require('../assets/loading.gif')}
+            style={{ width: 200, height: 250 }}
+          />
+      </TouchableOpacity>
+
+
+
+
+      </View>
+      <Header></Header>
+
+      {/* <Header style={styles.header}>harsh</Header> */}
+
       <View style={styles.modesContainer}>
         <TouchableOpacity onPress={Sample} style={button1 == "true" ? styles.modeContainer : styles.modeContainer2}>
           <View style={styles.modeInnerContainer}>
@@ -270,7 +335,7 @@ export default function Home({ navigation }) {
       <View style={styles.textSample}>
         <View style={styles.textContainer}>
           <Text style={styles.text}>Energy consumed</Text>
-          <Header style={styles.energy}>{stateEnergy}</Header>
+          <Header style={styles.energy}>{stateEnergy==""?"0 Wh":stateEnergy}</Header>
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.text}>Cost of Charging</Text>
@@ -286,6 +351,9 @@ export default function Home({ navigation }) {
       <Button mode="contained" onPress={Clickk}>
         Stop Charging
       </Button>
+      <Button style={styles.redButton} mode="contained" onPress={Resolve}>
+        RESOLVE
+      </Button>
     </Background>
   );
 }
@@ -297,10 +365,12 @@ const styles = StyleSheet.create({
   textSample: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 10,
+    marginTop: 40,
+    marginBottom: 20,
   },
   textContainer: {
     flex: 1,
+    
     alignItems: 'center',
   },
   text: {
@@ -346,13 +416,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     // borderRadius: 10, // Add border radius for rounded corners
     // overflow: 'hidden',
-  }, modeContainer: {
+  }, 
+  modeContainer: {
     flexDirection: 'row',
     paddingHorizontal: 10,
     backgroundColor: 'green',
     borderRadius: 25,
     overflow: 'hidden',
-    height: 100,
+    height: 120,
     width: 90,
     marginHorizontal: 5,
     justifyContent: 'center',
@@ -364,7 +435,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
     borderRadius: 25,
     overflow: 'hidden',
-    height: 100,
+    height: 120,
     width: 90,
     marginHorizontal: 5,
     borderWidth: 1,
@@ -406,8 +477,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 15,
   },
-  energy:{
+  energy: {
     marginBottom: 10,
+    marginTop:15
   }
 
 
@@ -416,11 +488,54 @@ const styles = StyleSheet.create({
 
 
 
-  ,image:{
-    width: 290,
-    height: 190,
+  , image: {
+    width: 20,
+    height: 150,
     marginBottom: 90,
     marginTop: 1,
   }
 
+  ,
+
+
+
+  containerefdf: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  gif: {
+    width: 200,
+    height: 150,
+  }, 
+  modeContainered: {
+    flexDirection: 'column',
+    // paddingHorizontal: 10,
+    marginLeft:20,
+    // marginRight:20,
+    // backgroundColor: 'green',
+    // borderRadius: 25,
+    height:210,
+    overflow: 'hidden',
+    // height: 290,
+    // width: 190,
+    // marginHorizontal: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  powerCon:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  sample:{
+    color:"black",
+  },
+  redButton:{
+    borderRadius: 18,
+    backgroundColor:"red",
+    marginVertical: 10,
+    paddingVertical: 2,
+    width:230
+  }
 });
