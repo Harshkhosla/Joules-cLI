@@ -35,7 +35,7 @@ export default function LoginScreen({ navigation }) {
 
 
   // ---------------------------------------this is the code for dectructuring the data in mqtt-------------------------------------------//
-
+  const [loading, setLoading] = useState(false); 
   console.log(imagesAllData, "goodharsh");
   useEffect(() => {
     const mEmail = AsyncStorage.getItem('Authtoken');
@@ -91,25 +91,16 @@ export default function LoginScreen({ navigation }) {
   }, [])
 
   const getData = async () => {
-    // if(data="sample"){
-
-    // }else{
-
-    // }
-    // navigation.navigate('Home');
-    dispatch(signItUp(data, navigation))
-    // const mEmail = await AsyncStorage.getItem('Authtoken');
-    // console.log(mEmail ,"herahe");
-    // const mPass = await AsyncStorage.getItem('PASSWORD');
-    // if(mEmail===data.email && mPass===data.password){
-    //   setModalVisible(false);
-    // }
-    // else{
-    //   setModalVisible(false);
-    //   console.log('HARSH');
-    // }
+    setLoading(true); // Start loading
+    try {
+      await dispatch(signItUp(data, navigation));
+      setLoading(false); // Stop loading when the API call is complete
+    } catch (error) {
+      setLoading(false); // Stop loading if there's an error
+      console.error(error);
+    }
   };
-
+  
 
 
   return (
@@ -157,8 +148,12 @@ export default function LoginScreen({ navigation }) {
           <Text style={styles.forgot}>Forgot your password?</Text>
         </TouchableOpacity>
       </View>
-      <Button mode="contained" onPress={getData}>
-        Login
+      <Button
+        mode="contained"
+        onPress={getData}
+        disabled={loading} // Disable the button when loading is true
+      >
+        {loading ? 'Loading...' : 'Login'} {/* Display 'Loading...' when loading is true */}
       </Button>
       <View style={styles.row}>
         <Text>Or Log in With </Text>

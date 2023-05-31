@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import { SafeAreaView, StyleSheet, TouchableOpacity, Image, TextInput, Alert } from 'react-native';
+import { getStatusBarHeight } from 'react-native-status-bar-height'
 import { Text, View, Linking } from 'react-native';
 import Button from '../components/Button';
 import Background from '../components/Background';
+import {  Menu, Divider, PaperProvider } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import RNSpeedometer from 'react-native-speedometer'
 import { Click, Clicked, EcoMode, ScheduleMode, BalanceMode, ResolveMode,StopChargingMode, setStateValue } from '../Redux/Action';
@@ -158,7 +160,6 @@ export default function Home({ navigation }) {
     console.log(data, "hello");
     console.log("hello here");
     if (button4 == "true") {
-
       setButton4("false")
     } else {
       setButton4("true")
@@ -167,7 +168,8 @@ export default function Home({ navigation }) {
       setButton3("false")
     }
     setIsSwitchOn1(!isSwitchOn1);
-    dispatch(Clicked());
+    navigation.navigate('SceduleDate');
+    
     //
   };
 
@@ -181,86 +183,35 @@ export default function Home({ navigation }) {
     SetStateValue("Charging Stopped")
   };
   const Resolve = () => {
-    // navigation.navigate('Load');
-    dispatch(ResolveMode());
+    // navigation.navigate('LoginScreen');
+    // dispatch(ResolveMode());
     SetStateValue("Resolving Issue")
     setButton2("false")
       setButton1("false")
       setButton3("false")
       setButton4("false")
   };
-  // const [chargingLevel, setChargingLevel] = useState(0);
 
-  // const updateChargingLevel = (newLevel) => {
-  //   setChargingLevel(newLevel);
-  // };
-
-  const getImageColor = () => {
-    if (chargingLevel >= 80) {
-      return 'green'; // Fill the image with green color
-    } else {
-      return 'white'; // Fill the image with white color
-    }
-  };
-
-
-  const [gifXPosition, setGifXPosition] = useState(new Animated.Value(32));
-  const data = "93"
-
-
-  useEffect(() => {
-    const newData = 1000; // Replace with your logic to retrieve the new data
-    setGifTime(gifTime + newData);
-  }, []);
-
-  // useEffect(() => {
-  //   moveGifAutomatically(stateValue);
-  // }, [stateValue]);
-
-
-
-  useEffect(() => {
-    // Update the position of the GIF based on the provided data
-    moveGifAutomatically(data);
-  }, [data]);
-
-  const moveGifAutomatically = (data) => {
-    // Calculate the new position based on the data
-    const newPosition = calculateNewPosition(data);
-
-    // Animate the GIF to the new position
-    Animated.timing(gifXPosition, {
-      toValue: newPosition,
-      duration: 500,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const calculateNewPosition = (data) => {
-    // Perform any necessary calculations based on the provided data
-    // and return the new position for the GIF
-    // Example: return data * 10;
-  };
+const clickheehpd=()=>{
+  console.log("hehehehehehe");
+  navigation.navigate('Load');
+}
 
   return (
-    <Background>
+    <Background>      
+      <TouchableOpacity  >
+  <PersonIcon  clickheehpd={clickheehpd}/>
+</TouchableOpacity>
       
-      <PersonIcon></PersonIcon>
-      <Hamburger></Hamburger>
+     
+      
       <Header style={styles.header}>{stateValue==""?"Charging Status":stateValue}</Header>
       <SafeAreaView style={styles.container}>
 
         {/* <RNSpeedometer style={styles.labels} value={"23"} size={400} /> */}
 
         <View style={styles.containerefdf}>
-          {/* <Image
-            source={require('../assets/loading.gif')}
-            style={{ width: 100, height: 100 }}
-          />
-          <Image
-            style={{ width: 100, height: 80 }}
-            source={{ uri: "https://media.geeksforgeeks.org/wp-content/uploads/20220221170632/ezgifcomgifmaker1.gif" }}
-          /> */}
+         
         </View>
       </SafeAreaView>
 
@@ -380,6 +331,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     paddingVertical: 3,
+    top: -45 + getStatusBarHeight(),
   },
   containerr: {
     flexDirection: 'row',
@@ -537,5 +489,10 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     paddingVertical: 2,
     width:230
+  }
+  ,Icon:{
+    position: 'absolute',
+    // top: 10 + getStatusBarHeight(),
+    right:-10,
   }
 });

@@ -18,6 +18,7 @@ export default function RegisterScreen({ navigation }) {
 
   const dispatch = useDispatch()
   // const navigation = useNavigation();
+  const [loading, setLoading] = useState(false); 
   const [data, setData] = useState({
     name:"",
     email:"",
@@ -27,13 +28,15 @@ export default function RegisterScreen({ navigation }) {
 
 
   const saveData = async () => {
-    dispatch(loginuser(data, navigation))
-    // await AsyncStorage.setItem("NAME", "sample");
-    // await AsyncStorage.setItem("EMAIL", data.email);
-    // // await AsyncStorage.setItem("MOBILE", mobile);
-    // await AsyncStorage.setItem("PASSWORD", data.password);
-    // console.log(":yes");
-    // navigation.goBack();
+    
+    setLoading(true); // Start loading
+    try {
+      await dispatch(loginuser(data, navigation));
+      setLoading(false); // Stop loading when the API call is complete
+    } catch (error) {
+      setLoading(false); // Stop loading if there's an error
+      console.error(error);
+    }
   };
   return (
     <Background>
@@ -83,7 +86,8 @@ export default function RegisterScreen({ navigation }) {
         mode="contained"
         onPress={saveData}
         style={{ marginTop: 24 }}
-      >
+        disabled={loading}
+      > {loading ? 'Loading...' : 'Login'}
         Sign Up
       </Button>
       <View style={styles.row}>

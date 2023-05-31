@@ -22,6 +22,7 @@ import {
   Flat,
 } from './src/screens';
 import Splash from './src/screens/Splash'
+import SceduleDate from './src/screens/SceduleDate'
 
 const Stack = createStackNavigator()
 
@@ -53,6 +54,7 @@ export default function App() {
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Wifi" component={Wifi} />
           <Stack.Screen name="Flat" component={Flat} />
+          <Stack.Screen name="SceduleDate" component={SceduleDate} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
