@@ -101,7 +101,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         missingDimensionStrategy 'react-native-camera', 'general'
-        versionCode 7
+        versionCode 9
         versionName "1.0"
     }
 
@@ -165,6 +165,7 @@ dependencies {
     implementation("com.facebook.react:react-android")
     implementation project(':react-native-svg')
     implementation project(':lottie-react-native')
+    implementation project(':react-native-wifi-reborn')
     implementation project(':react-native-push-notification')
     implementation 'com.facebook.fresco:animated-gif:2.5.0'
     

@@ -1,4 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import init from 'react_native_mqtt';
+// import { AsyncStorage } from 'react-native';
 // import PushNotification from 'react-native-push-notification';
 import { useState } from "react";
 export const SET_USER_NAME = "SET_USER_NAME";
@@ -26,6 +28,16 @@ const topic3State = {
   messages: [],
 };
 
+
+init({
+  size: 10000,
+  storageBackend: AsyncStorage,
+  defaultExpires: 1000 * 3600 * 24,
+  enableCache: true,
+  reconnect: true,
+  sync : {
+  }
+});
 
 
 const myStorage = {
@@ -128,7 +140,7 @@ export const CarDetails = (value) => {
     //   });
 
 
-    const client = new Client({ uri: 'ws://192.168.10.111:9001/ws', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    const client = new Client({ uri: 'ws://192.168.10.111:9001/ws', clientId: 'ECOTECH243546578989', storage: myStorage });
     // set event handlers
     client.on('connectionLost', (responseObject) => {
       if (responseObject.errorCode !== 0) {
@@ -214,7 +226,7 @@ export const setName = (title) => {
     // const { authtoken, field2 } = user;
     // console.log(authtoken,"ekvhjwejh");
 
-    const client = new Client({ uri: 'ws://192.168.10.111:9001/ws', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    const client = new Client({ uri: 'ws://192.168.10.111:9001/ws', clientId: 'JOULS EC5409594845jCH243546578989', storage: myStorage });
     // set event handlers
     client.on('connectionLost', (responseObject) => {
       if (responseObject.errorCode !== 0) {
@@ -302,7 +314,7 @@ export const Click = (user) => {
     // const { authtoken, field2 } = user;
     // console.log(authtoken,"ekvhjwejh");
 
-    const client = new Client({ uri: 'ws://192.168.10.111:9001/ws', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    const client = new Client({ uri: 'ws://192.168.10.111:9001/ws', clientId: 'JOULS EC578989', storage: myStorage });
     // set event handlers
     client.on('connectionLost', (responseObject) => {
       if (responseObject.errorCode !== 0) {
@@ -493,7 +505,7 @@ export const Clicked = (user) => {
     // const { authtoken, field2 } = user;
     // console.log(authtoken,"ekvhjwejh");
 
-    const client = new Client({ uri: 'ws://192.168.10.111:9001/ws', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    const client = new Client({ uri: 'ws://192.168.10.111:9001/ws', clientId: 'JOULS 46578989', storage: myStorage });
     // set event handlers
     client.on('connectionLost', (responseObject) => {
       if (responseObject.errorCode !== 0) {
@@ -551,7 +563,7 @@ export const EcoMode = (user) => {
     // const { authtoken, field2 } = user;
     // console.log(authtoken,"ekvhjwejh");
 
-    const client = new Client({ uri: 'ws://192.168.10.111:9001/ws', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    const client = new Client({ uri: 'ws://192.168.10.111:9001/ws', clientId: 'JOULS ECO9', storage: myStorage });
     // set event handlers
     client.on('connectionLost', (responseObject) => {
       if (responseObject.errorCode !== 0) {
@@ -623,7 +635,7 @@ export const ScheduleMode = (user) => {
     // const { date, time } = user;
     // console.log(date,"ekvhjwejh");
 
-    const client = new Client({ uri: 'ws://192.168.10.111:9001/ws', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    const client = new Client({ uri: 'ws://192.168.10.111:9001/ws', clientId: 'JOUfeowuhewfui78989', storage: myStorage });
     // set event handlers
     client.on('connectionLost', (responseObject) => {
       if (responseObject.errorCode !== 0) {
@@ -691,102 +703,38 @@ export const ScheduleMode = (user) => {
 
 
 
-//------------------------------------------------------------------------------------------------------//
+//-------------------------------------------------------------------------------------------------------------------//
 
 export const BalanceMode = (user) => {
-  // debugger;
-  // console.log(user, "coming hear");
   return (dispatch) => {
-    // const { authtoken, field2 } = user;
-    // console.log(authtoken,"ekvhjwejh");
+    // const client=  new Paho.MQTT.Client("192.168.10.111", 9001, "clientId");
+    // const client = new Client('ws://192.168.10.111:1883/', 'Jwefiwejfiuhfihe8989');
+    function onConnect() {
+  console.log("onConnect");
+  client.subscribe("harsh");
+      const message = new Paho.MQTT.Message("Harsh sexyyy");
+      message.destinationName = "harsh";
+      client.send(message);
+}
 
-    const client = new Client({ uri: 'ws://192.168.10.111:9001/ws', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
-    // set event handlers
-    client.on('connectionLost', (responseObject) => {
-      if (responseObject.errorCode !== 0) {
-        console.log(responseObject.errorMessage);
-      }
-    });
-    const onConnect = () => {
+function onConnectionLost(responseObject) {
+  if (responseObject.errorCode !== 0) {
+    console.log("onConnectionLost:"+responseObject.errorMessage);
+  }
+}
 
-      client.on('messageReceived', (message) => {
-        if (message.destinationName === 'Jouls_Ecotech_User_Notifications') {
-          const updatedMessages = [...topic1State.messages, message.payloadString];
-          topic1State.messages = updatedMessages;
-          // const sample=message.payloadString
-          dispatch(setStateValue(message.payloadString));
-          console.log('Jouls_Ecotech_User_Notifications:', message.payloadString);
-        } else if (message.destinationName === 'Jouls_Ecotech_User_Output') {
-          const updatedMessages = [...topic2State.messages, message.payloadString];
-          topic2State.messages = updatedMessages;
-          dispatch(setModeValue(message?.payloadString));
-          console.log('Jouls_Ecotech_User_Output:', message.payloadString);
-        } else if (message.destinationName === 'Jouls_Ecotech_User_Energy') {
-          const updatedMessages = [...topic3State.messages, message.payloadString];
-          topic3State.messages = updatedMessages;
-          dispatch(setEnergy(message?.payloadString));
-          console.log('Jouls_Ecotech_User_Energy:', message.payloadString);
-        }
-      });
-      // console.log("jiook",message?.payloadString);
-      // const data = JSON.parse(...data34,...data123,message?.payloadString);
-
-      // Extract the desired information
-      // const chargingMode = data['Output Power'];
-      // const energyConsumed = data['Notifications'];
-      // const chargingTime = data['Charging Time'];
-      // setData34({...chargingMode})
-      // setData123({...energyConsumed})
-      // console.log({...data34},"hello");
-      // console.log({...data123},"hello2");
-      // dispatch(setModeValue(message?.payloadString));
-      // });
-      //   client.on('messageReceived', (message) => {
-      //     console.log("jiook",message?.payloadString);
-      //     const data = JSON.parse(message?.payloadString);
-
-      // // Extract the desired information
-      // // const chargingMode = data['Output Power'];
-      // const energyConsumed = data['Notifications'];
-      // const chargingTime = data['Charging Time'];
-      // // console.log(chargingMode,"hello");
-      // console.log(energyConsumed,"hello2");
-      //     // dispatch(setModeValue(message?.payloadString));
-      //   });
-    }
-
-    client.connect()
-      .then(() => {
-        // Once a connection has been made, make a subscription and send a message.
-        console.log('onConnect');
-        return Promise.all([
-          client.subscribe('Jouls_Ecotech_User_Notifications'), // Topic 1
-          client.subscribe('Jouls_Ecotech_User_Output'), // Topic 2
-          client.subscribe('Jouls_Ecotech_User_Energy') // Topic 3
-        ]);
-      })
-      .then(() => {
-        const sampleee = {
-          "Charging Mode": "Balanced_Mode"
-        }
-        // const message = new Message(JSON.stringify(user));
-        // message.destinationName = 'Jouls_Ecotech_User_ID';
-        const sample = new Message(JSON.stringify(sampleee));
-        sample.destinationName = 'Jouls_Ecotech_User_Charging Modes';
-        // client.send(message);
-        client.send(sample);
-      }).then(() => {
-        onConnect()
-      })
-      .catch((responseObject) => {
-        if (responseObject.errorCode !== 0) {
-          console.log('onConnectionLost:' + responseObject.errorMessage);
-        }
-      })
+function onMessageArrived(message) {
+  console.log("onMessageArrived:"+message.payloadString);
+}
 
 
-    //   client.onConnectionLost = onConnectionLost;
-    //   client.onMessageArrived = onMessageArrived;
+// const brokerUrl = '34.93.62.206'; // Update with your MQTT broker IP and port
+// const clientId = 'clientId'; // Update with a unique client ID
+// const client = new Paho.MQTT.Client(brokerUrl, clientId);
+const client = new Paho.MQTT.Client("10.160.0.2" ,1883, 'cliafaefentId');
+client.onConnectionLost = onConnectionLost;
+client.onMessageArrived = onMessageArrived;
+client.connect({ onSuccess:onConnect, useSSL: false });
   }
 }
 
@@ -799,12 +747,15 @@ export const StopChargingMode = (user) => {
     // const { authtoken, field2 } = user;
     // console.log(authtoken,"ekvhjwejh");
 
-    const client = new Client({ uri: 'ws://192.168.10.111:9001/ws', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    const client = new Client({ uri: 'mqtt://mqtt-dashboard.com:8884', clientId: 'Jcwevwknefjwfj578989', storage: myStorage });
     // set event handlers
     client.on('connectionLost', (responseObject) => {
       if (responseObject.errorCode !== 0) {
         console.log(responseObject.errorMessage);
       }
+    });
+    client.on('messageReceived', (message) => {
+      console.log(message.payloadString);
     });
     const onConnect = () => {
 
@@ -878,11 +829,11 @@ export const ResolveMode = (user) => {
     // const { authtoken, field2 } = user;
     // console.log(authtoken,"ekvhjwejh");
 
-    const client = new Client({ uri: 'ws://192.168.10.111:9001/ws', clientId: 'JOULS ECOTECH243546578989', storage: myStorage });
+    const client = new Client({ uri: 'ws://192.168.10.111:9001/ws', clientId: 'JOfg2g2g2g2gk2mg78989', storage: myStorage });
     // set event handlers
     client.on('connectionLost', (responseObject) => {
       if (responseObject.errorCode !== 0) {
-        console.log(responseObject.errorMessage);
+        console.log(responseObject);
       }
     });
     const onConnect = () => {

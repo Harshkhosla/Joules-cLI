@@ -24,14 +24,6 @@ import Hamburger from '../components/Hamburger';
 export default function Home({ navigation }) {
   const animationProgress = useRef(new Animated.Value(0))
 
-  useEffect(() => {
-    Animated.timing(animationProgress.current, {
-      toValue: 1,
-      duration: 5000,
-      easing: Easing.linear,
-      useNativeDriver: false
-    }).start();
-  }, [])
   const dispatch = useDispatch();
   const [state, setState] = useState();
   console.log(state);
@@ -202,7 +194,6 @@ const clickheehpd=()=>{
       <TouchableOpacity  >
   <PersonIcon  clickheehpd={clickheehpd}/>
 </TouchableOpacity>
-      
      
       
       <Header style={styles.header}>{stateValue==""?"Charging Status":stateValue}</Header>
@@ -245,6 +236,7 @@ const clickheehpd=()=>{
       </View>
       <Header></Header>
 
+<Button onPress={() => { changeValue(client);} } title="Press Me"/>
       {/* <Header style={styles.header}>harsh</Header> */}
 
       <View style={styles.modesContainer}>

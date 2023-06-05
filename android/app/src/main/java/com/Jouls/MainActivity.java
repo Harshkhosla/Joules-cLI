@@ -1,6 +1,7 @@
 package com.Jouls;
 
 import com.facebook.react.ReactActivity;
+import com.reactlibrary.rnwifi.RNWifiPackage;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;

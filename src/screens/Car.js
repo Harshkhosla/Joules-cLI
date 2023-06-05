@@ -8,6 +8,8 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import BackButton from '../components/BackButton'
 import { useDispatch, useSelector } from 'react-redux';
 import { setCar } from '../Redux/Action';
+import EvCharging from '../components/EvCharging';
+import Logo from '../components/Logo';
 
 
 export default function Car({ navigation }) {
@@ -33,6 +35,7 @@ export default function Car({ navigation }) {
   return (
     <Background>
       <BackButton goBack={navigation.goBack} />
+      <Logo />
       <Header>
         Which Car Do you Own
       </Header>
@@ -50,6 +53,7 @@ export default function Car({ navigation }) {
         onPress={Samplerun}
         style={{ marginTop: 96 }}
       >to home </Button>
+      <EvCharging/>
     </Background>
   )
 }
