@@ -20,9 +20,13 @@ import {
   Wifi,
   Home,
   Flat,
+  UserDetails,
+  Test,
+  Datainput,
 } from './src/screens';
 import Splash from './src/screens/Splash'
 import SceduleDate from './src/screens/SceduleDate'
+import Toast from 'react-native-toast-message';
 
 const Stack = createStackNavigator()
 
@@ -41,8 +45,8 @@ export default function App() {
           
           <Stack.Screen  options={{headerShown: false}}  name="Splash" component={Splash}     />
           {/* <Stack.Screen name="StartScreen" component={StartScreen} /> */}
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+          <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="Dashboard" component={Dashboard} />
           <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen}/>
           <Stack.Screen name="HomePage" component={HomePage} />
@@ -55,7 +59,11 @@ export default function App() {
           <Stack.Screen name="Wifi" component={Wifi} />
           <Stack.Screen name="Flat" component={Flat} />
           <Stack.Screen name="SceduleDate" component={SceduleDate} />
+          <Stack.Screen name="UserDetails" component={UserDetails} />
+          <Stack.Screen name="Test" component={Test} />
+          <Stack.Screen name="Datainput" component={Datainput} />
         </Stack.Navigator>
+        {/* <Toast ref={(ref) => Toast.setRef(ref)} /> */}
       </NavigationContainer>
     </Provider>
              </Sample>

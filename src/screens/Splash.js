@@ -16,7 +16,7 @@ const Splash = () => {
         if (email !== null) {
           navigation.navigate('Home');
         } else {
-          navigation.navigate('LoginScreen');
+          navigation.navigate('RegisterScreen');
         }
       };
 

@@ -87,8 +87,8 @@ export default function RegisterScreen({ navigation }) {
         onPress={saveData}
         style={{ marginTop: 24 }}
         disabled={loading}
-      > {loading ? 'Loading...' : 'Login'}
-        Sign Up
+      > {loading ? 'Loading...' : 'Sign Up'}
+        
       </Button>
       <View style={styles.row}>
         <Text>Already have an account? </Text>

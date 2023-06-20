@@ -7,35 +7,15 @@ import Button from '../components/Button';
 import Background from '../components/Background';
 import {  Menu, Divider, PaperProvider } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import RNSpeedometer from 'react-native-speedometer'
 import { Click, Clicked, EcoMode, ScheduleMode, BalanceMode, ResolveMode,StopChargingMode, setStateValue } from '../Redux/Action';
-import Svg, { Path, Defs, ClipPath, Rect } from 'react-native-svg';
-import Lottie from 'lottie-react-native';
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import PersonIcon from '../components/PersonIcon';
-import { Animated, Easing } from 'react-native';
 
-// import FastImage from 'react-native-fast-image';
-import Modes from '../components/Modes';
-import Modes1 from '../components/Modes1';
-import { black } from 'react-native-paper/lib/typescript/styles/colors';
-import Hamburger from '../components/Hamburger';
 
-export default function Home({ navigation }) {
-  const animationProgress = useRef(new Animated.Value(0))
 
-  const dispatch = useDispatch();
-  const [state, setState] = useState();
-  console.log(state);
-  const [gifTime, setGifTime] = useState(0);
 
-  const increaseGifTime = () => {
-    // Here, you can update the GIF time based on the received data
-    const newData = 1000; // Replace with your logic to retrieve the new data
 
-    // Increase the GIF time by adding the new data to the existing time
-    setGifTime(gifTime + newData);
-  };
+export default function Home({ navigation }) { 
+  const dispatch = useDispatch(); 
   const [datas, setDatas] = useState("Connect your charger");
   const [user, setUserData] = React.useState("Charging Mode: Eco_Mode");
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);
@@ -47,8 +27,7 @@ export default function Home({ navigation }) {
   const [stateValue, SetStateValue] = useState("")
   const [stateMode, SetStateMode] = useState("23")
   const [stateEnergy, SetStateEnergy] = useState("23")
-  // const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
-  // console.log(user, "harsh authtoken");
+
   setTimeout(function () {
     setDatas("Charger is connected");
   }, 5000);
@@ -58,35 +37,19 @@ export default function Home({ navigation }) {
   const SampleData = useSelector(state => state?.userReducers?.modeValue);
   const SampleDataaa = useSelector(state => state?.userReducers?.SetEnergy);
   useEffect(() => {
-    // console.log("harsheeheuhheddhe", SampleData);
-    // console.log("hhhhhh", imagesAllData);
-    // const mEmail = AsyncStorage.getItem('Authtoken');
-    // console.log(imagesAllData, "here is the token stored");
+
     SetStateValue(imagesAllData);
-    // SetStateMode(SampleData)
     console.log(imagesAllData,"CHARGING POWER");
   }, [imagesAllData]);
-  // const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-  // const getRandomNumber = (min, max) => {
-  //   return Math.floor(Math.random() * 100); // Generate a random number between 0 and 100
-  // };
+
   useEffect(() => {
-    // console.log("harsheeheuhheddhe", SampleData);
-    // console.log("hhhhhh", imagesAllData);
-    // const mEmail = AsyncStorage.getItem('Authtoken');
-    // console.log(imagesAllData, "here is the token stored");
-    // SetStateValue(imagesAllData);
+    
     SetStateMode(SampleData)
-    // const randomValue = getRandomNumber(0, 100);
   }, [SampleData]);
   useEffect(() => {
     console.log("harsheeheuhheddhe", SampleData);
     console.log("hhhhhh", imagesAllData);
-    // const mEmail = AsyncStorage.getItem('Authtoken');
-    // console.log(imagesAllData, "here is the token stored");
-    // SetStateValue(imagesAllData);
     SetStateEnergy(SampleDataaa)
-    // const randomValue = getRandomNumber(0, 100);
   }, [SampleDataaa]);
 
   const myStorage = {
@@ -101,7 +64,7 @@ export default function Home({ navigation }) {
 
   const Sample = (data) => {
     console.log(data, "hello");
-    console.log("hello here");
+    // console.log("hello here");
     if (button1 == "true") {
 
       setButton1("false")
@@ -113,6 +76,7 @@ export default function Home({ navigation }) {
       // SetStateValue("Charging Started")
     }
     setIsSwitchOn(!isSwitchOn);
+    
     dispatch(BalanceMode());
     // navigation.navigate('Load');
   };
@@ -175,8 +139,8 @@ export default function Home({ navigation }) {
     SetStateValue("Charging Stopped")
   };
   const Resolve = () => {
-    // navigation.navigate('LoginScreen');
-    // dispatch(ResolveMode());
+    // navigation.navigate('Test');
+    dispatch(ResolveMode());
     SetStateValue("Resolving Issue")
     setButton2("false")
       setButton1("false")
@@ -185,18 +149,18 @@ export default function Home({ navigation }) {
   };
 
 const clickheehpd=()=>{
-  console.log("hehehehehehe");
-  navigation.navigate('Load');
+  navigation.navigate('Datainput');
 }
 
   return (
+    
     <Background>      
       <TouchableOpacity  >
   <PersonIcon  clickheehpd={clickheehpd}/>
 </TouchableOpacity>
      
       
-      <Header style={styles.header}>{stateValue==""?"Charging Status":stateValue}</Header>
+<Header style={styles.header}>{stateValue==""?"Charging Status":stateValue}</Header>
       <SafeAreaView style={styles.container}>
 
         {/* <RNSpeedometer style={styles.labels} value={"23"} size={400} /> */}
@@ -236,8 +200,6 @@ const clickheehpd=()=>{
       </View>
       <Header></Header>
 
-<Button onPress={() => { changeValue(client);} } title="Press Me"/>
-      {/* <Header style={styles.header}>harsh</Header> */}
 
       <View style={styles.modesContainer}>
         <TouchableOpacity onPress={Sample} style={button1 == "true" ? styles.modeContainer : styles.modeContainer2}>

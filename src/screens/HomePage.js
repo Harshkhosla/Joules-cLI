@@ -30,7 +30,7 @@ export default function Dashboard({ navigation }) {
 
 
   const Clickk = () => {
-    navigation.navigate('Home');
+    
     // dispatch(Click(imagesAllData));
   };
   const handleBarCodeScanned = ({ type, data }) => {
@@ -74,11 +74,12 @@ export default function Dashboard({ navigation }) {
   
   // Check permissions and return the screens
   onSuccess = async (e) => {
-    console.log(e.data);
+    console.log(e.data ,'HEHEHEHE');
+    setData(e.data, "stored in state")
     const parsedWifiFields = {
       s: "",
       t: "",
-      p: "",
+      p: ""
     };
   
     const cleanedWifiString = e.data
@@ -102,7 +103,7 @@ export default function Dashboard({ navigation }) {
       {
         title: "password",
         value: parsedWifiFields.p,
-      },
+      }
     ];
     console.log(fields);
   
@@ -146,10 +147,11 @@ export default function Dashboard({ navigation }) {
         }
       });
   
-      WifiManager.connectToProtectedSSID(parsedWifiFields.s, parsedWifiFields.p, false).then(
+      WifiManager.connectToProtectedSSID(parsedWifiFields.s, parsedWifiFields.p,  false).then(
         () => {
           console.log(parsedWifiFields.s);
           console.warn("Connected successfully!");
+          navigation.navigate('UserDetails');
         },
         () => {
           console.warn("Connection failed!");
@@ -168,6 +170,7 @@ export default function Dashboard({ navigation }) {
     } else {
       // Permission denied
     }
+    navigation.navigate('UserDetails');
   };
   
   
@@ -193,18 +196,18 @@ export default function Dashboard({ navigation }) {
           }
         />
       </View>
-      <Text style={styles.maintext}>{text}</Text>
+      {/* <Text style={styles.maintext}>{text}</Text> */}
 
-      <Header>{Data}</Header>
+      {/* <Header>{Data}</Header> */}
       {/* {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} color='tomato' />} */}
       {/* <Button
         onPress={connetToWifi}
         title='Connect to Wifi'
         color='#841584'
       /> */}
-      <Button mode="contained" onPress={Clickk}>
+      {/* <Button mode="contained" onPress={Clickk}>
         Done
-      </Button>
+      </Button> */}
     </View>
   )
 }

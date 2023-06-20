@@ -1,10 +1,10 @@
 import React from 'react';
 import Header from '../components/Header';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { SafeAreaView, StyleSheet,  Alert } from 'react-native';
-import Button from '../components/Button'
+import { SafeAreaView, StyleSheet, Alert, Dimensions } from 'react-native';
+import Button from '../components/Button';
 import Background from '../components/Background';
-import TextInput from '../components/TextInput'
+import Loadinput from '../components/Loadinput';
 import BackButton from '../components/BackButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoad } from '../Redux/Action';
@@ -12,6 +12,10 @@ import Logo from '../components/Logo';
 import Loadcomponent from '../components/Loadcomponent';
 import EvCharging from '../components/EvCharging';
 import Loago1 from '../components/Loago1';
+import { Text, View, Image, Linking } from 'react-native';
+
+const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
 
 
 export default function Load({ navigation }) {
@@ -19,8 +23,8 @@ export default function Load({ navigation }) {
   // const UserName=useSelector(state=>state?.userReducers?.house_voltage)
   // console.log(UserName);
   const [text, onChangeText] = React.useState('');
+  console.log(text,"ldldld");
   const OnClick = () => {
-    console.log(text);
     const sample  = text / 0.22;
     // console.log(sample);
     const house_voltage=Math.floor(sample)
@@ -34,7 +38,7 @@ export default function Load({ navigation }) {
         { text: 'OK', onPress: () => console.log('OK Pressed') },
       ]) :
         dispatch(setLoad(house_voltage))
-      navigation.navigate('Eligible')
+      navigation.navigate('Datainput')
     }
   }
   // const data =async()=>{
@@ -43,57 +47,86 @@ export default function Load({ navigation }) {
   // }
   return (
     <Background>
-
       <BackButton goBack={navigation.goBack} />
-      <Loago1/>
-      <Loadcomponent/>
-      <Header  style={[styles.header, { marginTop: -170 }]}>
-      
-        What is the maximum electrical sanctioned load Of your home ?
+      <View style={styles.logoContainer}>
+        <Image
+          source={require('../assets/jouls.png')}
+          style={styles.logo}
+        />
+      </View>
+
+      <Header style={styles.header}>
+        What is the maximum electrical sanctioned load of your home ?
       </Header>
 
-      <TextInput
+      <Loadinput
         label="Enter electrical sanctioned load"
-        // style={styles.input}
-        onChangeText={onChangeText}
+        style={styles.input}
+        // onPress={OnClick}
+        onChange={onChangeText}
         value={text}
         keyboardType="numeric"
       />
-     
-      <Button
-        mode="contained"
-        styles={styles.button}
-        onPress={OnClick
-        }>
-        OK
-      </Button>
-      <EvCharging/>
+
+{/* <Button onPress={OnClick} title="Submit" /> */}
+
+      <View style={styles.imageContainer}>
+        <Image
+          source={require('../assets/charger1.png')}
+          style={styles.image}
+        />
+      </View>
+
+      <View style={styles.imageContainer}>
+        <Image
+          source={require('../assets/Untitled.png')}
+          style={styles.image1}
+        />
+      </View>
     </Background>
   )
 }
 const styles = StyleSheet.create({
-  input: {
-    height: 90,
-    width: 300,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    color: 'black',
-  
+  logoContainer: {
+    alignItems: 'center',
+    marginTop: screenHeight * 0.04,
   },
-  button: {
-    height: 40,
-    width: 200,
-    marginTop: 10,
-   
-  },sample:{
-    marginTop: 10,
-  },header: {
-    // fontSize: 20,
-    // fontWeight: 'bold',
-    fontSize: 21,
-    color: "#118615",
+  logo: {
+    width: screenWidth * 0.3,
+    height: screenHeight * 0.05,
+    marginTop: screenHeight * -0.02,
+  },
+  header: {
+    fontSize: 25,
     fontWeight: 'bold',
-    paddingVertical: 12,
+    color: 'black',
+    textAlign: 'center',
+    marginTop: screenHeight * 0.45,
+    // marginBottom: screenHeight * 0.03,
+  },
+  input: {
+    height: screenHeight * 0.065,
+    width: screenWidth * 0.8,
+    marginTop: screenHeight * 0.0002,
+    // borderWidth: 1,
+    // padding: 10,
+    color: 'black',
+  },
+  imageContainer: {
+    alignItems: 'center',
+    marginTop: screenHeight * 0.01,
+  },
+  image: {
+    width: screenWidth * 0.5,
+    height: screenWidth * 0.5,
+    marginTop: screenHeight * 0.006,
+    marginLeft: screenWidth * 0.49,
+  },
+  image1: {
+    width: screenWidth * 0.56,
+    height: screenWidth * 0.64,
+    marginTop: screenHeight * -0.92,
+    marginBottom: screenHeight * 0.52,
+    paddingBottom: screenHeight * 0.21,
   },
 });
