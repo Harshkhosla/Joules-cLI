@@ -62,7 +62,7 @@ export default function Load({ navigation }) {
       <Loadinput
         label="Enter electrical sanctioned load"
         style={styles.input}
-        // onPress={OnClick}
+        onPress={OnClick}
         onChange={onChangeText}
         value={text}
         keyboardType="numeric"

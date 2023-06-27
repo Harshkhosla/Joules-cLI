@@ -1,4 +1,4 @@
-import { SET_USER_EMAIL, SET_USER_NAME, SET_AUTH_TOKEN, SET_USER_CAR,SET_USER_FLAT,SET_MODE_VALUE,SET_STATE_VALUE,SET_USER_ENERGY } from './Action';
+import { SET_USER_EMAIL, SET_USER_NAME, SET_AUTH_TOKEN, SET_USER_CAR,SET_USER_FLAT,SET_MODE_VALUE,SET_STATE_VALUE,SET_USER_ENERGY,SET_USER_PRODUCTKEY,SET_USER_PRODUCT} from './Action';
 
 
 const initialState = {
@@ -10,7 +10,9 @@ const initialState = {
     Car:"",
     modeValue:"",
     StateValue:"",
-    SetEnergy:""
+    SetEnergy:"",
+    setProductkey:"",
+    Product:[],
 }
 
 function userReducers(state = initialState, action) {
@@ -19,6 +21,8 @@ function userReducers(state = initialState, action) {
         return { ...state, Total_Current: action.payload };
         case SET_USER_EMAIL:
           return { ...state, email: action.payload };
+        case SET_USER_PRODUCTKEY:
+          return { ...state, setProductkey: action.payload };
           case SET_USER_CAR:
         // console.log("harshsample",action);
         return { ...state, Battery_Pack: action.payload.Battery_Pack ,Car:action.payload.Car};
@@ -28,6 +32,9 @@ function userReducers(state = initialState, action) {
           case SET_MODE_VALUE:
         // console.log("harshsahgmple",action);
         return { ...state, modeValue: action.payload };
+          case SET_USER_PRODUCT:
+        // console.log("harshsahgmple",action);
+        return { ...state, Product: action.payload };
           case SET_STATE_VALUE:
         // console.log("harshsahgmple",action);
         return { ...state, StateValue: action.payload };

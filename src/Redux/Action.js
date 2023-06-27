@@ -3,6 +3,8 @@ import init from 'react_native_mqtt';
 // import { AsyncStorage } from 'react-native';
 // import PushNotification from 'react-native-push-notification';
 import { useState } from "react";
+// import { AsyncStorage } from "react-native";
+import { useDispatch, useSelector } from 'react-redux';
 export const SET_USER_NAME = "SET_USER_NAME";
 export const SET_USER_EMAIL = "SET_USER_EMAIL";
 export const SET_AUTH_TOKEN = "SET_AUTH_TOKEN";
@@ -11,12 +13,17 @@ export const SET_USER_FLAT = "SET_USER_FLAT";
 export const SET_MODE_VALUE = "SET_MODE_VALUE";
 export const SET_STATE_VALUE = "SET_STATE_VALUE";
 export const SET_USER_ENERGY = "SET_USER_ENERGY";
+export const SET_USER_PRODUCTKEY = "SET_USER_PRODUCTKEY";
+export const SET_USER_PRODUCT = "SET_USER_PRODUCT";
 import { Client, Message } from 'react-native-paho-mqtt';
 import Toast from 'react-native-toast-message';
 
+
 const [data34, setData34] = useState("")
 const [data123, setData123] = useState("")
-
+// const[ Porduct_Key  ,setPKey]=useState('')
+// const Porduct_Key  =AsyncStorage.getItem('Product_Key');
+// console.log(Porduct_Key,"poiuyuy");
 
 const topic1State = {
   messages: [],
@@ -30,6 +37,8 @@ const topic3State = {
 };
 
 
+
+// const Porduct_Key = useSelector(state => state?.userReducers?.Product)
 init({
   size: 10000,
   storageBackend: AsyncStorage,
@@ -56,6 +65,14 @@ export const setLoad = (house_voltage) => {
   return {
     type: SET_USER_NAME,
     payload: house_voltage
+  }
+}
+export const setProductKey = (Product_Key) => {
+  console.log(Product_Key);
+  // setPKey(Product_Key);
+  return {
+    type: SET_USER_PRODUCTKEY,
+    payload: Product_Key
   }
 }
 export const setCar = (user_Car) => {
@@ -318,14 +335,14 @@ export const Click = (user) => {
       .then(() => {
         // Once a connection has been made, make a subscription and send a message.
         console.log('onConnect');
-        return client.subscribe('Jouls_Ecotech_User_Notifications');
+        return client.subscribe(`${Porduct_Key}_Notifications`);
       })
       .then(() => {
         const sampleee = {
           "Charging Mode": "Balanced_Mode"
         }
         const message = new Message(JSON.stringify(user));
-        message.destinationName = 'Jouls_Ecotech_User_ID';
+        message.destinationName = `${Porduct_Key}_User_ID`;
         client.send(message);
       }).then(() => {
         onConnect()
@@ -475,7 +492,12 @@ export const setModeValue = (data) => {
 
 
 
-export const Clicked = (user) => {
+export const Clicked = (Porduct_Keye) => {
+  // console.log(Porduct_Keye);
+  // const Porduct_Key = Porduct_Keye?.Product_Key?.replaceAll('"', '');
+  console.log(Porduct_Key, "coming hear");
+  // console.log(Porduct_Key);;
+  // const Porduct_Key = await AsyncStorage.getItem('Product_Key');
   return (dispatch) => {
     const client = new Client({ uri:  'ws://34.93.62.206:9001/mqtt', clientId: "client" + Math.random().toString(36).substring(7), storage: myStorage });
     client.on('connectionLost', (responseObject) => {
@@ -494,11 +516,11 @@ export const Clicked = (user) => {
     client.connect()
       .then(() => {
         console.log('onConnect');
-        return client.subscribe('Jouls_Ecotech_User_Notifications');
+        return client.subscribe(`${Porduct_Key}_Notifications`);
       })
       .then(() => {
         const sample = new Message(JSON.stringify(user));
-        sample.destinationName = 'Jouls_Ecotech_User_Charging Modes';
+        sample.destinationName = `${Porduct_Key}_Charging Modes`;
         client.send(sample);
       }).then(() => {
         onConnect()
@@ -516,7 +538,8 @@ export const Clicked = (user) => {
 
 //----------------------------------------------------------------------------------//
 
-export const EcoMode = (user) => {
+export const EcoMode = (Porduct_Key) => {
+  
   return (dispatch) => {
     const client = new Client({ uri:  'ws://34.93.62.206:9001/mqtt', clientId: "client" + Math.random().toString(36).substring(7), storage: myStorage });
     client.on('connectionLost', (responseObject) => {
@@ -527,22 +550,22 @@ export const EcoMode = (user) => {
     const onConnect = () => {
 
       client.on('messageReceived', (message) => {
-        if (message.destinationName === 'Jouls_Ecotech_User_Notifications') {
+        if (message.destinationName === `${Porduct_Key}_Notifications`) {
           const updatedMessages = [...topic1State.messages, message.payloadString];
           topic1State.messages = updatedMessages;
           const sample = message.payloadString
           dispatch(setStateValue(message.payloadString));
-          console.log('Jouls_Ecotech_User_Notifications:', message.payloadString);
-        } else if (message.destinationName === 'Jouls_Ecotech_User_Output') {
+          console.log(`${Porduct_Key}_Notifications:`, message.payloadString);
+        } else if (message.destinationName === `${Porduct_Key}_Output`) {
           const updatedMessages = [...topic2State.messages, message.payloadString];
           topic2State.messages = updatedMessages;
           dispatch(setModeValue(message?.payloadString));
-          console.log('Jouls_Ecotech_User_Output:', message.payloadString);
-        } else if (message.destinationName === 'Jouls_Ecotech_User_Energy') {
+          console.log(`${Porduct_Key}_Output:`, message.payloadString);
+        } else if (message.destinationName === `${Porduct_Key}_Energy`) {
           const updatedMessages = [...topic3State.messages, message.payloadString];
           topic3State.messages = updatedMessages;
           dispatch(setEnergy(message?.payloadString));
-          console.log('Jouls_Ecotech_User_Energy:', message.payloadString);
+          console.log(`${Porduct_Key}_Energy:`, message.payloadString);
         }
       });
     }
@@ -551,9 +574,9 @@ export const EcoMode = (user) => {
       .then(() => {
         console.log('onConnect');
         return Promise.all([
-          client.subscribe('Jouls_Ecotech_User_Notifications'), // Topic 1
-          client.subscribe('Jouls_Ecotech_User_Output'), // Topic 2
-          client.subscribe('Jouls_Ecotech_User_Energy') // Topic 3
+          client.subscribe(`${Porduct_Key}_Notifications`), // Topic 1
+          client.subscribe(`${Porduct_Key}_Output`), // Topic 2
+          client.subscribe(`${Porduct_Key}_Energy`) // Topic 3
         ]);
       })
       .then(() => {
@@ -561,7 +584,7 @@ export const EcoMode = (user) => {
           "Charging Mode": "Eco_Mode"
         }
         const sample = new Message(JSON.stringify(sampleee));
-        sample.destinationName = 'Jouls_Ecotech_User_Charging Modes';
+        sample.destinationName = `${Porduct_Key}_Charging Modes`;
         client.send(sample);
       }).then(() => {
         onConnect()
@@ -574,9 +597,10 @@ export const EcoMode = (user) => {
   }
 }
 //---------------------------------------------------------------------------------------------------------------------------//
-export const ScheduleMode = (user) => {
+export const ScheduleMode = (Porduct_Keye,Porduct_Key) => {
   // debugger;
-  console.log(user, "coming hear");
+  // const Porduct_Key = Porduct_Keye?.Porduct_Key?.replaceAll('"', '');
+  console.log(Porduct_Key, "coming hear");
   return (dispatch) => {
 
     const client = new Client({ uri:  'ws://34.93.62.206:9001/mqtt', clientId: "client" + Math.random().toString(36).substring(7), storage: myStorage });
@@ -588,22 +612,22 @@ export const ScheduleMode = (user) => {
     const onConnect = () => {
 
       client.on('messageReceived', (message) => {
-        if (message.destinationName === 'Jouls_Ecotech_User_Notifications') {
+        if (message.destinationName === `${Porduct_Key}_Notifications`) {
           const updatedMessages = [...topic1State.messages, message.payloadString];
           topic1State.messages = updatedMessages;
           const sample = message.payloadString
           dispatch(setStateValue(message.payloadString));
-          console.log('Jouls_Ecotech_User_Notifications:', message.payloadString);
-        } else if (message.destinationName === 'Jouls_Ecotech_User_Output') {
+          console.log(`${Porduct_Key}_Notifications:`, message.payloadString);
+        } else if (message.destinationName === `${Porduct_Key}_Output`) {
           const updatedMessages = [...topic2State.messages, message.payloadString];
           topic2State.messages = updatedMessages;
           dispatch(setModeValue(message?.payloadString));
-          console.log('Jouls_Ecotech_User_Output:', message.payloadString);
-        } else if (message.destinationName === 'Jouls_Ecotech_User_Energy') {
+          console.log(`${Porduct_Key}_Output:`, message.payloadString);
+        } else if (message.destinationName === `${Porduct_Key}_Energy`) {
           const updatedMessages = [...topic3State.messages, message.payloadString];
           topic3State.messages = updatedMessages;
           dispatch(setEnergy(message?.payloadString));
-          console.log('Jouls_Ecotech_User_Energy:', message.payloadString);
+          console.log(`${Porduct_Key}_Energy:`, message.payloadString);
         }
       });
     }
@@ -613,14 +637,14 @@ export const ScheduleMode = (user) => {
         // Once a connection has been made, make a subscription and send a message.
         console.log('onConnect');
         return Promise.all([
-          client.subscribe('Jouls_Ecotech_User_Notifications'), // Topic 1
-          client.subscribe('Jouls_Ecotech_User_Output'), // Topic 2
-          client.subscribe('Jouls_Ecotech_User_Energy') // Topic 3
+          client.subscribe(`${Porduct_Key}_Notifications`), // Topic 1
+          client.subscribe(`${Porduct_Key}_Output`), // Topic 2
+          client.subscribe(`${Porduct_Key}_Energy`) // Topic 3
         ]);
       })
       .then(() => {
         const sample = new Message(JSON.stringify(user));
-        sample.destinationName = 'Jouls_Ecotech_User_Charging Modes';
+        sample.destinationName = `${Porduct_Key}_Charging Modes`;
         client.send(sample);
       }).then(() => {
         onConnect()
@@ -637,7 +661,9 @@ export const ScheduleMode = (user) => {
 
 //-------------------------------------------------------------------------------------------------------------------//
 
-export const BalanceMode = (user) => {
+export const BalanceMode = (Porduct_Key) => {
+  
+  console.log(Porduct_Key,"suiii");
   return (dispatch) => {
     const client = new Client({ uri:  'ws://34.93.62.206:9001/mqtt', clientId: "client" + Math.random().toString(36).substring(7), storage: myStorage });
     client.on('connectionLost', (responseObject) => {
@@ -648,21 +674,21 @@ export const BalanceMode = (user) => {
     const onConnect = () => {
 
       client.on('messageReceived', (message) => {
-        if (message.destinationName === 'Jouls_Ecotech_User_Notifications') {
+        if (message.destinationName === `${Porduct_Key}_Notifications`) {
           const updatedMessages = [...topic1State.messages, message.payloadString];
           topic1State.messages = updatedMessages;
           dispatch(setStateValue(message.payloadString));
-          console.log('Jouls_Ecotech_User_Notifications:', message.payloadString);
-        } else if (message.destinationName === 'Jouls_Ecotech_User_Output') {
+          console.log(`${Porduct_Key}_Notifications:`, message.payloadString);
+        } else if (message.destinationName === `${Porduct_Key}_Output`) {
           const updatedMessages = [...topic2State.messages, message.payloadString];
           topic2State.messages = updatedMessages;
           dispatch(setModeValue(message?.payloadString));
-          console.log('Jouls_Ecotech_User_Output:', message.payloadString);
-        } else if (message.destinationName === 'Jouls_Ecotech_User_Energy') {
+          console.log(`${Porduct_Key}_Output:`, message.payloadString);
+        } else if (message.destinationName === `${Porduct_Key}_Energy`) {
           const updatedMessages = [...topic3State.messages, message.payloadString];
           topic3State.messages = updatedMessages;
           dispatch(setEnergy(message?.payloadString));
-          console.log('Jouls_Ecotech_User_Energy:', message.payloadString);
+          console.log(`${Porduct_Key}_Energy:`, message.payloadString);
         }
       });
     }
@@ -671,9 +697,9 @@ export const BalanceMode = (user) => {
       .then(() => {
         console.log('onConnect');
         return Promise.all([
-          client.subscribe('Jouls_Ecotech_User_Notifications'), // Topic 1
-          client.subscribe('Jouls_Ecotech_User_Output'), // Topic 2
-          client.subscribe('Jouls_Ecotech_User_Energy') // Topic 3
+          client.subscribe(`${Porduct_Key}_Notifications`), // Topic 1
+          client.subscribe(`${Porduct_Key}_Output`), // Topic 2
+          client.subscribe(`${Porduct_Key}_Energy`) // Topic 3
         ]);
       })
       .then(() => {
@@ -681,7 +707,7 @@ export const BalanceMode = (user) => {
           "Charging Mode": "Balanced_Mode"
         }
         const sample = new Message(JSON.stringify(sampleee));
-        sample.destinationName = 'Jouls_Ecotech_User_Charging Modes';
+        sample.destinationName = `${Porduct_Key}_Charging Modes`;
         client.send(sample);
       }).then(() => {
         onConnect()
@@ -696,7 +722,7 @@ export const BalanceMode = (user) => {
 
 // =-------------------------------------------------------------------------------------Stop charging-------------------//
 
-export const StopChargingMode = (user) => {
+export const StopChargingMode = (Porduct_Key) => {
   return (dispatch) => {
 
     const client = new Client({ uri:  'ws://34.93.62.206:9001/mqtt', clientId: "client" + Math.random().toString(36).substring(7), storage: myStorage });
@@ -711,22 +737,22 @@ export const StopChargingMode = (user) => {
     const onConnect = () => {
 
       client.on('messageReceived', (message) => {
-        if (message.destinationName === 'Jouls_Ecotech_User_Notifications') {
+        if (message.destinationName === `${Porduct_Key}_Notifications`) {
           const updatedMessages = [...topic1State.messages, message.payloadString];
           topic1State.messages = updatedMessages;
           // const sample=message.payloadString
           dispatch(setStateValue(message.payloadString));
-          console.log('Jouls_Ecotech_User_Notifications:', message.payloadString);
-        } else if (message.destinationName === 'Jouls_Ecotech_User_Output') {
+          console.log(`${Porduct_Key}_Notifications:`, message.payloadString);
+        } else if (message.destinationName === `${Porduct_Key}_Output`) {
           const updatedMessages = [...topic2State.messages, message.payloadString];
           topic2State.messages = updatedMessages;
           dispatch(setModeValue(message?.payloadString));
-          console.log('Jouls_Ecotech_User_Output:', message.payloadString);
-        } else if (message.destinationName === 'Jouls_Ecotech_User_Energy') {
+          console.log(`${Porduct_Key}_Output:`, message.payloadString);
+        } else if (message.destinationName === `${Porduct_Key}_Energy`) {
           const updatedMessages = [...topic3State.messages, message.payloadString];
           topic3State.messages = updatedMessages;
           dispatch(setEnergy(message?.payloadString));
-          console.log('Jouls_Ecotech_User_Energy:', message.payloadString);
+          console.log(`${Porduct_Key}_Energy:`, message.payloadString);
         }
       });
     }
@@ -735,9 +761,9 @@ export const StopChargingMode = (user) => {
       .then(() => {
         console.log('onConnect');
         return Promise.all([
-          client.subscribe('Jouls_Ecotech_User_Notifications'), // Topic 1
-          client.subscribe('Jouls_Ecotech_User_Output'), // Topic 2
-          client.subscribe('Jouls_Ecotech_User_Energy') // Topic 3
+          client.subscribe(`${Porduct_Key}_Notifications`), // Topic 1
+          client.subscribe(`${Porduct_Key}_Output`), // Topic 2
+          client.subscribe(`${Porduct_Key}_Energy`) // Topic 3
         ]);
       })
       .then(() => {
@@ -745,7 +771,7 @@ export const StopChargingMode = (user) => {
           "Charging Mode": "Stop Charging"
         }
         const sample = new Message(JSON.stringify(sampleee));
-        sample.destinationName = 'Jouls_Ecotech_User_Charging Modes';
+        sample.destinationName = `${Porduct_Key}_Charging Modes`;
         client.send(sample);
       }).then(() => {
         onConnect()
@@ -767,7 +793,7 @@ export const StopChargingMode = (user) => {
 
 // ------------------------------------------------------------------- resolve the changes in the py code----------------------------.//
 
-export const ResolveMode = (user) => {
+export const ResolveMode = (Porduct_Key) => {
   return (dispatch) => {
     const client = new Client({ uri:  'ws://34.93.62.206:9001/mqtt', clientId: "client" + Math.random().toString(36).substring(7), storage: myStorage });
     // set event handlers
@@ -787,14 +813,14 @@ export const ResolveMode = (user) => {
     client.connect()
       .then(() => {
         console.log('onConnect');
-        return client.subscribe('Jouls_Ecotech_User_Notifications');
+        return client.subscribe(`${Porduct_Key}_Notifications`);
       })
       .then(() => {
         const sampleee = {
           "Charging Mode": "Resolve"
         }
         const sample = new Message(JSON.stringify(sampleee));
-        sample.destinationName = 'Jouls_Ecotech_User_Charging Modes';
+        sample.destinationName = `${Porduct_Key}_Charging Modes`;
         // client.send(message);
         client.send(sample);
       }).then(() => {
@@ -805,5 +831,78 @@ export const ResolveMode = (user) => {
           console.log('onConnectionLost:' + responseObject.errorMessage);
         }
       })
+  }
+}
+
+
+
+
+
+// ====-----------------------------------------------------------------updatinga--------------------------------------------------------//
+
+export const UpdatName = (name,_id) => {
+  return (dispatch) => {
+    AsyncStorage.getItem('Authtoken')
+      .then(token => {
+        fetch(`https://backend-production-e1c2.up.railway.app/api/auth/updatename/${_id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": token,
+          },
+          body: JSON.stringify({
+            name
+          })
+        })
+          .then(response => response.json())
+          .then(response => {
+            console.log(response);
+            // dispatch(setProductKey(response))
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+}
+
+export const notesDataforproduct = () => {
+  return (dispatch) => {
+    AsyncStorage.getItem('Authtoken')
+      .then(token => {
+        fetch(`https://backend-production-e1c2.up.railway.app/api/auth/getuser`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": token,
+          },
+        })
+          .then(response => response.json())
+          .then(response => {
+            dispatch(setProduct(response));
+            // setSettingsData(response);
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+}
+
+
+
+
+export const setProduct = (Product_Key) => {
+  console.log(Product_Key);
+  // setPKey(Product_Key);
+  return {
+    type: SET_USER_PRODUCT,
+    payload: Product_Key
   }
 }

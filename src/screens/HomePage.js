@@ -15,73 +15,28 @@ import { RNCamera } from 'react-native-camera';
 import WifiManager from "react-native-wifi-reborn";
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import {  ToastAndroid } from 'react-native';
-// import wifi from 'react-native-android-wifi';     
-
+import { UpdatName, setProductKey } from '../Redux/Action';
+import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Dashboard({ navigation }) {
+  const dispatch = useDispatch()
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [text, setText] = useState('Not yet scanned')
   const [Data, setData] = useState("HGHG");
-  // useEffect(()=>{
-  //   console.log(Data?.channel);
-  // },[sampleHit])
+  console.log(Data);
 
-
-
-  const Clickk = () => {
-    
-    // dispatch(Click(imagesAllData));
-  };
-  const handleBarCodeScanned = ({ type, data }) => {
-    // setScanned(true);
-    // setText(data)
-    // connetToWifi()
-    // alert( `barecode ${type}and data ${Linking.openURL(`${data}`)}has been done`)
-    // console.log('Type: ' + type + '\nData: ' + data)
-    //   onPressChangeWifi = async() => {
-    //     const checkpermission = await PermissionsAndroid.check(
-    //         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-    //     )
-    //     if(!checkpermission){
-    //         const granted = await PermissionsAndroid.request(
-    //             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    //             {
-    //                 title: 'Location permission is required for WiFi connections',
-    //                 message:
-    //                     'This app needs location permission as this is required  ' +
-    //                     'to scan for wifi networks.',
-    //                 buttonNegative: 'DENY',
-    //                 buttonPositive: 'ALLOW',
-    //             },
-    //         );
-    //         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-    //             // You can now use react-native-wifi-reborn
-    //             connectToWifi()
-    //         } else {
-    //             // Permission denied
-    //         }
-    //     }else{
-    //         connectToWifi()
-    //     }
-    // }
-
-
-  };
- 
-
-
-  
-  // Check permissions and return the screens
-  onSuccess = async (e) => {
+  const id = useSelector(state => state?.userReducers?.Product?._id)
+  const onSuccess = async (e) => {
     console.log(e.data ,'HEHEHEHE');
-    setData(e.data, "stored in state")
     const parsedWifiFields = {
       s: "",
       t: "",
-      p: ""
+      p: "",
+      h:"",
     };
-  
+    
     const cleanedWifiString = e.data
       .replace(/(\r\n\t|\n|\r\t)/gm, "")
       .replace("WIFI:", "")
@@ -91,6 +46,15 @@ export default function Dashboard({ navigation }) {
       const keyValue = value.split(":");
       parsedWifiFields[keyValue[0].toLocaleLowerCase()] = keyValue[1] || "";
     });
+
+    // console.log(parsedWifiFields.h,"kimmo");
+    // const ProductDetails = JSON.stringify(parsedWifiFields.h).replaceAll('"', '');
+    // if(parsedWifiFields.h!=""){
+     
+    // }
+      
+    dispatch(UpdatName(parsedWifiFields.h,id))
+
     let fields = [
       {
         title: "SSID",
@@ -143,7 +107,6 @@ export default function Dashboard({ navigation }) {
           });
         } else {
           console.log("not granted");
-          // Permission denied
         }
       });
   
@@ -165,23 +128,18 @@ export default function Dashboard({ navigation }) {
         () => {
           console.warn("Cannot get current SSID!");
         }
-        
       );
     } else {
       // Permission denied
     }
     navigation.navigate('UserDetails');
   };
-  
-  
 
   return (
     <View style={styles.container}>
       <View style={styles.barcodebox}>
         <QRCodeScanner
-        
-          onRead={this.onSuccess}
-          // flashMode={RNCamera.Constants.FlashMode.torch}
+          onRead={onSuccess}
           topContent={
             <Text style={styles.centerText}>
               Go to{' '}
@@ -196,21 +154,10 @@ export default function Dashboard({ navigation }) {
           }
         />
       </View>
-      {/* <Text style={styles.maintext}>{text}</Text> */}
-
-      {/* <Header>{Data}</Header> */}
-      {/* {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} color='tomato' />} */}
-      {/* <Button
-        onPress={connetToWifi}
-        title='Connect to Wifi'
-        color='#841584'
-      /> */}
-      {/* <Button mode="contained" onPress={Clickk}>
-        Done
-      </Button> */}
     </View>
   )
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -234,10 +181,6 @@ const styles = StyleSheet.create({
   },
   buttonTouchable: {
     padding: 16
-  },
-  maintext: {
-    fontSize: 16,
-    margin: 20,
   },
   barcodebox: {
     alignItems: 'center',
