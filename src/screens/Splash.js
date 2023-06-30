@@ -1,7 +1,7 @@
 import { View, Text, StatusBar } from 'react-native';
 import React, { useCallback } from 'react';
 import { useNavigation, useFocusEffect, useIsFocused } from '@react-navigation/native';
-import Logo from '../components/Logo';
+import Logo from '../components/Logo4';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Splash = () => {
@@ -12,9 +12,10 @@ const Splash = () => {
     useCallback(() => {
       const getData = async () => {
         const email = await AsyncStorage.getItem('Authtoken');
-        console.log(email);
+        const data = await AsyncStorage.getItem('Product_Key');
+        console.log(data);
         if (email !== null) {
-          navigation.navigate('Home');
+          navigation.navigate('Navbar');
         } else {
           navigation.navigate('RegisterScreen');
         }

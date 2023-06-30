@@ -1,23 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
-import { SafeAreaView, StyleSheet, TouchableOpacity, Image, TextInput, Alert } from 'react-native';
+import { SafeAreaView, StyleSheet, TouchableOpacity, Image, TextInput, Alert ,Dimensions} from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 import { Text, View, Linking } from 'react-native';
 import Button from '../components/Button';
 import Background from '../components/Background';
 import {  Menu, Divider, PaperProvider } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import { Click, Clicked, EcoMode, ScheduleMode, BalanceMode, ResolveMode,StopChargingMode, setStateValue } from '../Redux/Action';
+import { Click, Clicked, EcoMode, ScheduleMode, BalanceMode, ResolveMode,StopChargingMode, setStateValue, notesDataforproduct } from '../Redux/Action';
 import PersonIcon from '../components/PersonIcon';
+// import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
+const { width, height } = Dimensions.get('window');
+const aspectRatio = width / height;
 
-
+const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
 
 export default function Home({ navigation }) { 
   const dispatch = useDispatch(); 
   const [datas, setDatas] = useState("Connect your charger");
-  const [user, setUserData] = React.useState("Charging Mode: Eco_Mode");
+  const [user, setUserData] = React.useState("");
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);
   const [isSwitchOn1, setIsSwitchOn1] = React.useState(false);
   const [button1, setButton1] = React.useState("false");
@@ -28,11 +33,16 @@ export default function Home({ navigation }) {
   const [stateMode, SetStateMode] = useState("23")
   const [stateEnergy, SetStateEnergy] = useState("23")
 
+  const Porduct_Key = useSelector(state => state?.userReducers?.Product?.name)
+  console.log(Porduct_Key);
+
   setTimeout(function () {
     setDatas("Charger is connected");
   }, 5000);
 
-
+  // const Porduct_Key = AsyncStorage.getItem('Porduct_Key');
+  // console.log(Porduct_Key,"hululul");
+  
   const imagesAllData = useSelector(state => state?.userReducers?.StateValue);
   const SampleData = useSelector(state => state?.userReducers?.modeValue);
   const SampleDataaa = useSelector(state => state?.userReducers?.SetEnergy);
@@ -46,6 +56,10 @@ export default function Home({ navigation }) {
     
     SetStateMode(SampleData)
   }, [SampleData]);
+  // useEffect(() => {
+    
+  //   SetStateMode(SampleData)
+  // }, [SampleData]);
   useEffect(() => {
     console.log("harsheeheuhheddhe", SampleData);
     console.log("hhhhhh", imagesAllData);
@@ -61,12 +75,29 @@ export default function Home({ navigation }) {
       delete myStorage[key];
     },
   };
+  useEffect(()=>{
+    dispatch(notesDataforproduct())
+  },[])
+  useEffect(() => {
+    // Retrieve data from AsyncStorage when the component mounts
+    retrieveData();
+    
+  }, []);
+
+  const retrieveData = async () => {
+    try {
+      const storedData = await AsyncStorage.getItem('Product_Key');
+      if (storedData !== null) {
+        setUserData(storedData);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const Sample = (data) => {
     console.log(data, "hello");
-    // console.log("hello here");
     if (button1 == "true") {
-
       setButton1("false")
     } else {
       setButton1("true")
@@ -77,7 +108,7 @@ export default function Home({ navigation }) {
     }
     setIsSwitchOn(!isSwitchOn);
     
-    dispatch(BalanceMode());
+    dispatch(BalanceMode(Porduct_Key));
     // navigation.navigate('Load');
   };
   const Samplee = (data) => {
@@ -93,7 +124,7 @@ export default function Home({ navigation }) {
       setButton4("false")
     }
     setIsSwitchOn1(!isSwitchOn1);
-    dispatch(EcoMode());
+    dispatch(EcoMode(Porduct_Key));
   };
   const Sampleed = (data) => {
     console.log(data, "hello");
@@ -131,7 +162,7 @@ export default function Home({ navigation }) {
 
   const Clickk = () => {
     // navigation.navigate('Load');
-    dispatch(StopChargingMode());
+    dispatch(StopChargingMode(Porduct_Key));
     setButton2("false")
       setButton1("false")
       setButton3("false")
@@ -140,7 +171,8 @@ export default function Home({ navigation }) {
   };
   const Resolve = () => {
     // navigation.navigate('Test');
-    dispatch(ResolveMode());
+    // dispatch(Clicked(Porduct_Key))
+    dispatch(ResolveMode(Porduct_Key));
     SetStateValue("Resolving Issue")
     setButton2("false")
       setButton1("false")
@@ -149,14 +181,14 @@ export default function Home({ navigation }) {
   };
 
 const clickheehpd=()=>{
-  navigation.navigate('Datainput');
+  navigation.navigate('UserDetails');
 }
 
   return (
     
     <Background>      
       <TouchableOpacity  >
-  <PersonIcon  clickheehpd={clickheehpd}/>
+  {/* <PersonIcon clickheehpd={clickheehpd}/> */}
 </TouchableOpacity>
      
       
@@ -165,9 +197,8 @@ const clickheehpd=()=>{
 
         {/* <RNSpeedometer style={styles.labels} value={"23"} size={400} /> */}
 
-        <View style={styles.containerefdf}>
-         
-        </View>
+        {/* <View style={styles.containerefdf}> */}
+        {/* </View> */}
       </SafeAreaView>
 
 
@@ -266,12 +297,13 @@ const clickheehpd=()=>{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // marginTop: -300,
   },
   textSample: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 40,
-    marginBottom: 20,
+    marginTop: screenHeight * 0.03,
+    marginBottom: screenHeight * 0.02,
   },
   textContainer: {
     flex: 1,
@@ -285,7 +317,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     paddingVertical: 3,
-    top: -45 + getStatusBarHeight(),
+    top: -95 + getStatusBarHeight(),
   },
   containerr: {
     flexDirection: 'row',
@@ -302,24 +334,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#eee',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 8,
+    // marginBottom: screenHeight * 0.16,
+    
   },
   row: {
     flexDirection: 'row',
-    marginBottom: 10,
+    marginBottom: screenHeight * 0.04,
   },
   mode: {
-    marginLeft: 10,
-    paddingLeft: 90
+    marginLeft: screenWidth * 0.8,
+    paddingLeft: screenWidth * 0.8
   },
   lastMode: {
-    marginLeft: 0,
+    marginLeft: screenWidth * 0.8,
   },
   modesContainer: {
 
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
+    marginBottom: screenHeight * 0.01,
     // borderRadius: 10, // Add border radius for rounded corners
     // overflow: 'hidden',
   }, 
@@ -329,8 +362,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
     borderRadius: 25,
     overflow: 'hidden',
-    height: 120,
-    width: 90,
+    height: screenHeight * 0.17,
+    width: screenWidth * 0.22,
     marginHorizontal: 5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -341,8 +374,8 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
     borderRadius: 25,
     overflow: 'hidden',
-    height: 120,
-    width: 90,
+    height: screenHeight * 0.17,
+    width: screenWidth * 0.22,
     marginHorizontal: 5,
     borderWidth: 1,
     borderColor: "#118615",
@@ -359,7 +392,7 @@ const styles = StyleSheet.create({
   modeText: {
     color: 'white',
     fontSize: 14,
-    marginBottom: 0,
+    marginBottom: screenHeight * 0,
     textAlign: 'center',
     // paddingHorizontal: 10,
     lineHeight: 20,
@@ -375,53 +408,43 @@ const styles = StyleSheet.create({
   },
   modeStatus: {
     color: 'white',
-    marginTop: 10,
+    marginTop: screenHeight * 0.01,
     fontSize: 15,
   },
   modeStatus1: {
     color: 'black',
-    marginTop: 10,
+    marginTop: screenHeight * 0.01,
     fontSize: 15,
   },
   energy: {
-    marginBottom: 10,
-    marginTop:15
+    marginBottom: screenHeight * 0.01,
+    marginTop:screenHeight * 0.01
   }
 
-
-
-
-
-
-
-  , image: {
-    width: 20,
-    height: 150,
-    marginBottom: 90,
-    marginTop: 1,
-  }
-
+  // , image: {
+  //   width: screenWidth * 0.12,
+  //   height: screenHeight * 0.01,
+  //   marginBottom: screenHeight * 0.21,
+  //   marginTop: screenHeight * 0.21,
+  // }
   ,
-
-
-
-  containerefdf: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  // containerefdf: {
+  //   flex: 1,
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  // },
   gif: {
-    width: 200,
-    height: 150,
+    width: screenWidth * 0.02,
+    height: screenHeight * 0.01,
   }, 
   modeContainered: {
     flexDirection: 'column',
     // paddingHorizontal: 10,
-    marginLeft:20,
+    marginLeft:screenWidth * 0.07,
     // marginRight:20,
     // backgroundColor: 'green',
     // borderRadius: 25,
-    height:210,
+    height:screenHeight * 0.26,
     overflow: 'hidden',
     // height: 290,
     // width: 190,
@@ -432,7 +455,7 @@ const styles = StyleSheet.create({
   powerCon:{
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
+    marginBottom: screenHeight * 0.22,
   },
   sample:{
     color:"black",
@@ -440,13 +463,13 @@ const styles = StyleSheet.create({
   redButton:{
     borderRadius: 18,
     backgroundColor:"red",
-    marginVertical: 10,
+    marginVertical: screenHeight * 0.01,
     paddingVertical: 2,
-    width:230
+    width:screenHeight * 0.27
   }
-  ,Icon:{
-    position: 'absolute',
-    // top: 10 + getStatusBarHeight(),
-    right:-10,
-  }
+  // ,Icon:{
+  //   position: 'absolute',
+  //   // top: 10 + getStatusBarHeight(),
+  //   right:50,
+  // }
 });

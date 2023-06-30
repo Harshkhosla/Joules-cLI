@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Image ,Dimensions } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import Background from '../components/Background';
 import BackButton from '../components/BackButton';
@@ -12,6 +12,13 @@ import { setFlat } from '../Redux/Action';
 import { useDispatch, useSelector } from 'react-redux';
 import { Click } from '../Redux/Action';
 import EvCharging from '../components/EvCharging';
+import { StyleSheet } from 'react-native';
+
+
+
+const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
+
 
 export default function Flat({ navigation }) {
   const imagesAllData = useSelector((state) => state?.userReducers);
@@ -44,7 +51,20 @@ export default function Flat({ navigation }) {
           Done
         </Button>
         {/* <EvCharging /> */}
+        {/* <View>
+        <Image source={require('../assets/charger1.png')} style={styles.images} />
+      </View> */}
       </Background>
     </ScrollView>
   );
 }
+const styles = StyleSheet.create({
+
+
+image: {
+  width: screenWidth * 0.24,
+  height: screenHeight * 0.07,
+  top: screenHeight * 0.006,
+  alignSelf: 'center',
+},
+});

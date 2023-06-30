@@ -118,7 +118,7 @@ export default function UserDetails({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.changeButton1}
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.navigate('Navbar')}
         >
           <Text style={styles.changeButtonText}>Skip</Text>
         </TouchableOpacity>
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     fontSize: screenWidth * 0.05,
     fontWeight: 'bold',
     color: 'black',
-    marginTop: screenHeight * -0.13,
+    marginTop: screenHeight * 0.13,
     marginBottom: screenHeight * 0.06,
     top: screenHeight * -0.34,
   },

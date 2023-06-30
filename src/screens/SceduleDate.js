@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState , useEffect} from 'react'
 import Header from '../components/Header';
 import TextInput from '../components/TextInput'
 import { SafeAreaView, StyleSheet, Alert } from 'react-native';
@@ -15,6 +15,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import Loago1 from '../components/Loago1';
 import Logo from '../components/Logo';
 // import { Click } from '../Redux/Action';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 export default function SceduleDate({ navigation }) {
@@ -28,14 +29,20 @@ export default function SceduleDate({ navigation }) {
   const [storingTime,setStoringTime]=useState()
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [userr, setUserDataa] = React.useState({ field1: 'eco_mode_off', field2: "" });
+
+  const Porduct_Key = useSelector(state => state?.userReducers?.Product?.name)
+  console.log(Porduct_Key);
   
-  const [scheduleData, setScheduleData] = useState({  Time: null,"Charging Mode": "Slow_Mode", Current_Battery:"" });
+  const [scheduleData, setScheduleData] = React.useState({  Time: null,"Charging Mode": "Slow_Mode", Current_Battery:"" , Product_Key:``});
   console.log(scheduleData);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
 
+  useEffect(()=>{
+    setStoringTime(Porduct_Key)
+  },[])
   // const hideDatePicker = () => {
   //   setDatePickerVisibility(false);
   // };
@@ -84,11 +91,30 @@ export default function SceduleDate({ navigation }) {
     }));
     // console.log(userr);
   }
+  // useEffect(() => {
+  //   // Retrieve data from AsyncStorage when the component mounts
+  //   retrieveData();
+  // }, []);
 
+  // const retrieveData = async () => {
+  //   try {
+  //     const storedData = await AsyncStorage.getItem('Product_Key');
+  //     if (storedData !== null) {
+  //       // setUserData(storedData);
+  //       setScheduleData(prevState => ({
+  //         ...prevState,
+  //         Product_Key: storedData
+  //       }));
+  //       // console.log(storedData,"sampleretrive");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   const Clicke=()=>{
     // dispatch(ScheduleMode(scheduleData));
-    dispatch(Clicked(scheduleData));
-    navigation.navigate('Home')
+    dispatch(Clicked(scheduleData,Porduct_Key));
+    navigation.navigate('Navbar')
   }
 
   return (

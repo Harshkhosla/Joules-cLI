@@ -490,49 +490,47 @@ export const setModeValue = (data) => {
 
 // ---------------------------------------------------------------------------------//
 
-
-
-export const Clicked = (Porduct_Keye) => {
-  // console.log(Porduct_Keye);
-  // const Porduct_Key = Porduct_Keye?.Product_Key?.replaceAll('"', '');
-  console.log(Porduct_Key, "coming hear");
-  // console.log(Porduct_Key);;
-  // const Porduct_Key = await AsyncStorage.getItem('Product_Key');
+export const Clicked = (storingTime,Porduct_Key) => {
+  // const Porduct_Key = "D1xL5R7b0pNf6QmK2yP9"; // Replace with your desired value or uncomment the line to use `Product_Key` parameter
+console.log(storingTime,"this is this");
   return (dispatch) => {
-    const client = new Client({ uri:  'ws://34.93.62.206:9001/mqtt', clientId: "client" + Math.random().toString(36).substring(7), storage: myStorage });
+    const client = new Client({ uri: 'ws://34.93.62.206:9001/mqtt', clientId: "client" + Math.random().toString(36).substring(7), storage: myStorage });
+
     client.on('connectionLost', (responseObject) => {
       if (responseObject.errorCode !== 0) {
-        console.log(responseObject.errorMessage);
+        console.log('Connection lost:', responseObject.errorMessage);
       }
     });
-    const onConnect = () => {
 
+    const onConnect = () => {
       client.on('messageReceived', (message) => {
-        console.log(message?.payloadString);
+        console.log('Message received:', message?.payloadString);
         dispatch(setAuthtoken(message?.payloadString));
       });
-    }
+    };
 
     client.connect()
       .then(() => {
-        console.log('onConnect');
+        console.log('Connected');
         return client.subscribe(`${Porduct_Key}_Notifications`);
       })
       .then(() => {
-        const sample = new Message(JSON.stringify(user));
+        const sampleee = {
+          "Charging Mode": "Eco_Mode"
+        };
+        const sample = new Message(JSON.stringify(storingTime));
+        // const sample = new Message(JSON.stringify(sampleee));
         sample.destinationName = `${Porduct_Key}_Charging Modes`;
         client.send(sample);
-      }).then(() => {
-        onConnect()
       })
-      .catch((responseObject) => {
-        if (responseObject.errorCode !== 0) {
-          console.log('onConnectionLost:' + responseObject.errorMessage);
-        }
+      .then(() => {
+        onConnect();
       })
-  }
-}
-
+      .catch((error) => {
+        console.log('Error:', error);
+      });
+  };
+};
 
 
 
@@ -597,7 +595,7 @@ export const EcoMode = (Porduct_Key) => {
   }
 }
 //---------------------------------------------------------------------------------------------------------------------------//
-export const ScheduleMode = (Porduct_Keye,Porduct_Key) => {
+export const ScheduleMode = (scheduleData ,Porduct_Key) => {
   // debugger;
   // const Porduct_Key = Porduct_Keye?.Porduct_Key?.replaceAll('"', '');
   console.log(Porduct_Key, "coming hear");
@@ -643,7 +641,7 @@ export const ScheduleMode = (Porduct_Keye,Porduct_Key) => {
         ]);
       })
       .then(() => {
-        const sample = new Message(JSON.stringify(user));
+        const sample = new Message(JSON.stringify(scheduleData));
         sample.destinationName = `${Porduct_Key}_Charging Modes`;
         client.send(sample);
       }).then(() => {
