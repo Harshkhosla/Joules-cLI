@@ -56,7 +56,7 @@ export default function Load({ navigation }) {
 
       <Loadinput
         label="Enter electrical sanctioned load"
-        style={styles.input}
+        style={[styles.input, { color: 'black' }]}
         onChangeText={onChangeText}
         value={text}
         keyboardType="numeric"
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     marginTop: screenHeight * 0.0002,
     // borderWidth: 1,
     // padding: 10,
-    color: '#F2F3F8',
+    color: 'black',
   },
   imageContainer: {
     alignItems: 'center',

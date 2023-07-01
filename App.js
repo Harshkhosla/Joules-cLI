@@ -25,6 +25,8 @@ import {
   Datainput,
   Clamp,
   Navbar,
+  EditProfileScreen,
+  UserProfile,
 } from './src/screens';
 import Splash from './src/screens/Splash'
 import SceduleDate from './src/screens/SceduleDate'
@@ -66,6 +68,8 @@ export default function App() {
           <Stack.Screen name="Datainput" component={Datainput} />
           <Stack.Screen name="Clamp" component={Clamp} />
           <Stack.Screen name="Navbar" component={Navbar} />
+          <Stack.Screen name="UserProfile" component={UserProfile} />
+          {/* <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} /> */}
         </Stack.Navigator>
         {/* <Toast ref={(ref) => Toast.setRef(ref)} /> */}
       </NavigationContainer>

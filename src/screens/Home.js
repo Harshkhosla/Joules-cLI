@@ -181,14 +181,14 @@ export default function Home({ navigation }) {
   };
 
 const clickheehpd=()=>{
-  navigation.navigate('UserDetails');
+  navigation.navigate('Load');
 }
 
   return (
     
     <Background>      
       <TouchableOpacity  >
-  {/* <PersonIcon clickheehpd={clickheehpd}/> */}
+  <PersonIcon clickheehpd={clickheehpd}/>
 </TouchableOpacity>
      
       

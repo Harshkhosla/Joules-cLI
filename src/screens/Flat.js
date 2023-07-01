@@ -3,7 +3,7 @@ import { View, ScrollView, Image ,Dimensions } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import Background from '../components/Background';
 import BackButton from '../components/BackButton';
-import Logo from '../components/Logo';
+import Logo from '../components/Logo4';
 import Header from '../components/Header';
 import Button from '../components/Button';
 import { emailValidator } from '../helpers/emailValidator';
@@ -36,7 +36,8 @@ export default function Flat({ navigation }) {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <Background>
-        <Logo  />
+        {/* <Logo style={styles.logo} /> */}
+        <Image source={require('../assets/jouls.png')} style={styles.image1} /> 
         <BackButton goBack={navigation.goBack} />
         <Elegiblity  />
         <Header >Where do You live?</Header>
@@ -54,6 +55,7 @@ export default function Flat({ navigation }) {
         {/* <View>
         <Image source={require('../assets/charger1.png')} style={styles.images} />
       </View> */}
+       <EvCharging/>
       </Background>
     </ScrollView>
   );
@@ -67,4 +69,25 @@ image: {
   top: screenHeight * 0.006,
   alignSelf: 'center',
 },
+logo: {
+  width: screenWidth * 0.24,
+  height: screenHeight * 0.27,
+  alignSelf: 'center',
+  marginTop: screenHeight * 0.04,
+},
+
+image1: {
+  width: screenWidth * 0.25,
+  height: screenHeight * 0.07,
+  alignSelf: 'center',
+  marginTop: -screenHeight * 0.27,
+  marginBottom:screenHeight * 0.17,
+},
+// image11: {
+//   width: screenWidth * 0.25,
+//   height: screenHeight * 0.07,
+//   alignSelf: 'center',
+//   marginTop: -screenHeight * 0.4,
+//   marginBottom:screenHeight * 0.17,
+// },
 });

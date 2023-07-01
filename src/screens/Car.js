@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Header from '../components/Header';
-import { SafeAreaView, StyleSheet, TextInput, Alert } from 'react-native';
+import { SafeAreaView, StyleSheet, TextInput, Alert,Image, Dimensions } from 'react-native';
 import { Text, View, Linking } from 'react-native';
 import Button from '../components/Button'
 import Background from '../components/Background';
@@ -11,6 +11,9 @@ import { setCar } from '../Redux/Action';
 import EvCharging from '../components/EvCharging';
 import Logo from '../components/Logo';
 
+
+const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
 
 export default function Car({ navigation }) {
   const dispatch = useDispatch()
@@ -35,7 +38,15 @@ export default function Car({ navigation }) {
   return (
     <Background>
       <BackButton goBack={navigation.goBack} />
-      <Logo />
+      {/* <Logo /> */}
+      <Image
+          source={require('../assets/jouls.png')}
+          style={styles.logo1}
+        />
+      <Image
+          source={require('../assets/Group.png')}
+          style={styles.logo}
+        />
       <Header>
         Which Car Do you Own
       </Header>
@@ -57,3 +68,19 @@ export default function Car({ navigation }) {
     </Background>
   )
 }
+
+const styles = StyleSheet.create({
+
+  logo: {
+    width: screenWidth * 0.91,
+    height: screenHeight * 0.23,
+    marginTop: screenHeight * 0.102,
+    // top:screenHeight * 0.025,
+  },
+  logo1: {
+    width: screenWidth * 0.3,
+    height: screenHeight * 0.050,
+    marginTop: screenHeight * -0.27,
+    // top:screenHeight * 0.025,
+  },
+});

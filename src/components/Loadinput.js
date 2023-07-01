@@ -48,6 +48,7 @@ export default function NumericInput() {
         <TextInput
           style={styles.input}
           placeholder={isFocused ? '' : 'Enter electrical sanctioned load'}
+          placeholderTextColor="black"
           keyboardType="numeric"
           onFocus={handleFocus}
           onBlur={handleBlur}
@@ -55,7 +56,7 @@ export default function NumericInput() {
           value={value}
         />
         <TouchableOpacity style={styles.button} onPress={handleButtonClick}>
-          <Icon name="angle-right" size={30} color="grey" />
+          <Icon name="angle-right" size={30} color="black" />
         </TouchableOpacity>
       </View>
     </View>
@@ -64,11 +65,18 @@ export default function NumericInput() {
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 12,
+    marginVertical: 11,
     borderRadius: 25,
     overflow: 'hidden',
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
     width: 265,
+  },
+  labelContainer: {
+    paddingHorizontal: 8,
+  },
+  label: {
+    fontSize: 16,
+    color: 'black',
   },
   inputContainer: {
     flexDirection: 'row',
@@ -77,11 +85,12 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     height: 50,
-    fontSize: 16,
-    paddingHorizontal: 8, // Adjust the padding value as needed
+    fontSize: 13,
+    paddingHorizontal: 8,
     color: 'black',
   },
   button: {
-    marginLeft: 8, // Adjust the margin value as needed
+    // marginLeft: 9,
+    paddingHorizontal: 18,
   },
 });

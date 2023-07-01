@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity,TextInput,Dimensions,Text,Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, TextInput, Dimensions, Text, Image } from 'react-native';
 import Background from '../components/Background';
 import Header from '../components/Header';
 import Button from '../components/Button';
 import BackButton from '../components/BackButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { UpdatName, loginuser } from '../Redux/Action';
+import Logo from '../components/Logo';
 
 
 const screenWidth = Dimensions.get('window').width;
@@ -41,7 +42,7 @@ export default function UserDetails({ navigation }) {
   };
 
   const saveData = async (data) => {
-    
+
     const { name, password } = data;
 
     // Perform input validation
@@ -68,7 +69,7 @@ export default function UserDetails({ navigation }) {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-     hit();
+      hit();
       navigation.navigate('Home');
 
       const result = await response.text();
@@ -79,20 +80,21 @@ export default function UserDetails({ navigation }) {
     }
   };
 
-  const hit=()=>{
-    dispatch(UpdatName(Porduct_Key,id));
+  const hit = () => {
+    dispatch(UpdatName(Porduct_Key, id));
   }
   return (
     <Background>
-      <BackButton/>
-      <Header style={styles.header}>Change Wi-Fi</Header>
+      <BackButton />
+      <Logo></Logo>
+      <Header style={styles.header}>Add to your Wifi network</Header>
       <View>
         {/* <Image
           style={styles.image}
         /> */}
         <View >
           <Text style={styles.inputtext}>
-            Change the connected Wi-Fi credentials to which the charger is connected:
+          Connect the charger to your wifi network to control it remotely
           </Text>
         </View>
       </View>
@@ -100,21 +102,29 @@ export default function UserDetails({ navigation }) {
       <View>
         {/* Add circular rectangular TextInput components */}
         <View style={styles.circularInputContainer1}>
-          <TextInput style={styles.circularInput} placeholder="SSID"  name="name"
-        value={data.name}
-        onChangeText={(txt) => setData((prevData) => ({ ...prevData, name: txt }))}/>
+          <TextInput
+            style={styles.circularInput}
+            placeholder="SSID"
+            placeholderTextColor="#CCCCCC"
+            name="name"
+            value={data.name}
+            onChangeText={(txt) => setData((prevData) => ({ ...prevData, name: txt }))} />
         </View>
         <View style={styles.circularInputContainer2}>
-          <TextInput style={styles.circularInput} placeholder="Password"   name="password"
-        value={data.name}
-        onChangeText={(txt) => setData((prevData) => ({ ...prevData, password: txt }))}
-/>
+          <TextInput
+            style={styles.circularInput}
+            placeholder="Password"
+            placeholderTextColor="#CCCCCC"
+            name="password"
+            value={data.password}
+            onChangeText={(txt) => setData((prevData) => ({ ...prevData, password: txt }))}
+          />
         </View>
         <TouchableOpacity
           style={styles.changeButton}
           onPress={saveData}
         >
-          <Text style={styles.changeButtonText}>Change</Text>
+          <Text style={styles.changeButtonText}>Add</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.changeButton1}
@@ -138,7 +148,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: screenHeight * -0.5,
     top: screenHeight * 0.38,
-    
+
   },
   circularInputContainer2: {
     borderWidth: 3,
@@ -150,13 +160,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: screenHeight * 0.06,
     top: screenHeight * 0.37
-    
+
   },
   circularInput: {
     width: '80%',
     height: '80%',
     fontSize: 16,
-    
+    color:"black"
+
   },
   changeButton: {
     borderWidth: 2,
@@ -196,14 +207,12 @@ const styles = StyleSheet.create({
   },
   inputtext: {
     fontSize: screenWidth * 0.052,
-    marginTop: screenHeight * -0.8,
-    paddingTop: screenHeight * 0.7,
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: screenHeight * -0.32, // Adjust the marginTop value as per your requirement
+    textAlign: 'center', // Align the text in the center
     color: 'black',
     fontWeight: 'bold',
-    top: screenHeight * -0.185,
   },
+  
   header: {
     fontSize: screenWidth * 0.05,
     fontWeight: 'bold',
@@ -212,16 +221,18 @@ const styles = StyleSheet.create({
     marginBottom: screenHeight * 0.06,
     top: screenHeight * -0.34,
   },
-  
-  
+
+
+
   next: {
     borderRadius: screenWidth * 0.03,
     backgroundColor: 'green',
     marginTop: screenHeight * 0,
     width: screenWidth * 0.8,
   },
- 
-  
+
+
+
   overlayed: {
     position: 'absolute',
     top: screenHeight * 0.08,
@@ -231,7 +242,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
- 
 
- 
+
+
 });

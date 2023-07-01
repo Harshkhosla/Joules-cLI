@@ -18,6 +18,7 @@ import {  ToastAndroid } from 'react-native';
 import { UpdatName, setProductKey } from '../Redux/Action';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import EvCharging from '../components/EvCharging';
 
 export default function Dashboard({ navigation }) {
   const dispatch = useDispatch()
@@ -136,25 +137,32 @@ export default function Dashboard({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.barcodebox}>
-        <QRCodeScanner
-          onRead={onSuccess}
-          topContent={
-            <Text style={styles.centerText}>
-              Go to{' '}
-              <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on
-              your computer and scan the QR code.
-            </Text>
-          }
-          bottomContent={
-            <TouchableOpacity style={styles.buttonTouchable}>
-              <Text style={styles.buttonText}>OK. Got it!</Text>
-            </TouchableOpacity>
-          }
-        />
+    <Background>
+      <View style={styles.container}>
+        <Header>
+          Connect with your charger
+        </Header>
+        <View style={styles.gap} />
+        <View style={styles.barcodebox}>
+          <QRCodeScanner
+            onRead={onSuccess}
+            topContent={
+              <Text style={styles.centerText}>
+                Go to{' '}
+                <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on
+                your computer and scan the QR code.
+              </Text>
+            }
+            bottomContent={
+              <TouchableOpacity style={styles.buttonTouchable}>
+                <Text style={styles.buttonText}>OK. Got it!</Text>
+              </TouchableOpacity>
+            }
+          />
+        </View>
+        <EvCharging/>
       </View>
-    </View>
+    </Background>
   )
 }
 
@@ -163,7 +171,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start', // Align content at the top
+    paddingTop: 30, // Add top padding to create space between Header and the content
   },
   centerText: {
     flex: 1,
@@ -190,5 +199,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: 30,
     backgroundColor: 'tomato'
-  }
+  },
+  gap: {
+    height: 140, // Adjust the height as needed
+  },
 });

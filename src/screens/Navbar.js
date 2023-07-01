@@ -30,10 +30,10 @@ export default function Navbar({ navigation }) {
   // Scale Intially must be One...
   const scaleValue = useRef(new Animated.Value(1)).current;
   const closeButtonOffset = useRef(new Animated.Value(0)).current;
-  // const navigateToHome = () => {
-  //   setCurrentTab("Home");
-  //   navigation.navigate("Home"); // navigate to the Home screen
-  // };
+  const navigateToHome = () => {
+    // setCurrentTab("Home");
+    navigation.navigate("UserProfile"); // navigate to the Home screen
+  };
     return (
         <SafeAreaView style={styles.container}>
             <View style={{ justifyContent: 'flex-start', padding: 15 }}>
@@ -50,7 +50,7 @@ export default function Navbar({ navigation }) {
           marginTop: 20
         }}>Harsh Khosla</Text>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={navigateToHome}>
           <Text style={{
             marginTop: 6,
             color: 'white'
@@ -161,6 +161,8 @@ const TabButton = (currentTab, setCurrentTab, title, image) => {
       <TouchableOpacity onPress={() => {
         if (title == "LogOut") {
           // Do your Stuff...
+          localStorage.removeItem("Authtoken");
+          // navigation.navigate("/LoginScreen");
         } else {
           setCurrentTab(title)
         }
