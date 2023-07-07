@@ -15,8 +15,8 @@ import close from '../assets/close.png';
 // Photo
 import photo from '../assets/photo.jpg';
 import Home from './Home';
-// import { useNavigation } from '@react-navigation/native'; // import the useNavigation hook
-import { Clamp, Load, UserDetails } from '.';
+import { useNavigation } from '@react-navigation/native'; // import the useNavigation hook
+import { AddCharger, Clamp, EditProfileScreen, Load, UserDetails } from '.';
 
 export default function Navbar({ navigation }) {
     // const navigation = useNavigation()
@@ -61,10 +61,11 @@ export default function Navbar({ navigation }) {
             // Tab Bar Buttons....
           }
 
-          {TabButton(currentTab, setCurrentTab, "Home", home)}
-          {TabButton(currentTab, setCurrentTab, "Search", search)}
-          {TabButton(currentTab, setCurrentTab, "Notifications", notifications)}
-          {TabButton(currentTab, setCurrentTab, "Settings", settings)}
+          {TabButton(currentTab, setCurrentTab, "Home", home,navigation)}
+          {TabButton(currentTab, setCurrentTab, "My Devices", notifications,navigation)}
+          {TabButton(currentTab, setCurrentTab, "Notifications", search,navigation)}
+          {TabButton(currentTab, setCurrentTab, "Charger Settings", settings,navigation)}
+          {TabButton(currentTab, setCurrentTab, "Support", settings,navigation)}
 
         </View>
         <View>
@@ -79,12 +80,16 @@ export default function Navbar({ navigation }) {
         flexGrow: 1,
         backgroundColor: 'white',
         position: 'absolute',
-        top: 0,
+        // These are for other pages 
+        // top: 0,
+        // paddingVertical: 20,
         // bottom: 0,
+        // These are for the home page  
+        top: -10,
+        paddingVertical: 25,
         left: 0,
         right: 0,
         paddingHorizontal: 15,
-        paddingVertical: 20,
         borderRadius: showMenu ? 15 : 0,
         // Transforming View...
         transform: [
@@ -106,7 +111,7 @@ export default function Navbar({ navigation }) {
             // Do Actions Here....
             // Scaling the view...
             Animated.timing(scaleValue, {
-              toValue: showMenu ? 1 : 0.88,
+              toValue: showMenu ? 1 : 0.89,
               duration: 300,
               useNativeDriver: true
             })
@@ -141,8 +146,8 @@ export default function Navbar({ navigation }) {
 
           </TouchableOpacity>
 {currentTab=="Home"?<Home navigation={navigation}/>:console.log("hello")}
-{/* {currentTab=="Search"?<UserDetails/>:console.log("hello")}
-{currentTab=="Notifications"?<Load/>:console.log("hello")} */}
+{/* {currentTab=="Search"?<EditProfileScreen/>:console.log("hello")} */}
+ {currentTab=="My Devices"?<AddCharger navigation={navigation}/>:console.log("hello")} 
           
           {/* <Home></Home> */}
 
@@ -155,14 +160,15 @@ export default function Navbar({ navigation }) {
     )
 }
 
-const TabButton = (currentTab, setCurrentTab, title, image) => {
+const TabButton = ( currentTab, setCurrentTab, title, image) => {
+  const navigation = useNavigation()
     return (
   
       <TouchableOpacity onPress={() => {
         if (title == "LogOut") {
           // Do your Stuff...
           localStorage.removeItem("Authtoken");
-          // navigation.navigate("/LoginScreen");
+          navigation.navigate("LoginScreen");
         } else {
           setCurrentTab(title)
         }
@@ -198,7 +204,7 @@ const TabButton = (currentTab, setCurrentTab, title, image) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#DAF',
+        backgroundColor: 'rgba(17, 134, 21, 0.7)',
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
     },

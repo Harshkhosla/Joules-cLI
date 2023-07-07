@@ -68,7 +68,7 @@ export default function LoginScreen({ navigation }) {
     async function fetchData() {
       const mEmail = await AsyncStorage.getItem('Authtoken');
       if (!mEmail == "") {
-        navigation.navigate('Home');
+        navigation.navigate('Navbar');
       }
     }
     fetchData();

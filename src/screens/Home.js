@@ -297,12 +297,12 @@ const clickheehpd=()=>{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // marginTop: -300,
+    justifyContent: 'center',
   },
   textSample: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: screenHeight * 0.03,
+    marginTop: screenHeight * 0.06,
     marginBottom: screenHeight * 0.02,
   },
   textContainer: {
@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     paddingVertical: 3,
-    top: -95 + getStatusBarHeight(),
+    top: -93 + getStatusBarHeight(),
   },
   containerr: {
     flexDirection: 'row',
@@ -352,7 +352,7 @@ const styles = StyleSheet.create({
 
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: screenHeight * 0.01,
+    marginBottom: -screenHeight * 0.03,
     // borderRadius: 10, // Add border radius for rounded corners
     // overflow: 'hidden',
   }, 
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
   modeText: {
     color: 'white',
     fontSize: 14,
-    marginBottom: screenHeight * 0,
+    marginBottom: 0,
     textAlign: 'center',
     // paddingHorizontal: 10,
     lineHeight: 20,
@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
   modeText1: {
     color: 'black',
     fontSize: 14,
-    marginBottom: 0,
+    marginBottom:0,
     textAlign: 'center',
 
     // paddingHorizontal: 10,
@@ -463,9 +463,10 @@ const styles = StyleSheet.create({
   redButton:{
     borderRadius: 18,
     backgroundColor:"red",
-    marginVertical: screenHeight * 0.01,
+    marginVertical: screenHeight * 0.03,
     paddingVertical: 2,
-    width:screenHeight * 0.27
+    width:screenHeight * 0.27,
+    // padding: 40,
   }
   // ,Icon:{
   //   position: 'absolute',

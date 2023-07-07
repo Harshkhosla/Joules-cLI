@@ -27,6 +27,7 @@ import {
   Navbar,
   EditProfileScreen,
   UserProfile,
+  AddCharger,
 } from './src/screens';
 import Splash from './src/screens/Splash'
 import SceduleDate from './src/screens/SceduleDate'
@@ -69,7 +70,8 @@ export default function App() {
           <Stack.Screen name="Clamp" component={Clamp} />
           <Stack.Screen name="Navbar" component={Navbar} />
           <Stack.Screen name="UserProfile" component={UserProfile} />
-          {/* <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} /> */}
+          <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
+          <Stack.Screen name="AddCharger" component={AddCharger} />
         </Stack.Navigator>
         {/* <Toast ref={(ref) => Toast.setRef(ref)} /> */}
       </NavigationContainer>

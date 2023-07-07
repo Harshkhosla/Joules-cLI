@@ -451,7 +451,7 @@ export const signItUp = (field, navigation) => {
       if (!data?.success) {
         throw new Error(data.error);
       }
-      navigation.navigate('Home');
+      navigation.navigate('Navbar');
     } catch (err) {
       Toast.show({
         type: 'success',
@@ -837,35 +837,37 @@ export const ResolveMode = (Porduct_Key) => {
 
 
 // ====-----------------------------------------------------------------updatinga--------------------------------------------------------//
-
-export const UpdatName = (name,_id) => {
+export const UpdatName = (name, _id) => {
   return (dispatch) => {
     AsyncStorage.getItem('Authtoken')
       .then(token => {
-        fetch(`https://backend-production-e1c2.up.railway.app/api/auth/updatename/${_id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": token,
-          },
-          body: JSON.stringify({
-            name
+        if (_id !== null) { // Check if _id is not null
+          fetch(`https://backend-production-e1c2.up.railway.app/api/auth/updatename/${_id}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": token,
+            },
+            body: JSON.stringify({
+              name
+            })
           })
-        })
-          .then(response => response.json())
-          .then(response => {
-            console.log(response);
-            // dispatch(setProductKey(response))
-          })
-          .catch(error => {
-            console.error(error);
-          });
+            .then(response => response.json())
+            .then(response => {
+              console.log(response);
+              // dispatch(setProductKey(response))
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        }
       })
       .catch(error => {
         console.error(error);
       });
   }
 }
+
 
 export const notesDataforproduct = () => {
   return (dispatch) => {

@@ -28,7 +28,8 @@ export default function UserProfile({ navigation }) {
   const email = useSelector(state => state?.userReducers?.Product?.email)
   console.log(email);
 const clicked=()=>{
-  // navigation.navigate('UserProfile');
+  console.log("juhbu");
+  navigation.navigate('EditProfileScreen');
 }
   return (
     <SafeAreaView style={styles.container}>
@@ -85,7 +86,7 @@ const clicked=()=>{
           <Text style={styles.menuItemText}>Your Favorites</Text>
         </View>
       </TouchableRipple>
-      <TouchableRipple onPress={() => {}}>
+      <TouchableRipple onPress={()=>{}}>
         <View style={styles.menuItem}>
         <Image source={settings} style={{ tintColor: '#FF6347', width: 25, height: 25 }} size={25} />
           <Text style={styles.menuItemText}>Payment</Text>
