@@ -16,34 +16,58 @@ import close from '../assets/close.png';
 import photo from '../assets/photo.jpg';
 import Home from './Home';
 import { useNavigation } from '@react-navigation/native'; // import the useNavigation hook
-import { AddCharger, Clamp, EditProfileScreen, Load, UserDetails } from '.';
+import { AddCharger, ChargerSettings, Clamp, EditProfileScreen, Load, Notifications, UserDetails } from '.';
 
 export default function Navbar({ navigation }) {
-    // const navigation = useNavigation()
-    const [currentTab, setCurrentTab] = useState("Home");
-     // To get the curretn Status of menu ...
+  const [currentTab, setCurrentTab] = useState("Home");
+  // To get the current Status of the menu ...
   const [showMenu, setShowMenu] = useState(false);
 
   // Animated Properties...
-
   const offsetValue = useRef(new Animated.Value(0)).current;
   // Scale Intially must be One...
   const scaleValue = useRef(new Animated.Value(1)).current;
   const closeButtonOffset = useRef(new Animated.Value(0)).current;
+
+  const hello = () => {
+    console.log("hello");
+    // Do Actions Here....
+    // Scaling the view...
+    Animated.timing(scaleValue, {
+      toValue: showMenu ? 1 : 0.89,
+      duration: 300,
+      useNativeDriver: true
+    }).start();
+
+    Animated.timing(offsetValue, {
+      toValue: showMenu ? 0 : 230, // Your Random Value...
+      duration: 300,
+      useNativeDriver: true
+    }).start();
+
+    Animated.timing(closeButtonOffset, {
+      toValue: !showMenu ? -30 : 0, // Your Random Value...
+      duration: 300,
+      useNativeDriver: true
+    }).start();
+
+    setShowMenu(!showMenu);
+  };
+
   const navigateToHome = () => {
-    // setCurrentTab("Home");
     navigation.navigate("UserProfile"); // navigate to the Home screen
   };
-    return (
-        <SafeAreaView style={styles.container}>
-            <View style={{ justifyContent: 'flex-start', padding: 15 }}>
-                <Image source={profile} style={{
-                    width: 60,
-                    height: 60,
-                    borderRadius: 10,
-                    marginTop: 8
-                }}></Image>
-                <Text style={{
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={{ justifyContent: 'flex-start', padding: 15 }}>
+        <Image source={profile} style={{
+          width: 60,
+          height: 60,
+          borderRadius: 10,
+          marginTop: 8
+        }} />
+        <Text style={{
           fontSize: 20,
           fontWeight: 'bold',
           color: 'white',
@@ -60,152 +84,106 @@ export default function Navbar({ navigation }) {
           {
             // Tab Bar Buttons....
           }
-
-          {TabButton(currentTab, setCurrentTab, "Home", home,navigation)}
-          {TabButton(currentTab, setCurrentTab, "My Devices", notifications,navigation)}
-          {TabButton(currentTab, setCurrentTab, "Notifications", search,navigation)}
-          {TabButton(currentTab, setCurrentTab, "Charger Settings", settings,navigation)}
-          {TabButton(currentTab, setCurrentTab, "Support", settings,navigation)}
-
+          <TabButton currentTab={currentTab} setCurrentTab={setCurrentTab} title="Home" image={home} navigation={navigation} onPress={hello} />
+          <TabButton currentTab={currentTab} setCurrentTab={setCurrentTab} title="My Devices" image={notifications} navigation={navigation} onPress={hello} />
+          <TabButton currentTab={currentTab} setCurrentTab={setCurrentTab} title="Notifications" image={search} navigation={navigation} onPress={hello} />
+          <TabButton currentTab={currentTab} setCurrentTab={setCurrentTab} title="Charger Settings" image={settings} navigation={navigation}  onPress={hello} />
+          <TabButton currentTab={currentTab} setCurrentTab={setCurrentTab} title="Support" image={settings} navigation={navigation} onPress={hello} />
+          <TabButton currentTab={currentTab} setCurrentTab={setCurrentTab} title="Analytics" image={settings} navigation={navigation} onPress={hello} />
         </View>
         <View>
-          {TabButton(currentTab, setCurrentTab, "LogOut", logout)}
+          <TabButton currentTab={currentTab} setCurrentTab={setCurrentTab} title="LogOut" image={logout} />
         </View>
-            </View>
-            {
-        // Over lay View...
+      </View>
+      {
+        // Overlay View...
       }
-
       <Animated.View style={{
-        flexGrow: 1,
         backgroundColor: 'white',
         position: 'absolute',
-        // These are for other pages 
-        // top: 0,
-        // paddingVertical: 20,
-        // bottom: 0,
-        // These are for the home page  
         top: -10,
         paddingVertical: 25,
         left: 0,
         right: 0,
         paddingHorizontal: 15,
         borderRadius: showMenu ? 15 : 0,
-        // Transforming View...
         transform: [
           { scale: scaleValue },
           { translateX: offsetValue }
         ]
       }}>
-
         {
           // Menu Button...
         }
-
         <Animated.View style={{
           transform: [{
             translateY: closeButtonOffset
-          }]
+          }],
+          // justifyContent: 'flex-end'
         }}>
-          <TouchableOpacity onPress={() => {
-            // Do Actions Here....
-            // Scaling the view...
-            Animated.timing(scaleValue, {
-              toValue: showMenu ? 1 : 0.89,
-              duration: 300,
-              useNativeDriver: true
-            })
-              .start()
-
-            Animated.timing(offsetValue, {
-              // YOur Random Value...
-              toValue: showMenu ? 0 : 230,
-              duration: 300,
-              useNativeDriver: true
-            })
-              .start()
-
-            Animated.timing(closeButtonOffset, {
-              // YOur Random Value...
-              toValue: !showMenu ? -30 : 0,
-              duration: 300,
-              useNativeDriver: true
-            })
-              .start()
-
-            setShowMenu(!showMenu);
-          }}>
-
+          <TouchableOpacity onPress={hello}>
             <Image source={showMenu ? close : menu} style={{
               width: 20,
               height: 20,
               tintColor: 'black',
               marginTop: 40,
-
-            }}></Image>
-
+            }} />
           </TouchableOpacity>
-{currentTab=="Home"?<Home navigation={navigation}/>:console.log("hello")}
-{/* {currentTab=="Search"?<EditProfileScreen/>:console.log("hello")} */}
- {currentTab=="My Devices"?<AddCharger navigation={navigation}/>:console.log("hello")} 
-          
-          {/* <Home></Home> */}
-
-       
-
+          {currentTab === "Home" ? <Home navigation={navigation} /> : null}
+          {currentTab === "My Devices" ? <AddCharger navigation={navigation} /> : null}
+          {currentTab === "Charger Settings" ? <ChargerSettings navigation={navigation} /> : null}
+          {currentTab === "Notifications" ? <Notifications navigation={navigation} /> : null}
         </Animated.View>
-
       </Animated.View>
-        </SafeAreaView>
-    )
+    </SafeAreaView>
+  );
 }
 
-const TabButton = ( currentTab, setCurrentTab, title, image) => {
-  const navigation = useNavigation()
-    return (
-  
-      <TouchableOpacity onPress={() => {
-        if (title == "LogOut") {
-          // Do your Stuff...
-          localStorage.removeItem("Authtoken");
-          navigation.navigate("LoginScreen");
-        } else {
-          setCurrentTab(title)
+const TabButton = ({ currentTab, setCurrentTab, title, image, navigation, onPress }) => {
+  return (
+    <TouchableOpacity onPress={() => {
+      if (title === "LogOut") {
+        localStorage.removeItem("Authtoken");
+        navigation.navigate("LoginScreen");
+      } else {
+        setCurrentTab(title);
+        if (onPress) {
+          onPress(); // Call the onPress function if it exists
         }
+      }
+    }}>
+      <View style={{
+        flexDirection: "row",
+        alignItems: 'center',
+        paddingVertical: 8,
+        backgroundColor: currentTab === title ? 'white' : 'transparent',
+        paddingLeft: 13,
+        paddingRight: 35,
+        borderRadius: 8,
+        marginTop: 15
       }}>
-        <View style={{
-          flexDirection: "row",
-          alignItems: 'center',
-          paddingVertical: 8,
-          backgroundColor: currentTab == title ? 'white' : 'transparent',
-          paddingLeft: 13,
-          paddingRight: 35,
-          borderRadius: 8,
-          marginTop: 15
-        }}>
-  
-          <Image source={image} style={{
-            width: 25, height: 25,
-            tintColor: currentTab == title ? "#5359D1" : "white"
-          }}></Image>
-  
-          <Text style={{
-            fontSize: 15,
-            fontWeight: 'bold',
-            paddingLeft: 15,
-            color: currentTab == title ? "#5359D1" : "white"
-          }}>{title}</Text>
-  
-        </View>
-      </TouchableOpacity>
-    );
-  }
+        <Image source={image} style={{
+          width: 25,
+          height: 25,
+          tintColor: currentTab === title ? "#5359D1" : "white"
+        }} />
+        <Text style={{
+          fontSize: 15,
+          fontWeight: 'bold',
+          paddingLeft: 15,
+          color: currentTab === title ? "#5359D1" : "white"
+        }}>{title}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'rgba(17, 134, 21, 0.7)',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-    },
+  container: {
+    flex: 1,
+    backgroundColor: 'rgba(17, 134, 21, 0.7)',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+  },
 });

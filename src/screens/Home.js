@@ -181,7 +181,7 @@ export default function Home({ navigation }) {
   };
 
 const clickheehpd=()=>{
-  navigation.navigate('Load');
+  navigation.navigate('LoginScreen');
 }
 
   return (
@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     paddingVertical: 3,
-    top: -93 + getStatusBarHeight(),
+    top: -80 + getStatusBarHeight(),
   },
   containerr: {
     flexDirection: 'row',

@@ -8,71 +8,29 @@ import Button from '../components/Button';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const AddCharger = ({ navigation }) => {
-  const [data, setData] = useState(false);
-
-  const [charger, setCharger] = useState("");
-  const press = () => {
-    setData(false);
-    setCharger("");
-  };
-
-  const sample = () => {
-    setData(true);
-    setCharger("HDHDD");
-  };
-
-  const notAdded = (<>
-      <Text style={styles.title}>ADD A charger to control</Text>
-    <View style={styles.container}>
-      {data ? (
-          <Card.Title
+const Notifications = ({ navigation }) => {
+ 
+  return (
+    <>
+    <Text style={styles.title}>Notifications</Text>
+        <View style={styles.container}>
+    
+        {/* <Card.Title
           title="Card Title"
           subtitle="Card Subtitle"
           left={(props) => <Avatar.Icon {...props} icon="folder" />}
-          right={(props) => <IconButton {...props} icon="dots-vertical" onPress={sample} />}
-        />
-      ) : (
-          <ImageBackground source={close1} style={styles.backgroundImage}>
-          {/* Content inside the background image */}
-        </ImageBackground>
-      )}
+          right={(props) => <IconButton {...props} icon="dots-vertical" />}
+        /> */}
+   
+       
+     
 
-      <TouchableOpacity style={styles.addButton} onPress={press}>
-        <Button mode="contained" onPress={sample}>
-          ADD
-        </Button>
-      </TouchableOpacity>
-    </View>
-      </>
-  );
-
-  const Added = (
-    <View style={styles.container}>
-      {data ? (
-        <Card.Title
-          title="Card Title"
-          subtitle="Card Subtitle"
-          left={(props) => <Avatar.Icon {...props} icon="folder" />}
-          right={(props) => <IconButton {...props} icon="dots-vertical" onPress={sample} />}
-        />
-      ) : (
-        <ImageBackground source={close1} style={styles.backgroundImage}>
-          {/* Content inside the background image */}
-        </ImageBackground>
-      )}
-
-      <TouchableOpacity style={styles.addButton} onPress={press}>
+      {/* <TouchableOpacity style={styles.addButton} >
         <View style={styles.iconContainer}>
           <Image source={close} style={styles.icon} />
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
-  );
-
-  return (
-    <>
-      {charger == "" ? notAdded : Added}
     </>
   );
 };
@@ -107,7 +65,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   backgroundImage: {
-    width: screenWidth * 0.91,
+    width: screenWidth * 0.861,
     height: screenHeight * 0.56,
     marginTop: screenHeight * -0.302,
     justifyContent: 'center',
@@ -116,9 +74,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginTop: 20,
+    marginTop: -0,
     textAlign: 'center',
+    backgroundColor:"green"
   },
 });
 
-export default AddCharger;
+export default Notifications;

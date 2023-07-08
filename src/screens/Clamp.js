@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import { Text, View, Image, Linking, Dimensions,TextInput } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaView, StyleSheet, Alert } from 'react-native';
-import Button from '../components/Button';
+import Clampinput from '../components/Clampinput';
 import Background from '../components/Background';
 // import TextInput from '../components/TextInput';
 import BackButton from '../components/BackButton';
@@ -12,7 +12,7 @@ import { setName } from '../Redux/Action';
 import Logo from '../components/Logo';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer'
 import Loadcomponent from '../components/Loadcomponent';
-
+import Charger from '../components/Charger';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
@@ -20,54 +20,36 @@ export default function clamp({ navigation }) {
   const dispatch = useDispatch();
   const [text, onChangeText] = React.useState('');
 
-  const OnClick = () => {
-    const sample = text / 0.22;
-    const house_voltage = Math.floor(sample);
-
-    if (text < '10') {
-      Alert.alert('Alert Title', 'Connect to the nearest Discom', [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
-      ]);
-    } else {
-      dispatch(setName(house_voltage));
-      navigation.navigate('Eligible');
-    }
-  };
-
   return (
     <Background>
-      <View>
-        <Image source={require('../assets/jouls.png')} style={styles.image} />
+      
+      <View style={styles.image} >
+      <Logo/>
       </View>
-      <View>
-        <Image source={require('../assets/charger1.png')} style={styles.images} />
-      </View>
-      {/* <BackButton goBack={navigation.goBack} /> */}
+      <View style = {styles.charger}>
+     <Charger/> 
+     </View> 
 
-
-      <Header style={styles.header}>What is the calibrated value from clamp meter:</Header>
+      <Header style={styles.header}>{'\  '}What is the calibrated value from clamp meter</Header>
+      <View style={styles.container}>
       <CountdownCircleTimer
     isPlaying
     duration={60}
-    colors={['#004777', '#F7B801', '#A30000', '#A30000']}
+    colors={['#118615', '#F7B801', '#A30000', '#A30000']}
     colorsTime={[40, 30, 20, 0]}
   >
     {({ remainingTime }) => <Text style={styles.inpute}>{remainingTime}</Text>}
   </CountdownCircleTimer>
-
-      <TextInput
-        label="Enter value"
-        style={styles.input}
+  </View>
+      <View style={styles.input}>
+       <Clampinput
+        label="Enter Value"
+        
         onChangeText={onChangeText}
         value={text}
         keyboardType="numeric"
       />
-      
+      </View>
       {/* Add a button or any other components here */}
       
     </Background>
@@ -75,12 +57,25 @@ export default function clamp({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    top: screenHeight * -0.4,
+  },
+  charger:{
+    width: screenWidth * 0.57,
+    height: screenWidth * 0.57,
+    top: screenHeight * 0.3,
+    right: screenWidth * 0.0,
+    alignSelf: 'center',
+  },
   input: {
-    height: screenHeight * 0.058,
-    width: screenWidth * 0.8,
+    // height: screenHeight * 0.058,
+    // width: screenWidth * 0.8,
     marginVertical: screenHeight * 0.02,
     borderRadius: screenHeight * 0.06,
-    backgroundColor: '#F2F3F8',
+    top: screenHeight * -0.2,
     color: 'black',
     // marginLeft: screenWidth * 0.0001,
   },
@@ -91,17 +86,17 @@ const styles = StyleSheet.create({
     // marginLeft: screenWidth * 0.0001,
   },
   header: {
-    fontSize: screenWidth * 0.065,
+    fontSize: screenWidth * 0.055,
     fontWeight: 'bold',
     color: 'black',
-    marginTop: screenHeight * -0.23,
-    alignContent: 'center',
+    // marginTop: screenHeight * -0.23
+    top: screenHeight * 0.07,
+    // textAlign: 'justify',
   },
   image: {
     width: screenWidth * 0.28,
     height: screenHeight * 0.09,
-    marginTop: screenHeight * -0.34,
-    marginBottom: screenHeight * -0.08,
+    top: screenHeight * 0.3,
   },
   images: {
     width: screenWidth * 0.55,

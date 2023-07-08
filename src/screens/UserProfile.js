@@ -82,7 +82,7 @@ const clicked=()=>{
     <View style={styles.menuWrapper}>
       <TouchableRipple onPress={clicked}>
         <View style={styles.menuItem}>
-          {/* <Icon name="heart-outline" color="#FF6347" size={25}/> */}
+        <Image source={settings} style={{ tintColor: '#FF6347', width: 25, height: 25 }} size={25} />
           <Text style={styles.menuItemText}>Your Favorites</Text>
         </View>
       </TouchableRipple>

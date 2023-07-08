@@ -28,6 +28,8 @@ import {
   EditProfileScreen,
   UserProfile,
   AddCharger,
+  Notifications,
+  ChargerSettings,
 } from './src/screens';
 import Splash from './src/screens/Splash'
 import SceduleDate from './src/screens/SceduleDate'
@@ -72,6 +74,8 @@ export default function App() {
           <Stack.Screen name="UserProfile" component={UserProfile} />
           <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
           <Stack.Screen name="AddCharger" component={AddCharger} />
+          <Stack.Screen name="Notifications" component={Notifications} />
+          <Stack.Screen name="ChargerSettings" component={ChargerSettings} />
         </Stack.Navigator>
         {/* <Toast ref={(ref) => Toast.setRef(ref)} /> */}
       </NavigationContainer>

@@ -70,7 +70,7 @@ export default function UserDetails({ navigation }) {
         throw new Error('Network response was not ok');
       }
       hit();
-      navigation.navigate('Home');
+      navigation.navigate('Clamp');
 
       const result = await response.text();
       console.log(result);
