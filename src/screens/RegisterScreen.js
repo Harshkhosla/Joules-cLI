@@ -115,9 +115,9 @@ export default function LoginScreen({ navigation }) {
         returnKeyType="next"
         style={styles.password}
         // name="password"
-        value={data.name}
+        value={data.email}
           onChangeText={(txt) => {
-            setData((prevData) => ({ ...prevData, name: txt }));
+            setData((prevData) => ({ ...prevData, email: txt }));
           }}
         // error={!!name.error}
         // errorText={name.error}
@@ -127,9 +127,9 @@ export default function LoginScreen({ navigation }) {
         returnKeyType="next"
         style={styles.password}
         // name="password"
-        value={data.name}
+        value={data.second}
           onChangeText={(txt) => {
-            setData((prevData) => ({ ...prevData, name: txt }));
+            setData((prevData) => ({ ...prevData, second: txt }));
           }}
         // error={!!name.error}
         // errorText={name.error}
@@ -139,9 +139,9 @@ export default function LoginScreen({ navigation }) {
         returnKeyType="next"
         style={styles.password}
         // name="password"
-        value={data.name}
+        value={data.password}
           onChangeText={(txt) => {
-            setData((prevData) => ({ ...prevData, name: txt }));
+            setData((prevData) => ({ ...prevData, password: txt }));
           }}
         // error={!!name.error}
         // errorText={name.error}
@@ -163,8 +163,8 @@ export default function LoginScreen({ navigation }) {
         </View>
       </View>
 
-      <Loginbutton mode="contained" onPress={getData}>
-        Sign Up
+      <Loginbutton mode="contained" onPress={getData} disabled={loading}
+      > {loading ? 'Loading...' : 'Sign Up'}
       </Loginbutton>
 
       <View style={styles.row}>
@@ -191,7 +191,7 @@ export default function LoginScreen({ navigation }) {
 
       <View style={styles.row}>
         <Text style={styles.link}>Already have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.replace('RegisterScreen')}>
+        <TouchableOpacity onPress={() => navigation.replace('LoginScreen')}>
           <Text style={styles.link}>Log In</Text>
         </TouchableOpacity>
       </View>

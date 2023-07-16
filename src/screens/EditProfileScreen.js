@@ -15,9 +15,35 @@ import { useTheme } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-
+import { useDispatch, useSelector } from 'react-redux';
+import {UpdatEverything} from '../Redux/Action';
 const EditProfileScreen = () => {
+  const dispatch = useDispatch(); 
   const { colors } = useTheme();
+  const [userData, setUserData] = useState({
+    name: '',
+    lastName: '',
+    PhoneNo: '',
+    email: '',
+    ProductId:"D1xL5R7b0pNf6QmK2yP9",
+    state: '',
+    city: '',
+  });
+  const id = useSelector(state => state?.userReducers?.Product?._id)
+  console.log(id);
+  const handleInputChange = (field, value) => {
+    // Update the state with the new value for the specified field
+    setUserData((prevUserData) => ({
+      ...prevUserData,
+      [field]: value,
+    }));
+  };
+
+  const handleSubmit = () => {
+    // Access the user input from the state object
+    dispatch(UpdatEverything(userData,id))
+    console.log('User Data:', userData);
+  };
 
   return (
     <View style={styles.container}>
@@ -75,6 +101,8 @@ const EditProfileScreen = () => {
               color: colors.text,
             },
           ]}
+          value={userData.name}
+          onChangeText={(value) => handleInputChange('name', value)}
         />
       </View>
       <View style={styles.action}>
@@ -103,7 +131,8 @@ const EditProfileScreen = () => {
             {
               color: colors.text,
             },
-          ]}
+          ]}value={userData.PhoneNo}
+          onChangeText={(value) => handleInputChange('PhoneNo', value)}
         />
       </View>
       <View style={styles.action}>
@@ -118,13 +147,14 @@ const EditProfileScreen = () => {
             {
               color: colors.text,
             },
-          ]}
+          ]}value={userData.email}
+          onChangeText={(value) => handleInputChange('email', value)}
         />
       </View>
       <View style={styles.action}>
         <FontAwesome name="globe" color={colors.text} size={20} />
         <TextInput
-          placeholder="Country"
+          placeholder="State"
           placeholderTextColor="#666666"
           autoCorrect={false}
           style={[
@@ -132,7 +162,8 @@ const EditProfileScreen = () => {
             {
               color: colors.text,
             },
-          ]}
+          ]}value={userData.state}
+          onChangeText={(value) => handleInputChange('state', value)}
         />
       </View>
       <View style={styles.action}>
@@ -146,10 +177,11 @@ const EditProfileScreen = () => {
             {
               color: colors.text,
             },
-          ]}
+          ]}value={userData.city}
+          onChangeText={(value) => handleInputChange('city', value)}
         />
       </View>
-      <TouchableOpacity style={styles.commandButton} onPress={() => {}}>
+      <TouchableOpacity style={styles.commandButton} onPress={handleSubmit}>
         <Text style={styles.panelButtonTitle}>Submit</Text>
       </TouchableOpacity>
     </View>

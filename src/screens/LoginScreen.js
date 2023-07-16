@@ -150,8 +150,10 @@ export default function LoginScreen({ navigation }) {
         </View>
       </View>
 
-      <Loginbutton mode="contained" onPress={getData}>
-        Log In
+      <Loginbutton mode="contained" onPress={getData}
+      disabled={loading} // Disable the button when loading is true
+        >
+          {loading ? 'Loading...' : 'Login'} 
       </Loginbutton>
 
       <View style={styles.row}>

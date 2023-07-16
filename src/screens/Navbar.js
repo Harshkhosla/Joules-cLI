@@ -2,7 +2,7 @@
 import React, { useRef, useState } from 'react';
 import { Animated, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import profile from '../assets/profile.png';
-
+import { useDispatch, useSelector } from 'react-redux';
 import home from '../assets/home.png';
 import search from '../assets/search.png';
 import notifications from '../assets/bell.png';
@@ -22,6 +22,9 @@ export default function Navbar({ navigation }) {
   const [currentTab, setCurrentTab] = useState("Home");
   // To get the current Status of the menu ...
   const [showMenu, setShowMenu] = useState(false);
+
+  const UserData = useSelector(state => state?.userReducers?.Product);
+  console.log(UserData,"hera is every data");
 
   // Animated Properties...
   const offsetValue = useRef(new Animated.Value(0)).current;
@@ -72,7 +75,7 @@ export default function Navbar({ navigation }) {
           fontWeight: 'bold',
           color: 'white',
           marginTop: 20
-        }}>Harsh Khosla</Text>
+        }}>{UserData==""?"Name":UserData?.name}</Text>
 
         <TouchableOpacity onPress={navigateToHome}>
           <Text style={{

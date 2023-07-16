@@ -837,19 +837,19 @@ export const ResolveMode = (Porduct_Key) => {
 
 
 // ====-----------------------------------------------------------------updatinga--------------------------------------------------------//
-export const UpdatName = (name, _id) => {
+export const UpdatName = (ProductId, _id) => {
   return (dispatch) => {
     AsyncStorage.getItem('Authtoken')
       .then(token => {
         if (_id !== null) { // Check if _id is not null
-          fetch(`https://backend-production-e1c2.up.railway.app/api/auth/updatename/${_id}`, {
+          fetch(`https://backend-production-e1c2.up.railway.app/api/auth/UserInformation/${_id}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
               "Authorization": token,
             },
             body: JSON.stringify({
-              name
+              ProductId
             })
           })
             .then(response => response.json())
@@ -904,5 +904,71 @@ export const setProduct = (Product_Key) => {
   return {
     type: SET_USER_PRODUCT,
     payload: Product_Key
+  }
+}
+
+
+
+
+
+export const UpdatEverything = (data, _id) => {
+  const { state, city,PhoneNo,ProductId ,name} = data;
+  return (dispatch) => {
+    AsyncStorage.getItem('Authtoken')
+      .then(token => {
+        if (_id !== null) { // Check if _id is not null
+          fetch(`https://backend-production-e1c2.up.railway.app/api/auth/UserInformation/${_id}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": token,
+            },
+            body: JSON.stringify({
+              name,state, city,PhoneNo,ProductId
+            })
+          })
+            .then(response => response.json())
+            .then(response => {
+              console.log(response);
+              // dispatch(setProductKey(response))
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+}
+
+
+
+
+
+
+export const SubcribingtoTopic = (topic) => {
+  console.log(topic);
+  return (dispatch) => {
+    if (topic !== null) {
+      fetch(`https://backend-production-e1c2.up.railway.app/api/subscriber`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          topic
+        })
+      })
+        .then(response => response.json())
+        .then(response => {
+          console.log(response);
+          // Handle the response as needed
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
   }
 }

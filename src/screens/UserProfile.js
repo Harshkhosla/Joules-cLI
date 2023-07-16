@@ -9,7 +9,7 @@ import {
   TouchableRipple,
 } from 'react-native-paper';
 import Background from '../components/Background'
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import home from '../assets/home.png';
 import search from '../assets/search.png';
 import notifications from '../assets/bell.png';
@@ -25,8 +25,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 export default function UserProfile({ navigation }) { 
-  const email = useSelector(state => state?.userReducers?.Product?.email)
-  console.log(email);
+  // const email = useSelector(state => state?.userReducers?.Product?.email)
+  // console.log(email);
+  
+  const UserData = useSelector(state => state?.userReducers?.Product);
+  console.log(UserData,"hera is every data");
 const clicked=()=>{
   console.log("juhbu");
   navigation.navigate('EditProfileScreen');
@@ -44,24 +47,24 @@ const clicked=()=>{
           <Title style={[styles.title, {
             marginTop:15,
             marginBottom: 5,
-          }]}>John Doe</Title>
-          <Caption style={styles.caption}>@j_doe</Caption>
+          }]}>{UserData?.name==""?"John Doe":UserData?.name}</Title>
+          <Caption style={styles.caption}>@{UserData?.name==""?"@j_doe":UserData?.name}</Caption>
         </View>
       </View>
     </View>
 
     <View style={styles.userInfoSection}>
       <View style={styles.row}>
-        {/* <Icon name="map-marker-radius" color="#777777" size={20}/> */}
-        <Text style={{color:"#777777", marginLeft: 20}}>Kolkata, India</Text>
+        <Icon name="map-marker-radius" color="#FF6347" size={20}/>
+        <Text style={{color:"#777777", marginLeft: 20}}>{UserData?.city==""?"Kolkata":UserData?.city}, {UserData?.state==""?"India":UserData?.state}</Text>
       </View>
       <View style={styles.row}>
-        {/* <Icon name="phone" color="#777777" size={20}/> */}
-        <Text style={{color:"#777777", marginLeft: 20}}>+91-900000009</Text>
+        <Icon name="phone" color="#FF6347" size={20}/>
+        <Text style={{color:"#777777", marginLeft: 20}}>{UserData?.PhoneNo==""?"+91-900000009":UserData?.PhoneNo}</Text>
       </View>
       <View style={styles.row}>
       <Image source={notifications} style={{ tintColor: '#FF6347', width: 20, height: 20 }} size={20} />
-        <Text style={{color:"#777777", marginLeft: 20}}>{email==""?"john_doe@email.com":email}</Text>
+        <Text style={{color:"#777777", marginLeft: 20}}>{UserData?.email==""?"john_doe@email.com":UserData?.email}</Text>
       </View>
     </View>
 

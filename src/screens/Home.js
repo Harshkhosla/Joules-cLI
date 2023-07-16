@@ -7,7 +7,7 @@ import Button from '../components/Button';
 import Background from '../components/Background';
 import {  Menu, Divider, PaperProvider } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import { Click, Clicked, EcoMode, ScheduleMode, BalanceMode, ResolveMode,StopChargingMode, setStateValue, notesDataforproduct } from '../Redux/Action';
+import { Click, Clicked, EcoMode, ScheduleMode, BalanceMode, ResolveMode,StopChargingMode, setStateValue, notesDataforproduct, SubcribingtoTopic } from '../Redux/Action';
 import PersonIcon from '../components/PersonIcon';
 // import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -33,8 +33,10 @@ export default function Home({ navigation }) {
   const [stateMode, SetStateMode] = useState("23")
   const [stateEnergy, SetStateEnergy] = useState("23")
 
-  const Porduct_Key = useSelector(state => state?.userReducers?.Product?.name)
+  const Porduct_Key = useSelector(state => state?.userReducers?.Product?.ProductId)
   console.log(Porduct_Key);
+  const UserData = useSelector(state => state?.userReducers?.Product);
+  console.log(UserData,"hera is every data");
 
   setTimeout(function () {
     setDatas("Charger is connected");
@@ -108,6 +110,7 @@ export default function Home({ navigation }) {
     }
     setIsSwitchOn(!isSwitchOn);
     
+    dispatch(SubcribingtoTopic(Porduct_Key));
     dispatch(BalanceMode(Porduct_Key));
     // navigation.navigate('Load');
   };
@@ -125,6 +128,7 @@ export default function Home({ navigation }) {
     }
     setIsSwitchOn1(!isSwitchOn1);
     dispatch(EcoMode(Porduct_Key));
+    dispatch(SubcribingtoTopic(Porduct_Key));
   };
   const Sampleed = (data) => {
     console.log(data, "hello");
@@ -163,6 +167,7 @@ export default function Home({ navigation }) {
   const Clickk = () => {
     // navigation.navigate('Load');
     dispatch(StopChargingMode(Porduct_Key));
+    // dispatch(SubcribingtoTopic(Porduct_Key));
     setButton2("false")
       setButton1("false")
       setButton3("false")
@@ -192,7 +197,7 @@ const clickheehpd=()=>{
 </TouchableOpacity>
      
       
-<Header style={styles.header}>{stateValue==""?"Charging Status":stateValue}</Header>
+<Header style={styles.header}>{stateValue==""?"Charging Status":"stateValue"}</Header>
       <SafeAreaView style={styles.container}>
 
         {/* <RNSpeedometer style={styles.labels} value={"23"} size={400} /> */}

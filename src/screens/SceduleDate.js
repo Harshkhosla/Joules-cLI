@@ -6,7 +6,7 @@ import { Text, View, Linking } from 'react-native';
 import Button from '../components/Button'
 import Background from '../components/Background';
 import { useDispatch, useSelector } from 'react-redux';
-import { Click, Clicked, EcoMode, ScheduleMode, BalanceMode } from '../Redux/Action';
+import { Click, Clicked, EcoMode, ScheduleMode, BalanceMode, SubcribingtoTopic } from '../Redux/Action';
 import { SetDate } from '../Redux/Action';
 // import DateTimePickerModal from "react-native-modal-datetime-picker";
 // import DatePicker from 'react-native-modern-datepicker';
@@ -113,6 +113,7 @@ export default function SceduleDate({ navigation }) {
   // };
   const Clicke=()=>{
     // dispatch(ScheduleMode(scheduleData));
+    dispatch(SubcribingtoTopic(Porduct_Key));
     dispatch(Clicked(scheduleData,Porduct_Key));
     navigation.navigate('Navbar')
   }
