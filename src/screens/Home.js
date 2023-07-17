@@ -186,7 +186,7 @@ export default function Home({ navigation }) {
   };
 
 const clickheehpd=()=>{
-  navigation.navigate('LoginScreen');
+  navigation.navigate('Graphs');
 }
 
   return (
