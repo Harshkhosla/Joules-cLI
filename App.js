@@ -72,7 +72,7 @@ export default function App() {
           <Stack.Screen name="Datainput" component={Datainput} />
           <Stack.Screen name="Clamp" component={Clamp} />
           <Stack.Screen name="Navbar" component={Navbar} />
-          <Stack.Screen name="Graphs" component={Graphs} />
+          {/* <Stack.Screen name="Graphs" component={Graphs} /> */}
           <Stack.Screen name="UserProfile" component={UserProfile} />
           <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
           <Stack.Screen name="AddCharger" component={AddCharger} />

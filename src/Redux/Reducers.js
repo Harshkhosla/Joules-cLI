@@ -16,6 +16,7 @@ const initialState = {
 }
 
 function userReducers(state = initialState, action) {
+  console.log("action.payload",action.payload)
     switch (action.type) {
       case SET_USER_NAME:
         return { ...state, Total_Current: action.payload };

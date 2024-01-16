@@ -14,14 +14,14 @@ import { theme } from '../core/theme';
 import LoginLogo from '../components/LoginLogo';
 import { emailValidator } from '../helpers/emailValidator';
 import { passwordValidator } from '../helpers/passwordValidator';
-import { signItUp } from '../Redux/Action';
+import { loginuser, signItUp } from '../Redux/Action';
 import Google from '../components/Green';
 import { Checkbox } from 'react-native-paper';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-export default function LoginScreen({ navigation }) {
+export default function RegisterScreen({ navigation }) {
   const dispatch = useDispatch();
   const [data, setData] = useState({
     email: '',
@@ -32,8 +32,9 @@ export default function LoginScreen({ navigation }) {
 
   const imagesAllData = useSelector((state) => state?.userReducers);
 
+  // console.log("imagesAllData",imagesAllData)
   const [loading, setLoading] = useState(false);
-  console.log(imagesAllData, 'goodharsh');
+  console.log(imagesAllData, 'imagesAllData');
   useEffect(() => {
     const mEmail = AsyncStorage.getItem('Authtoken');
     setSample(imagesAllData?.authtoken);
@@ -84,7 +85,8 @@ export default function LoginScreen({ navigation }) {
   const getData = async () => {
     setLoading(true);
     try {
-      await dispatch(signItUp(data, navigation));
+     const reaponse= await dispatch(loginuser(data, navigation));
+     console.log("reaponse",reaponse)
       setLoading(false);
     } catch (error) {
       setLoading(false);
