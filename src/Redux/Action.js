@@ -419,7 +419,7 @@ export const signItUp = (field, navigation) => {
       )
 
       const data = await response.json()
-      console.log(data, 'casdvas')
+      console.log(data, 'login data ')
       Toast.show({
         type: 'success',
         // text1: data,
@@ -427,6 +427,7 @@ export const signItUp = (field, navigation) => {
         position: 'bottom',
       })
       const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '')
+      console.log('authtoken', authtoken)
       await AsyncStorage.setItem('Authtoken', authtoken)
       dispatch(setAuthtoken(authtoken))
 
@@ -441,7 +442,7 @@ export const signItUp = (field, navigation) => {
         text2: 'Operation completed successfully!',
         position: 'bottom',
       })
-      console.log(err, 'cvdsavs')
+      console.log(err, 'err in login')
     }
   }
 }

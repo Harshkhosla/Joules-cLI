@@ -28,7 +28,7 @@ export default function LoginScreen({ navigation }) {
     password: '',
   });
   const [sample, setSample] = useState('');
-  console.log(sample, '   ,,,hello i am in loginScreen');
+  // console.log(sample, '   ,,,hello i am in loginScreen');
 
   const imagesAllData = useSelector((state) => state?.userReducers);
 
@@ -82,10 +82,13 @@ export default function LoginScreen({ navigation }) {
   }, []);
 
   const getData = async () => {
+    console.log("fn call")
     setLoading(true);
     try {
-      await dispatch(signItUp(data, navigation));
-      setLoading(false);
+    const a=  await dispatch(signItUp(data, navigation));
+     
+    console.log("a",a);
+    setLoading(false);
     } catch (error) {
       setLoading(false);
       console.error(error);
