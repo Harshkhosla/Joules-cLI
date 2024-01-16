@@ -31,57 +31,65 @@ import {
   Notifications,
   ChargerSettings,
   Graphs,
-} from './src/screens';
+} from './src/screens'
 import Splash from './src/screens/Splash'
 import SceduleDate from './src/screens/SceduleDate'
-import Toast from 'react-native-toast-message';
+import Toast from 'react-native-toast-message'
 
 const Stack = createStackNavigator()
 
 export default function App() {
   return (
-    <Sample store={Store} >
-
-    <Provider theme={theme}>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="StartScreen"
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          
-          <Stack.Screen  options={{headerShown: false}}  name="Splash" component={Splash}     />
-          {/* <Stack.Screen name="StartScreen" component={StartScreen} /> */}
-          <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
-          <Stack.Screen name="Dashboard" component={Dashboard} />
-          <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen}/>
-          <Stack.Screen name="HomePage" component={HomePage} />
-          <Stack.Screen name="Load" component={Load} />
-          <Stack.Screen name="Eligible" component={Eligible} />
-          <Stack.Screen name="Car" component={Car} />
-          <Stack.Screen name="House" component={House} />
-          <Stack.Screen name="Date" component={Date} />
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Wifi" component={Wifi} />
-          <Stack.Screen name="Flat" component={Flat} />
-          <Stack.Screen name="SceduleDate" component={SceduleDate} />
-          <Stack.Screen name="UserDetails" component={UserDetails} />
-          <Stack.Screen name="Test" component={Test} />
-          <Stack.Screen name="Datainput" component={Datainput} />
-          <Stack.Screen name="Clamp" component={Clamp} />
-          <Stack.Screen name="Navbar" component={Navbar} />
-          <Stack.Screen name="Graphs" component={Graphs} />
-          <Stack.Screen name="UserProfile" component={UserProfile} />
-          <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
-          <Stack.Screen name="AddCharger" component={AddCharger} />
-          <Stack.Screen name="Notifications" component={Notifications} />
-          <Stack.Screen name="ChargerSettings" component={ChargerSettings} />
-        </Stack.Navigator>
-        {/* <Toast ref={(ref) => Toast.setRef(ref)} /> */}
-      </NavigationContainer>
-    </Provider>
-             </Sample>
+    <Sample store={Store}>
+      <Provider theme={theme}>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="StartScreen"
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen
+              options={{ headerShown: false }}
+              name="Splash"
+              component={Splash}
+            />
+            {/* <Stack.Screen name="StartScreen" component={StartScreen} /> */}
+            <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+            <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen name="Dashboard" component={Dashboard} />
+            <Stack.Screen
+              name="ResetPasswordScreen"
+              component={ResetPasswordScreen}
+            />
+            <Stack.Screen name="HomePage" component={HomePage} />
+            <Stack.Screen name="Load" component={Load} />
+            <Stack.Screen name="Eligible" component={Eligible} />
+            <Stack.Screen name="Car" component={Car} />
+            <Stack.Screen name="House" component={House} />
+            <Stack.Screen name="Date" component={Date} />
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Wifi" component={Wifi} />
+            <Stack.Screen name="Flat" component={Flat} />
+            <Stack.Screen name="SceduleDate" component={SceduleDate} />
+            <Stack.Screen name="UserDetails" component={UserDetails} />
+            <Stack.Screen name="Test" component={Test} />
+            <Stack.Screen name="Datainput" component={Datainput} />
+            <Stack.Screen name="Clamp" component={Clamp} />
+            <Stack.Screen name="Navbar" component={Navbar} />
+            {/* <Stack.Screen name="Graphs" component={Graphs} /> */}
+            <Stack.Screen name="UserProfile" component={UserProfile} />
+            <Stack.Screen
+              name="EditProfileScreen"
+              component={EditProfileScreen}
+            />
+            <Stack.Screen name="AddCharger" component={AddCharger} />
+            <Stack.Screen name="Notifications" component={Notifications} />
+            <Stack.Screen name="ChargerSettings" component={ChargerSettings} />
+          </Stack.Navigator>
+          {/* <Toast ref={(ref) => Toast.setRef(ref)} /> */}
+        </NavigationContainer>
+      </Provider>
+    </Sample>
   )
 }
