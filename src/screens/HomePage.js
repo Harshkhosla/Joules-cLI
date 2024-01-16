@@ -30,6 +30,7 @@ export default function Dashboard({ navigation }) {
 
   const id = useSelector(state => state?.userReducers?.Product?._id)
   const onSuccess = async (e) => {
+    console.log("sdfasdfasdf");
     console.log(e.data ,'HEHEHEHE');
     const parsedWifiFields = {
       s: "",

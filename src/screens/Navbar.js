@@ -16,7 +16,8 @@ import close from '../assets/close.png';
 import photo from '../assets/photo.jpg';
 import Home from './Home';
 import { useNavigation } from '@react-navigation/native'; // import the useNavigation hook
-import { AddCharger, ChargerSettings, Clamp, EditProfileScreen, Load, Notifications, UserDetails } from '.';
+import { AddCharger, ChargerSettings, Clamp, EditProfileScreen, Load, Notifications, RegisterScreen, UserDetails } from '.';
+import LoginScreen from './RegisterScreen';
 
 export default function Navbar({ navigation }) {
   const [currentTab, setCurrentTab] = useState("Home");
@@ -24,7 +25,7 @@ export default function Navbar({ navigation }) {
   const [showMenu, setShowMenu] = useState(false);
 
   const UserData = useSelector(state => state?.userReducers?.Product);
-  console.log(UserData,"hera is every data");
+  // console.log(UserData,"hera is every data");
 
   // Animated Properties...
   const offsetValue = useRef(new Animated.Value(0)).current;
@@ -95,7 +96,7 @@ export default function Navbar({ navigation }) {
           <TabButton currentTab={currentTab} setCurrentTab={setCurrentTab} title="Analytics" image={settings} navigation={navigation} onPress={hello} />
         </View>
         <View>
-          <TabButton currentTab={currentTab} setCurrentTab={setCurrentTab} title="LogOut" image={logout} />
+          <TabButton currentTab={currentTab} setCurrentTab={setCurrentTab} title="LogOut" image={logout} navigation={navigation} />
         </View>
       </View>
       {
@@ -136,6 +137,8 @@ export default function Navbar({ navigation }) {
           {currentTab === "My Devices" ? <AddCharger navigation={navigation} /> : null}
           {currentTab === "Charger Settings" ? <ChargerSettings navigation={navigation} /> : null}
           {currentTab === "Notifications" ? <Notifications navigation={navigation} /> : null}
+          {/* made radhe */}
+          {/* {currentTab==="LogOut"?<RegisterScreen navigation={navigation}/>:nulll} */}
         </Animated.View>
       </Animated.View>
     </SafeAreaView>
