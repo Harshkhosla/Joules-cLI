@@ -35,12 +35,18 @@ import {
 import Splash from './src/screens/Splash'
 import SceduleDate from './src/screens/SceduleDate'
 import Toast from 'react-native-toast-message'
+import Questionnaire from './src/screens/Questionnaire'
+import QuesAddVhicle from './src/screens/QuesAddVhicle'
+import QuesLive from './src/screens/QuesLive'
+import QuesVecDetails from './src/screens/QuesVecDetails'
 
 const Stack = createStackNavigator()
 
 export default function App() {
   return (
+    // ------------------redux provider -------------
     <Sample store={Store}>
+      {/*------------ paper provider-------------- */}
       <Provider theme={theme}>
         <NavigationContainer>
           <Stack.Navigator
@@ -69,6 +75,11 @@ export default function App() {
             <Stack.Screen name="House" component={House} />
             <Stack.Screen name="Date" component={Date} />
             <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Questionnaire" component={Questionnaire} />
+            <Stack.Screen name="QuesAddVhicle" component={QuesAddVhicle} />
+            <Stack.Screen name="QuesLive" component={QuesLive} />
+            <Stack.Screen name="QuesVecDetails" component={QuesVecDetails} />
+
             <Stack.Screen name="Wifi" component={Wifi} />
             <Stack.Screen name="Flat" component={Flat} />
             <Stack.Screen name="SceduleDate" component={SceduleDate} />
