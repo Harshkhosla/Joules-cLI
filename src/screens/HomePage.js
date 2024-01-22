@@ -30,8 +30,8 @@ export default function Dashboard({ navigation }) {
 
   const id = useSelector(state => state?.userReducers?.Product?._id)
   const onSuccess = async (e) => {
-    console.log("sdfasdfasdf");
-    console.log(e.data ,'HEHEHEHE');
+    // console.log("sdfasdfasdf");
+    console.log(e.data ,'HEHEHEHE,homepage.js');
     const parsedWifiFields = {
       s: "",
       t: "",
@@ -43,6 +43,7 @@ export default function Dashboard({ navigation }) {
       .replace(/(\r\n\t|\n|\r\t)/gm, "")
       .replace("WIFI:", "")
       .replace(";;", "");
+      console.log("cleanedWifiString",cleanedWifiString)
     const scannedWifiValues = cleanedWifiString.split(";");
     scannedWifiValues.forEach((value) => {
       const keyValue = value.split(":");

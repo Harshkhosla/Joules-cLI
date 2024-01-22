@@ -39,6 +39,7 @@ import Questionnaire from './src/screens/Questionnaire'
 import QuesAddVhicle from './src/screens/QuesAddVhicle'
 import QuesLive from './src/screens/QuesLive'
 import QuesVecDetails from './src/screens/QuesVecDetails'
+import Quesimg from './src/screens/Quesimg'
 
 const Stack = createStackNavigator()
 
@@ -79,6 +80,7 @@ export default function App() {
             <Stack.Screen name="QuesAddVhicle" component={QuesAddVhicle} />
             <Stack.Screen name="QuesLive" component={QuesLive} />
             <Stack.Screen name="QuesVecDetails" component={QuesVecDetails} />
+            {/* <Stack.Screen name="Quesimg" component={Quesimg} /> */}
 
             <Stack.Screen name="Wifi" component={Wifi} />
             <Stack.Screen name="Flat" component={Flat} />
