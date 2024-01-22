@@ -36,7 +36,7 @@ export default function Home({ navigation }) {
   const Porduct_Key = useSelector(state => state?.userReducers?.Product?.ProductId)
   console.log(Porduct_Key);
   const UserData = useSelector(state => state?.userReducers?.Product);
-  console.log(UserData,"hera is every data");
+  // console.log(UserData,"UserData Home.js");
 
   setTimeout(function () {
     setDatas("Charger is connected");

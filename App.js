@@ -35,6 +35,7 @@ import {
 import Splash from './src/screens/Splash'
 import SceduleDate from './src/screens/SceduleDate'
 import Toast from 'react-native-toast-message';
+import WifiSSID from './src/screens/WifiSSID'
 
 const Stack = createStackNavigator()
 
@@ -50,12 +51,12 @@ export default function App() {
             headerShown: false,
           }}
         >
-          
-          <Stack.Screen  options={{headerShown: false}}  name="Splash" component={Splash}     />
+          {/* <Stack.Screen name='wifiSsid' component={WifiSSID}/> */}
+          {/* <Stack.Screen  options={{headerShown: false}}  name="Splash" component={Splash}/> */}
           {/* <Stack.Screen name="StartScreen" component={StartScreen} /> */}
-          <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
-          <Stack.Screen name="Dashboard" component={Dashboard} />
+          {/* <Stack.Screen name="RegisterScreen" component={RegisterScreen} /> */}
+          {/* <Stack.Screen name="LoginScreen" component={LoginScreen} /> */}
+          {/* <Stack.Screen name="Dashboard" component={Dashboard} />
           <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen}/>
           <Stack.Screen name="HomePage" component={HomePage} />
           <Stack.Screen name="Load" component={Load} />
@@ -71,13 +72,13 @@ export default function App() {
           <Stack.Screen name="Test" component={Test} />
           <Stack.Screen name="Datainput" component={Datainput} />
           <Stack.Screen name="Clamp" component={Clamp} />
-          <Stack.Screen name="Navbar" component={Navbar} />
+          <Stack.Screen name="Navbar" component={Navbar} /> */}
           {/* <Stack.Screen name="Graphs" component={Graphs} /> */}
-          <Stack.Screen name="UserProfile" component={UserProfile} />
+          {/* <Stack.Screen name="UserProfile" component={UserProfile} />
           <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
           <Stack.Screen name="AddCharger" component={AddCharger} />
           <Stack.Screen name="Notifications" component={Notifications} />
-          <Stack.Screen name="ChargerSettings" component={ChargerSettings} />
+          <Stack.Screen name="ChargerSettings" component={ChargerSettings} /> */}
         </Stack.Navigator>
         {/* <Toast ref={(ref) => Toast.setRef(ref)} /> */}
       </NavigationContainer>
