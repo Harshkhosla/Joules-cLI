@@ -137,8 +137,6 @@ export default function Navbar({ navigation }) {
           {currentTab === "My Devices" ? <AddCharger navigation={navigation} /> : null}
           {currentTab === "Charger Settings" ? <ChargerSettings navigation={navigation} /> : null}
           {currentTab === "Notifications" ? <Notifications navigation={navigation} /> : null}
-          {/* made radhe */}
-          {/* {currentTab==="LogOut"?<RegisterScreen navigation={navigation}/>:nulll} */}
         </Animated.View>
       </Animated.View>
     </SafeAreaView>

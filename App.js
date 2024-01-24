@@ -85,6 +85,7 @@ export default function App() {
             <Stack.Screen name="QuesLive" component={QuesLive} />
             <Stack.Screen name="QuesVecDetails" component={QuesVecDetails} />
             {/* <Stack.Screen name="Quesimg" component={Quesimg} /> */}
+            {/* <Stack.Screen name="Quesimg" component={Quesimg} /> */}
 
             <Stack.Screen name="Wifi" component={Wifi} />
             <Stack.Screen name="Flat" component={Flat} />
