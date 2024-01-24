@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   StyleSheet,
   Text,
@@ -6,16 +6,51 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Alert,
+  KeyboardAvoidingView,
 } from 'react-native'
+import { useDispatch } from 'react-redux';
+import { setLoad } from '../Redux/Action';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Quesimg = ({ navigation }) => {
+  const [value, setValue] = useState('');
+  // const navigation = useNavigation();
+  const dispatch = useDispatch()
+
+  const handleChangeText = (text) => {
+    console.log(text,"Quesimg");
+    setValue(text);
+  };
+
+  const handleButtonClick = () => {
+    const sample  = value / 0.22;
+    // console.log(sample);
+    const house_voltage=Math.floor(sample)
+    console.log("house_voltage",house_voltage);
+    {
+      value < "10" ? Alert.alert('Alert Title', 'Connect to the nearest Discom', [
+        {
+          value: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        { value: 'OK', onPress: () => console.log('OK Pressed quesimg') },
+      ]) :
+        dispatch(setLoad(house_voltage))
+      navigation.navigate('QuesLive')
+    }
+    // navigation.navigate('Eligible');
+  };
   return (
+    <ScrollView contentContainerStyle={styles.keyContainer}>
+    <KeyboardAvoidingView   behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.innerkey}>
     <View style={styles.container}>
       <View style={styles.QuestiontextContainer}>
         <Text
           style={{
-            marginBottom: 20,
-            fontSize: 16,
+            marginBottom: 200,
+            fontSize: 16
           }}
         >
           Question{' '}
@@ -28,28 +63,41 @@ const Quesimg = ({ navigation }) => {
           </Text>
         </Text>
       </View>
-
-      <Image source={require('../assets/icon89.png')} style={styles.image} />
+      <View style={styles.containerForView}>
+      <Image source={require('../assets/VectorHome.png')} style={styles.image} />
+      </View>
       <View style={styles.inputContainer}>
         <Text style={styles.text}>
-          Some Text Below Image Some Text Below Image
-        </Text>
+        What is the Maximum electrical sanctioned load of your home?
+        </Text> 
         <TextInput
           style={styles.input}
-          placeholder="Enter text Enter textEnter text"
+          placeholder="Enter text Enter textEnter text Quesimg"
+          onChangeText={handleChangeText}
         />
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('QuesAddVhicle')}
+          onPress={() => {handleButtonClick()}}
         >
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
       </View>
     </View>
+    </KeyboardAvoidingView>
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
+  keyContainer:{
+    flex: 1,
+    justifyContent: 'center'
+  },
+  innerkey: {
+    padding: 24,
+    flex: 1,
+    justifyContent: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -64,13 +112,20 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     width: '90%',
   },
-
+  containerForView: {
+    width:180,
+    height:120,
+    overflow:"hidden",
+    marginBottom:20,
+    borderWidth:1,
+    // position:"relative"
+  },
   image: {
-    width: 200,
-    height: 200,
-    resizeMode: 'cover',
+    width: "100%",
+    height: "100%",
+    resizeMode: 'contain',
     borderRadius: 10,
-    marginBottom: 40,
+    marginBottom: 40
   },
   inputContainer: {
     marginHorizontal: 10,

@@ -4,7 +4,8 @@ import React from 'react'
 const Quesheader = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.Text} onPress={() => navigation.navigate('Home')}>
+      {/* <Text style={styles.Text} onPress={() => navigation.navigate('Home')}> */}
+      <Text style={styles.Text} >
         Questionnaire
       </Text>
     </View>

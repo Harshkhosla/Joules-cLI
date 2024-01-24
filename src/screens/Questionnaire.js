@@ -3,11 +3,12 @@ import React from 'react'
 import Quesheader from './Quesheader'
 import Quesimg from './Quesimg'
 
-const Questionnaire = ({ navigation }) => {
+const Questionnaire = ({navigation}) => {
   return (
-    <View style={styles.container} onPress={() => navigation.navigate('Home')}>
+    // <View style={styles.container} onPress={() => navigation.navigate('Home')}>
+    <View style={styles.container}>
       <Quesheader />
-      <Quesimg />
+      <Quesimg  navigation={navigation}/>
     </View>
   )
 }

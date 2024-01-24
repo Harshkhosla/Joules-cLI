@@ -39,7 +39,7 @@ const QuesAddVhicle = ({ navigation }) => {
         <View style={styles.inputContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('QuesAddVhicle')}
+            onPress={() => navigation.navigate('QuesVecDetails')}
           >
             <Text style={styles.buttonText}>Add Vehicle</Text>
           </TouchableOpacity>

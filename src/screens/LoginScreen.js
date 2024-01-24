@@ -82,7 +82,7 @@ export default function LoginScreen({ navigation }) {
   }, []);
 
   const getData = async () => {
-    console.log("fn call")
+    console.log("fn login call")
     setLoading(true);
     try {
     const a=  await dispatch(signItUp(data, navigation));

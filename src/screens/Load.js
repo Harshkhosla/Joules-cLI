@@ -21,12 +21,12 @@ export default function Load({ navigation }) {
   const dispatch = useDispatch();
   const [text, onChangeText] = React.useState('');
 
+  console.log("text",text);
   const OnClick = () => {
-    console.log(text);
     const sample = text / 0.22;
     const house_voltage = Math.floor(sample);
     if (text < "10") {
-      Alert.alert('Alert Title', 'Connect to the nearest Discom', [
+      Alert.alert('Alert Title hello', 'Connect to the nearest Discom', [
         {
           text: 'Cancel',
           onPress: () => console.log('Cancel Pressed'),
@@ -56,12 +56,11 @@ export default function Load({ navigation }) {
 
       <Loadinput
         label="Enter electrical sanctioned load"
-        style={[styles.input, { color: 'black' }]}
+        style={[styles.input, { color: 'red' }]}
         onChangeText={onChangeText}
         value={text}
         keyboardType="numeric"
       />
-
       <View style={styles.imageContainer}>
         <Image
           source={require('../assets/charger1.png')}
