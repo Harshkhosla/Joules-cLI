@@ -29,7 +29,7 @@ export default function UserProfile({ navigation }) {
   // console.log(email);
   
   const UserData = useSelector(state => state?.userReducers?.Product);
-  console.log(UserData,"hera is every data");
+  // console.log(UserData,"userData userprofile.js");
 const clicked=()=>{
   console.log("juhbu");
   navigation.navigate('EditProfileScreen');
