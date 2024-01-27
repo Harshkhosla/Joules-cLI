@@ -1,13 +1,31 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import Icon from 'react-native-vector-icons/AntDesign'
+import {
+  responsiveHeight as hp,
+  responsiveWidth as wp,
+  responsiveFontSize as fp,
+} from 'react-native-responsive-dimensions'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const Quesheader = ({ navigation }) => {
   return (
     <View style={styles.container}>
+
       {/* <Text style={styles.Text} onPress={() => navigation.navigate('Home')}> */}
       <Text style={styles.Text} >
         Questionnaire
       </Text>
+
+      <TouchableOpacity>
+        <View style={styles.Icon}>
+          <Icon name="arrowleft" size={25} color="#118615" />
+          <Text style={styles.Text} onPress={() => navigation.navigate('Home')}>
+            Questionnaire
+          </Text>
+        </View>
+      </TouchableOpacity>
+
     </View>
   )
 }
@@ -16,18 +34,21 @@ export default Quesheader
 
 const styles = StyleSheet.create({
   container: {
-    height: 130,
-    width: '100%',
-    backgroundColor: '#e6f3ff',
+    height: hp(20),
+    backgroundColor: '#eef6ef',
     borderBottomRightRadius: 20,
     borderBottomLeftRadius: 20,
     justifyContent: 'flex-end',
-    // opacity: 0.4,
+  },
+  Icon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 10,
+    marginBottom: 10,
   },
   Text: {
-    fontSize: 25,
-    color: 'black',
-    marginBottom: 20,
-    marginLeft: 20,
+    fontSize: fp(3),
+    color: '#5A5A5A',
+    marginLeft: 8,
   },
 })

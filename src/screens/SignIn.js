@@ -16,10 +16,10 @@ import {
 
 import LoginInput from './LoginInput'
 import SignupInputs from './SignupInputs'
-// import Circle from './Circle'
+import Circle from './Circle'
 import { ScrollView } from 'react-native-gesture-handler'
 
-const SignIn = () => {
+const SignIn = ({ navigation }) => {
   const [login, setLogin] = useState(true)
 
   return (
@@ -30,10 +30,10 @@ const SignIn = () => {
       >
         <View style={styles.Container}>
           <View style={styles.LogoContainer}>
-            {/* <View style={styles.circles}>
+            <View style={styles.circles}>
               <Circle />
               <Circle />
-            </View> */}
+            </View>
 
             <View style={styles.LogoWrapper}>
               <Image
@@ -48,7 +48,7 @@ const SignIn = () => {
                 <Text style={styles.TogglerText} onPress={() => setLogin(true)}>
                   Login
                 </Text>
-                <Text style={[{ fontSize: fp(5) }]}>|</Text>
+                <Text style={[{ fontSize: fp(4) }]}>|</Text>
                 <Text
                   style={styles.TogglerText}
                   onPress={() => setLogin(false)}
@@ -57,7 +57,11 @@ const SignIn = () => {
                 </Text>
               </View>
               <View style={styles.Inputs}>
-                {login ? <LoginInput /> : <SignupInputs />}
+                {login ? (
+                  <LoginInput navigation={navigation} />
+                ) : (
+                  <SignupInputs navigation={navigation} />
+                )}
                 <View style={styles.row}>
                   <Text>
                     {login
@@ -93,20 +97,20 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   LogoContainer: {
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
     height: hp(30),
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  // circles: {
-  //   flexDirection: 'row',
-  //   alignItems: 'flex-end',
-  //   position: 'absolute',
-  //   // backgroundColor: 'red',
-  //   gap: 20,
-  //   bottom: hp(-20),
-  // },
+  circles: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    position: 'absolute',
+    // backgroundColor: 'red',
+    gap: 10,
+    bottom: hp(-25),
+  },
   LogoWrapper: {
     // backgroundColor: 'pink',
     borderRadius: 20,
@@ -114,19 +118,19 @@ const styles = StyleSheet.create({
   },
   Logo: {
     height: hp(11),
-    width: wp(40),
+    width: wp(42),
     borderRadius: 20,
     resizeMode: 'contain',
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
     elevation: 20,
   },
   SignInBoxContainer: {
     flex: 1,
-    borderTopLeftRadius: 39,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
     elevation: 10,
-    backgroundColor: 'white',
-    // marginTop: -30,
+    backgroundColor: '#fff',
+    marginTop: -18,
   },
   SignIn_UpBox: {
     minHeight: hp(60),
@@ -141,12 +145,12 @@ const styles = StyleSheet.create({
     margin: 15,
     elevation: 3,
     backgroundColor: 'white',
-    borderRadius: 20,
-    // alignItems: 'center',
+    borderRadius: 8,
+    alignItems: 'center',
     justifyContent: 'space-around',
   },
   TogglerText: {
-    padding: 15,
+    padding: 12,
     color: 'green',
     fontSize: fp(2.7),
   },

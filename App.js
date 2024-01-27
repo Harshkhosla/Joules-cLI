@@ -12,11 +12,13 @@ import Questionnaire from './src/screens/Questionnaire'
 import QuesAddVhicle from './src/screens/QuesAddVhicle'
 import QuesLive from './src/screens/QuesLive'
 import QuesVecDetails from './src/screens/QuesVecDetails'
+
 import Quesimg from './src/screens/Quesimg'
-<<<<<<< Updated upstream
+import Welcomepage from './src/screens/Welcomepage'
+
 import SignIn from './src/screens/SignIn'
 
-=======
+
 import StartScreen  from './src/screens/StartScreen'
 import RegisterScreen  from './src/screens/RegisterScreen'
 import LoginScreen from "./src/screens/LoginScreen"
@@ -42,14 +44,14 @@ import EditProfileScreen from "./src/screens/EditProfileScreen"
 import AddCharger from "./src/screens/AddCharger"
 import Notifications from "./src/screens/Notifications"
 import ChargerSettings from "./src/screens/ChargerSettings"
->>>>>>> Stashed changes
+
 const Stack = createStackNavigator()
 
 export default function App() {
   return (
-    // ------------------redux provider -------------
+
     <Sample store={Store}>
-      {/*------------ paper provider-------------- */}
+     
       <Provider theme={theme}>
         <NavigationContainer>
           <Stack.Navigator
@@ -67,6 +69,7 @@ export default function App() {
             <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
 
             <Stack.Screen name="SignIn" component={SignIn} />
+            <Stack.Screen name="Welcomepage" component={Welcomepage} />
 
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
             <Stack.Screen name="Dashboard" component={Dashboard} /> 
@@ -86,12 +89,11 @@ export default function App() {
             <Stack.Screen name="QuesAddVhicle" component={QuesAddVhicle} />
             <Stack.Screen name="QuesLive" component={QuesLive} />
             <Stack.Screen name="QuesVecDetails" component={QuesVecDetails} />
-<<<<<<< Updated upstream
+
             {/* <Stack.Screen name="Quesimg" component={Quesimg} /> */}
             {/* <Stack.Screen name="Quesimg" component={Quesimg} /> */}
 
-=======
->>>>>>> Stashed changes
+
             <Stack.Screen name="Wifi" component={Wifi} />
             <Stack.Screen name="Flat" component={Flat} />
             <Stack.Screen name="SceduleDate" component={SceduleDate} />
