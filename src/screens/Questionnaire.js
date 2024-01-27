@@ -11,6 +11,14 @@ import Quesheader from './Quesheader'
 import Quesimg from './Quesimg'
 import { ScrollView } from 'react-native-gesture-handler'
 
+
+const Questionnaire = ({navigation}) => {
+  return (
+    // <View style={styles.container} onPress={() => navigation.navigate('Home')}>
+    <View style={styles.container}>
+      <Quesheader />
+      <Quesimg  navigation={navigation}/>
+
 const Questionnaire = ({ navigation }) => {
   const behavior = Platform.OS === 'ios' ? 'padding' : '100'
 
@@ -27,6 +35,7 @@ const Questionnaire = ({ navigation }) => {
           <Quesimg navigation={navigation} />
         </ScrollView>
       </KeyboardAvoidingView>
+
     </View>
     // </TouchableWithoutFeedback>
   )

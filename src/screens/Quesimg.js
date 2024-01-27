@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   StyleSheet,
   Text,
@@ -6,21 +6,62 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Alert,
+  KeyboardAvoidingView,
 } from 'react-native'
+import { useDispatch } from 'react-redux';
+import { setLoad } from '../Redux/Action';
+import { ScrollView } from 'react-native-gesture-handler';
 import {
   responsiveHeight as hp,
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
 
+
 const Quesimg = ({ navigation }) => {
+  const [value, setValue] = useState('');
+  // const navigation = useNavigation();
+  const dispatch = useDispatch()
+
+  const handleChangeText = (text) => {
+    console.log(text,"Quesimg");
+    setValue(text);
+  };
+
+  const handleButtonClick = () => {
+    const sample  = value / 0.22;
+    // console.log(sample);
+    const house_voltage=Math.floor(sample)
+    console.log("house_voltage",house_voltage);
+    {
+      value < "10" ? Alert.alert('Alert Title', 'Connect to the nearest Discom', [
+        {
+          value: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        { value: 'OK', onPress: () => console.log('OK Pressed quesimg') },
+      ]) :
+        dispatch(setLoad(house_voltage))
+      navigation.navigate('QuesLive')
+    }
+    // navigation.navigate('Eligible');
+  };
   return (
+    <ScrollView contentContainerStyle={styles.keyContainer}>
+    <KeyboardAvoidingView   behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.innerkey}>
     <View style={styles.container}>
       <View style={styles.QuestionPageContainer}>
         <Text
           style={{
+
+            marginBottom: 200,
+            fontSize: 16
+
             fontSize: fp(2),
             textAlign: 'right',
+
           }}
         >
           Question{' '}
@@ -33,6 +74,15 @@ const Quesimg = ({ navigation }) => {
           </Text>
         </Text>
       </View>
+
+      <View style={styles.containerForView}>
+      <Image source={require('../assets/VectorHome.png')} style={styles.image} />
+      </View>
+      <View style={styles.inputContainer}>
+        <Text style={styles.text}>
+        What is the Maximum electrical sanctioned load of your home?
+        </Text> 
+
       <View style={styles.imageContainer}>
         <Image source={require('../assets/house.png')} style={styles.image} />
       </View>
@@ -41,22 +91,36 @@ const Quesimg = ({ navigation }) => {
         <Text style={styles.text}>
           What is the Maximum electrical sanctioned load of your home?
         </Text>
+
         <TextInput
           style={styles.input}
-          placeholder="Enter text Enter textEnter text"
+          placeholder="Enter text Enter textEnter text Quesimg"
+          onChangeText={handleChangeText}
         />
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('QuesLive')}
+
+          onPress={() => {handleButtonClick()}}
         >
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
       </View>
     </View>
+    </KeyboardAvoidingView>
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
+  keyContainer:{
+    flex: 1,
+    justifyContent: 'center'
+  },
+  innerkey: {
+    padding: 24,
+    flex: 1,
+    justifyContent: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -76,9 +140,26 @@ const styles = StyleSheet.create({
     flex: 1,
     // backgroundColor: 'pink',
   },
+
+  containerForView: {
+    width:180,
+    height:120,
+    overflow:"hidden",
+    marginBottom:20,
+    borderWidth:1,
+    // position:"relative"
+  },
   image: {
+    width: "100%",
+    height: "100%",
     resizeMode: 'contain',
-    marginVertical: 40,
+    borderRadius: 10,
+    marginBottom: 40
+
+//   image: {
+//     resizeMode: 'contain',
+//     marginVertical: 40,
+
   },
   inputContainer: {
     // marginHorizontal: 10,

@@ -19,7 +19,7 @@ export default function NumericInput() {
   };
 
   const handleChangeText = (text) => {
-    console.log(text,"lllll");
+    console.log(text,"loadinput");
     setValue(text);
   };
 

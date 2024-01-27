@@ -76,8 +76,10 @@ export default function Navbar({ navigation }) {
   }
 
   const navigateToHome = () => {
-    navigation.navigate('UserProfile') // navigate to the Home screen
-  }
+    // navigation.navigate("UserProfile"); // navigate to the Home screen
+  };
+
+
 
   return (
     <SafeAreaView style={styles.container}>

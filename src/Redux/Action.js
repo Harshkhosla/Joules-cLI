@@ -55,12 +55,13 @@ const myStorage = {
 }
 
 export const setLoad = (house_voltage) => {
-  console.log(house_voltage)
+  console.log("house_voltage action",house_voltage)
   return {
     type: SET_USER_NAME,
     payload: house_voltage,
   }
 }
+
 export const setProductKey = (Product_Key) => {
   console.log(Product_Key)
   // setPKey(Product_Key);
@@ -159,7 +160,7 @@ export const CarDetails = (value) => {
 
     const client = new Client({
       uri: 'ws://34.93.62.206:9001/mqtt',
-      clientId: 'client' + Math.random().toString(36).substring(7),
+      clientId: 'clientRadhe',
       storage: myStorage,
     })
     // set event handlers
