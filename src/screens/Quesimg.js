@@ -7,15 +7,20 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native'
+import {
+  responsiveHeight as hp,
+  responsiveWidth as wp,
+  responsiveFontSize as fp,
+} from 'react-native-responsive-dimensions'
 
 const Quesimg = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.QuestiontextContainer}>
+      <View style={styles.QuestionPageContainer}>
         <Text
           style={{
-            marginBottom: 20,
-            fontSize: 16,
+            fontSize: fp(2),
+            textAlign: 'right',
           }}
         >
           Question{' '}
@@ -28,11 +33,13 @@ const Quesimg = ({ navigation }) => {
           </Text>
         </Text>
       </View>
+      <View style={styles.imageContainer}>
+        <Image source={require('../assets/house.png')} style={styles.image} />
+      </View>
 
-      <Image source={require('../assets/icon89.png')} style={styles.image} />
       <View style={styles.inputContainer}>
         <Text style={styles.text}>
-          Some Text Below Image Some Text Below Image
+          What is the Maximum electrical sanctioned load of your home?
         </Text>
         <TextInput
           style={styles.input}
@@ -40,7 +47,7 @@ const Quesimg = ({ navigation }) => {
         />
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('QuesAddVhicle')}
+          onPress={() => navigation.navigate('QuesLive')}
         >
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
@@ -52,34 +59,35 @@ const Quesimg = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#fff',
+    // justifyContent: 'center',
+    // alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#DAE0E2',
-    margin: 20,
+    borderColor: '#D4D4D4',
     borderRadius: 20,
+    elevation: 2,
+    margin: 20,
+    padding: 20,
   },
-  QuestiontextContainer: {
+  QuestionPageContainer: {
+    marginBottom: 20,
+  },
+  imageContainer: {
+    flex: 1,
     // backgroundColor: 'pink',
-    alignItems: 'flex-end',
-    width: '90%',
   },
-
   image: {
-    width: 200,
-    height: 200,
-    resizeMode: 'cover',
-    borderRadius: 10,
-    marginBottom: 40,
+    resizeMode: 'contain',
+    marginVertical: 40,
   },
   inputContainer: {
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
     marginTop: 20,
     borderRadius: 20,
   },
   text: {
     marginTop: 10,
-    fontSize: 18,
+    fontSize: fp(2.5),
   },
   input: {
     height: 40,
@@ -87,19 +95,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 15,
     marginTop: 10,
-    marginBottom: 10,
     padding: 8,
   },
   button: {
     backgroundColor: 'green',
     paddingVertical: 10,
-    paddingHorizontal: 20,
     borderRadius: 15,
     marginTop: 10,
   },
   buttonText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: fp(2.6),
     textAlign: 'center',
   },
 })
