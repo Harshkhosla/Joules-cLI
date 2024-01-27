@@ -14,7 +14,7 @@ import QuesLive from './src/screens/QuesLive'
 import QuesVecDetails from './src/screens/QuesVecDetails'
 
 import Quesimg from './src/screens/Quesimg'
-import Welcomepage from './src/screens/Welcomepage'
+// import Welcomepage from './src/screens/Welcomepage'
 
 import SignIn from './src/screens/SignIn'
 
@@ -60,33 +60,33 @@ export default function App() {
               headerShown: false,
             }}
           >
-             {/* <Stack.Screen
+            {/* <Stack.Screen
               options={{ headerShown: false }}
               name="Splash"
               component={Splash}
             />
              <Stack.Screen name="StartScreen" component={StartScreen} />
-            <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+            <Stack.Screen name="RegisterScreen" component={RegisterScreen} /> */}
 
             <Stack.Screen name="SignIn" component={SignIn} />
-            <Stack.Screen name="Welcomepage" component={Welcomepage} />
+            {/* <Stack.Screen name="Welcomepage" component={Welcomepage} /> */}
 
-            <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            {/* <Stack.Screen name="LoginScreen" component={LoginScreen} />
             <Stack.Screen name="Dashboard" component={Dashboard} /> 
             <Stack.Screen
               name="ResetPasswordScreen"
               component={ResetPasswordScreen} 
             />
-            <Stack.Screen name="HomePage" component={HomePage} /> */}
-            {/* <Stack.Screen name="Load" component={Load} />
+            <Stack.Screen name="HomePage" component={HomePage} /> 
+            <Stack.Screen name="Load" component={Load} />
             <Stack.Screen name="Eligible" component={Eligible} />
             <Stack.Screen name="Car" component={Car} />
             <Stack.Screen name="House" component={House} />
-            <Stack.Screen name="Date" component={Date} />
-            <Stack.Screen name="Home" component={Home} />  */}
-            <Stack.Screen name="Questionnaire" component={Questionnaire} />
+            <Stack.Screen name="Date" component={Date} /> */}
+            {/* <Stack.Screen name="Home" component={Home} />  */}
+            {/* <Stack.Screen name="Questionnaire" component={Questionnaire} /> */}
             <Stack.Screen name="Quesimg" component={Quesimg} />
-            <Stack.Screen name="QuesAddVhicle" component={QuesAddVhicle} />
+            {/* <Stack.Screen name="QuesAddVhicle" component={QuesAddVhicle} /> */}
             <Stack.Screen name="QuesLive" component={QuesLive} />
             <Stack.Screen name="QuesVecDetails" component={QuesVecDetails} />
 

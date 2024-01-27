@@ -35,6 +35,7 @@ const topic3State = {
   messages: [],
 }
 
+const mqttURl="ws://34.93.32.239:9001/mqtt"
 // const Porduct_Key = useSelector(state => state?.userReducers?.Product)
 init({
   size: 10000,
@@ -159,7 +160,7 @@ export const CarDetails = (value) => {
     //   });
 
     const client = new Client({
-      uri: 'ws://34.93.62.206:9001/mqtt',
+      uri:mqttURl,
       clientId: 'clientRadhe',
       storage: myStorage,
     })
@@ -231,7 +232,7 @@ export const CarDetails = (value) => {
 export const setName = (title) => {
   return (dispatch) => {
     const client = new Client({
-      uri: 'ws://34.93.62.206:9001/mqtt',
+      uri:mqttURl,
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -305,7 +306,7 @@ export const setName = (title) => {
 export const Click = (user) => {
   return (dispatch) => {
     const client = new Client({
-      uri: 'ws://34.93.62.206:9001/mqtt',
+      uri:mqttURl,
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -474,7 +475,7 @@ export const Clicked = (storingTime, Porduct_Key) => {
   console.log(storingTime, 'this is this')
   return (dispatch) => {
     const client = new Client({
-      uri: 'ws://34.93.62.206:9001/mqtt',
+      uri:mqttURl,
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -521,7 +522,7 @@ export const Clicked = (storingTime, Porduct_Key) => {
 export const EcoMode = (Porduct_Key) => {
   return (dispatch) => {
     const client = new Client({
-      uri: 'ws://34.93.62.206:9001/mqtt',
+      uri:mqttURl,
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -596,7 +597,7 @@ export const ScheduleMode = (scheduleData, Porduct_Key) => {
   console.log(Porduct_Key, 'coming hear')
   return (dispatch) => {
     const client = new Client({
-      uri: 'ws://34.93.62.206:9001/mqtt',
+      uri:mqttURl,
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -669,7 +670,7 @@ export const BalanceMode = (Porduct_Key) => {
   console.log(Porduct_Key, 'suiii')
   return (dispatch) => {
     const client = new Client({
-      uri: 'ws://34.93.62.206:9001/mqtt',
+      uri:mqttURl,
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -742,7 +743,7 @@ export const BalanceMode = (Porduct_Key) => {
 export const StopChargingMode = (Porduct_Key) => {
   return (dispatch) => {
     const client = new Client({
-      uri: 'ws://34.93.62.206:9001/mqtt',
+      uri:mqttURl,
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -788,12 +789,13 @@ export const StopChargingMode = (Porduct_Key) => {
     client
       .connect()
       .then(() => {
-        console.log('onConnect')
-        return Promise.all([
-          client.subscribe(`${Porduct_Key}_Notifications`), // Topic 1
-          client.subscribe(`${Porduct_Key}_Output`), // Topic 2
-          client.subscribe(`${Porduct_Key}_Energy`), // Topic 3
-        ])
+        console.log('onConnect in stop charging')
+        // return Promise.all([
+        //   client.subscribe(`${Porduct_Key}_Notifications`), // Topic 1
+        //   client.subscribe(`${Porduct_Key}_Output`), // Topic 2
+        //   client.subscribe(`${Porduct_Key}_Energy`), // Topic 3
+        // ])
+        return client.subscribe(`${Porduct_Key}_Notifications`)
       })
       .then(() => {
         const sampleee = {
@@ -820,7 +822,7 @@ export const StopChargingMode = (Porduct_Key) => {
 export const ResolveMode = (Porduct_Key) => {
   return (dispatch) => {
     const client = new Client({
-      uri: 'ws://34.93.62.206:9001/mqtt',
+      uri:mqttURl,
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -840,17 +842,20 @@ export const ResolveMode = (Porduct_Key) => {
     client
       .connect()
       .then(() => {
-        console.log('onConnect')
+        console.log('onConnect in resolve')
         return client.subscribe(`${Porduct_Key}_Notifications`)
       })
       .then(() => {
+        console.log("then ke adner");
         const sampleee = {
           'Charging Mode': 'Resolve',
         }
         const sample = new Message(JSON.stringify(sampleee))
-        sample.destinationName = `${Porduct_Key}_Charging Modes`
+        // sample.destinationName = `${Porduct_Key}_Charging Modes`
+        sample.destinationName = `Charging Modes`
         // client.send(message);
         client.send(sample)
+        console.log("code ru;nngin g");
       })
       .then(() => {
         onConnect()

@@ -57,8 +57,7 @@ const Quesimg = ({ navigation }) => {
           style={{
 
             marginBottom: 200,
-            fontSize: 16
-
+            // fontSize: 16
             fontSize: fp(2),
             textAlign: 'right',
 
@@ -74,7 +73,7 @@ const Quesimg = ({ navigation }) => {
           </Text>
         </Text>
       </View>
-
+      </View>
       <View style={styles.containerForView}>
       <Image source={require('../assets/VectorHome.png')} style={styles.image} />
       </View>
