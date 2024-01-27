@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   Image,
+  TextInput as Input,
   TouchableOpacity,
 } from 'react-native'
 import {
@@ -17,10 +18,11 @@ import TextInput from '../components/Inputbox'
 
 import { Checkbox } from 'react-native-paper'
 
-const LoginInput = () => {
+const LoginInput = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView style={styles.container} behavior="padding">
+        {/* <Input style={styles.inputone} />  */}
         <View>
           <TextInput label="Email" name="email" style={styles.input} />
         </View>
@@ -45,7 +47,10 @@ const LoginInput = () => {
             <Text style={styles.rememberMeText}>Remember me</Text>
           </View>
         </View>
-        <TouchableOpacity style={styles.SignupButton}>
+        <TouchableOpacity
+          style={styles.SignupButton}
+          onPress={() => navigation.navigate('Welcomepage')}
+        >
           <Text style={styles.SignupButtonText}>Login</Text>
         </TouchableOpacity>
 
@@ -105,11 +110,16 @@ const styles = StyleSheet.create({
   container: {
     // Adjust container styles if needed
   },
-  input: {
-    borderRadius: 20,
-    height: hp(6.8),
+  inputone: {
+    borderWidth: 2,
+    borderRadius: 8,
+    height: 40,
     backgroundColor: '#fff',
-    // Add any additional styling as needed
+  },
+  input: {
+    borderRadius: 8,
+    height: 40,
+    backgroundColor: '#fff',
   },
   forgotRememberContainer: {
     width: '100%',
@@ -135,7 +145,7 @@ const styles = StyleSheet.create({
   SignupButton: {
     // backgroundColor: 'red',
     alignItems: 'center',
-    borderRadius: 15,
+    borderRadius: 8,
     padding: 10,
     borderWidth: 2,
     borderColor: 'green',

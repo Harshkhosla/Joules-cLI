@@ -1,24 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
+import { Picker } from '@react-native-picker/picker'
 import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native'
+  responsiveHeight as hp,
+  responsiveWidth as wp,
+  responsiveFontSize as fp,
+} from 'react-native-responsive-dimensions'
+
 import Quesheader from './Quesheader'
 
 const QuesAddVhicle = ({ navigation }) => {
+  const [selectedCar, setSelectedCar] = useState()
+
   return (
-    <View>
-      <Quesheader />
-      <View style={styles.container}>
+    <View style={styles.container}>
+      <Quesheader navigation={navigation} />
+      <View style={styles.detailscontainer}>
         <View style={styles.QuestiontextContainer}>
           <Text
             style={{
               marginBottom: 20,
-              fontSize: 16,
+              fontSize: fp(2),
+              textAlign: 'right',
             }}
           >
             Question{' '}
@@ -30,16 +33,33 @@ const QuesAddVhicle = ({ navigation }) => {
               3/4
             </Text>
           </Text>
-        </View>
-        <View>
-          <Image source={require('../assets/Group.png')} style={styles.image} />
-          <Text style={styles.text}>Some Text Below Image</Text>
+          <View style={styles.imageContainer}>
+            <Image
+              source={require('../assets/addcar.png')}
+              style={styles.image}
+            />
+            <Text style={styles.text}>Add your Vehicle</Text>
+          </View>
+          <View style={styles.pickerContainer}>
+            <Picker
+              selectedValue={selectedCar}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedCar(itemValue)
+              }
+              style={styles.picker}
+              selectionColor={'red'}
+            >
+              <Picker.Item label="Tata Motors Nexon EV" value="Nexon EV" />
+              <Picker.Item label="Mahindra" value="Mahindra" />
+              <Picker.Item label="KIA" value="kia" />
+            </Picker>
+          </View>
         </View>
 
-        <View style={styles.inputContainer}>
+        <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('QuesAddVhicle')}
+            onPress={() => navigation.navigate('QuesVecDetails')}
           >
             <Text style={styles.buttonText}>Add Vehicle</Text>
           </TouchableOpacity>
@@ -51,34 +71,54 @@ const QuesAddVhicle = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    height: 500,
-    justifyContent: 'space-around',
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  detailscontainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    justifyContent: 'space-between',
+    paddingVertical: 20,
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#DAE0E2',
+    elevation: 3,
     margin: 20,
     borderRadius: 20,
   },
   QuestiontextContainer: {
-    // backgroundColor: 'pink',
-    alignItems: 'flex-end',
-    width: '90%',
-    marginBottom: 40,
+    // alignItems: 'flex-end',
   },
-
+  imageContainer: {
+    marginVertical: 20,
+  },
   image: {
-    width: 200,
-    height: 200,
+    // width: wp(50),
+    // height: hp(20),
     resizeMode: 'contain',
     borderRadius: 10,
+    // backgroundColor: 'pink',
   },
   text: {
     marginTop: 10,
-    fontSize: 18,
-    marginBottom: 40,
+    fontSize: fp(2.5),
+    // marginBottom: 40,
   },
-  inputContainer: {
+  pickerContainer: {
+    backgroundColor: '#fff',
+    // borderWidth: 1,
+    borderRadius: 10,
+    // borderColor: '#555454',
+    elevation: 2,
+    height: 40,
+    justifyContent: 'center',
+  },
+
+  picker: {
+    // width: wp(75),
+    // height: 40,
+  },
+  buttonContainer: {
     marginHorizontal: 10,
     marginTop: 20,
     borderRadius: 20,
@@ -95,7 +135,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: fp(2.7),
     textAlign: 'center',
   },
 })

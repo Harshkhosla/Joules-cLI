@@ -1,14 +1,13 @@
 import React from 'react'
 import { TouchableOpacity, Image, StyleSheet } from 'react-native'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
-import { Avatar } from 'react-native-paper';
+import { Avatar } from 'react-native-paper'
 
 export default function PersonIcon({ clickheehpd }) {
   return (
     <TouchableOpacity style={styles.container} onPress={clickheehpd}>
-    <Avatar.Image size={45} source={require('../assets/download.png')} />
-  </TouchableOpacity>
-  
+      <Avatar.Image size={45} source={require('../assets/download.png')} />
+    </TouchableOpacity>
   )
 }
 

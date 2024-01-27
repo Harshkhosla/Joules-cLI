@@ -105,10 +105,9 @@ const styles = StyleSheet.create({
     // backgroundColor: 'pink',
   },
   input: {
-    borderRadius: 20,
-    height: hp(6.8),
+    borderRadius: 8,
+    height: 40,
     backgroundColor: '#fff',
-    // Add any additional styling as needed
   },
   passwordContainer: {
     flexDirection: 'row',
@@ -119,7 +118,7 @@ const styles = StyleSheet.create({
   SignupButton: {
     // backgroundColor: 'red',
     alignItems: 'center',
-    borderRadius: 15,
+    borderRadius: 8,
     marginTop: 10,
     padding: 10,
     borderWidth: 2,
