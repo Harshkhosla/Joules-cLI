@@ -15,6 +15,10 @@ export const SET_STATE_VALUE = 'SET_STATE_VALUE'
 export const SET_USER_ENERGY = 'SET_USER_ENERGY'
 export const SET_USER_PRODUCTKEY = 'SET_USER_PRODUCTKEY'
 export const SET_USER_PRODUCT = 'SET_USER_PRODUCT'
+
+// made by radhe
+// Action Types
+//
 import { Client, Message } from 'react-native-paho-mqtt'
 import Toast from 'react-native-toast-message'
 
@@ -351,14 +355,13 @@ export const Click = (user) => {
 
 // ----------------------------------------CREATING ACCOUNT DATA--------------------------------------------------------------------------------//
 
-export const loginuser = (input, navigation) => {
-  // debugger;
-  // console.log("harsh", input);
+export const loginuser = (input,navigation) => {
   return async (dispatch) => {
     const { name, email, password } = input
     try {
       const response = await fetch(
         `https://backend-production-e1c2.up.railway.app/api/auth/createuser`,
+        // "http://localhost:5000/api/auth/createuser",
         {
           method: 'POST',
           headers: {
@@ -371,22 +374,32 @@ export const loginuser = (input, navigation) => {
           }),
         }
       )
-
       const data = await response.json()
-      console.log(data, 'casdvas')
-      const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '')
-      await AsyncStorage.setItem('Authtoken', authtoken)
-      dispatch(setAuthtoken(authtoken))
-      if (!data?.success) {
+      console.log(data, 'Action Register')
+      if(data?.error){
         Toast.show({
           type: 'success',
           text1: data.error,
           text2: data.error,
-          position: 'bottom',
+          position: 'top',
         })
-        throw new Error(data.error)
       }
-      navigation.navigate('Datainput')
+      // const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '')
+      const authtoken = JSON.stringify(data.authtoken)
+      console.log("authtoken",authtoken);
+      await AsyncStorage.setItem('Authtoken', authtoken)
+      dispatch(setAuthtoken(authtoken))
+      if (data?.success){
+        Toast.show({
+          type: 'success',
+          text1: data.error,
+          text2: data.error,
+          position: 'top',
+        })
+        // throw new Error(data.error)
+      }
+      return data
+      // navigation.navigate('Datainput')
     } catch (err) {
       // Toast.show({
       //   type: 'success',
@@ -394,17 +407,19 @@ export const loginuser = (input, navigation) => {
       //   text2: 'jutblly!',
       //   position: 'bottom',
       // });
-      console.log(err, 'cvdsavs')
+      console.log(err, 'Action me err register')
     }
   }
 }
 
+
 // ------------------------------------------------------CREATING LOGIN AUTHTOKEN AND SENDING IT -----------------------------------------//
 
 export const signItUp = (field, navigation) => {
+  
+  console.log("lgn in redux field",field);
   return async (dispatch) => {
     const { email, password } = field
-
     try {
       const response = await fetch(
         `https://backend-production-e1c2.up.railway.app/api/auth/login`,
@@ -421,27 +436,29 @@ export const signItUp = (field, navigation) => {
       )
 
       const data = await response.json()
-      console.log(data, 'login data ')
+      console.log(data.success, 'login data ')
+      if(data.success){
       Toast.show({
-        type: 'success',
-        // text1: data,
+        type: 'info',
+        text1:data.toast,
         text2: 'Operation completed successfully!',
-        position: 'bottom',
+        position: 'top',
       })
-      const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '')
+    }
+      // const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '')
+      const authtoken = JSON.stringify(data.authtoken)
       console.log('authtoken', authtoken)
       await AsyncStorage.setItem('Authtoken', authtoken)
       dispatch(setAuthtoken(authtoken))
-
       if (!data?.success) {
         throw new Error(data.error)
       }
-      navigation.navigate('Navbar')
+      // navigation.navigate('Load')
     } catch (err) {
       Toast.show({
         type: 'success',
         // text1: err,
-        text2: 'Operation completed successfully!',
+        text2: 'Operation  failed completed successfully!',
         position: 'bottom',
       })
       console.log(err, 'err in login')

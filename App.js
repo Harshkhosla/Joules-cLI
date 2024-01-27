@@ -14,11 +14,14 @@ import QuesLive from './src/screens/QuesLive'
 import QuesVecDetails from './src/screens/QuesVecDetails'
 
 import Quesimg from './src/screens/Quesimg'
+<<<<<<< Updated upstream
 // import Welcomepage from './src/screens/Welcomepage'
 
 import SignIn from './src/screens/SignIn'
 
 
+=======
+>>>>>>> Stashed changes
 import StartScreen  from './src/screens/StartScreen'
 import RegisterScreen  from './src/screens/RegisterScreen'
 import LoginScreen from "./src/screens/LoginScreen"
@@ -44,7 +47,12 @@ import EditProfileScreen from "./src/screens/EditProfileScreen"
 import AddCharger from "./src/screens/AddCharger"
 import Notifications from "./src/screens/Notifications"
 import ChargerSettings from "./src/screens/ChargerSettings"
+<<<<<<< Updated upstream
 
+=======
+import LoginInput from './src/screens/LoginInput'
+import SignIn from './src/screens/SignIn'
+>>>>>>> Stashed changes
 const Stack = createStackNavigator()
 
 export default function App() {
@@ -64,6 +72,7 @@ export default function App() {
               options={{ headerShown: false }}
               name="Splash"
               component={Splash}
+<<<<<<< Updated upstream
             />
              <Stack.Screen name="StartScreen" component={StartScreen} />
             <Stack.Screen name="RegisterScreen" component={RegisterScreen} /> */}
@@ -72,28 +81,48 @@ export default function App() {
             {/* <Stack.Screen name="Welcomepage" component={Welcomepage} /> */}
 
             {/* <Stack.Screen name="LoginScreen" component={LoginScreen} />
+=======
+            /> */}
+             {/* <Stack.Screen name="StartScreen" component={StartScreen} /> */}
+            {/* <Stack.Screen name="LoginScreen" component={LoginScreen} /> */}
+            {/* <Stack.Screen name="RegisterScreen" component={RegisterScreen} /> */}
+            <Stack.Screen name="SignIn" component={SignIn} />
+>>>>>>> Stashed changes
             <Stack.Screen name="Dashboard" component={Dashboard} /> 
             <Stack.Screen
               name="ResetPasswordScreen"
               component={ResetPasswordScreen} 
             />
+<<<<<<< Updated upstream
             <Stack.Screen name="HomePage" component={HomePage} /> 
+=======
+            <Stack.Screen name="HomePage" component={HomePage} />
+>>>>>>> Stashed changes
             <Stack.Screen name="Load" component={Load} />
             <Stack.Screen name="Eligible" component={Eligible} />
             <Stack.Screen name="Car" component={Car} />
             <Stack.Screen name="House" component={House} />
+<<<<<<< Updated upstream
             <Stack.Screen name="Date" component={Date} /> */}
             {/* <Stack.Screen name="Home" component={Home} />  */}
             {/* <Stack.Screen name="Questionnaire" component={Questionnaire} /> */}
+=======
+            <Stack.Screen name="Date" component={Date} />
+            <Stack.Screen name="Home" component={Home} /> 
+            <Stack.Screen name="Questionnaire" component={Questionnaire} />
+>>>>>>> Stashed changes
             <Stack.Screen name="Quesimg" component={Quesimg} />
             {/* <Stack.Screen name="QuesAddVhicle" component={QuesAddVhicle} /> */}
             <Stack.Screen name="QuesLive" component={QuesLive} />
             <Stack.Screen name="QuesVecDetails" component={QuesVecDetails} />
+<<<<<<< Updated upstream
 
             {/* <Stack.Screen name="Quesimg" component={Quesimg} /> */}
             {/* <Stack.Screen name="Quesimg" component={Quesimg} /> */}
 
 
+=======
+>>>>>>> Stashed changes
             <Stack.Screen name="Wifi" component={Wifi} />
             <Stack.Screen name="Flat" component={Flat} />
             <Stack.Screen name="SceduleDate" component={SceduleDate} />
@@ -101,7 +130,7 @@ export default function App() {
             <Stack.Screen name="Test" component={Test} />
             <Stack.Screen name="Datainput" component={Datainput} />
             <Stack.Screen name="Clamp" component={Clamp} />
-            <Stack.Screen name="Navbar" component={Navbar} />
+            {/* <Stack.Screen name="Navbar" component={Navbar} /> */}
             <Stack.Screen name="Graphs" component={Meter} />
             <Stack.Screen name="UserProfile" component={UserProfile} />
             <Stack.Screen

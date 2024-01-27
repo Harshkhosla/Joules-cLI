@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   View,
   KeyboardAvoidingView,
@@ -17,17 +17,48 @@ import {
 import TextInput from '../components/Inputbox'
 
 import { Checkbox } from 'react-native-paper'
+import { useDispatch } from 'react-redux'
+import { signItUp } from '../Redux/Action'
+import Toast from 'react-native-toast-message'
 
+<<<<<<< Updated upstream
 const LoginInput = ({ navigation }) => {
+=======
+const LoginInput = ({navigation}) => {
+  const dispatch=useDispatch()
+  const [data,setdata]=useState({email:"",password:""})
+  console.log("data in login",data);
+
+  async function userlogin(){
+    if(data.email && data.password){
+    try {
+      const response=await dispatch(signItUp(data,navigation))
+      console.log("response lgin ",response);
+    } catch (error) {
+      console.log("error in login page",error);
+    }
+  }
+  else{
+    Toast.show({
+      type:"error",
+      text1:"please input email & password"
+    })
+  }
+  }
+>>>>>>> Stashed changes
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         {/* <Input style={styles.inputone} />  */}
         <View>
-          <TextInput label="Email" name="email" style={styles.input} />
+          <TextInput label="Email" name="email" style={styles.input} value={data.email} 
+           onChangeText={(text)=>{setdata({...data,email:text})}}
+          />
         </View>
         <View>
-          <TextInput label="Password" name="password" style={styles.input} />
+          <TextInput label="Password" name="password" style={styles.input} 
+           onChangeText={(text)=>{setdata({...data,password:text})}}
+          />
         </View>
         <View style={styles.forgotRememberContainer}>
           <TouchableOpacity
@@ -47,10 +78,14 @@ const LoginInput = ({ navigation }) => {
             <Text style={styles.rememberMeText}>Remember me</Text>
           </View>
         </View>
+<<<<<<< Updated upstream
         <TouchableOpacity
           style={styles.SignupButton}
           onPress={() => navigation.navigate('Welcomepage')}
         >
+=======
+        <TouchableOpacity style={styles.SignupButton}  onPress={userlogin}>
+>>>>>>> Stashed changes
           <Text style={styles.SignupButtonText}>Login</Text>
         </TouchableOpacity>
 

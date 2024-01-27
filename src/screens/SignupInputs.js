@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   View,
   KeyboardAvoidingView,
@@ -14,10 +14,42 @@ import {
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
-
 import { Checkbox } from 'react-native-paper'
+import { useDispatch } from 'react-redux'
+import { loginuser, loginuser1, signItUp } from '../Redux/Action'
+import Toast from 'react-native-toast-message'
 
 const SignupInputs = () => {
+  const dispatch=useDispatch()
+  const [data,setdata]=useState({name:"",email:"",password:"",ConfirmPassword:""})
+  console.log("data",data);
+
+  const RegisterUser = async() => {
+    if(data.name && data.email && data.password && data.ConfirmPassword){
+    if(data.password==data.ConfirmPassword){
+      try {
+        const reaponse = await dispatch(loginuser(data))
+        console.log('reaponse', reaponse)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    else{
+      Toast.show({
+        type:"error",
+        text1:"Password & Confirm Password are not same"
+      })
+    }
+  }
+  else{
+    Toast.show({
+      type:"success",
+      text1:"please input all field",
+      swipeable:true
+    })
+  }
+   
+  }
   return (
     <View style={styles.container}>
       {/* <KeyboardAvoidingView
@@ -25,22 +57,29 @@ const SignupInputs = () => {
         style={styles.container}
       > */}
       <View>
-        <TextInput label="Name" name="name" style={styles.input} />
+        <TextInput label="Name" name="name" style={styles.input} value={data.name} 
+        onChangeText={(text)=>{setdata({...data,name:text})}}
+        />
       </View>
       <View>
-        <TextInput label="Email id" name="email" style={styles.input} />
+        <TextInput label="Email id" name="email" style={styles.input}  
+        value={data.email}
+        onChangeText={(text)=>{setdata({...data,email:text})}}/>
       </View>
-
       <View style={styles.passwordContainer}>
-        <TextInput label="Password" name="password" style={styles.input} />
+        <TextInput label="Password" name="password" style={styles.input} 
+        value={data.password}
+         onChangeText={(text)=>{setdata({...data,password:text})}}/>
         <TextInput
           label="Confirm assword"
           name="cpassword"
           style={styles.input}
+          value={data.ConfirmPassword}
+          onChangeText={(text)=>{setdata({...data,ConfirmPassword:text})}}
         />
       </View>
-      <TouchableOpacity style={styles.SignupButton}>
-        <Text style={styles.SignupButtonText}>Sign up</Text>
+      <TouchableOpacity style={styles.SignupButton} onPress={RegisterUser}>
+        <Text style={styles.SignupButtonText} >Sign up</Text>
       </TouchableOpacity>
       <Text style={styles.TermsAndConditions}>
         By Signing up you agree to
