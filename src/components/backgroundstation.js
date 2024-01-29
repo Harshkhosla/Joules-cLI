@@ -1,9 +1,14 @@
 import React from 'react'
-import { ImageBackground, StyleSheet, KeyboardAvoidingView,  Dimensions  } from 'react-native'
+import {
+  ImageBackground,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Dimensions,
+} from 'react-native'
 import { theme } from '../core/theme'
 
-const screenHeight = Dimensions.get('window').height;
-const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height
+const screenWidth = Dimensions.get('window').width
 
 export default function Background({ children }) {
   return (

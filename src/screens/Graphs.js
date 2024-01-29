@@ -82,20 +82,20 @@ export default function Meter({ navigation }) {
           // }}
         />
 
-        {/* <BarChart
-//   style={graphStyle}
-  data={data}
-  width={screenWidth}
-  height={220}
-  yAxisLabel="$"
-  chartConfig={chartConfig}
-  verticalLabelRotation={30}
-/> */}
-        {/* <ProgressBar></ProgressBar> */}
-      </View>
-    </>
-  )
-}
+//         {/* <BarChart
+// //   style={graphStyle}
+//   data={data}
+//   width={screenWidth}
+//   height={220}
+//   yAxisLabel="$"
+//   chartConfig={chartConfig}
+//   verticalLabelRotation={30}
+// /> */}
+//         {/* <ProgressBar></ProgressBar> */}
+//       </View>
+//     </>
+//   )
+// }
 
 // const styles = StyleSheet.create({
 //   container: {
