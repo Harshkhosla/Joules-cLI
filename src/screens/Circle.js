@@ -1,70 +1,82 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 import React from 'react'
 import {
   responsiveHeight as hp,
   responsiveWidth as wp,
-  responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
+import LinearGradient from 'react-native-linear-gradient'
 
 const Circle = () => {
   return (
-    <View style={styles.container}>
-      <View style={styles.circle1}>
-        <View style={styles.circle2}>
-          <View style={styles.circle3}>
-            <View style={styles.circle4}></View>
-          </View>
-        </View>
-      </View>
-      {/* <Text>Circle Circle Circle Circle Circle Circle </Text> */}
-    </View>
+    // <LinearGradient colors={['#118615', '#118615']} style={styles.container}>
+    <LinearGradient colors={['#118615', '#118615']} style={styles.circle1}>
+      <LinearGradient colors={['#118615', '#118615']} style={styles.circle2}>
+        <LinearGradient colors={['#118615', '#118615']} style={styles.circle3}>
+          <LinearGradient
+            colors={['#118615', '#118615']}
+            style={styles.circle4}
+          >
+            <LinearGradient
+              colors={['#118615', '#118615']}
+              // colors={['#E5E5E5', '#118615']}
+              style={styles.circle5}
+            ></LinearGradient>
+          </LinearGradient>
+        </LinearGradient>
+      </LinearGradient>
+    </LinearGradient>
+    // </LinearGradient>
   )
 }
 
-export default Circle
-
 const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-  },
+  // container: {
+  //   height: wp(100),
+  //   width: wp(100),
+  //   borderRadius: wp(100) / 2,
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  // },
   circle1: {
-    // position: 'absolute',
-    backgroundColor: '#019031',
-    height: wp(90),
-    width: wp(90),
-    borderRadius: wp(90) / 2,
+    height: wp(100),
+    width: wp(100),
+    borderRadius: wp(100) / 2,
     alignItems: 'center',
     justifyContent: 'center',
-    opacity: 0.1,
+    opacity: 0.099,
   },
   circle2: {
-    // position: 'absolute',
-    backgroundColor: '#019031',
-    height: wp(75),
-    width: wp(75),
-    borderRadius: wp(75) / 2,
+    backgroundColor: 'transparent',
+    height: wp(85),
+    width: wp(85),
+    borderRadius: wp(85) / 2,
     alignItems: 'center',
     justifyContent: 'center',
-    // opacity: 0.9,
   },
   circle3: {
-    // position: 'absolute',
-    backgroundColor: '#019031',
-    height: wp(60),
-    width: wp(60),
-    borderRadius: wp(60) / 2,
+    backgroundColor: 'transparent',
+    height: wp(70),
+    width: wp(70),
+    borderRadius: wp(70) / 2,
     alignItems: 'center',
     justifyContent: 'center',
-    // opacity: 0.8,
   },
   circle4: {
-    // position: 'absolute',
-    backgroundColor: '#019031',
-    height: wp(45),
-    width: wp(45),
-    borderRadius: wp(45) / 2,
+    backgroundColor: 'transparent',
+    height: wp(55),
+    width: wp(55),
+    borderRadius: wp(55) / 2,
     alignItems: 'center',
     justifyContent: 'center',
-    // opacity: 0.6,
+  },
+  circle5: {
+    backgroundColor: 'transparent',
+    height: wp(40),
+    width: wp(40),
+    borderRadius: wp(40) / 2,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })
+
+export default Circle

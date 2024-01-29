@@ -16,23 +16,26 @@ const QuesAddVhicle = ({ navigation }) => {
     <View style={styles.container}>
       <Quesheader navigation={navigation} />
       <View style={styles.detailscontainer}>
-        <View style={styles.QuestiontextContainer}>
-          <Text
-            style={{
-              marginBottom: 20,
-              fontSize: fp(2),
-              textAlign: 'right',
-            }}
-          >
-            Question{' '}
+        <View>
+          <View>
             <Text
               style={{
-                color: 'green',
+                marginBottom: 20,
+                fontSize: fp(2),
+                textAlign: 'right',
               }}
             >
-              3/4
+              Question{' '}
+              <Text
+                style={{
+                  color: 'green',
+                }}
+              >
+                3/4
+              </Text>
             </Text>
-          </Text>
+          </View>
+
           <View style={styles.imageContainer}>
             <Image
               source={require('../assets/addcar.png')}
@@ -56,14 +59,12 @@ const QuesAddVhicle = ({ navigation }) => {
           </View>
         </View>
 
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate('QuesVecDetails')}
-          >
-            <Text style={styles.buttonText}>Add Vehicle</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('QuesVecDetails')}
+        >
+          <Text style={styles.buttonText}>Add Vehicle</Text>
+        </TouchableOpacity>
       </View>
     </View>
   )
@@ -78,37 +79,27 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     justifyContent: 'space-between',
-    paddingVertical: 20,
-    alignItems: 'center',
+    padding: 20,
     borderWidth: 1,
     borderColor: '#DAE0E2',
     elevation: 3,
     margin: 20,
     borderRadius: 20,
   },
-  QuestiontextContainer: {
-    // alignItems: 'flex-end',
-  },
   imageContainer: {
-    marginVertical: 20,
+    marginVertical: 10,
   },
   image: {
-    // width: wp(50),
-    // height: hp(20),
+    alignSelf: 'center',
     resizeMode: 'contain',
-    borderRadius: 10,
-    // backgroundColor: 'pink',
   },
   text: {
     marginTop: 10,
     fontSize: fp(2.5),
-    // marginBottom: 40,
   },
   pickerContainer: {
     backgroundColor: '#fff',
-    // borderWidth: 1,
     borderRadius: 10,
-    // borderColor: '#555454',
     elevation: 2,
     height: 40,
     justifyContent: 'center',
@@ -126,17 +117,14 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: 'green',
-    marginHorizontal: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    backgroundColor: '#118615',
     borderRadius: 15,
-    marginTop: 10,
   },
   buttonText: {
     color: 'white',
     fontSize: fp(2.7),
     textAlign: 'center',
+    padding: 10,
   },
 })
 

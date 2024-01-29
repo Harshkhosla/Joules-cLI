@@ -41,6 +41,8 @@ import QuesLive from './src/screens/QuesLive'
 import QuesVecDetails from './src/screens/QuesVecDetails'
 import Welcomepage from './src/screens/Welcomepage'
 import SignIn from './src/screens/SignIn'
+import Charger_Selection from './src/screens/Charger_Selection'
+import Newhome from './src/screens/Newhome'
 
 const Stack = createStackNavigator()
 
@@ -67,6 +69,15 @@ export default function App() {
 
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen name="Welcomepage" component={Welcomepage} />
+            <Stack.Screen name="Questionnaire" component={Questionnaire} />
+            <Stack.Screen name="QuesAddVhicle" component={QuesAddVhicle} />
+            <Stack.Screen name="QuesLive" component={QuesLive} />
+            <Stack.Screen name="QuesVecDetails" component={QuesVecDetails} />
+            <Stack.Screen
+              name="Charger_Selection"
+              component={Charger_Selection}
+            />
+            <Stack.Screen name="Newhome" component={Newhome} />
 
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
             <Stack.Screen name="Dashboard" component={Dashboard} />
@@ -81,11 +92,6 @@ export default function App() {
             <Stack.Screen name="House" component={House} />
             <Stack.Screen name="Date" component={Date} />
             <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="Questionnaire" component={Questionnaire} />
-            <Stack.Screen name="QuesAddVhicle" component={QuesAddVhicle} />
-            <Stack.Screen name="QuesLive" component={QuesLive} />
-            <Stack.Screen name="QuesVecDetails" component={QuesVecDetails} />
-
             <Stack.Screen name="Wifi" component={Wifi} />
             <Stack.Screen name="Flat" component={Flat} />
             <Stack.Screen name="SceduleDate" component={SceduleDate} />

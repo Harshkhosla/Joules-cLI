@@ -41,10 +41,11 @@ const QuesLive = ({ navigation }) => {
       <Quesheader navigation={navigation} />
       <View style={styles.detailscontainer}>
         <View>
-          <View style={styles.QuestiontextContainer}>
+          <View>
             <Text
               style={{
                 fontSize: fp(2),
+                textAlign: 'right',
               }}
             >
               Question{' '}
@@ -123,22 +124,17 @@ const styles = StyleSheet.create({
   },
   detailscontainer: {
     flex: 1,
-    justifyContent: 'space-between',
-    paddingVertical: 20,
     backgroundColor: '#fff',
+    justifyContent: 'space-between',
+    padding: 20,
     borderWidth: 1,
     borderColor: '#DAE0E2',
-    elevation: 3,
+    elevation: 2,
     margin: 20,
     borderRadius: 20,
   },
-  QuestiontextContainer: {
-    // backgroundColor: 'pink',
-    padding: 10,
-    alignItems: 'flex-end',
-  },
   text: {
-    padding: 10,
+    paddingVertical: 10,
     fontSize: fp(2.5),
   },
   ImageView: {
@@ -146,7 +142,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 14,
   },
-
   imageContainer: {
     width: wp(36),
     height: hp(20),
@@ -157,24 +152,21 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 4,
     borderColor: '#fff',
-    elevation: 4,
+    elevation: 2,
   },
   image: {
     resizeMode: 'contain',
     borderRadius: 10,
   },
   button: {
-    backgroundColor: 'green',
-    marginHorizontal: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    backgroundColor: '#118615',
     borderRadius: 15,
-    marginTop: 10,
   },
   buttonText: {
     color: 'white',
     fontSize: fp(2.7),
     textAlign: 'center',
+    padding: 10,
   },
 })
 

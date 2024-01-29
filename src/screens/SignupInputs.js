@@ -14,6 +14,7 @@ import {
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
+import InputBoxTwo from '../components/InputBoxTwo'
 
 import { Checkbox } from 'react-native-paper'
 
@@ -24,20 +25,18 @@ const SignupInputs = () => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}
       > */}
-      <View>
-        <TextInput label="Name" name="name" style={styles.input} />
-      </View>
-      <View>
-        <TextInput label="Email id" name="email" style={styles.input} />
+      <View style={styles.inputsContainer}>
+        <View>
+          <InputBoxTwo lable="Name" placeholder="Enter your name" />
+        </View>
+        <View>
+          <InputBoxTwo lable="Email" placeholder="Enter your mail id" />
+        </View>
       </View>
 
       <View style={styles.passwordContainer}>
-        <TextInput label="Password" name="password" style={styles.input} />
-        <TextInput
-          label="Confirm assword"
-          name="cpassword"
-          style={styles.input}
-        />
+        <InputBoxTwo lable="Password" placeholder="Enter password" />
+        <InputBoxTwo lable="Confirm Password" placeholder="Enter password" />
       </View>
       <TouchableOpacity style={styles.SignupButton}>
         <Text style={styles.SignupButtonText}>Sign up</Text>
@@ -57,27 +56,8 @@ const SignupInputs = () => {
             />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.socialButton,
-            {
-              padding: 6,
-            },
-          ]}
-        >
-          <View
-            style={[
-              styles.socialIconWrapper,
-              {
-                backgroundColor: '#1977F3',
-                width: wp(12),
-                height: wp(12),
-                borderRadius: wp(12) / 2,
-                alignItems: 'center',
-                justifyContent: 'center',
-              },
-            ]}
-          >
+        <TouchableOpacity style={styles.socialButton}>
+          <View style={styles.socialIconWrapper}>
             <Image
               source={require('../assets/facebookvector.png')}
               // style={styles.socialIconText}
@@ -104,6 +84,9 @@ const styles = StyleSheet.create({
     // marginBottom: 20,
     // backgroundColor: 'pink',
   },
+  inputsContainer: {
+    // marginVertical: 8,
+  },
   input: {
     borderRadius: 8,
     height: 40,
@@ -119,7 +102,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
     alignItems: 'center',
     borderRadius: 8,
-    marginTop: 10,
+    marginTop: 30,
     padding: 10,
     borderWidth: 2,
     borderColor: 'green',
@@ -134,9 +117,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   ortext: {
-    padding: 10,
+    padding: 12,
     fontSize: fp(3),
     textAlign: 'center',
+    color: '#8B8B8B',
   },
   socialButtonsContainer: {
     flexDirection: 'row',
@@ -145,10 +129,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   socialButton: {
-    padding: 12,
+    padding: 8,
     marginHorizontal: 8,
     // borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 8,
     elevation: 2,
     backgroundColor: '#fff',
   },

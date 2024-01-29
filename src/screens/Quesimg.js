@@ -60,10 +60,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#D4D4D4',
     borderRadius: 20,
     elevation: 2,
     margin: 20,
@@ -98,7 +94,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   button: {
-    backgroundColor: 'green',
+    backgroundColor: '#118615',
     paddingVertical: 10,
     borderRadius: 15,
     marginTop: 10,
