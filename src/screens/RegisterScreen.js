@@ -28,20 +28,20 @@ import { Checkbox } from 'react-native-paper'
 const screenWidth = Dimensions.get('window').width
 const screenHeight = Dimensions.get('window').height
 
-export default function RegisterScreen({ navigation }) {
+function RegisterScreen({ navigation }) {
   const dispatch = useDispatch()
   const [data, setData] = useState({
     email: '',
     password: '',
   })
   const [sample, setSample] = useState('')
-  console.log(sample, '   ,,,hello i am in loginScreen')
+  // console.log(sample, '   ,,,hello i am in loginScreen')
 
   const imagesAllData = useSelector((state) => state?.userReducers)
 
   // console.log("imagesAllData",imagesAllData)
   const [loading, setLoading] = useState(false)
-  console.log(imagesAllData, 'imagesAllData')
+  // console.log(imagesAllData, 'imagesAllData')
   useEffect(() => {
     const mEmail = AsyncStorage.getItem('Authtoken')
     setSample(imagesAllData?.authtoken)
@@ -82,6 +82,7 @@ export default function RegisterScreen({ navigation }) {
   useEffect(() => {
     async function fetchData() {
       const mEmail = await AsyncStorage.getItem('Authtoken')
+      // console.log("mEmail register",mEmail);
       if (!mEmail === '') {
         navigation.navigate('Home')
       }
@@ -90,6 +91,7 @@ export default function RegisterScreen({ navigation }) {
   }, [])
 
   const getData = async () => {
+    console.log("radhe sign fn call")
     setLoading(true)
     try {
       const reaponse = await dispatch(loginuser(data, navigation))
@@ -116,6 +118,7 @@ export default function RegisterScreen({ navigation }) {
         onChangeText={(txt) => {
           setData((prevData) => ({ ...prevData, name: txt }))
         }}
+        required
         // error={!!name.error}
         // errorText={name.error}
       />
@@ -216,7 +219,7 @@ export default function RegisterScreen({ navigation }) {
     </Background>
   )
 }
-
+export default RegisterScreen;
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
@@ -314,3 +317,4 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 })
+

@@ -18,8 +18,7 @@ const screenHeight = Dimensions.get('window').height;
 export default function Datainput({ navigation }) {
 
   const OnClick = () => {
-      navigation.navigate('Load');
-
+      navigation.navigate('Questionnaire');
   };
 
   return (
