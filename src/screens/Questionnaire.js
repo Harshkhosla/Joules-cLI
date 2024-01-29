@@ -9,7 +9,6 @@ import {
 } from 'react-native'
 import Quesheader from './Quesheader'
 import Quesimg from './Quesimg'
-import { ScrollView } from 'react-native-gesture-handler'
 
 
 const Questionnaire = ({navigation}) => {
@@ -30,10 +29,8 @@ const Questionnaire = ({ navigation }) => {
         behavior={behavior}
         onPress={() => Keyboard.dismiss()}
       >
-        <ScrollView>
-          <Quesheader navigation={navigation} />
-          <Quesimg navigation={navigation} />
-        </ScrollView>
+        <Quesheader navigation={navigation} />
+        <Quesimg navigation={navigation} />
       </KeyboardAvoidingView>
 
     </View>

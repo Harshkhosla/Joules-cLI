@@ -22,10 +22,10 @@ const QuesVecDetails = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Quesheader navigation={navigation} />
-      <ScrollView>
-        <View style={styles.detailsContainer}>
+      <View style={styles.detailscontainer}>
+        <View>
           <View>
-            <View style={styles.QuestiontextContainer}>
+            <View>
               <Text
                 style={{
                   marginBottom: 20,
@@ -43,24 +43,18 @@ const QuesVecDetails = ({ navigation }) => {
                 </Text>
               </Text>
             </View>
-
             <View style={styles.CarContainer}>
               <QuesVeCardetails />
-              {/* <QuesVeCardetails />
-              <QuesVeCardetails />
-              <QuesVeCardetails /> */}
             </View>
           </View>
-          <View>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => navigation.navigate('QuesVecDetails')}
-            >
-              <Text style={styles.buttonText}>Next</Text>
-            </TouchableOpacity>
-          </View>
         </View>
-      </ScrollView>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('Charger_Selection')}
+        >
+          <Text style={styles.buttonText}>Next</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
@@ -70,37 +64,30 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  detailsContainer: {
+  detailscontainer: {
     flex: 1,
     backgroundColor: '#fff',
-    minHeight: hp(64),
     justifyContent: 'space-between',
+    padding: 20,
     borderWidth: 1,
     borderColor: '#DAE0E2',
-    elevation: 2,
-    padding: 20,
+    elevation: 3,
     margin: 20,
     borderRadius: 20,
-    // overflow: 'hidden',
-  },
-  QuestiontextContainer: {
-    // backgroundColor: 'pink',
-    // alignItems: 'flex-end',
-    // width: '90%',
   },
   CarContainer: {
     // alignItems: 'center',
     // gap: 20,
   },
   button: {
-    backgroundColor: 'green',
-    paddingVertical: 10,
+    backgroundColor: '#118615',
     borderRadius: 15,
   },
   buttonText: {
     color: 'white',
-    fontSize: fp(2.5),
+    fontSize: fp(2.7),
     textAlign: 'center',
+    padding: 10,
   },
 })
 

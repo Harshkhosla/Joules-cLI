@@ -18,40 +18,39 @@ import Welcomepage from './src/screens/Welcomepage'
 
 import SignIn from './src/screens/SignIn'
 
-
-import StartScreen  from './src/screens/StartScreen'
-import RegisterScreen  from './src/screens/RegisterScreen'
-import LoginScreen from "./src/screens/LoginScreen"
-import Dashboard from "./src/screens/Dashboard";
-import ResetPasswordScreen from "./src/screens/ResetPasswordScreen"
-import HomePage from "./src/screens/HomePage"
-import Load from "./src/screens/Load"
-import Eligible from "./src/screens/Eligible"
-import Car from "./src/screens/Car"
-import Date from "./src/screens/Date"
-import Home from "./src/screens/Home"
-import Wifi from "./src/screens/Wifi"
-import Flat from "./src/screens/Flat"
-import UserDetails from "./src/screens/UserDetails"
-import Test from "./src/screens/Test"
-import Datainput from "./src/screens/Datainput"
-import Clamp from "./src/screens/Clamp"
-import Navbar from "./src/screens/Navbar"
-import House from "./src/screens/House"
-import Meter from "./src/screens/Graphs"
-import UserProfile from "./src/screens/UserProfile"
-import EditProfileScreen from "./src/screens/EditProfileScreen"
-import AddCharger from "./src/screens/AddCharger"
-import Notifications from "./src/screens/Notifications"
-import ChargerSettings from "./src/screens/ChargerSettings"
+import StartScreen from './src/screens/StartScreen'
+import RegisterScreen from './src/screens/RegisterScreen'
+import LoginScreen from './src/screens/LoginScreen'
+import Dashboard from './src/screens/Dashboard'
+import ResetPasswordScreen from './src/screens/ResetPasswordScreen'
+import HomePage from './src/screens/HomePage'
+import Load from './src/screens/Load'
+import Eligible from './src/screens/Eligible'
+import Car from './src/screens/Car'
+import Date from './src/screens/Date'
+import Home from './src/screens/Home'
+import Wifi from './src/screens/Wifi'
+import Flat from './src/screens/Flat'
+import UserDetails from './src/screens/UserDetails'
+import Test from './src/screens/Test'
+import Datainput from './src/screens/Datainput'
+import Clamp from './src/screens/Clamp'
+import Navbar from './src/screens/Navbar'
+import House from './src/screens/House'
+import Meter from './src/screens/Graphs'
+import UserProfile from './src/screens/UserProfile'
+import EditProfileScreen from './src/screens/EditProfileScreen'
+import AddCharger from './src/screens/AddCharger'
+import Notifications from './src/screens/Notifications'
+import ChargerSettings from './src/screens/ChargerSettings'
+import Charger_Selection from './src/screens/Charger_Selection'
+import Newhome from './src/screens/Newhome'
 
 const Stack = createStackNavigator()
 
 export default function App() {
   return (
-
     <Sample store={Store}>
-     
       <Provider theme={theme}>
         <NavigationContainer>
           <Stack.Navigator
@@ -60,7 +59,7 @@ export default function App() {
               headerShown: false,
             }}
           >
-             {/* <Stack.Screen
+            {/* <Stack.Screen
               options={{ headerShown: false }}
               name="Splash"
               component={Splash}
@@ -70,6 +69,15 @@ export default function App() {
 
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen name="Welcomepage" component={Welcomepage} />
+            <Stack.Screen name="Questionnaire" component={Questionnaire} />
+            <Stack.Screen name="QuesAddVhicle" component={QuesAddVhicle} />
+            <Stack.Screen name="QuesLive" component={QuesLive} />
+            <Stack.Screen name="QuesVecDetails" component={QuesVecDetails} />
+            <Stack.Screen
+              name="Charger_Selection"
+              component={Charger_Selection}
+            />
+            <Stack.Screen name="Newhome" component={Newhome} />
 
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
             <Stack.Screen name="Dashboard" component={Dashboard} /> 
@@ -93,7 +101,6 @@ export default function App() {
             {/* <Stack.Screen name="Quesimg" component={Quesimg} /> */}
             {/* <Stack.Screen name="Quesimg" component={Quesimg} /> */}
 
-
             <Stack.Screen name="Wifi" component={Wifi} />
             <Stack.Screen name="Flat" component={Flat} />
             <Stack.Screen name="SceduleDate" component={SceduleDate} />
@@ -113,7 +120,7 @@ export default function App() {
             <Stack.Screen name="ChargerSettings" component={ChargerSettings} />
           </Stack.Navigator>
           {/* <Toast ref={(ref) => Toast.setRef(ref)} /> */}
-          <Toast/>
+          <Toast />
         </NavigationContainer>
       </Provider>
     </Sample>
