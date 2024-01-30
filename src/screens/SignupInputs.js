@@ -27,7 +27,7 @@ const SignupInputs = () => {
       > */}
       <View style={styles.inputsContainer}>
         <View>
-          <InputBoxTwo lable="Name" placeholder="Enter your name" />
+          <InputBoxTwo lable="Name" placeholder="Enter your name"/>
         </View>
         <View>
           <InputBoxTwo lable="Email" placeholder="Enter your mail id" />
@@ -43,7 +43,7 @@ const SignupInputs = () => {
       </TouchableOpacity>
       <Text style={styles.TermsAndConditions}>
         By Signing up you agree to
-        <Text style={{ color: 'green' }}> Terms & Conditions</Text>
+        <Text style={{ color: 'green',textDecorationLine:"underline"}}> Terms & Conditions</Text>
       </Text>
 
       <Text style={styles.ortext}>or</Text>
@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
   },
   inputsContainer: {
     // marginVertical: 8,
+    color:"black"
   },
   input: {
     borderRadius: 8,
@@ -115,6 +116,7 @@ const styles = StyleSheet.create({
     fontSize: fp(1.5),
     paddingTop: 10,
     textAlign: 'center',
+    color:"black"
   },
   ortext: {
     padding: 12,

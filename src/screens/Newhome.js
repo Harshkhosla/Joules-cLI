@@ -1,14 +1,47 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SetCost from './SetCost'
 import PublicHomePageHeader from './PublicHomePageHeader'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const Newhome = () => {
+const Newhome = ({navigation}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [data, setData]= useState(); 
   const handleCostAndTimeOpen = () => {
-    setIsModalOpen(true)
-  }
+    if(data){
+      setIsModalOpen(true)
+    }else{
 
+      navigation.navigate('PublicScanner')
+      setData(true);
+    }
+  }
+  // console.log(AsyncStorage.getItem("pid"));
+  useEffect(() => {
+    // Use AsyncStorage.getItem with then to handle the Promise
+    AsyncStorage.getItem("pid")
+      .then((storedData) => {
+        // Handle the retrieved data, it might be null if not found
+        console.log("Data from AsyncStorage:", storedData);
+        setData(storedData);
+      })
+      .catch((error) => {
+        console.error("Error retrieving data from AsyncStorage:", error);
+      });
+  }, []);
+
+
+
+  const handleRemoveItem = async () => {
+    try {
+      // Use AsyncStorage.removeItem to remove the "pid" item
+      await AsyncStorage.removeItem("pid");
+      console.log("Item removed from AsyncStorage");
+      setData(null); // Reset the data state
+    } catch (error) {
+      console.error("Error removing item from AsyncStorage:", error);
+    }
+  }
   const handleCostAndTimeClose = () => {
     setIsModalOpen(false)
   }
@@ -26,7 +59,7 @@ const Newhome = () => {
               marginRight: 10,
             }}
           ></View>
-          <Text>Status:</Text>
+          <Text style={{ color:"#717171"}}>Status:</Text>
           <Text style={{ paddingLeft: 10, color: 'green' }}>
             Your charger is connected
           </Text>
@@ -34,18 +67,18 @@ const Newhome = () => {
         <View style={styles.dashboard}>
           <View>
             <View style={styles.chargingCostMeater}>
-              <Text>Charging Cost</Text>
-              <Text>₹---</Text>
+              <Text style={{ color:"#717171"}}>Charging Cost</Text>
+              <Text style={{ color:"#717171"}}>₹---</Text>
             </View>
           </View>
           <View style={styles.chargingEnergyAndTime}>
             <View style={styles.chargingValueText}>
-              <Text>Charging Time</Text>
-              <Text>-- hrs</Text>
+              <Text style={{ color:"#717171"}}>Charging Time</Text>
+              <Text style={{ color:"#717171"}}>-- hrs</Text>
             </View>
             <View style={styles.chargingValueText}>
-              <Text>Charging Cost</Text>
-              <Text>-- kwh</Text>
+              <Text style={{ color:"#717171"}}>Charging Energy</Text>
+              <Text style={{ color:"#717171"}}>-- kwh</Text>
             </View>
           </View>
         </View>
@@ -54,7 +87,7 @@ const Newhome = () => {
             onPress={handleCostAndTimeOpen}
             style={styles.ButtonBox}
           >
-            <Text style={styles.ButtonText}>Start Charging</Text>
+            <Text style={styles.ButtonText}>{data?"Start Charging":"Scan QR"}</Text>
           </TouchableOpacity>
         </View>
         <Text
@@ -98,7 +131,7 @@ const styles = StyleSheet.create({
 
   dashboard: {
     marginTop: 10,
-    height: 340,
+    height: 420,
     borderRadius: 20,
     backgroundColor: '#fff',
     borderWidth: 1,
@@ -118,9 +151,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
     height: 80,
+   
   },
   chargingEnergyAndTime: {
     flexDirection: 'row',
+    color:"black",
     height: 100,
     // alignItems: 'center',
     // justifyContent: 'center',
@@ -143,7 +178,7 @@ const styles = StyleSheet.create({
     height: 110,
     backgroundColor: '#C1E0C2',
     alignItems: 'center',
-    elevation: 2,
+    elevation: 1,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     justifyContent: 'center',

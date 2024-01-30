@@ -181,7 +181,7 @@ export default function Home({ navigation }) {
 
   const Clickk = () => {
     // navigation.navigate('Load');
-    dispatch(StopChargingMode(Porduct_Key))
+    dispatch(StopChargingMode("Porduct_Key"))
     // dispatch(SubcribingtoTopic(Porduct_Key));
     setButton2('false')
     setButton1('false')

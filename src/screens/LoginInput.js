@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 5,
     borderColor: 'green',
+    color:"#118615",
     padding: 2,
   },
   SignupButton: {
@@ -165,6 +166,9 @@ const styles = StyleSheet.create({
   socialIconWrapper: {
     // padding: 5,
   },
+  rememberMeText:{
+    color:"black"
+  }
 })
 
 export default LoginInput

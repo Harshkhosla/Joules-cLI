@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native'
 import {
   responsiveHeight as hp,
@@ -13,10 +14,31 @@ import {
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
 import React, { useState } from 'react'
+import Toast from 'react-native-toast-message'
+import { useDispatch } from 'react-redux'
+import { StopChargingMode } from '../Redux/Action'
 
 const SetCost = ({ open, onClose }) => {
+  const dispatch=useDispatch()
   const [ShowSetCost, SetShowSetCost] = useState(true)
+  const [inputCost,setInputCost]=useState("")
 
+
+  
+  const startCharging=()=>{
+    console.log("heklo");
+    if(inputCost){
+      console.log("click hus");
+      dispatch(StopChargingMode())
+    }
+    else{
+      // Toast.show({
+      //   type:"error",
+      //   text1:"Please set the cost of charging"
+      // })
+      Alert.alert("Please set the cost of charging first")
+    }
+  }
   return (
     <Modal visible={open} animationType="slide">
       <View style={styles.container}>
@@ -40,7 +62,7 @@ const SetCost = ({ open, onClose }) => {
                     Set Cost
                   </Text>
                 </TouchableOpacity>
-                <Text style={[{ fontSize: fp(4) }]}>|</Text>
+                <Text style={[{ fontSize: fp(4) ,color:"#DBDBDB"}]}>|</Text>
                 <TouchableOpacity>
                   <Text
                     style={[
@@ -54,7 +76,7 @@ const SetCost = ({ open, onClose }) => {
                 </TouchableOpacity>
               </View>
               <View>
-                {ShowSetCost ? <ChargingCost /> : <ChargingSetTime />}
+                {ShowSetCost ? <ChargingCost setInputCost={setInputCost}/> : <ChargingSetTime />}
               </View>
             </View>
             <View style={styles.paymentBox}>
@@ -63,6 +85,7 @@ const SetCost = ({ open, onClose }) => {
                   width: 110,
                   alignItems: 'center',
                   justifyContent: 'center',
+                  marginTop:10
                 }}
               >
                 <View
@@ -73,22 +96,21 @@ const SetCost = ({ open, onClose }) => {
                   }}
                 >
                   <Image source={require('../assets/paytm.png')} />
-                  <Text>PAY Using</Text>
+                  <Text>Pay Using</Text>
                   <Image source={require('../assets/arrow_drop_up.png')} />
                 </View>
-
-                <Text style={{ fontSize: 18 }}>Paytm UPI</Text>
+                <Text style={{ fontSize: 16,fontFamily:"sans-serif" ,marginLeft:-40}}>Paytm UPI</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.payButton}>
+              <TouchableOpacity style={styles.payButton} onPress={startCharging}>
                 <View>
-                  <Text style={styles.payButtonText}>₹444</Text>
-                  <Text style={[styles.payButtonText, { fontSize: 14 }]}>
-                    Total
+                  <Text style={styles.payButtonText}>₹{inputCost}</Text>
+                  <Text style={[styles.payButtonText, { fontSize: 11 }]}>
+                    TOTAL
                   </Text>
                 </View>
                 <View>
-                  <Text style={styles.payButtonText}>Pay </Text>
-                  <Text style={styles.payButtonText}> Charge</Text>
+                  <Text style={[styles.payButtonText,{fontSize:17}]}>Pay Charge </Text>
+                  {/* <Text style={styles.payButtonText}>Charge</Text> */}
                 </View>
               </TouchableOpacity>
             </View>
@@ -100,7 +122,7 @@ const SetCost = ({ open, onClose }) => {
   )
 }
 
-const ChargingCost = () => {
+const ChargingCost = ({setInputCost}) => {
   return (
     <View style={{ marginVertical: 10 }}>
       <Text style={{ fontSize: 22, color: '#6C6C6C' }}>Enter Amount</Text>
@@ -110,17 +132,23 @@ const ChargingCost = () => {
           justifyContent: 'center',
           borderWidth: 1,
           borderColor: '#C8C8C8',
-          margin: 3,
+          // margin: ,
+          marginLeft:-10,
+          marginTop:10,
           borderRadius: 10,
           paddingHorizontal: 10,
+          width:295
         }}
       >
         <TextInput
           style={{
-            color: '#DBDBDB',
+            color: '#000000',
             fontSize: 20,
           }}
-          placeholder="For ex ₹444"
+          placeholder="For ex ₹70"
+          placeholderTextColor="#DBDBDB"
+          keyboardType='numeric'
+          onChangeText={(text)=>{setInputCost(text)}}
         />
       </View>
       <Text
@@ -131,17 +159,9 @@ const ChargingCost = () => {
           fontWeight: '400',
         }}
       >
-        Est. Time to Charge- 1 hr
+        Per Unit (Kwh) Cost -  ₹15 
       </Text>
-      <Text
-        style={{
-          color: '#6C6C6C',
-          fontSize: 15,
-          fontWeight: '400',
-        }}
-      >
-        Estimated Units - 88 kwh
-      </Text>
+
     </View>
   )
 }
@@ -302,12 +322,14 @@ const styles = StyleSheet.create({
     // borderRadius: 8,
     // marginTop: 30,
     padding: 10,
-
+    height:60,
+    marginTop:20,
     backgroundColor: 'green',
   },
   payButtonText: {
     fontSize: fp(2.6),
     color: '#fff',
+
   },
   bottomColorBox: {
     position: 'absolute',

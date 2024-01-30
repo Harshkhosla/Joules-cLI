@@ -40,5 +40,6 @@ const styles = StyleSheet.create({
   },
   input: {
     paddingLeft: 14,
+    color:"black"
   },
 })

@@ -41,11 +41,11 @@ const SignIn = ({ navigation }) => {
         <View style={styles.SignInBoxContainer}>
           <View style={styles.SignIn_UpBox}>
             <View style={styles.Toggle_Login_SignUp}>
-              <Text style={styles.TogglerText} onPress={() => setLogin(true)}>
+              <Text style={login?styles.TogglerText:styles.onclickTogglerText} onPress={() =>  setLogin(true)}>
                 Login
               </Text>
               <Text style={[{ fontSize: fp(4) }]}>|</Text>
-              <Text style={styles.TogglerText} onPress={() => setLogin(false)}>
+              <Text style={!login?styles.TogglerText:styles.onclickTogglerText}  onPress={() => setLogin(false)}>
                 Sign up
               </Text>
             </View>
@@ -56,7 +56,7 @@ const SignIn = ({ navigation }) => {
                 <SignupInputs navigation={navigation} />
               )}
               <View style={styles.row}>
-                <Text>
+                <Text style={styles.message}>
                   {login
                     ? 'Don’t have an account?'
                     : 'Already have an account?'}{' '}
@@ -142,7 +142,14 @@ const styles = StyleSheet.create({
   TogglerText: {
     padding: 12,
     color: 'green',
-    fontSize: fp(2.7),
+    fontSize: fp(2),
+    fontFamily:"Rubik"
+  },
+  onclickTogglerText: {
+    padding: 12,
+    color: 'black',
+    fontSize: fp(2),
+    fontFamily:"Rubik"
   },
   Inputs: {
     // marginHorizontal: 20,
@@ -153,6 +160,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
+   
+  },
+  message:{
+    color:"black"
   },
   link: {
     fontWeight: 600,

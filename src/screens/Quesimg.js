@@ -57,7 +57,7 @@ const Quesimg = ({ navigation }) => {
           style={{
 
             marginBottom: 200,
-            fontSize: 16
+            fontSize: 16,
 
             fontSize: fp(2),
             textAlign: 'right',
@@ -73,6 +73,7 @@ const Quesimg = ({ navigation }) => {
             1/4
           </Text>
         </Text>
+      </View>
       </View>
 
       <View style={styles.containerForView}>

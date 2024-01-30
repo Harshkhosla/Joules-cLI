@@ -742,7 +742,7 @@ export const BalanceMode = (Porduct_Key) => {
 export const StopChargingMode = (Porduct_Key) => {
   return (dispatch) => {
     const client = new Client({
-      uri: 'ws://34.93.62.206:9001/mqtt',
+      uri: 'ws://34.93.32.239:9001/mqtt',
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -815,12 +815,13 @@ export const StopChargingMode = (Porduct_Key) => {
   }
 }
 
+
 // ------------------------------------------------------------------- resolve the changes in the py code----------------------------.//
 
 export const ResolveMode = (Porduct_Key) => {
   return (dispatch) => {
     const client = new Client({
-      uri: 'ws://34.93.62.206:9001/mqtt',
+      uri: 'ws://34.93.32.239:9001/mqtt',
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -866,6 +867,7 @@ export const ResolveMode = (Porduct_Key) => {
 // ====-----------------------------------------------------------------updatinga--------------------------------------------------------//
 export const UpdatName = (ProductId, _id) => {
   return (dispatch) => {
+    // debugger;
     AsyncStorage.getItem('Authtoken')
       .then((token) => {
         if (_id !== null) {
@@ -999,5 +1001,84 @@ export const SubcribingtoTopic = (topic) => {
           console.error(error)
         })
     }
+  }
+}
+
+
+// =-------------------------------------------------------------------------------------Start  charging for public-------------------//
+
+export const startCharging = (Porduct_Key) => {
+  return (dispatch) => {
+    const client = new Client({
+      uri: 'ws://34.93.32.239:9001/mqtt',
+      clientId: 'client' + Math.random().toString(36).substring(7),
+      storage: myStorage,
+    })
+    client.on('connectionLost', (responseObject) => {
+      if (responseObject.errorCode !== 0) {
+        console.log(responseObject.errorMessage)
+      }
+    })
+    client.on('messageReceived', (message) => {
+      console.log(message.payloadString)
+    })
+    const onConnect = () => {
+      client.on('messageReceived', (message) => {
+        if (message.destinationName === `${Porduct_Key}_Notifications`) {
+          const updatedMessages = [
+            ...topic1State.messages,
+            message.payloadString,
+          ]
+          topic1State.messages = updatedMessages
+          // const sample=message.payloadString
+          dispatch(setStateValue(message.payloadString))
+          console.log(`${Porduct_Key}_Notifications:`, message.payloadString)
+        } else if (message.destinationName === `${Porduct_Key}_Output`) {
+          const updatedMessages = [
+            ...topic2State.messages,
+            message.payloadString,
+          ]
+          topic2State.messages = updatedMessages
+          dispatch(setModeValue(message?.payloadString))
+          console.log(`${Porduct_Key}_Output:`, message.payloadString)
+        } else if (message.destinationName === `${Porduct_Key}_Energy`) {
+          const updatedMessages = [
+            ...topic3State.messages,
+            message.payloadString,
+          ]
+          topic3State.messages = updatedMessages
+          dispatch(setEnergy(message?.payloadString))
+          console.log(`${Porduct_Key}_Energy:`, message.payloadString)
+        }
+      })
+    }
+
+    client
+      .connect()
+      .then(() => {
+        console.log('onConnect')
+        return Promise.all([
+          client.subscribe(`${Porduct_Key}_Notifications`), // Topic 1
+          client.subscribe(`${Porduct_Key}_Output`), // Topic 2
+          client.subscribe(`${Porduct_Key}_Energy`), // Topic 3
+        ])
+      })
+      .then(() => {
+        const sampleee = {
+          'Charging Mode': 'Stop Charging',
+        }
+        const sample = new Message(JSON.stringify(sampleee))
+        sample.destinationName = `${Porduct_Key}_Charging Modes`
+        client.send(sample)
+      })
+      .then(() => {
+        onConnect()
+      })
+      .catch((responseObject) => {
+        if (responseObject.errorCode !== 0) {
+          console.log('onConnectionLost:' + responseObject)
+          StopChargingMode()
+        }
+      })
   }
 }

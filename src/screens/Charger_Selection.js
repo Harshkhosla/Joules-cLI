@@ -41,17 +41,19 @@ const Charger_Selection = ({ navigation }) => {
                 </TouchableOpacity>
               </View>
               <View>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button}
+                  onPress={() => navigation.navigate('Newhome')}
+                  >
                   <Text style={styles.link}>Public Charger</Text>
                   <Text>(Apartments, Offices, Semi-public areas)</Text>
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={styles.button}
                 onPress={() => navigation.navigate('Newhome')}
               >
                 <Text style={styles.link}>Go Home</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
         </View>
