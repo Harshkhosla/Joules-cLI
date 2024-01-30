@@ -55,6 +55,7 @@ export default function Home({ navigation }) {
   const Porduct_Key = useSelector(
     (state) => state?.userReducers?.Product?.ProductId
   )
+  console.log("Porduct_Key",Porduct_Key);
   console.log(Porduct_Key)
   const UserData = useSelector((state) => state?.userReducers?.Product)
   console.log(UserData, 'hera is every data')
@@ -192,7 +193,8 @@ export default function Home({ navigation }) {
   const Resolve = () => {
     // navigation.navigate('Test');
     // dispatch(Clicked(Porduct_Key))
-    dispatch(ResolveMode(Porduct_Key))
+    // dispatch(ResolveMode(Porduct_Key))
+    dispatch(ResolveMode("12345"))
     SetStateValue('Resolving Issue')
     setButton2('false')
     setButton1('false')
