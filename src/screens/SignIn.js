@@ -23,67 +23,59 @@ const SignIn = ({ navigation }) => {
   const [login, setLogin] = useState(true)
   return (
     <ScrollView>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.Container}
-      >
-        <View style={styles.Container}>
-          <View style={styles.LogoContainer}>
-            <View style={styles.circles}>
-              <Circle />
-              <Circle />
-            </View>
-
-            <View style={styles.LogoWrapper}>
-              <Image
-                style={styles.Logo}
-                source={require('../assets/jouls.png')}
-              />
-            </View>
+      <View style={styles.Container}>
+        <View style={styles.LogoContainer}>
+          <View style={styles.circles}>
+            <Circle />
+            <Circle />
           </View>
-          <View style={styles.SignInBoxContainer}>
-            <View style={styles.SignIn_UpBox}>
-              <View style={styles.Toggle_Login_SignUp}>
-                <Text style={styles.TogglerText} onPress={() => setLogin(true)}>
-                  Login
+
+          <View style={styles.LogoWrapper}>
+            <Image
+              style={styles.Logo}
+              source={require('../assets/jouls.png')}
+            />
+          </View>
+        </View>
+        <View style={styles.SignInBoxContainer}>
+          <View style={styles.SignIn_UpBox}>
+            <View style={styles.Toggle_Login_SignUp}>
+              <Text style={login?styles.TogglerText:styles.onclickTogglerText} onPress={() =>  setLogin(true)}>
+                Login
+              </Text>
+              <Text style={[{ fontSize: fp(4) }]}>|</Text>
+              <Text style={!login?styles.TogglerText:styles.onclickTogglerText}  onPress={() => setLogin(false)}>
+                Sign up
+              </Text>
+            </View>
+            <View style={styles.Inputs}>
+              {login ? (
+                <LoginInput navigation={navigation} />
+              ) : (
+                <SignupInputs navigation={navigation} />
+              )}
+              <View style={styles.row}>
+                <Text style={styles.message}>
+                  {login
+                    ? 'Don’t have an account?'
+                    : 'Already have an account?'}{' '}
                 </Text>
-                <Text style={[{ fontSize: fp(4) }]}>|</Text>
-                <Text
-                  style={styles.TogglerText}
-                  onPress={() => setLogin(false)}
-                >
-                  Sign up
-                </Text>
-              </View>
-              <View style={styles.Inputs}>
-                {login ? (
-                  <LoginInput navigation={navigation} />
-                ) : (
-                  <SignupInputs navigation={navigation} />
-                )}
-                <View style={styles.row}>
-                  <Text>
-                    {login
-                      ? 'Don’t have an account?'
-                      : 'Already have an account?'}{' '}
-                  </Text>
-                  <TouchableOpacity>
-                    {login ? (
-                      <Text onPress={() => setLogin(false)} style={styles.link}>
-                        Sign up
-                      </Text>
-                    ) : (
-                      <Text onPress={() => setLogin(true)} style={styles.link}>
-                        Sign in
-                      </Text>
-                    )}
-                  </TouchableOpacity>
-                </View>
+                <TouchableOpacity>
+                  {login ? (
+                    <Text onPress={() => setLogin(false)} style={styles.link}>
+                      Sign up
+                    </Text>
+                  ) : (
+                    <Text onPress={() => setLogin(true)} style={styles.link}>
+                      Sign in
+                    </Text>
+                  )}
+                </TouchableOpacity>
               </View>
             </View>
           </View>
         </View>
-      </KeyboardAvoidingView>
+      </View>
     </ScrollView>
   )
 }
@@ -97,7 +89,7 @@ const styles = StyleSheet.create({
   },
   LogoContainer: {
     backgroundColor: '#fff',
-    height: hp(30),
+    height: hp(27),
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
@@ -107,43 +99,41 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     position: 'absolute',
     // backgroundColor: 'red',
-    gap: 10,
+    gap: 8,
     bottom: hp(-25),
   },
   LogoWrapper: {
     // backgroundColor: 'pink',
-    borderRadius: 20,
-    elevation: 5,
+    borderRadius: 14,
+    elevation: 3,
   },
   Logo: {
-    height: hp(11),
-    width: wp(42),
-    borderRadius: 20,
+    height: hp(9),
+    width: wp(40),
+    borderRadius: 14,
     resizeMode: 'contain',
     backgroundColor: '#fff',
-    elevation: 20,
   },
   SignInBoxContainer: {
     flex: 1,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    elevation: 10,
     backgroundColor: '#fff',
     marginTop: -18,
   },
   SignIn_UpBox: {
-    minHeight: hp(60),
-    marginHorizontal: 20,
-    margin: 30,
+    // flex: 1,
+    // minHeight: hp(70),
+    margin: 20,
     borderRadius: 20,
-    elevation: 3,
-    backgroundColor: 'white',
+    padding: 20,
+    elevation: 2,
+    backgroundColor: '#fff',
   },
   Toggle_Login_SignUp: {
     flexDirection: 'row',
-    margin: 15,
-    elevation: 3,
-    backgroundColor: 'white',
+    elevation: 1,
+    backgroundColor: '#fff',
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'space-around',
@@ -151,17 +141,28 @@ const styles = StyleSheet.create({
   TogglerText: {
     padding: 12,
     color: 'green',
-    fontSize: fp(2.7),
+    fontSize: fp(2),
+    fontFamily:"Rubik"
+  },
+  onclickTogglerText: {
+    padding: 12,
+    color: 'black',
+    fontSize: fp(2),
+    fontFamily:"Rubik"
   },
   Inputs: {
-    marginHorizontal: 20,
+    // marginHorizontal: 20,
     // alignItems: 'center',
   },
   row: {
     flexDirection: 'row',
-    marginVertical: 20,
+    marginTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
+   
+  },
+  message:{
+    color:"black"
   },
   link: {
     fontWeight: 600,

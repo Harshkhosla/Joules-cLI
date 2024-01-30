@@ -15,10 +15,6 @@ export const SET_STATE_VALUE = 'SET_STATE_VALUE'
 export const SET_USER_ENERGY = 'SET_USER_ENERGY'
 export const SET_USER_PRODUCTKEY = 'SET_USER_PRODUCTKEY'
 export const SET_USER_PRODUCT = 'SET_USER_PRODUCT'
-
-// made by radhe
-// Action Types
-//
 import { Client, Message } from 'react-native-paho-mqtt'
 import Toast from 'react-native-toast-message'
 
@@ -39,7 +35,6 @@ const topic3State = {
   messages: [],
 }
 
-const mqttURl="ws://34.93.32.239:9001/mqtt"
 // const Porduct_Key = useSelector(state => state?.userReducers?.Product)
 init({
   size: 10000,
@@ -164,7 +159,7 @@ export const CarDetails = (value) => {
     //   });
 
     const client = new Client({
-      uri:mqttURl,
+      uri: 'ws://34.93.62.206:9001/mqtt',
       clientId: 'clientRadhe',
       storage: myStorage,
     })
@@ -236,7 +231,7 @@ export const CarDetails = (value) => {
 export const setName = (title) => {
   return (dispatch) => {
     const client = new Client({
-      uri:mqttURl,
+      uri: 'ws://34.93.62.206:9001/mqtt',
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -310,7 +305,7 @@ export const setName = (title) => {
 export const Click = (user) => {
   return (dispatch) => {
     const client = new Client({
-      uri:mqttURl,
+      uri: 'ws://34.93.62.206:9001/mqtt',
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -355,13 +350,14 @@ export const Click = (user) => {
 
 // ----------------------------------------CREATING ACCOUNT DATA--------------------------------------------------------------------------------//
 
-export const loginuser = (input,navigation) => {
+export const loginuser = (input, navigation) => {
+  // debugger;
+  // console.log("harsh", input);
   return async (dispatch) => {
     const { name, email, password } = input
     try {
       const response = await fetch(
         `https://backend-production-e1c2.up.railway.app/api/auth/createuser`,
-        // "http://localhost:5000/api/auth/createuser",
         {
           method: 'POST',
           headers: {
@@ -374,32 +370,22 @@ export const loginuser = (input,navigation) => {
           }),
         }
       )
+
       const data = await response.json()
-      console.log(data, 'Action Register')
-      if(data?.error){
-        Toast.show({
-          type: 'success',
-          text1: data.error,
-          text2: data.error,
-          position: 'top',
-        })
-      }
-      // const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '')
-      const authtoken = JSON.stringify(data.authtoken)
-      console.log("authtoken",authtoken);
+      console.log(data, 'casdvas')
+      const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '')
       await AsyncStorage.setItem('Authtoken', authtoken)
       dispatch(setAuthtoken(authtoken))
-      if (data?.success){
+      if (!data?.success) {
         Toast.show({
           type: 'success',
           text1: data.error,
           text2: data.error,
-          position: 'top',
+          position: 'bottom',
         })
-        // throw new Error(data.error)
+        throw new Error(data.error)
       }
-      return data
-      // navigation.navigate('Datainput')
+      navigation.navigate('Datainput')
     } catch (err) {
       // Toast.show({
       //   type: 'success',
@@ -407,19 +393,17 @@ export const loginuser = (input,navigation) => {
       //   text2: 'jutblly!',
       //   position: 'bottom',
       // });
-      console.log(err, 'Action me err register')
+      console.log(err, 'cvdsavs')
     }
   }
 }
 
-
 // ------------------------------------------------------CREATING LOGIN AUTHTOKEN AND SENDING IT -----------------------------------------//
 
 export const signItUp = (field, navigation) => {
-  
-  console.log("lgn in redux field",field);
   return async (dispatch) => {
     const { email, password } = field
+
     try {
       const response = await fetch(
         `https://backend-production-e1c2.up.railway.app/api/auth/login`,
@@ -436,29 +420,27 @@ export const signItUp = (field, navigation) => {
       )
 
       const data = await response.json()
-      console.log(data.success, 'login data ')
-      if(data.success){
+      console.log(data, 'login data ')
       Toast.show({
-        type: 'info',
-        text1:data.toast,
+        type: 'success',
+        // text1: data,
         text2: 'Operation completed successfully!',
-        position: 'top',
+        position: 'bottom',
       })
-    }
-      // const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '')
-      const authtoken = JSON.stringify(data.authtoken)
+      const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '')
       console.log('authtoken', authtoken)
       await AsyncStorage.setItem('Authtoken', authtoken)
       dispatch(setAuthtoken(authtoken))
+
       if (!data?.success) {
         throw new Error(data.error)
       }
-      // navigation.navigate('Load')
+      navigation.navigate('Navbar')
     } catch (err) {
       Toast.show({
         type: 'success',
         // text1: err,
-        text2: 'Operation  failed completed successfully!',
+        text2: 'Operation completed successfully!',
         position: 'bottom',
       })
       console.log(err, 'err in login')
@@ -492,7 +474,7 @@ export const Clicked = (storingTime, Porduct_Key) => {
   console.log(storingTime, 'this is this')
   return (dispatch) => {
     const client = new Client({
-      uri:mqttURl,
+      uri: 'ws://34.93.62.206:9001/mqtt',
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -539,7 +521,7 @@ export const Clicked = (storingTime, Porduct_Key) => {
 export const EcoMode = (Porduct_Key) => {
   return (dispatch) => {
     const client = new Client({
-      uri:mqttURl,
+      uri: 'ws://34.93.62.206:9001/mqtt',
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -614,7 +596,7 @@ export const ScheduleMode = (scheduleData, Porduct_Key) => {
   console.log(Porduct_Key, 'coming hear')
   return (dispatch) => {
     const client = new Client({
-      uri:mqttURl,
+      uri: 'ws://34.93.62.206:9001/mqtt',
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -687,7 +669,7 @@ export const BalanceMode = (Porduct_Key) => {
   console.log(Porduct_Key, 'suiii')
   return (dispatch) => {
     const client = new Client({
-      uri:mqttURl,
+      uri: 'ws://34.93.62.206:9001/mqtt',
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -760,7 +742,7 @@ export const BalanceMode = (Porduct_Key) => {
 export const StopChargingMode = (Porduct_Key) => {
   return (dispatch) => {
     const client = new Client({
-      uri:mqttURl,
+      uri: 'ws://34.93.32.239:9001/mqtt',
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -806,13 +788,12 @@ export const StopChargingMode = (Porduct_Key) => {
     client
       .connect()
       .then(() => {
-        console.log('onConnect in stop charging')
-        // return Promise.all([
-        //   client.subscribe(`${Porduct_Key}_Notifications`), // Topic 1
-        //   client.subscribe(`${Porduct_Key}_Output`), // Topic 2
-        //   client.subscribe(`${Porduct_Key}_Energy`), // Topic 3
-        // ])
-        return client.subscribe(`${Porduct_Key}_Notifications`)
+        console.log('onConnect')
+        return Promise.all([
+          client.subscribe(`${Porduct_Key}_Notifications`), // Topic 1
+          client.subscribe(`${Porduct_Key}_Output`), // Topic 2
+          client.subscribe(`${Porduct_Key}_Energy`), // Topic 3
+        ])
       })
       .then(() => {
         const sampleee = {
@@ -834,12 +815,13 @@ export const StopChargingMode = (Porduct_Key) => {
   }
 }
 
+
 // ------------------------------------------------------------------- resolve the changes in the py code----------------------------.//
 
 export const ResolveMode = (Porduct_Key) => {
   return (dispatch) => {
     const client = new Client({
-      uri:mqttURl,
+      uri: 'ws://34.93.32.239:9001/mqtt',
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -859,20 +841,17 @@ export const ResolveMode = (Porduct_Key) => {
     client
       .connect()
       .then(() => {
-        console.log('onConnect in resolve')
+        console.log('onConnect')
         return client.subscribe(`${Porduct_Key}_Notifications`)
       })
       .then(() => {
-        console.log("then ke adner");
         const sampleee = {
           'Charging Mode': 'Resolve',
         }
         const sample = new Message(JSON.stringify(sampleee))
-        // sample.destinationName = `${Porduct_Key}_Charging Modes`
-        sample.destinationName = `Charging Modes`
+        sample.destinationName = `${Porduct_Key}_Charging Modes`
         // client.send(message);
         client.send(sample)
-        console.log("code ru;nngin g");
       })
       .then(() => {
         onConnect()
@@ -888,6 +867,7 @@ export const ResolveMode = (Porduct_Key) => {
 // ====-----------------------------------------------------------------updatinga--------------------------------------------------------//
 export const UpdatName = (ProductId, _id) => {
   return (dispatch) => {
+    // debugger;
     AsyncStorage.getItem('Authtoken')
       .then((token) => {
         if (_id !== null) {
@@ -1021,5 +1001,84 @@ export const SubcribingtoTopic = (topic) => {
           console.error(error)
         })
     }
+  }
+}
+
+
+// =-------------------------------------------------------------------------------------Start  charging for public-------------------//
+
+export const startCharging = (Porduct_Key) => {
+  return (dispatch) => {
+    const client = new Client({
+      uri: 'ws://34.93.32.239:9001/mqtt',
+      clientId: 'client' + Math.random().toString(36).substring(7),
+      storage: myStorage,
+    })
+    client.on('connectionLost', (responseObject) => {
+      if (responseObject.errorCode !== 0) {
+        console.log(responseObject.errorMessage)
+      }
+    })
+    client.on('messageReceived', (message) => {
+      console.log(message.payloadString)
+    })
+    const onConnect = () => {
+      client.on('messageReceived', (message) => {
+        if (message.destinationName === `${Porduct_Key}_Notifications`) {
+          const updatedMessages = [
+            ...topic1State.messages,
+            message.payloadString,
+          ]
+          topic1State.messages = updatedMessages
+          // const sample=message.payloadString
+          dispatch(setStateValue(message.payloadString))
+          console.log(`${Porduct_Key}_Notifications:`, message.payloadString)
+        } else if (message.destinationName === `${Porduct_Key}_Output`) {
+          const updatedMessages = [
+            ...topic2State.messages,
+            message.payloadString,
+          ]
+          topic2State.messages = updatedMessages
+          dispatch(setModeValue(message?.payloadString))
+          console.log(`${Porduct_Key}_Output:`, message.payloadString)
+        } else if (message.destinationName === `${Porduct_Key}_Energy`) {
+          const updatedMessages = [
+            ...topic3State.messages,
+            message.payloadString,
+          ]
+          topic3State.messages = updatedMessages
+          dispatch(setEnergy(message?.payloadString))
+          console.log(`${Porduct_Key}_Energy:`, message.payloadString)
+        }
+      })
+    }
+
+    client
+      .connect()
+      .then(() => {
+        console.log('onConnect')
+        return Promise.all([
+          client.subscribe(`${Porduct_Key}_Notifications`), // Topic 1
+          client.subscribe(`${Porduct_Key}_Output`), // Topic 2
+          client.subscribe(`${Porduct_Key}_Energy`), // Topic 3
+        ])
+      })
+      .then(() => {
+        const sampleee = {
+          'Charging Mode': 'Stop Charging',
+        }
+        const sample = new Message(JSON.stringify(sampleee))
+        sample.destinationName = `${Porduct_Key}_Charging Modes`
+        client.send(sample)
+      })
+      .then(() => {
+        onConnect()
+      })
+      .catch((responseObject) => {
+        if (responseObject.errorCode !== 0) {
+          console.log('onConnectionLost:' + responseObject)
+          StopChargingMode()
+        }
+      })
   }
 }

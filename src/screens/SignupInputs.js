@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   View,
   KeyboardAvoidingView,
@@ -14,76 +14,36 @@ import {
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
+import InputBoxTwo from '../components/InputBoxTwo'
+
 import { Checkbox } from 'react-native-paper'
-import { useDispatch } from 'react-redux'
-import { loginuser, loginuser1, signItUp } from '../Redux/Action'
-import Toast from 'react-native-toast-message'
 
 const SignupInputs = () => {
-  const dispatch=useDispatch()
-  const [data,setdata]=useState({name:"",email:"",password:"",ConfirmPassword:""})
-  console.log("data",data);
-
-  const RegisterUser = async() => {
-    if(data.name && data.email && data.password && data.ConfirmPassword){
-    if(data.password==data.ConfirmPassword){
-      try {
-        const reaponse = await dispatch(loginuser(data))
-        console.log('reaponse', reaponse)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-    else{
-      Toast.show({
-        type:"error",
-        text1:"Password & Confirm Password are not same"
-      })
-    }
-  }
-  else{
-    Toast.show({
-      type:"success",
-      text1:"please input all field",
-      swipeable:true
-    })
-  }
-   
-  }
   return (
     <View style={styles.container}>
       {/* <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}
       > */}
-      <View>
-        <TextInput label="Name" name="name" style={styles.input} value={data.name} 
-        onChangeText={(text)=>{setdata({...data,name:text})}}
-        />
+      <View style={styles.inputsContainer}>
+        <View>
+          <InputBoxTwo lable="Name" placeholder="Enter your name"/>
+        </View>
+        <View>
+          <InputBoxTwo lable="Email" placeholder="Enter your mail id" />
+        </View>
       </View>
-      <View>
-        <TextInput label="Email id" name="email" style={styles.input}  
-        value={data.email}
-        onChangeText={(text)=>{setdata({...data,email:text})}}/>
-      </View>
+
       <View style={styles.passwordContainer}>
-        <TextInput label="Password" name="password" style={styles.input} 
-        value={data.password}
-         onChangeText={(text)=>{setdata({...data,password:text})}}/>
-        <TextInput
-          label="Confirm assword"
-          name="cpassword"
-          style={styles.input}
-          value={data.ConfirmPassword}
-          onChangeText={(text)=>{setdata({...data,ConfirmPassword:text})}}
-        />
+        <InputBoxTwo lable="Password" placeholder="Enter password" />
+        <InputBoxTwo lable="Confirm Password" placeholder="Enter password" />
       </View>
-      <TouchableOpacity style={styles.SignupButton} onPress={RegisterUser}>
-        <Text style={styles.SignupButtonText} >Sign up</Text>
+      <TouchableOpacity style={styles.SignupButton}>
+        <Text style={styles.SignupButtonText}>Sign up</Text>
       </TouchableOpacity>
       <Text style={styles.TermsAndConditions}>
         By Signing up you agree to
-        <Text style={{ color: 'green' }}> Terms & Conditions</Text>
+        <Text style={{ color: 'green',textDecorationLine:"underline"}}> Terms & Conditions</Text>
       </Text>
 
       <Text style={styles.ortext}>or</Text>
@@ -96,27 +56,8 @@ const SignupInputs = () => {
             />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.socialButton,
-            {
-              padding: 6,
-            },
-          ]}
-        >
-          <View
-            style={[
-              styles.socialIconWrapper,
-              {
-                backgroundColor: '#1977F3',
-                width: wp(12),
-                height: wp(12),
-                borderRadius: wp(12) / 2,
-                alignItems: 'center',
-                justifyContent: 'center',
-              },
-            ]}
-          >
+        <TouchableOpacity style={styles.socialButton}>
+          <View style={styles.socialIconWrapper}>
             <Image
               source={require('../assets/facebookvector.png')}
               // style={styles.socialIconText}
@@ -143,6 +84,10 @@ const styles = StyleSheet.create({
     // marginBottom: 20,
     // backgroundColor: 'pink',
   },
+  inputsContainer: {
+    // marginVertical: 8,
+    color:"black"
+  },
   input: {
     borderRadius: 8,
     height: 40,
@@ -158,7 +103,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
     alignItems: 'center',
     borderRadius: 8,
-    marginTop: 10,
+    marginTop: 30,
     padding: 10,
     borderWidth: 2,
     borderColor: 'green',
@@ -171,11 +116,13 @@ const styles = StyleSheet.create({
     fontSize: fp(1.5),
     paddingTop: 10,
     textAlign: 'center',
+    color:"black"
   },
   ortext: {
-    padding: 10,
+    padding: 12,
     fontSize: fp(3),
     textAlign: 'center',
+    color: '#8B8B8B',
   },
   socialButtonsContainer: {
     flexDirection: 'row',
@@ -184,10 +131,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   socialButton: {
-    padding: 12,
+    padding: 8,
     marginHorizontal: 8,
     // borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 8,
     elevation: 2,
     backgroundColor: '#fff',
   },

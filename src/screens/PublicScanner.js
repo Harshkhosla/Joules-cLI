@@ -31,7 +31,7 @@ export default function Dashboard({ navigation }) {
   const id = useSelector(state => state?.userReducers?.Product?._id)
   const onSuccess = async (e) => {
     // console.log("sdfasdfasdf");
-    console.log(e.data ,'product key,homepage.js');
+    console.log(e.data ,'product key');
     const parsedWifiFields = {
       s: "",
       t: "",
@@ -40,102 +40,106 @@ export default function Dashboard({ navigation }) {
     };
     
     const cleanedWifiString = e.data
-      .replace(/(\r\n\t|\n|\r\t)/gm, "")
-      .replace("WIFI:", "")
-      .replace(";;", "");
-      console.log("cleanedWifiString",cleanedWifiString)
-    const scannedWifiValues = cleanedWifiString.split(";");
-    scannedWifiValues.forEach((value) => {
-      const keyValue = value.split(":");
-      parsedWifiFields[keyValue[0].toLocaleLowerCase()] = keyValue[1] || "";
-    });
+      // .replace(/(\r\n\t|\n|\r\t)/gm, "")
+      // .replace("WIFI:", "")
+      // .replace(";;", "");
+      // console.log("cleanedWifiString",cleanedWifiString)
+    //   dispatch(UpdatName(cleanedWifiString,id))
+    await AsyncStorage.setItem("pid", cleanedWifiString);
 
-    // console.log(parsedWifiFields.h,"kimmo");
-    // const ProductDetails = JSON.stringify(parsedWifiFields.h).replaceAll('"', '');
-    // if(parsedWifiFields.h!=""){
+
+    // const scannedWifiValues = cleanedWifiString.split(";");
+    // scannedWifiValues.forEach((value) => {
+    //   const keyValue = value.split(":");
+    //   parsedWifiFields[keyValue[0].toLocaleLowerCase()] = keyValue[1] || "";
+    // });
+
+    // // console.log(parsedWifiFields.h,"kimmo");
+    // // const ProductDetails = JSON.stringify(parsedWifiFields.h).replaceAll('"', '');
+    // // if(parsedWifiFields.h!=""){
      
-    // }
+    // // }
       
-    dispatch(UpdatName(parsedWifiFields.h,id))
+    // dispatch(UpdatName(parsedWifiFields.h,id))
 
-    let fields = [
-      {
-        title: "SSID",
-        value: parsedWifiFields.s,
-      },
-      {
-        title: "encryption",
-        value: parsedWifiFields.t,
-      },
-      {
-        title: "password",
-        value: parsedWifiFields.p,
-      }
-    ];
-    console.log(fields);
+    // let fields = [
+    //   {
+    //     title: "SSID",
+    //     value: parsedWifiFields.s,
+    //   },
+    //   {
+    //     title: "encryption",
+    //     value: parsedWifiFields.t,
+    //   },
+    //   {
+    //     title: "password",
+    //     value: parsedWifiFields.p,
+    //   }
+    // ];
+    // console.log(fields);
   
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        title: 'Location permission is required for WiFi connections',
-        message:
-          'This app needs location permission as this is required ' +
-          'to scan for WiFi networks.',
-        buttonNegative: 'DENY',
-        buttonPositive: 'ALLOW',
-      }
-    );
+    // const granted = await PermissionsAndroid.request(
+    //   PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    //   {
+    //     title: 'Location permission is required for WiFi connections',
+    //     message:
+    //       'This app needs location permission as this is required ' +
+    //       'to scan for WiFi networks.',
+    //     buttonNegative: 'DENY',
+    //     buttonPositive: 'ALLOW',
+    //   }
+    // );
   
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      WifiManager.setEnabled(true);
-      WifiManager.disconnect();
+    // if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+    //   WifiManager.setEnabled(true);
+    //   WifiManager.disconnect();
   
-      PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: "",
-          message: "",
-          buttonNegative: "",
-          buttonPositive: "",
-        },
-      ).then((granted) => {
-        console.log(granted);
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
-            interval: 10000,
-            fastInterval: 5000,
-          })
-          .catch((err) => {
-            console.log("not permitted to enable location");
-          });
-        } else {
-          console.log("not granted");
-        }
-      });
+    //   PermissionsAndroid.request(
+    //     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    //     {
+    //       title: "",
+    //       message: "",
+    //       buttonNegative: "",
+    //       buttonPositive: "",
+    //     },
+    //   ).then((granted) => {
+    //     console.log(granted);
+    //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+    //       RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
+    //         interval: 10000,
+    //         fastInterval: 5000,
+    //       })
+    //       .catch((err) => {
+    //         console.log("not permitted to enable location");
+    //       });
+    //     } else {
+    //       console.log("not granted");
+    //     }
+    //   });
   
-      WifiManager.connectToProtectedSSID(parsedWifiFields.s, parsedWifiFields.p,  false).then(
-        () => {
-          console.log(parsedWifiFields.s);
-          console.warn("Connected successfully!");
-          navigation.navigate('UserDetails');
-        },
-        () => {
-          console.warn("Connection failed!");
-        }
-      );
+    //   WifiManager.connectToProtectedSSID(parsedWifiFields.s, parsedWifiFields.p,  false).then(
+    //     () => {
+    //       console.log(parsedWifiFields.s);
+    //       console.warn("Connected successfully!");
+    //       navigation.navigate('UserDetails');
+    //     },
+    //     () => {
+    //       console.warn("Connection failed!");
+    //     }
+    //   );
   
-      WifiManager.getCurrentWifiSSID().then(
-        (ssid) => {
-          console.warn("Your current connected WiFi SSID is " + ssid);
-        },
-        () => {
-          console.warn("Cannot get current SSID!");
-        }
-      );
-    } else {
-      // Permission denied
-    }
-    navigation.navigate('UserDetails');
+    //   WifiManager.getCurrentWifiSSID().then(
+    //     (ssid) => {
+    //       console.warn("Your current connected WiFi SSID is " + ssid);
+    //     },
+    //     () => {
+    //       console.warn("Cannot get current SSID!");
+    //     }
+    //   );
+    // } else {
+    //   // Permission denied
+    // }
+    navigation.navigate('Newhome');
   };
 
   return (

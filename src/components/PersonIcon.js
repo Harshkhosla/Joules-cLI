@@ -14,9 +14,9 @@ export default function PersonIcon({ clickheehpd }) {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 1 + getStatusBarHeight(),
-    left: 140,
-    top: -19,
+    top: 10 + getStatusBarHeight(),
+    left:140,
+    top:-59,
   },
   image: {
     width: 24,

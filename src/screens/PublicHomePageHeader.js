@@ -8,34 +8,27 @@ import {
 } from 'react-native-responsive-dimensions'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-const Quesheader = ({ navigation }) => {
+const PublicHomePageHeader = ({ navigation }) => {
   return (
     <View style={styles.container}>
-
-      {/* <Text style={styles.Text} onPress={() => navigation.navigate('Home')}> */}
-      <Text style={styles.Text} >
-        Questionnaire
-      </Text>
-
       <TouchableOpacity>
         <View style={styles.Icon}>
           <Icon name="arrowleft" size={25} color="#118615" />
           <Text style={styles.Text} onPress={() => navigation.navigate('Home')}>
-            Questionnaire
+            Hello Aman!
           </Text>
         </View>
       </TouchableOpacity>
-
     </View>
   )
 }
 
-export default Quesheader
+export default PublicHomePageHeader
 
 const styles = StyleSheet.create({
   container: {
     height: hp(20),
-    backgroundColor: '#c1e0c2',
+    backgroundColor: '#C1E0C2',
     borderBottomRightRadius: 20,
     borderBottomLeftRadius: 20,
     justifyContent: 'flex-end',
