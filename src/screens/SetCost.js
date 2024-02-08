@@ -16,20 +16,24 @@ import {
 import React, { useState } from 'react'
 import Toast from 'react-native-toast-message'
 import { useDispatch } from 'react-redux'
-import { StopChargingMode } from '../Redux/Action'
+import { StopChargingMode, publicstartCharging } from '../Redux/Action'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import TimerSlider from './TimerSlider'
+import ModalRadhe from '../../radheModal'
 
-const SetCost = ({ open, onClose }) => {
+
+const SetCost = ({ open, onClose,startTimer}) => {
   const dispatch=useDispatch()
   const [ShowSetCost, SetShowSetCost] = useState(true)
   const [inputCost,setInputCost]=useState("")
-
-
   
-  const startCharging=()=>{
+ const startCharging=async()=>{
     console.log("heklo");
     if(inputCost){
       console.log("click hus");
-      dispatch(StopChargingMode())
+   const publicProductKey= await AsyncStorage.getItem("pid")
+console.log("publicProductKey",publicProductKey)
+dispatch(publicstartCharging(publicProductKey,onClose,startTimer))
     }
     else{
       // Toast.show({
@@ -40,7 +44,10 @@ const SetCost = ({ open, onClose }) => {
     }
   }
   return (
-    <Modal visible={open} animationType="slide">
+    <Modal visible={open} animationType="slide"   
+    onRequestClose={onClose}
+      transparent={true}
+    >
       <View style={styles.container}>
         <View style={styles.contents}>
           <View style={styles.cancelButton}>
@@ -132,23 +139,19 @@ const ChargingCost = ({setInputCost}) => {
           justifyContent: 'center',
           borderWidth: 1,
           borderColor: '#C8C8C8',
-          // margin: ,
-          marginLeft:-10,
-          marginTop:10,
+          margin: 3,
           borderRadius: 10,
           paddingHorizontal: 10,
-          width:295
         }}
       >
         <TextInput
           style={{
-            color: '#000000',
+            color: 'black',
             fontSize: 20,
           }}
-          placeholder="For ex ₹70"
-          placeholderTextColor="#DBDBDB"
           keyboardType='numeric'
-          onChangeText={(text)=>{setInputCost(text)}}
+          placeholder="For ex ₹444"
+        onChangeText={(text)=>{setInputCost(text)}}
         />
       </View>
       <Text
@@ -159,12 +162,21 @@ const ChargingCost = ({setInputCost}) => {
           fontWeight: '400',
         }}
       >
-        Per Unit (Kwh) Cost -  ₹15 
+        Est. Time to Charge- 1 hr
       </Text>
-
+      <Text
+        style={{
+          color: '#6C6C6C',
+          fontSize: 15,
+          fontWeight: '400',
+        }}
+      >
+        Estimated Units - 88 kwh
+      </Text>
     </View>
   )
 }
+
 
 const ChargingSetTime = () => {
   return (
@@ -172,74 +184,14 @@ const ChargingSetTime = () => {
       <Text style={{ fontSize: 22, color: '#6C6C6C' }}>Set Time</Text>
       <View
         style={{
-          height: 90,
+          // backgroundColor: 'pink',
+          margin: 10,
+          alignItems: 'center',
           justifyContent: 'center',
-          // borderWidth: 1,
-          borderColor: '#C8C8C8',
-          margin: 3,
-          borderRadius: 10,
-          paddingHorizontal: 10,
         }}
       >
-        <View
-          style={{
-            flexDirection: 'row',
-            gap: 20,
-            // fontSize: 40,
-            alignSelf: 'center',
-          }}
-        >
-          <Text style={{ fontSize: 18 }}>Hrs</Text>
-          <Text style={{ fontSize: 18 }}>Mins</Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignSelf: 'center',
-            alignItems: 'center',
-          }}
-        >
-          {/* <View
-            style={
-              {
-                // backgroundColor: 'pink',
-                // paddingHorizontal: 10,
-              }
-            }
-          >
-            <Text>down</Text>
-          </View> */}
-          <View
-            style={{
-              flexDirection: 'row',
-              // backgroundColor: 'pink',
-              paddingHorizontal: 10,
-              // width: '40%',
-              justifyContent: 'center',
-            }}
-          >
-            <Text style={{ fontSize: 25, color: 'green', fontWeight: '400' }}>
-              01{' '}
-            </Text>
-            <Text style={{ fontSize: 25, color: 'green', fontWeight: '400' }}>
-              :
-            </Text>
-            <Text style={{ fontSize: 25, color: 'green', fontWeight: '400' }}>
-              {' '}
-              00
-            </Text>
-          </View>
-          <View
-            style={
-              {
-                // backgroundColor: 'pink',
-                // paddingHorizontal: 10,
-              }
-            }
-          >
-            {/* <Text>UP</Text> */}
-          </View>
-        </View>
+        {/* <TimerSlider /> */}
+        <ModalRadhe/>
       </View>
       <Text
         style={{
@@ -263,6 +215,8 @@ const ChargingSetTime = () => {
     </View>
   )
 }
+
+
 export default SetCost
 
 const styles = StyleSheet.create({

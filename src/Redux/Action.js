@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import init from 'react_native_mqtt'
 // import { AsyncStorage } from 'react-native';
 // import PushNotification from 'react-native-push-notification';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 // import { AsyncStorage } from "react-native";
 import { useDispatch, useSelector } from 'react-redux'
 export const SET_USER_NAME = 'SET_USER_NAME'
@@ -13,16 +13,18 @@ export const SET_USER_FLAT = 'SET_USER_FLAT'
 export const SET_MODE_VALUE = 'SET_MODE_VALUE'
 export const SET_STATE_VALUE = 'SET_STATE_VALUE'
 export const SET_USER_ENERGY = 'SET_USER_ENERGY'
+export const SET_USER_POWER = 'SET_USER_POWER'
 export const SET_USER_PRODUCTKEY = 'SET_USER_PRODUCTKEY'
 export const SET_USER_PRODUCT = 'SET_USER_PRODUCT'
+export const SET_PUBLIC_CHARGER_TIME = 'SET_PUBLIC_CHARGER_TIME'
 import { Client, Message } from 'react-native-paho-mqtt'
 import Toast from 'react-native-toast-message'
+import { Alert } from 'react-native'
 
 const [data34, setData34] = useState('')
 const [data123, setData123] = useState('')
-// const[ Porduct_Key  ,setPKey]=useState('')
-// const Porduct_Key  =AsyncStorage.getItem('Product_Key');
-// console.log(Porduct_Key,"poiuyuy");
+
+const MqqtUrl="ws://34.93.32.239:9001/mqtt"
 
 const topic1State = {
   messages: [],
@@ -70,6 +72,16 @@ export const setProductKey = (Product_Key) => {
     payload: Product_Key,
   }
 }
+
+export const setPublicChargeTime = (time) => {
+  console.log("time",time)
+  // setPKey(Product_Key);
+  return {
+    type: SET_PUBLIC_CHARGER_TIME,
+    payload: time,
+  }
+}
+
 export const setCar = (user_Car) => {
   // console.log(house_voltage);
   return {
@@ -91,6 +103,15 @@ export const setEnergy = (user_Energy) => {
     payload: user_Energy,
   }
 }
+
+export const setPower = (user_Energy) => {
+  // console.log(house_voltage);
+  return {
+    type: SET_USER_POWER,
+    payload: user_Energy,
+  }
+}
+
 
 export const setEmail = (email) => (dispatch) => {
   dispatch({
@@ -354,7 +375,10 @@ export const loginuser = (input, navigation) => {
   // debugger;
   // console.log("harsh", input);
   return async (dispatch) => {
-    const { name, email, password } = input
+    const lowercaseKeysObject = Object.fromEntries(
+      Object.entries(input).map(([key, value]) => [key.toLowerCase(), value])
+    );
+    const { name, email, password } = lowercaseKeysObject
     try {
       const response = await fetch(
         `https://backend-production-e1c2.up.railway.app/api/auth/createuser`,
@@ -372,10 +396,21 @@ export const loginuser = (input, navigation) => {
       )
 
       const data = await response.json()
-      console.log(data, 'casdvas')
-      const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '')
+      console.log(data, 'data in sign up user')
+      if(data?.error){
+        Toast.show({
+          type: 'error',
+          text1: data.error,
+          text2: data.error,
+          position: 'top',
+        })
+      }
+      // const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '')
+      if(data?.authtoken){
+      const authtoken = JSON.stringify(data.authtoken)
       await AsyncStorage.setItem('Authtoken', authtoken)
       dispatch(setAuthtoken(authtoken))
+      }
       if (!data?.success) {
         Toast.show({
           type: 'success',
@@ -385,15 +420,15 @@ export const loginuser = (input, navigation) => {
         })
         throw new Error(data.error)
       }
-      navigation.navigate('Datainput')
+      navigation.navigate('chargerSelection')
     } catch (err) {
-      // Toast.show({
-      //   type: 'success',
-      //   // text1: err,
-      //   text2: 'jutblly!',
-      //   position: 'bottom',
-      // });
-      console.log(err, 'cvdsavs')
+      Toast.show({
+        type: 'success',
+        // text1: err,
+        text2: 'error in catch',
+        position: 'top',
+      });
+      console.log(err, 'catch ke andr')
     }
   }
 }
@@ -402,8 +437,11 @@ export const loginuser = (input, navigation) => {
 
 export const signItUp = (field, navigation) => {
   return async (dispatch) => {
-    const { email, password } = field
 
+    const lowercaseKeysObject = Object.fromEntries(
+      Object.entries(field).map(([key, value]) => [key.toLowerCase(), value])
+    );
+    const { email, password } = lowercaseKeysObject
     try {
       const response = await fetch(
         `https://backend-production-e1c2.up.railway.app/api/auth/login`,
@@ -421,27 +459,41 @@ export const signItUp = (field, navigation) => {
 
       const data = await response.json()
       console.log(data, 'login data ')
+      if(data?.error){
+        Toast.show({
+          type: 'error',
+          // text1: data,
+          text2: data?.toast,
+          position: 'top',
+        })
+      }
+      if(data?.success){
       Toast.show({
         type: 'success',
-        // text1: data,
-        text2: 'Operation completed successfully!',
-        position: 'bottom',
+        text1: "login Successfull",
+        text2: data?.toast,
+        text1Style:{color:"green"},
+        text2Style:{color:"black"},
+        position: 'top',
       })
-      const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '')
+    }
+      // const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '')
+    if(data?.authtoken){
+      const authtoken = JSON.stringify(data.authtoken)
       console.log('authtoken', authtoken)
       await AsyncStorage.setItem('Authtoken', authtoken)
       dispatch(setAuthtoken(authtoken))
-
+    }
       if (!data?.success) {
         throw new Error(data.error)
       }
-      navigation.navigate('Navbar')
+      navigation.navigate('chargerSelection')
     } catch (err) {
       Toast.show({
-        type: 'success',
+        type: 'error',
         // text1: err,
         text2: 'Operation completed successfully!',
-        position: 'bottom',
+        position: 'top',
       })
       console.log(err, 'err in login')
     }
@@ -1007,49 +1059,77 @@ export const SubcribingtoTopic = (topic) => {
 
 // =-------------------------------------------------------------------------------------Start  charging for public-------------------//
 
-export const startCharging = (Porduct_Key) => {
+export const publicstartCharging = (Porduct_Key,onClose,startTimer) => {
+// Porduct_Key=publicProductKey
+  console.log("Porduct_Key",Porduct_Key)
+
   return (dispatch) => {
     const client = new Client({
-      uri: 'ws://34.93.32.239:9001/mqtt',
+      uri: MqqtUrl,
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
     client.on('connectionLost', (responseObject) => {
       if (responseObject.errorCode !== 0) {
-        console.log(responseObject.errorMessage)
+        console.log(responseObject.errorMessage,"publick start chariging in connect lost in try",responseObject)
+        // publicstartCharging(Porduct_Key)
+        client
+        .connect()
+        .then(() => {
+          console.log('onConnect')
+          return Promise.all([
+            client.subscribe(`${Porduct_Key}_Updates`), // Topic 1
+            client.subscribe(`${Porduct_Key}_Charging_Data`), // Topic 2
+          ])
+        })
+        .then(() => {
+          const sample = new Message("Start Charging")
+          sample.destinationName = `${Porduct_Key}_Notifications`
+          client.send(sample)
+        })
+        .then(() => {
+          onConnect()
+        })
       }
     })
     client.on('messageReceived', (message) => {
-      console.log(message.payloadString)
+      console.log("message in on client",message.payloadString)
     })
     const onConnect = () => {
       client.on('messageReceived', (message) => {
-        if (message.destinationName === `${Porduct_Key}_Notifications`) {
+        if (message.destinationName === `${Porduct_Key}_Updates`) {
           const updatedMessages = [
             ...topic1State.messages,
             message.payloadString,
           ]
           topic1State.messages = updatedMessages
+          console.log("topic1State",topic1State);
           // const sample=message.payloadString
           dispatch(setStateValue(message.payloadString))
-          console.log(`${Porduct_Key}_Notifications:`, message.payloadString)
-        } else if (message.destinationName === `${Porduct_Key}_Output`) {
+          console.log(`${Porduct_Key}_Updates:`, message.payloadString)
+           if(message.payloadString=="Charging Started"){
+             Alert.alert("charging started")
+             startTimer()
+             onClose()
+          }
+        }
+        
+        
+        else if (message.destinationName === `${Porduct_Key}_Charging_Data`) {
           const updatedMessages = [
             ...topic2State.messages,
             message.payloadString,
           ]
           topic2State.messages = updatedMessages
-          dispatch(setModeValue(message?.payloadString))
-          console.log(`${Porduct_Key}_Output:`, message.payloadString)
-        } else if (message.destinationName === `${Porduct_Key}_Energy`) {
-          const updatedMessages = [
-            ...topic3State.messages,
-            message.payloadString,
-          ]
-          topic3State.messages = updatedMessages
-          dispatch(setEnergy(message?.payloadString))
-          console.log(`${Porduct_Key}_Energy:`, message.payloadString)
-        }
+          // console.log("topic2State",topic2State);
+          const dataObject=JSON.parse(message.payloadString)
+
+          dispatch(setEnergy(dataObject.Output_Energy))
+          dispatch(setPower(dataObject.Output_Power))
+          console.log(`${Porduct_Key}_Charging_Data:`, message.payloadString)
+          console.log("message?.payloadString?.Output_Energy",dataObject.Output_Energy);
+          console.log("message?.payloadString?.Output_Power",dataObject.Output_Power);
+        } 
       })
     }
 
@@ -1058,17 +1138,13 @@ export const startCharging = (Porduct_Key) => {
       .then(() => {
         console.log('onConnect')
         return Promise.all([
-          client.subscribe(`${Porduct_Key}_Notifications`), // Topic 1
-          client.subscribe(`${Porduct_Key}_Output`), // Topic 2
-          client.subscribe(`${Porduct_Key}_Energy`), // Topic 3
+          client.subscribe(`${Porduct_Key}_Updates`), // Topic 1
+          client.subscribe(`${Porduct_Key}_Charging_Data`), // Topic 2
         ])
       })
       .then(() => {
-        const sampleee = {
-          'Charging Mode': 'Stop Charging',
-        }
-        const sample = new Message(JSON.stringify(sampleee))
-        sample.destinationName = `${Porduct_Key}_Charging Modes`
+        const sample = new Message("Start Charging")
+        sample.destinationName = `${Porduct_Key}_Notifications`
         client.send(sample)
       })
       .then(() => {
@@ -1077,8 +1153,120 @@ export const startCharging = (Porduct_Key) => {
       .catch((responseObject) => {
         if (responseObject.errorCode !== 0) {
           console.log('onConnectionLost:' + responseObject)
-          StopChargingMode()
+          publicstartCharging()
         }
       })
   }
 }
+
+
+// mqtt code for door opening after scan Qr in public charging
+
+export const DoorOpening = (Porduct_Key) => {
+  console.log("Porduct_Key door ",Porduct_Key);
+  return (dispatch) => {
+    const client = new Client({
+      uri: MqqtUrl,
+      clientId: 'client' + Math.random().toString(36).substring(7),
+      storage: myStorage,
+    })
+    client.on('connectionLost', (responseObject) => {
+      if (responseObject.errorCode !== 0) {
+        console.log(responseObject.errorMessage,"dooropening in try")
+        // DoorOpening(Porduct_Key)
+        client
+        .connect()
+        .then(() => {
+          console.log("mqtt reconnect");
+          const sample = new Message("Door is open")
+          sample.destinationName = `${Porduct_Key}_Notifications`
+          client.send(sample)
+        })
+
+
+      }
+    })
+    client.on('messageReceived', (message) => {
+      console.log("message in on client",message.payloadString)
+    })
+    client
+      .connect()
+      .then(() => {
+        console.log("mqtt connect");
+        const sample = new Message("Door is open")
+        sample.destinationName = `${Porduct_Key}_Notifications`
+        client.send(sample)
+      })
+      .catch((responseObject) => {
+        if (responseObject.errorCode !== 0) {
+          console.log('onConnectionLost:' + responseObject)
+          DoorOpening(Porduct_Key)
+        }
+      })
+  }
+}
+
+// stop chargin for public
+
+export const publicstopCharging = (Porduct_Key,totalTime) => {
+  // Porduct_Key=publicProductKey
+    console.log("Porduct_Key in publickstop charging",Porduct_Key,totalTime)
+    return (dispatch) => {
+      const client = new Client({
+        uri: MqqtUrl,
+        clientId: 'client' + Math.random().toString(36).substring(7),
+        storage: myStorage,
+      })
+      client.on('connectionLost', (responseObject) => {
+        if (responseObject.errorCode !== 0) {
+          console.log(responseObject.errorMessage,"public in stop chargin stop button",responseObject)
+
+          publicstopCharging(Porduct_Key)
+        }
+      })
+      client.on('messageReceived', (message) => {
+        console.log("message in on client",message.payloadString)
+      })
+      const onConnect = () => {
+        client.on('messageReceived', (message) => {
+          if (message.destinationName === `${Porduct_Key}_Updates`) {
+            const updatedMessages = [
+              ...topic1State.messages,
+              message.payloadString,
+            ]
+            topic1State.messages = updatedMessages
+            console.log("topic1State",topic1State);
+            // const sample=message.payloadString
+            dispatch(setStateValue(message.payloadString))
+            console.log(`${Porduct_Key}_Updates:`, message.payloadString)
+             if(message.payloadString=="Charging Completed"){
+               Alert.alert(`charging completed ${totalTime}`)
+            }
+          }
+        })
+      }
+  
+      client
+        .connect()
+        .then(() => {
+          console.log('onConnect')
+          return Promise.all([
+            client.subscribe(`${Porduct_Key}_Updates`), // Topic 1
+          ])
+        })
+        .then(() => {
+          const sample = new Message("Stop Charging")
+          sample.destinationName = `${Porduct_Key}_Notifications`
+          client.send(sample)
+        })
+        .then(() => {
+          onConnect()
+        })
+        .catch((responseObject) => {
+          if (responseObject.errorCode !== 0) {
+            console.log('onConnectionLost:' + responseObject)
+            publicstopCharging(Porduct_Key)
+          }
+        })
+    }
+  }

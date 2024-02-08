@@ -11,10 +11,10 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 const PublicHomePageHeader = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('chargerSelection')}>
         <View style={styles.Icon}>
           <Icon name="arrowleft" size={25} color="#118615" />
-          <Text style={styles.Text} onPress={() => navigation.navigate('Home')}>
+          <Text style={styles.Text} >
             Hello Aman!
           </Text>
         </View>
@@ -27,7 +27,8 @@ export default PublicHomePageHeader
 
 const styles = StyleSheet.create({
   container: {
-    height: hp(20),
+    // height: hp(20),
+    height:90,
     backgroundColor: '#C1E0C2',
     borderBottomRightRadius: 20,
     borderBottomLeftRadius: 20,

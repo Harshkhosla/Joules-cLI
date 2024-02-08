@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   View,
   KeyboardAvoidingView,
@@ -18,18 +18,80 @@ import TextInput from '../components/Inputbox'
 import InputBoxTwo from '../components/InputBoxTwo'
 
 import { Checkbox } from 'react-native-paper'
+import { signItUp } from '../Redux/Action'
+import { useDispatch } from 'react-redux'
+import Toast, { BaseToast } from 'react-native-toast-message'
 
 const LoginInput = ({ navigation }) => {
+  const [userData,setuserData]=useState({Email:"",Password:""})
+  const [rememberMe, setRememberMe] = useState(true);
+  const dispatch=useDispatch()
+
+  const login=()=>{
+    const allValuesPresent  = Object.keys(userData).every(key => userData[key] !== "");
+    if(!allValuesPresent ){
+      return Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Login Error',
+        text2: 'please input all field',
+        visibilityTime: 4000,
+        text1Style:{color:"red",fontSize:14},
+        autoHide: true,
+        bottomOffset: 40,
+        swipeable:true
+      }); 
+    }
+    const generalEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // const hasNumber = /\d/.test(userData.Email);
+    // const isValid = generalEmailRegex.test(userData.Email) && userData.Email.toLowerCase().includes('@gmail.com') && hasNumber;
+    const isValid = generalEmailRegex.test(userData.Email) && userData.Email.toLowerCase().includes('@gmail.com');
+    if(!isValid){
+      return Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Login Error',
+        text2: 'email is invalid',
+        visibilityTime: 4000,
+        text1Style:{color:"red",fontSize:14},
+        autoHide: true,
+        bottomOffset: 40,
+        swipeable:true
+      });
+    }
+    if(isValid && allValuesPresent){
+    try {
+      const response=dispatch(signItUp(userData,navigation))
+    } catch (error) {
+      console.error("error in login user",error)
+    }
+  }
+  else{
+    Toast.show({
+      type: 'error',
+      position: 'top',
+      text1: 'Login Error',
+      text2: 'Please input all field',
+      visibilityTime: 4000,
+      text1Style:{color:"red",fontSize:14},
+      autoHide: true,
+      bottomOffset: 40,
+      swipeable:true
+    });
+    };
+  
+
+  }
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         {/* <Input style={styles.inputone} />  */}
         <View style={styles.inputsContainer}>
           <View>
-            <InputBoxTwo lable="Email" placeholder="Enter your mail id" />
+            <InputBoxTwo label="Email" placeholder="Enter your mail id"  value={userData.Email} setValue={setuserData} objectData={userData}/>
           </View>
           <View>
-            <InputBoxTwo lable="Password" placeholder="Enter your password" />
+            <InputBoxTwo label="Password" placeholder="Enter your password" value={userData.Password} setValue={setuserData} objectData={userData}/>
           </View>
         </View>
         <View style={styles.forgotRememberContainer}>
@@ -40,9 +102,8 @@ const LoginInput = ({ navigation }) => {
           </TouchableOpacity>
           <View style={styles.checkboxContainer}>
             <Checkbox.Android
-              status="checked"
-              //   status={rememberMe ? 'checked' : 'unchecked'}
-              // onPress={() => setRememberMe(!rememberMe)}
+              status={rememberMe ? 'checked' : 'unchecked'}
+              onPress={() => setRememberMe(!rememberMe)}
               // uncheckedColor={theme.colors.primary}
               // color={theme.colors.primary}
               style={styles.checkbox}
@@ -52,7 +113,7 @@ const LoginInput = ({ navigation }) => {
         </View>
         <TouchableOpacity
           style={styles.SignupButton}
-          onPress={() => navigation.navigate('Welcomepage')}
+          onPress={login}
         >
           <Text style={styles.SignupButtonText}>Login</Text>
         </TouchableOpacity>
