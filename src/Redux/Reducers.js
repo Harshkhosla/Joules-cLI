@@ -1,4 +1,4 @@
-import { SET_USER_EMAIL, SET_USER_NAME, SET_AUTH_TOKEN, SET_USER_CAR,SET_USER_FLAT,SET_MODE_VALUE,SET_STATE_VALUE,SET_USER_ENERGY,SET_USER_PRODUCTKEY,SET_USER_PRODUCT} from './Action';
+import { SET_USER_EMAIL, SET_USER_NAME, SET_AUTH_TOKEN, SET_USER_CAR,SET_USER_FLAT,SET_MODE_VALUE,SET_STATE_VALUE,SET_USER_ENERGY,SET_USER_PRODUCTKEY,SET_USER_PRODUCT, SET_USER_POWER, SET_PUBLIC_CHARGER_TIME} from './Action';
 
 const initialState = {
     Total_Current: "",
@@ -11,6 +11,8 @@ const initialState = {
     StateValue:"",
     SetEnergy:"",
     setProductkey:"",
+    setTimePubCharger:"",
+    SetPower:"",
     Product:[],
 }
 
@@ -41,9 +43,18 @@ function userReducers(state = initialState, action) {
           case SET_USER_ENERGY:
         // console.log("harshsahgmple",action);
         return { ...state, SetEnergy: action.payload };
+      // power public charger
+      case SET_USER_POWER:
+        // console.log("harshsahgmple",action);
+        return { ...state, SetPower: action.payload };
+
       case SET_AUTH_TOKEN:
         // console.log("harshsample",action);
         return { ...state, authtoken: action.payload };
+
+      case SET_PUBLIC_CHARGER_TIME:
+        // console.log("harshsample",action);
+        return { ...state, setTimePubCharger: action.payload };
       default:
         return state;
     }

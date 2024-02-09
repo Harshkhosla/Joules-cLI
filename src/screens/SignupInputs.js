@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   View,
   KeyboardAvoidingView,
@@ -17,8 +17,63 @@ import {
 import InputBoxTwo from '../components/InputBoxTwo'
 
 import { Checkbox } from 'react-native-paper'
+import { useDispatch } from 'react-redux'
+import { loginuser } from '../Redux/Action'
+import Toast from 'react-native-toast-message'
 
-const SignupInputs = () => {
+const SignupInputs = ({navigation}) => {
+  const [userData,setuserData]=useState({Name:"",Email:"",Password:"",ConfirmPassword:""})
+  const dispatch=useDispatch()
+    console.log("userData",userData);
+  const signup=()=>{
+    const allValuesEmpty = Object.keys(userData).every(key => userData[key] !== "");
+    if(!allValuesEmpty){
+      return Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Sign up Error',
+        text2: 'please input all field',
+        visibilityTime: 4000,
+        text1Style:{color:"red",fontSize:14},
+        autoHide: true,
+        bottomOffset: 40,
+        swipeable:true
+      }); 
+    }
+    const generalEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // const hasNumber = /\d/.test(userData.Email);
+    const isValid = generalEmailRegex.test(userData.Email) && userData.Email.toLowerCase().includes('@gmail.com');
+    if(!isValid){
+      return Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Login Error',
+        text2: 'email is invalid',
+        visibilityTime: 4000,
+        text1Style:{color:"red",fontSize:14},
+        autoHide: true,
+        bottomOffset: 40,
+        swipeable:true
+      });
+    }
+   if(isValid && allValuesEmpty){
+    if(userData.Password!=userData.ConfirmPassword){
+      return Toast.show({
+        type:"error",
+        text2:"password and confirm password are same",
+        text1:"validation error",
+        text1Style:{color:"red",fontSize:14},
+        text2Style:{color:"black"},
+        swipeable:true
+      })
+    }
+    try {
+      const response=dispatch(loginuser(userData,navigation))
+    } catch (error) {
+      console.log("error in singup",error)
+    }
+  }
+  }
   return (
     <View style={styles.container}>
       {/* <KeyboardAvoidingView
@@ -27,18 +82,18 @@ const SignupInputs = () => {
       > */}
       <View style={styles.inputsContainer}>
         <View>
-          <InputBoxTwo lable="Name" placeholder="Enter your name"/>
+          <InputBoxTwo label="Name" placeholder="Enter your name" value={userData.Name} setValue={setuserData} objectData={userData}/>
         </View>
         <View>
-          <InputBoxTwo lable="Email" placeholder="Enter your mail id" />
+          <InputBoxTwo label="Email" placeholder="Enter your mail id" value={userData.Email} setValue={setuserData}  objectData={userData}/>
         </View>
       </View>
 
       <View style={styles.passwordContainer}>
-        <InputBoxTwo lable="Password" placeholder="Enter password" />
-        <InputBoxTwo lable="Confirm Password" placeholder="Enter password" />
+        <InputBoxTwo label="Password" placeholder="Enter password" value={userData.Password} setValue={setuserData}  objectData={userData} />
+        <InputBoxTwo label="ConfirmPassword" placeholder="Enter password"  value={userData.ConfirmPassword} setValue={setuserData}  objectData={userData}/>
       </View>
-      <TouchableOpacity style={styles.SignupButton}>
+      <TouchableOpacity style={styles.SignupButton} onPress={signup}>
         <Text style={styles.SignupButtonText}>Sign up</Text>
       </TouchableOpacity>
       <Text style={styles.TermsAndConditions}>

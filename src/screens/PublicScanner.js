@@ -15,7 +15,7 @@ import { RNCamera } from 'react-native-camera';
 import WifiManager from "react-native-wifi-reborn";
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import {  ToastAndroid } from 'react-native';
-import { UpdatName, setProductKey } from '../Redux/Action';
+import { DoorOpening, UpdatName, setProductKey } from '../Redux/Action';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import EvCharging from '../components/EvCharging';
@@ -31,7 +31,7 @@ export default function Dashboard({ navigation }) {
   const id = useSelector(state => state?.userReducers?.Product?._id)
   const onSuccess = async (e) => {
     // console.log("sdfasdfasdf");
-    console.log(e.data ,'product key');
+    console.log(e.data ,'product key in onsucces publicScanner');
     const parsedWifiFields = {
       s: "",
       t: "",
@@ -40,14 +40,17 @@ export default function Dashboard({ navigation }) {
     };
     
     const cleanedWifiString = e.data
+    console.log("cleanedWifiString",cleanedWifiString);
       // .replace(/(\r\n\t|\n|\r\t)/gm, "")
       // .replace("WIFI:", "")
       // .replace(";;", "");
       // console.log("cleanedWifiString",cleanedWifiString)
     //   dispatch(UpdatName(cleanedWifiString,id))
     await AsyncStorage.setItem("pid", cleanedWifiString);
-
-
+    if(cleanedWifiString){
+      dispatch(DoorOpening(cleanedWifiString))
+      navigation.navigate('Newhome');
+    }
     // const scannedWifiValues = cleanedWifiString.split(";");
     // scannedWifiValues.forEach((value) => {
     //   const keyValue = value.split(":");
@@ -139,7 +142,7 @@ export default function Dashboard({ navigation }) {
     // } else {
     //   // Permission denied
     // }
-    navigation.navigate('Newhome');
+    // navigation.navigate('Newhome');
   };
 
   return (

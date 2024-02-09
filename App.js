@@ -44,6 +44,10 @@ import LoginInput from './src/screens/LoginInput'
 import SignIn from './src/screens/SignIn'
 import Charger_Selection from './src/screens/Charger_Selection'
 import Newhome from './src/screens/Newhome'
+import Welcomepage from './src/screens/Welcomepage'
+import PublicHomePageFinal from './src/screens/PublicHomePageFinal'
+import Timer from './radhe'
+import ModalRadhe from './radheModal'
 const Stack = createStackNavigator()
 
 export default function App() {
@@ -64,6 +68,7 @@ export default function App() {
               name="Splash"
               component={Splash}
             /> */}
+            {/* <Stack.Screen name='radhe' component={ModalRadhe}/> */}
              {/* <Stack.Screen name="StartScreen" component={StartScreen} /> */}
             {/* <Stack.Screen name="LoginScreen" component={LoginScreen} /> */}
             {/* <Stack.Screen name="RegisterScreen" component={RegisterScreen} /> */}
@@ -73,6 +78,9 @@ export default function App() {
               name="ResetPasswordScreen"
               component={ResetPasswordScreen} 
             /> */}
+            {/* <Stack.Screen name='Welcomepage' component={Welcomepage}/> */}
+            {/* <Stack.Screen name='finalhomepage' component={PublicHomePageFinal}/> */}
+            {/* <Stack.Screen name='countDown' component={CountdownTimer}/> */}
             <Stack.Screen name="chargerSelection" component={Charger_Selection}/>
             <Stack.Screen name='Newhome' component={Newhome}/> 
             {/* <Stack.Screen name="HomePage" component={HomePage} /> */}
@@ -83,7 +91,7 @@ export default function App() {
             <Stack.Screen name="House" component={House} />
             <Stack.Screen name="Date" component={Date} />
             <Stack.Screen name="Home" component={Home} /> 
-            {/* <Stack.Screen name="Questionnaire" component={Questionnaire} /> */}
+            <Stack.Screen name="Questionnaire" component={Questionnaire} />
             <Stack.Screen name="Quesimg" component={Quesimg} />
             {/* <Stack.Screen name="QuesAddVhicle" component={QuesAddVhicle} /> */}
             {/* <Stack.Screen name="QuesLive" component={QuesLive} /> */}

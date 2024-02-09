@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  Button,
 } from 'react-native'
 import {
   responsiveHeight as hp,
@@ -16,20 +17,53 @@ import {
 import React, { useState } from 'react'
 import Toast from 'react-native-toast-message'
 import { useDispatch } from 'react-redux'
-import { StopChargingMode } from '../Redux/Action'
+import { StopChargingMode, publicstartCharging } from '../Redux/Action'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import TimerSlider from './TimerSlider'
+import ModalRadhe from '../../radheModal'
+// import stripe from '@stripe/stripe-react-native';
+import RazorpayCheckout from 'react-native-razorpay';
 
-const SetCost = ({ open, onClose }) => {
+const SetCost = ({ open, onClose,startTimer}) => {
   const dispatch=useDispatch()
   const [ShowSetCost, SetShowSetCost] = useState(true)
   const [inputCost,setInputCost]=useState("")
 
 
-  
-  const startCharging=()=>{
+const handlePayment = () => {
+  const options = {
+    description: 'Payment for your order',
+    image: 'https://yourwebsite.com/logo.png',
+    currency: 'INR',
+    key: 'YOUR_RAZORPAY_API_KEY',
+    amount: '100', // amount in paisa
+    name: 'Your Company Name',
+    prefill: {
+      email: 'customer@example.com',
+      contact: '9999999999',
+      name: 'Customer Name',
+    },
+    theme: { color: '#F37254' },
+  };
+
+  RazorpayCheckout.open(options)
+    .then((data) => {
+      console.log('Payment success:', data);
+      Alert.alert('Payment Success', 'Payment was successful.');
+    })
+    .catch((error) => {
+      console.error('Payment Error:', error);
+      Alert.alert('Payment Failed', 'Payment failed. Please try again.');
+    });
+};
+
+ const startCharging=async()=>{
     console.log("heklo");
     if(inputCost){
       console.log("click hus");
-      dispatch(StopChargingMode())
+   const publicProductKey= await AsyncStorage.getItem("pid")
+console.log("publicProductKey",publicProductKey)
+dispatch(publicstartCharging(publicProductKey,onClose,startTimer))
     }
     else{
       // Toast.show({
@@ -40,7 +74,10 @@ const SetCost = ({ open, onClose }) => {
     }
   }
   return (
-    <Modal visible={open} animationType="slide">
+    <Modal visible={open} animationType="slide"   
+    onRequestClose={onClose}
+      transparent={true}
+    >
       <View style={styles.container}>
         <View style={styles.contents}>
           <View style={styles.cancelButton}>
@@ -132,23 +169,19 @@ const ChargingCost = ({setInputCost}) => {
           justifyContent: 'center',
           borderWidth: 1,
           borderColor: '#C8C8C8',
-          // margin: ,
-          marginLeft:-10,
-          marginTop:10,
+          margin: 3,
           borderRadius: 10,
           paddingHorizontal: 10,
-          width:295
         }}
       >
         <TextInput
           style={{
-            color: '#000000',
+            color: 'black',
             fontSize: 20,
           }}
-          placeholder="For ex ₹70"
-          placeholderTextColor="#DBDBDB"
           keyboardType='numeric'
-          onChangeText={(text)=>{setInputCost(text)}}
+          placeholder="For ex ₹444"
+        onChangeText={(text)=>{setInputCost(text)}}
         />
       </View>
       <Text
@@ -159,87 +192,60 @@ const ChargingCost = ({setInputCost}) => {
           fontWeight: '400',
         }}
       >
-        Per Unit (Kwh) Cost -  ₹15 
+        Est. Time to Charge- 1 hr
       </Text>
-
+      <Text
+        style={{
+          color: '#6C6C6C',
+          fontSize: 15,
+          fontWeight: '400',
+        }}
+      >
+        Estimated Units - 88 kwh
+      </Text>
     </View>
   )
 }
 
+
 const ChargingSetTime = () => {
+  const [activeButton, setActiveButton] = useState(null);
+  const buttonClick = (buttonName) => {
+    setActiveButton(buttonName);
+    // Add your additional functionality here
+  };
   return (
     <View style={{ marginVertical: 10 }}>
-      <Text style={{ fontSize: 22, color: '#6C6C6C' }}>Set Time</Text>
+         <View style={styles.setTimeContainer}>
+      <TouchableOpacity
+        style={[styles.button, activeButton === '30min' && styles.activeButton]}
+        onPress={() => buttonClick('30min')}
+      >
+        <Text>30 min.</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, activeButton === '1hr' && styles.activeButton]}
+        onPress={() => buttonClick('1hr')}
+      >
+        <Text>1 hr</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, activeButton === '2hrs' && styles.activeButton]}
+        onPress={() => buttonClick('2hrs')}
+      >
+        <Text>2 hrs</Text>
+      </TouchableOpacity>
+    </View>
       <View
         style={{
-          height: 90,
+          // backgroundColor: 'pink',
+          margin: 10,
+          alignItems: 'center',
           justifyContent: 'center',
-          // borderWidth: 1,
-          borderColor: '#C8C8C8',
-          margin: 3,
-          borderRadius: 10,
-          paddingHorizontal: 10,
         }}
       >
-        <View
-          style={{
-            flexDirection: 'row',
-            gap: 20,
-            // fontSize: 40,
-            alignSelf: 'center',
-          }}
-        >
-          <Text style={{ fontSize: 18 }}>Hrs</Text>
-          <Text style={{ fontSize: 18 }}>Mins</Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignSelf: 'center',
-            alignItems: 'center',
-          }}
-        >
-          {/* <View
-            style={
-              {
-                // backgroundColor: 'pink',
-                // paddingHorizontal: 10,
-              }
-            }
-          >
-            <Text>down</Text>
-          </View> */}
-          <View
-            style={{
-              flexDirection: 'row',
-              // backgroundColor: 'pink',
-              paddingHorizontal: 10,
-              // width: '40%',
-              justifyContent: 'center',
-            }}
-          >
-            <Text style={{ fontSize: 25, color: 'green', fontWeight: '400' }}>
-              01{' '}
-            </Text>
-            <Text style={{ fontSize: 25, color: 'green', fontWeight: '400' }}>
-              :
-            </Text>
-            <Text style={{ fontSize: 25, color: 'green', fontWeight: '400' }}>
-              {' '}
-              00
-            </Text>
-          </View>
-          <View
-            style={
-              {
-                // backgroundColor: 'pink',
-                // paddingHorizontal: 10,
-              }
-            }
-          >
-            {/* <Text>UP</Text> */}
-          </View>
-        </View>
+        {/* <TimerSlider /> */}
+        <ModalRadhe setActiveButton={setActiveButton} activeButton={activeButton}/>
       </View>
       <Text
         style={{
@@ -263,12 +269,19 @@ const ChargingSetTime = () => {
     </View>
   )
 }
+
+
 export default SetCost
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.76)',
+  },
+  setTimeContainer:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   contents: {
     position: 'absolute',
@@ -340,5 +353,21 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 50,
     width: wp(100),
     zIndex: -1,
+  },
+  button: {
+    backgroundColor: '#FFFFFF', // White background color
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    alignItems: 'flex-start', // Align text to the left
+    borderWidth: 1, // Add black border
+    borderColor: '#000000', // Black border color
+    width:80,
+    // height:50
+  },
+  activeButton: {
+    borderColor: 'green',
+    backgroundColor:"#C1E0C2",
+    color:"white"
   },
 })

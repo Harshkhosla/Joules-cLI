@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View, TextInput } from 'react-native'
 import React from 'react'
 
-const InputBoxTwo = ({ lable, placeholder }) => {
-  console.log(lable)
+const InputBoxTwo = ({ label, placeholder ,value,setValue,objectData}) => {
+  console.log("props data",label,value)
   return (
     <View style={styles.InputContainer}>
       <View style={styles.lableContainer}>
-        <Text style={styles.lable}>{lable}</Text>
+        <Text style={styles.lable}>{label}</Text>
       </View>
-      <TextInput style={styles.input} placeholder={placeholder} />
+      <TextInput style={styles.input} placeholder={placeholder} value={value} onChangeText={(e)=>{setValue({...objectData,[label]:e})}}/>
     </View>
   )
 }

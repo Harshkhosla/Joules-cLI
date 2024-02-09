@@ -20,6 +20,7 @@ import Circle from './Circle'
 import { ScrollView } from 'react-native-gesture-handler'
 
 const SignIn = ({ navigation }) => {
+  
   const [login, setLogin] = useState(true)
   return (
     <ScrollView>
