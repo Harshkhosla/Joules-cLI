@@ -49,8 +49,8 @@ export default function Dashboard({ navigation }) {
     await AsyncStorage.setItem("pid", cleanedWifiString);
     if(cleanedWifiString){
       dispatch(DoorOpening(cleanedWifiString))
+      navigation.navigate('Newhome');
     }
-    navigation.navigate('Newhome');
     // const scannedWifiValues = cleanedWifiString.split(";");
     // scannedWifiValues.forEach((value) => {
     //   const keyValue = value.split(":");

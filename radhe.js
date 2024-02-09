@@ -247,62 +247,69 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
-const Timer = () => {
-  const [hours, setHours] = useState("");
-  const [minutes, setMinutes] = useState("");
+const Timer = ({setuserTimeHours,userTimeHours,userTimeMinutes,setuserTimeMinutes}) => {
+  // const [hours, setHours] = useState("");
+  // const [minutes, setMinutes] = useState("");
   const [seconds, setSeconds] = useState("");
   const [isActive, setIsActive] = useState(false);
 const [showWarring,setShowWarring]=useState(false)
-  console.log("minutes",minutes)
-  useEffect(() => {
-    let interval;
-    if (isActive && (hours > 0 || minutes > 0 || seconds > 0)) {
-      interval = setInterval(() => {
-        if (seconds > 0) {
-          setSeconds(seconds => seconds - 1);
-        } else if (minutes > 0) {
-          setMinutes(minutes => minutes - 1);
-          setSeconds(59);
-        } else if (hours > 0) {
-          setHours(hours => hours - 1);
-          setMinutes(59);
-          setSeconds(59);
-        }
-      }, 1000);
-    } 
-    else if (!isActive && (hours !== 0 || minutes !== 0 || seconds !== 0)) {
-      clearInterval(interval);
-    }
-    return () => clearInterval(interval);
-  }, [isActive, hours,  seconds]);
+  // useEffect(() => {
+  //   let interval;
+  //   if (isActive && (hours > 0 || minutes > 0 || seconds > 0)) {
+  //     interval = setInterval(() => {
+  //       if (seconds > 0) {
+  //         setSeconds(seconds => seconds - 1);
+  //       } else if (minutes > 0) {
+  //         setMinutes(minutes => minutes - 1);
+  //         setSeconds(59);
+  //       } else if (hours > 0) {
+  //         setHours(hours => hours - 1);
+  //         setMinutes(59);
+  //         setSeconds(59);
+  //       }
+  //     }, 1000);
+  //   } 
+  //   else if (!isActive && (hours !== 0 || minutes !== 0 || seconds !== 0)) {
+  //     clearInterval(interval);
+  //   }
+  //   return () => clearInterval(interval);
+  // }, [isActive, hours,  minutes,seconds]);
 
-  const handleStartStop = () => {
-    setIsActive(!isActive);
-  };
+  // const handleStartStop = () => {
+  //   setIsActive(!isActive);
+  // };
 
-  const handleReset = () => {
-    setHours(0);
-    setMinutes(0);
-    setSeconds(0);
-    setIsActive(false);
-  };
+  // const handleReset = () => {
+  //   setHours(0);
+  //   setMinutes(0);
+  //   setSeconds(0);
+  //   setIsActive(false);
+  // };
 
   const minutesSET=(text)=>{
     if(parseInt(text)<=59){
-    setMinutes(parseInt(text))
+    setuserTimeMinutes(parseInt(text))
     setShowWarring(false)
     } 
     else{
-
-        setMinutes(parseInt(0))
+      setuserTimeMinutes(parseInt(0))
         if(parseInt(text)>59){
             setShowWarring(true)
         }
     }
-    // setMinutes(parseInt(text))
-
 }
-
+const HoursSET=(text)=>{
+  if(parseInt(text)<=12){
+    setuserTimeHours(parseInt(text))
+  setShowWarring(false)
+  } 
+  else{
+      setuserTimeHours(parseInt(0))
+      if(parseInt(text)>12){
+          setShowWarring(true)
+      }
+  }
+}
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
@@ -310,15 +317,15 @@ const [showWarring,setShowWarring]=useState(false)
           style={styles.input}
           keyboardType="numeric"
           placeholder="Hours"
-          value={hours.toString()}
-          onChangeText={text => setHours(parseInt(text) || 0)}
+          value={userTimeHours.toString()}
+          onChangeText={HoursSET}
         />
         <Text style={styles.separator}>:</Text>
         <TextInput
           style={styles.input}
           keyboardType="numeric"
           placeholder="Minutes"
-          value={minutes.toString()}
+          value={userTimeMinutes.toString()}
           onChangeText={minutesSET}
         />
         {/* <Text style={styles.separator}>:</Text> */}
@@ -332,8 +339,9 @@ const [showWarring,setShowWarring]=useState(false)
       </View>
        {showWarring&& <Text style={styles.inputColor}>please input correct time</Text>}
       <View style={styles.buttonsContainer}>
-        <Button title={isActive ? 'Stop' : 'Start'} onPress={handleStartStop} />
-        <Button title="Reset" onPress={handleReset} />
+        {/* <Button title={isActive ? 'Stop' : 'Start'} onPress={handleStartStop} />
+        <Button title="Reset" onPress={handleReset} /> */}
+        {/* <Button title='Set Time' onPress={}/> */}
       </View>
     </View>
   );

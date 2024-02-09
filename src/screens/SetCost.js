@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  Button,
 } from 'react-native'
 import {
   responsiveHeight as hp,
@@ -20,13 +21,42 @@ import { StopChargingMode, publicstartCharging } from '../Redux/Action'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import TimerSlider from './TimerSlider'
 import ModalRadhe from '../../radheModal'
-
+// import stripe from '@stripe/stripe-react-native';
+import RazorpayCheckout from 'react-native-razorpay';
 
 const SetCost = ({ open, onClose,startTimer}) => {
   const dispatch=useDispatch()
   const [ShowSetCost, SetShowSetCost] = useState(true)
   const [inputCost,setInputCost]=useState("")
-  
+
+
+const handlePayment = () => {
+  const options = {
+    description: 'Payment for your order',
+    image: 'https://yourwebsite.com/logo.png',
+    currency: 'INR',
+    key: 'YOUR_RAZORPAY_API_KEY',
+    amount: '100', // amount in paisa
+    name: 'Your Company Name',
+    prefill: {
+      email: 'customer@example.com',
+      contact: '9999999999',
+      name: 'Customer Name',
+    },
+    theme: { color: '#F37254' },
+  };
+
+  RazorpayCheckout.open(options)
+    .then((data) => {
+      console.log('Payment success:', data);
+      Alert.alert('Payment Success', 'Payment was successful.');
+    })
+    .catch((error) => {
+      console.error('Payment Error:', error);
+      Alert.alert('Payment Failed', 'Payment failed. Please try again.');
+    });
+};
+
  const startCharging=async()=>{
     console.log("heklo");
     if(inputCost){
@@ -179,9 +209,33 @@ const ChargingCost = ({setInputCost}) => {
 
 
 const ChargingSetTime = () => {
+  const [activeButton, setActiveButton] = useState(null);
+  const buttonClick = (buttonName) => {
+    setActiveButton(buttonName);
+    // Add your additional functionality here
+  };
   return (
     <View style={{ marginVertical: 10 }}>
-      <Text style={{ fontSize: 22, color: '#6C6C6C' }}>Set Time</Text>
+         <View style={styles.setTimeContainer}>
+      <TouchableOpacity
+        style={[styles.button, activeButton === '30min' && styles.activeButton]}
+        onPress={() => buttonClick('30min')}
+      >
+        <Text>30 min.</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, activeButton === '1hr' && styles.activeButton]}
+        onPress={() => buttonClick('1hr')}
+      >
+        <Text>1 hr</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, activeButton === '2hrs' && styles.activeButton]}
+        onPress={() => buttonClick('2hrs')}
+      >
+        <Text>2 hrs</Text>
+      </TouchableOpacity>
+    </View>
       <View
         style={{
           // backgroundColor: 'pink',
@@ -191,7 +245,7 @@ const ChargingSetTime = () => {
         }}
       >
         {/* <TimerSlider /> */}
-        <ModalRadhe/>
+        <ModalRadhe setActiveButton={setActiveButton} activeButton={activeButton}/>
       </View>
       <Text
         style={{
@@ -223,6 +277,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.76)',
+  },
+  setTimeContainer:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   contents: {
     position: 'absolute',
@@ -294,5 +353,21 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 50,
     width: wp(100),
     zIndex: -1,
+  },
+  button: {
+    backgroundColor: '#FFFFFF', // White background color
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    alignItems: 'flex-start', // Align text to the left
+    borderWidth: 1, // Add black border
+    borderColor: '#000000', // Black border color
+    width:80,
+    // height:50
+  },
+  activeButton: {
+    borderColor: 'green',
+    backgroundColor:"#C1E0C2",
+    color:"white"
   },
 })

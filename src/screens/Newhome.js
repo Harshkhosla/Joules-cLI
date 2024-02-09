@@ -15,17 +15,17 @@ const Newhome = ({navigation}) => {
   const [buttonText,setButtonText]=useState("") 
   const [ChargingEnergy,setChargingEnergy]=useState("")
   const [getsample,setGetSampledata]=useState(true)
-  const SampleDataaa = useSelector((state) => state?.userReducers?.SetEnergy)
+  let SampleDataaa = useSelector((state) => state?.userReducers?.SetEnergy)
   const SamplePowerData = useSelector((state) => state?.userReducers?.SetPower)
   const publicChargerTime = useSelector((state) => state.userReducers.setTimePubCharger)
-  console.log("publicChargerTime",publicChargerTime)
+  // console.log("publicChargerTime",publicChargerTime)
 
   // console.log("SamplePowerData",SamplePowerData)
 
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [totalSeconds, setTotalSeconds] = useState(0);
   const [totalTime, setTotalTime] = useState(0);
-  console.log(totalTime,"totalTime")
+  // console.log(totalTime,"totalTime")
 // timer useeffect
   useEffect(() => {
     let interval;
@@ -69,12 +69,12 @@ getSampleData()
 const getSampleData=()=>{
   console.log("SampleDataaa",SampleDataaa)
   setChargingEnergy(SampleDataaa)
-  if(ChargingEnergy || SampleDataaa>=0){
+  // if(ChargingEnergy || SampleDataaa>=0){
+  if(ChargingEnergy.length>0 || parseInt(SampleDataaa)>=0){
     console.log("charginenery if keander");
     setButtonText("Stop Charging")
   }
 }
-
 
   const handleCostAndTimeOpen = async(text) => {
     console.log("text",text)
@@ -98,7 +98,7 @@ const getSampleData=()=>{
         setGetSampledata(true)
       }else{
         navigation.navigate('PublicScanner')
-        setData(true);
+        // setData(true);
         setTotalTime(0)
       }
     }
@@ -107,19 +107,31 @@ const getSampleData=()=>{
   // console.log(AsyncStorage.getItem("pid"));
   useEffect(() => {
     // Use AsyncStorage.getItem with then to handle the Promise
-    AsyncStorage.getItem("pid")
-      .then((storedData) => {
-        // Handle the retrieved data, it might be null if not found
-        console.log("Data from AsyncStorage:", storedData);
-        setData(storedData);
-        if(storedData){
-          setButtonText("Start Charging")
-        }
-      })
-      .catch((error) => {
-        console.error("Error retrieving data from AsyncStorage:", error);
-      });
-  }, []);
+    // AsyncStorage.getItem("pid")
+    //   .then((storedData) => {
+    //     // Handle the retrieved data, it might be null if not found
+    //     console.log("Data from AsyncStorage:", storedData);
+    //     setData(storedData);
+    //     if(storedData){
+    //       setButtonText("Start Charging")
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error retrieving data from AsyncStorage:", error);
+    //   });
+    const unsubscribe = navigation.addListener('focus', () => {
+    async function fetchData(){
+    const storedData=await AsyncStorage.getItem("pid")
+    console.log("storedData",storedData);
+    setData(storedData)
+    if(storedData){
+    setButtonText("Start Charging")
+    }
+  }
+  fetchData()
+})
+},[]);
+
   const datatest=()=>{
     AsyncStorage.getItem("pid")
     .then((storedData) => {
@@ -168,8 +180,8 @@ useEffect(()=>{
   }
   return (
     <View style={styles.container}>
-   <Button title="Startdd" onPress={datatest} disabled={isTimerRunning} />
-   <Button title="Start" onPress={handleStartClick} disabled={isTimerRunning} />
+   <Button title="stopChargig" onPress={getSampleData} disabled={isTimerRunning} />
+   <Button title="del pid" onPress={handleRemoveItem} disabled={isTimerRunning} />
       {/* <Button title="Stop" onPress={handleResetClick} disabled={!isTimerRunning} /> */}
       {/* <Button title='delte pid' onPress={handleRemoveItem}/> */}
       <PublicHomePageHeader navigation={navigation}/>

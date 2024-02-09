@@ -25,6 +25,8 @@ const [data34, setData34] = useState('')
 const [data123, setData123] = useState('')
 
 const MqqtUrl="ws://34.93.32.239:9001/mqtt"
+// const ApiURL="https://adminbackendjouls-production.up.railway.app"
+const ApiURL="http://localhost:5200"
 
 const topic1State = {
   messages: [],
@@ -379,9 +381,11 @@ export const loginuser = (input, navigation) => {
       Object.entries(input).map(([key, value]) => [key.toLowerCase(), value])
     );
     const { name, email, password } = lowercaseKeysObject
+    console.log(name);
     try {
       const response = await fetch(
-        `https://backend-production-e1c2.up.railway.app/api/auth/createuser`,
+        // `https://adminbackendjouls-production.up.railway.app/admin/user/register`,
+        `${ApiURL}/admin/user/register`,
         {
           method: 'POST',
           headers: {
@@ -428,7 +432,7 @@ export const loginuser = (input, navigation) => {
         text2: 'error in catch',
         position: 'top',
       });
-      console.log(err, 'catch ke andr')
+      console.log(err, 'catch ke andr sign up ')
     }
   }
 }
