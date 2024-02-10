@@ -21,8 +21,8 @@ import { Client, Message } from 'react-native-paho-mqtt'
 import Toast from 'react-native-toast-message'
 import { Alert } from 'react-native'
 
-const [data34, setData34] = useState('')
-const [data123, setData123] = useState('')
+// const [data34, setData34] = useState('')
+// const [data123, setData123] = useState('')
 
 const MqqtUrl="ws://34.93.32.239:9001/mqtt"
 // const ApiURL="https://adminbackendjouls-production.up.railway.app"
@@ -1060,10 +1060,10 @@ export const SubcribingtoTopic = (topic) => {
   }
 }
 
-
+const allClients = [];
 // =-------------------------------------------------------------------------------------Start  charging for public-------------------//
 
-export const publicstartCharging = (Porduct_Key,onClose,startTimer) => {
+export const publicstartCharging = (Porduct_Key,onClose,startTimer,setButtonText) => {
 // Porduct_Key=publicProductKey
   console.log("Porduct_Key",Porduct_Key)
 
@@ -1080,7 +1080,7 @@ export const publicstartCharging = (Porduct_Key,onClose,startTimer) => {
         client
         .connect()
         .then(() => {
-          console.log('onConnect')
+          console.log('ReConnect in start charging')
           return Promise.all([
             client.subscribe(`${Porduct_Key}_Updates`), // Topic 1
             client.subscribe(`${Porduct_Key}_Charging_Data`), // Topic 2
@@ -1113,6 +1113,7 @@ export const publicstartCharging = (Porduct_Key,onClose,startTimer) => {
           console.log(`${Porduct_Key}_Updates:`, message.payloadString)
            if(message.payloadString=="Charging Started"){
              Alert.alert("charging started")
+             setButtonText("Stop Charging")
              startTimer()
              onClose()
           }
@@ -1140,7 +1141,8 @@ export const publicstartCharging = (Porduct_Key,onClose,startTimer) => {
     client
       .connect()
       .then(() => {
-        console.log('onConnect')
+        allClients.push(client);
+        console.log('onConnect in start charging')
         return Promise.all([
           client.subscribe(`${Porduct_Key}_Updates`), // Topic 1
           client.subscribe(`${Porduct_Key}_Charging_Data`), // Topic 2
@@ -1156,7 +1158,7 @@ export const publicstartCharging = (Porduct_Key,onClose,startTimer) => {
       })
       .catch((responseObject) => {
         if (responseObject.errorCode !== 0) {
-          console.log('onConnectionLost:' + responseObject)
+          console.log('onConnectionLost: in public start Charging' + responseObject)
           publicstartCharging()
         }
       })
@@ -1181,13 +1183,11 @@ export const DoorOpening = (Porduct_Key) => {
         client
         .connect()
         .then(() => {
-          console.log("mqtt reconnect");
+          console.log("mqtt reconnect in door opening");
           const sample = new Message("Door is open")
           sample.destinationName = `${Porduct_Key}_Notifications`
           client.send(sample)
         })
-
-
       }
     })
     client.on('messageReceived', (message) => {
@@ -1196,14 +1196,15 @@ export const DoorOpening = (Porduct_Key) => {
     client
       .connect()
       .then(() => {
-        console.log("mqtt connect");
+        allClients.push(client);
+        console.log("mqtt connect in door opening");
         const sample = new Message("Door is open")
         sample.destinationName = `${Porduct_Key}_Notifications`
         client.send(sample)
       })
       .catch((responseObject) => {
         if (responseObject.errorCode !== 0) {
-          console.log('onConnectionLost:' + responseObject)
+          console.log('onConnectionLost: door Opening' + responseObject)
           DoorOpening(Porduct_Key)
         }
       })
@@ -1224,7 +1225,6 @@ export const publicstopCharging = (Porduct_Key,totalTime) => {
       client.on('connectionLost', (responseObject) => {
         if (responseObject.errorCode !== 0) {
           console.log(responseObject.errorMessage,"public in stop chargin stop button",responseObject)
-
           publicstopCharging(Porduct_Key)
         }
       })
@@ -1245,18 +1245,20 @@ export const publicstopCharging = (Porduct_Key,totalTime) => {
             console.log(`${Porduct_Key}_Updates:`, message.payloadString)
              if(message.payloadString=="Charging Completed"){
                Alert.alert(`charging completed ${totalTime}`)
+               disconnectAllClients();
             }
+            client.disconnect();
+          console.log('Disconnected from MQTT broker');
           }
         })
       }
-  
       client
         .connect()
         .then(() => {
-          console.log('onConnect')
+          console.log('onConnect in stop charging')
           return Promise.all([
             client.subscribe(`${Porduct_Key}_Updates`), // Topic 1
-          ])
+          ])  
         })
         .then(() => {
           const sample = new Message("Stop Charging")
@@ -1273,4 +1275,16 @@ export const publicstopCharging = (Porduct_Key,totalTime) => {
           }
         })
     }
+  }
+
+
+  function disconnectAllClients() {
+    allClients.forEach((client) => {
+      if (client.isConnected()) {
+        client.disconnect();
+        console.log("disconeect function all client disconnected");
+      }
+    });
+    // Clear the list of clients
+    allClients.length = 0;
   }

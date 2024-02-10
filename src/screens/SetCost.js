@@ -14,7 +14,7 @@ import {
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Toast from 'react-native-toast-message'
 import { useDispatch } from 'react-redux'
 import { StopChargingMode, publicstartCharging } from '../Redux/Action'
@@ -24,12 +24,13 @@ import ModalRadhe from '../../radheModal'
 // import stripe from '@stripe/stripe-react-native';
 import RazorpayCheckout from 'react-native-razorpay';
 
-const SetCost = ({ open, onClose,startTimer}) => {
+const SetCost = ({ open, onClose,startTimer,inputvalue,setButtonText}) => {
   const dispatch=useDispatch()
   const [ShowSetCost, SetShowSetCost] = useState(true)
   const [inputCost,setInputCost]=useState("")
-
-
+  useEffect(()=>{
+    setInputCost(inputvalue)
+  },[open])
 const handlePayment = () => {
   const options = {
     description: 'Payment for your order',
@@ -63,7 +64,7 @@ const handlePayment = () => {
       console.log("click hus");
    const publicProductKey= await AsyncStorage.getItem("pid")
 console.log("publicProductKey",publicProductKey)
-dispatch(publicstartCharging(publicProductKey,onClose,startTimer))
+dispatch(publicstartCharging(publicProductKey,onClose,startTimer,setButtonText))
     }
     else{
       // Toast.show({
@@ -113,7 +114,7 @@ dispatch(publicstartCharging(publicProductKey,onClose,startTimer))
                 </TouchableOpacity>
               </View>
               <View>
-                {ShowSetCost ? <ChargingCost setInputCost={setInputCost}/> : <ChargingSetTime />}
+                {ShowSetCost ? <ChargingCost setInputCost={setInputCost} inputCost={inputCost}/> : <ChargingSetTime />}
               </View>
             </View>
             <View style={styles.paymentBox}>
@@ -159,19 +160,22 @@ dispatch(publicstartCharging(publicProductKey,onClose,startTimer))
   )
 }
 
-const ChargingCost = ({setInputCost}) => {
+const ChargingCost = ({setInputCost,inputCost}) => {
   return (
     <View style={{ marginVertical: 10 }}>
-      <Text style={{ fontSize: 22, color: '#6C6C6C' }}>Enter Amount</Text>
+      <Text style={{marginTop:5 }}>Enter Amount :-</Text>
       <View
         style={{
           height: 50,
           justifyContent: 'center',
           borderWidth: 1,
           borderColor: '#C8C8C8',
-          margin: 3,
+          // margin: 3,
+          marginTop:10,
           borderRadius: 10,
           paddingHorizontal: 10,
+          width:290,
+          marginLeft:-5
         }}
       >
         <TextInput
@@ -182,6 +186,7 @@ const ChargingCost = ({setInputCost}) => {
           keyboardType='numeric'
           placeholder="For ex ₹444"
         onChangeText={(text)=>{setInputCost(text)}}
+        value={inputCost}
         />
       </View>
       <Text
@@ -190,50 +195,63 @@ const ChargingCost = ({setInputCost}) => {
           fontSize: 15,
           marginVertical: 5,
           fontWeight: '400',
+          marginTop:10
         }}
       >
-        Est. Time to Charge- 1 hr
+        Cost of Charging : ₹15 per Kwh (per Unit)
       </Text>
       <Text
         style={{
           color: '#6C6C6C',
-          fontSize: 15,
-          fontWeight: '400',
+          fontSize: 16,
+          fontWeight: 600,
+          marginTop:15
         }}
       >
-        Estimated Units - 88 kwh
+        Charging Units - {Math.ceil(inputCost/15 * 100) / 100} kwh
       </Text>
     </View>
   )
 }
 
-
 const ChargingSetTime = () => {
   const [activeButton, setActiveButton] = useState(null);
+  const [chargingCost,setChargingCost]=useState()
   const buttonClick = (buttonName) => {
     setActiveButton(buttonName);
+    console.log("buttonName");
+    if(buttonName=="30min"){
+      setChargingCost(5)
+    }
+    if(buttonName=="1hr"){
+      setChargingCost(10)
+    }
+    if(buttonName=="2hrs"){
+      setChargingCost(20)
+    }
     // Add your additional functionality here
   };
   return (
     <View style={{ marginVertical: 10 }}>
+      <Text style={{marginTop:5}}>Set Charging Hours :-</Text>
          <View style={styles.setTimeContainer}>
       <TouchableOpacity
         style={[styles.button, activeButton === '30min' && styles.activeButton]}
         onPress={() => buttonClick('30min')}
       >
-        <Text>30 min.</Text>
+        <Text style={{marginLeft:7,color:"#5B5B5B",fontWeight:"500"}}>30 Min.</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.button, activeButton === '1hr' && styles.activeButton]}
         onPress={() => buttonClick('1hr')}
       >
-        <Text>1 hr</Text>
+        <Text style={{marginLeft:15,color:"#5B5B5B",fontWeight:"500"}}>1 Hr</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.button, activeButton === '2hrs' && styles.activeButton]}
         onPress={() => buttonClick('2hrs')}
       >
-        <Text>2 hrs</Text>
+        <Text style={{marginLeft:12,color:"#5B5B5B",fontWeight:"500"}}>2 Hrs</Text>
       </TouchableOpacity>
     </View>
       <View
@@ -245,7 +263,7 @@ const ChargingSetTime = () => {
         }}
       >
         {/* <TimerSlider /> */}
-        <ModalRadhe setActiveButton={setActiveButton} activeButton={activeButton}/>
+        <ModalRadhe setActiveButton={setActiveButton} activeButton={activeButton} setChargingCost={setChargingCost}/>
       </View>
       <Text
         style={{
@@ -255,7 +273,7 @@ const ChargingSetTime = () => {
           fontWeight: '400',
         }}
       >
-        Est. Cost of Charge- ₹444
+        Cost of Charging- ₹10 per hour
       </Text>
       <Text
         style={{
@@ -264,7 +282,7 @@ const ChargingSetTime = () => {
           fontWeight: '400',
         }}
       >
-        Estimated Units- 88 kwh
+        Charging Cost- ₹{chargingCost}
       </Text>
     </View>
   )
@@ -279,6 +297,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.76)',
   },
   setTimeContainer:{
+    marginTop:25,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -361,12 +380,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'flex-start', // Align text to the left
     borderWidth: 1, // Add black border
-    borderColor: '#000000', // Black border color
+    borderColor: '#9B9B9B', // Black border color
     width:80,
+    justifyContent:"center"
     // height:50
   },
   activeButton: {
     borderColor: 'green',
+    borderWidth: 2,
     backgroundColor:"#C1E0C2",
     color:"white"
   },

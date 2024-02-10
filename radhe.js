@@ -253,40 +253,8 @@ const Timer = ({setuserTimeHours,userTimeHours,userTimeMinutes,setuserTimeMinute
   const [seconds, setSeconds] = useState("");
   const [isActive, setIsActive] = useState(false);
 const [showWarring,setShowWarring]=useState(false)
-  // useEffect(() => {
-  //   let interval;
-  //   if (isActive && (hours > 0 || minutes > 0 || seconds > 0)) {
-  //     interval = setInterval(() => {
-  //       if (seconds > 0) {
-  //         setSeconds(seconds => seconds - 1);
-  //       } else if (minutes > 0) {
-  //         setMinutes(minutes => minutes - 1);
-  //         setSeconds(59);
-  //       } else if (hours > 0) {
-  //         setHours(hours => hours - 1);
-  //         setMinutes(59);
-  //         setSeconds(59);
-  //       }
-  //     }, 1000);
-  //   } 
-  //   else if (!isActive && (hours !== 0 || minutes !== 0 || seconds !== 0)) {
-  //     clearInterval(interval);
-  //   }
-  //   return () => clearInterval(interval);
-  // }, [isActive, hours,  minutes,seconds]);
 
-  // const handleStartStop = () => {
-  //   setIsActive(!isActive);
-  // };
-
-  // const handleReset = () => {
-  //   setHours(0);
-  //   setMinutes(0);
-  //   setSeconds(0);
-  //   setIsActive(false);
-  // };
-
-  const minutesSET=(text)=>{
+const minutesSET=(text)=>{
     if(parseInt(text)<=59){
     setuserTimeMinutes(parseInt(text))
     setShowWarring(false)
