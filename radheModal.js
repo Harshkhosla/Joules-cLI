@@ -1,16 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Button, Modal, StyleSheet, TextInput, TouchableOpacity, Text } from 'react-native';
 import Timer from './radhe';
 import Toast from 'react-native-toast-message';
 
-const ModalRadhe = ({setActiveButton,activeButton}) => {
+const ModalRadhe = ({setActiveButton,activeButton,setChargingCost}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [userTimeHours,setuserTimeHours]=useState("")
   const [userTimeMinutes,setuserTimeMinutes]=useState("")
   const [showtime,setShowTime]=useState(true)
   const [showError,setshowError]=useState("#000000")
+  const [showhrText,setShowhrText]=useState("")
   console.log("userTimeHours",userTimeHours,"userTimeMinutes",userTimeMinutes);
   const onSetclick=()=>{
+    const a=((userTimeHours*60+userTimeMinutes)/60)*10
+    setChargingCost(a)
+    if(userTimeHours==0){
+      setShowhrText(userTimeMinutes+" Min.")
+
+    }
+    if(userTimeMinutes==0 && userTimeHours > 1){
+      setShowhrText(userTimeHours+" Hrs")
+    }
+    if(userTimeMinutes==0 && userTimeHours==1){
+      setShowhrText(userTimeHours+" Hour")
+    }
+    if(userTimeHours>0 && userTimeMinutes>0){
+      setShowhrText(`${userTimeHours} Hrs ${userTimeMinutes} Min.`)
+    }
     if(userTimeHours==0 && userTimeMinutes==0){
       console.log("error in doono zero");
       return  setshowError("red")
@@ -24,6 +40,12 @@ const ModalRadhe = ({setActiveButton,activeButton}) => {
 
     }
   }
+
+  useEffect(()=>{
+    if(activeButton!="setTime"){
+      setShowTime(true)
+    }
+  },[activeButton])
 
   const onSetTimeClick=()=>{
     setModalVisible(true)
@@ -50,7 +72,7 @@ const ModalRadhe = ({setActiveButton,activeButton}) => {
         </View>
       </Modal>
       <TouchableOpacity onPress={onSetTimeClick} style={[styles.button, activeButton === 'setTime' && styles.activeButton]}>
-      <Text style={styles.buttonText}>{showtime?"Set Time":`${userTimeHours}:${userTimeMinutes}`}</Text>
+      <Text style={styles.buttonText} >{showtime?"Select Other Time":`${showhrText}`}</Text>
     </TouchableOpacity>
          </View>
   );
@@ -83,7 +105,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'flex-start', // Align text to the left
     borderWidth: 1, // Add black border
-    borderColor: '#000000', // Black border color
+    borderColor: '#7B7B7B', // Black border color
+    width:279,
+    marginTop:10
+  
   },
   buttoninModal: {
     backgroundColor: '#FFFFFF', // White background color
@@ -95,9 +120,10 @@ const styles = StyleSheet.create({
     borderColor: '#000000', // Black border color
   },
   buttonText: {
-    color: '#000000', // Black text color
+    color: '#9B9B9B', // Black text color
     fontSize: 16,
     textAlign: 'left', // Align text to the left
+    marginLeft:-10
   },
   activeButton: {
     borderColor: 'green',

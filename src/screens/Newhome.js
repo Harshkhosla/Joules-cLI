@@ -59,22 +59,22 @@ const Newhome = ({navigation}) => {
     setIsTimerRunning(false);
     setTotalSeconds(0);
   }; 
-useEffect(()=>{
-if(getsample){
-getSampleData()
-}
-},[SampleDataaa])
+// useEffect(()=>{
+// if(getsample){
+// getSampleData()
+// }
+// },[SampleDataaa])
 
 
-const getSampleData=()=>{
-  console.log("SampleDataaa",SampleDataaa)
-  setChargingEnergy(SampleDataaa)
-  // if(ChargingEnergy || SampleDataaa>=0){
-  if(ChargingEnergy.length>0 || parseInt(SampleDataaa)>=0){
-    console.log("charginenery if keander");
-    setButtonText("Stop Charging")
-  }
-}
+// const getSampleData=()=>{
+//   console.log("SampleDataaa",SampleDataaa)
+//   setChargingEnergy(SampleDataaa)
+//   if(ChargingEnergy || SampleDataaa>=0 || SampleDataaa<=0.0){
+//   // if(ChargingEnergy.length>0 || parseInt(SampleDataaa)>=0){
+//     console.log("charginenery if keander");
+//     setButtonText("Stop Charging")
+//   }
+// }
 
   const handleCostAndTimeOpen = async(text) => {
     console.log("text",text)
@@ -96,6 +96,7 @@ const getSampleData=()=>{
       if(data){
         setIsModalOpen(true)
         setGetSampledata(true)
+
       }else{
         navigation.navigate('PublicScanner')
         // setData(true);
@@ -106,19 +107,6 @@ const getSampleData=()=>{
   }
   // console.log(AsyncStorage.getItem("pid"));
   useEffect(() => {
-    // Use AsyncStorage.getItem with then to handle the Promise
-    // AsyncStorage.getItem("pid")
-    //   .then((storedData) => {
-    //     // Handle the retrieved data, it might be null if not found
-    //     console.log("Data from AsyncStorage:", storedData);
-    //     setData(storedData);
-    //     if(storedData){
-    //       setButtonText("Start Charging")
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error retrieving data from AsyncStorage:", error);
-    //   });
     const unsubscribe = navigation.addListener('focus', () => {
     async function fetchData(){
     const storedData=await AsyncStorage.getItem("pid")
@@ -132,20 +120,6 @@ const getSampleData=()=>{
 })
 },[]);
 
-  const datatest=()=>{
-    AsyncStorage.getItem("pid")
-    .then((storedData) => {
-      // Handle the retrieved data, it might be null if not found
-      console.log("Data from AsyncStorage:", storedData);
-      setData(storedData);
-      if(storedData){
-        setButtonText("Start Charging")
-      }
-    })
-    .catch((error) => {
-      console.error("Error retrieving data from AsyncStorage:", error);
-    });
-  }
 
 useEffect(()=>{
   if(data){
@@ -180,7 +154,7 @@ useEffect(()=>{
   }
   return (
     <View style={styles.container}>
-   <Button title="stopChargig" onPress={getSampleData} disabled={isTimerRunning} />
+   {/* <Button title="stopChargig" onPress={getSampleData} disabled={isTimerRunning} /> */}
    <Button title="del pid" onPress={handleRemoveItem} disabled={isTimerRunning} />
       {/* <Button title="Stop" onPress={handleResetClick} disabled={!isTimerRunning} /> */}
       {/* <Button title='delte pid' onPress={handleRemoveItem}/> */}
@@ -240,7 +214,7 @@ useEffect(()=>{
           Start Charging and Contribute for your mother earth!
         </Text>
       </View>
-      <SetCost open={isModalOpen} onClose={handleCostAndTimeClose} startTimer={handleStartClick}/>
+      <SetCost open={isModalOpen} onClose={handleCostAndTimeClose} startTimer={handleStartClick} inputvalue={""} setButtonText={setButtonText} />
     </View>
   )
 }
