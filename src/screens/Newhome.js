@@ -21,21 +21,16 @@ const Newhome = ({navigation}) => {
   let SampleDataaa = useSelector((state) => state?.userReducers?.SetEnergy)
   const SamplePowerData = useSelector((state) => state?.userReducers?.SetPower)
   const publicChargerTime = useSelector((state) => state.userReducers.setTimePubCharger)
-  // console.log("publicChargerTime",publicChargerTime)
-
-  // console.log("SamplePowerData",SamplePowerData)
-
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [totalSeconds, setTotalSeconds] = useState(0);
   const [totalTime, setTotalTime] = useState(0);
   // console.log(totalTime,"totalTime")
 // timer useeffect
-const [timeInSec , SetTimeinSec]=useState("1");
+const [timeInSec , SetTimeinSec]=useState("");
 
 const  timeToSeconds=(timeValue)=> {
   // Extract numeric value from the time string
   const numericValue = parseInt(timeValue);
-
   // Check if the time string contains "hr"
   if (timeValue?.includes("hr")) {
       // Convert hours to seconds (1 hour = 3600 seconds)
@@ -74,8 +69,9 @@ const timeInSe = timeToSeconds(timeInSec);
 //   },[])
 
   const formatTime = (timeInSeconds) => {
-    console.log(timeInSeconds,"uywegfcev");
-    console.log(timeInSe,"kvwubev");
+    console.log(timeInSeconds,"timeinSeconds");
+    console.log("timeinsec76",timeInSec);
+    console.log(timeInSe,"timein sec");
     const hours = Math.floor(timeInSeconds / 3600);
     const minutes = Math.floor((timeInSeconds % 3600) / 60);
     const seconds = timeInSeconds % 60;
@@ -84,12 +80,15 @@ const timeInSe = timeToSeconds(timeInSec);
 // const Product_Key=await AsyncStorage.getItem("pid")
 console.log("productkye in newhome stop",time)
 console.log("Total Time Charge",data);
-setTotalSeconds(0)
 dispatch(publicstopCharging(data,time))
-handleStopClick();
-
+      handleResetClick()
+     setButtonText("Scan QR")
+     setGetSampledata(false)
+     setChargingEnergy("")
+     handleRemoveItem()
+     setData("")
 return `0`;
-    }
+}
     return `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   };
 
@@ -110,10 +109,14 @@ return `0`;
   }; 
 
   useEffect(()=>{
+    if(getsample){
+        setChargingEnergy(SampleDataaa)
+    }
     if(parseInt(onstoChargingCost)<=parseInt(SampleDataaa)){
       console.log("onstopchargincost in useeffect",onstoChargingCost,SampleDataaa);
     const totalEnergyTime=  formatTime(totalSeconds)
      dispatch(publicstopCharging(data,totalEnergyTime))
+     setGetSampledata(false)
      handleResetClick()
      setButtonText("Scan QR")
      setChargingEnergy("")
