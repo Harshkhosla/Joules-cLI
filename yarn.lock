@@ -4367,6 +4367,11 @@ get-value@^2.0.3, get-value@^2.0.6:
   resolved "https://registry.npmjs.org/get-value/-/get-value-2.0.6.tgz"
   integrity sha512-Ln0UQDlxH1BapMu3GPtf7CuYNwRZf2gwCuPqbyG6pB8WfmFpzqcy4xtAaAMUhnNqjMKTiCPZG2oMT3YSx8U2NA==
 
+gifted-charts-core@^0.0.21:
+  version "0.0.21"
+  resolved "https://registry.npmjs.org/gifted-charts-core/-/gifted-charts-core-0.0.21.tgz"
+  integrity sha512-5eFamhAbvlcodvQHs5Wp/MImZiSYLWNie9aQiprZ2w7H3A5KcCtqnW/+eb58ml2Hc7MjzIUXhszGVDMmJcsXDg==
+
 glob-parent@^5.1.2:
   version "5.1.2"
   resolved "https://registry.npmjs.org/glob-parent/-/glob-parent-5.1.2.tgz"
@@ -7648,6 +7653,13 @@ react-native-gesture-handler@^2.12.0:
     lodash "^4.17.21"
     prop-types "^15.7.2"
 
+react-native-gifted-charts@^1.4.7:
+  version "1.4.7"
+  resolved "https://registry.npmjs.org/react-native-gifted-charts/-/react-native-gifted-charts-1.4.7.tgz"
+  integrity sha512-KifKvVTXedtju7WLNKE+amY1LjS7DNUpj/YOa+9kzB0kgMEl2XyW592SyZi07S5iKs8tYvvZy2tkNg452PRH4w==
+  dependencies:
+    gifted-charts-core "^0.0.21"
+
 react-native-gradle-plugin@^0.71.15:
   version "0.71.15"
   resolved "https://registry.npmjs.org/react-native-gradle-plugin/-/react-native-gradle-plugin-0.71.15.tgz"
@@ -7818,11 +7830,6 @@ react-native-toast-message@^2.1.6:
   version "2.2.0"
   resolved "https://registry.npmjs.org/react-native-toast-message/-/react-native-toast-message-2.2.0.tgz"
   integrity sha512-AFti8VzUk6JvyGAlLm9/BknTNDXrrhqnUk7ak/pM7uCTxDPveAu2ekszU0on6vnUPFnG04H/QfYE2IlETqeaWw==
-
-react-native-upi-payment@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.npmjs.org/react-native-upi-payment/-/react-native-upi-payment-1.0.5.tgz"
-  integrity sha512-5pouPlgFgucu04nuipi2R8Mc2K5uakmoa/QJJMmsfFCjEX06SJrA8WW7t2IeGKj/qpSjXeMhUlg6GHr76tQ7bg==
 
 react-native-vector-icons@^9.2.0:
   version "9.2.0"

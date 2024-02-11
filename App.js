@@ -48,6 +48,7 @@ import Welcomepage from './src/screens/Welcomepage'
 import PublicHomePageFinal from './src/screens/PublicHomePageFinal'
 import Timer from './radhe'
 import ModalRadhe from './radheModal'
+import ChartRadhe from './src/screens/Chart'
 const Stack = createStackNavigator()
 
 export default function App() {
@@ -68,7 +69,7 @@ export default function App() {
               name="Splash"
               component={Splash}
             /> */}
-            {/* <Stack.Screen name='radhe' component={ModalRadhe}/> */}
+            {/* <Stack.Screen name='Chart' component={ChartRadhe}/> */}
              {/* <Stack.Screen name="StartScreen" component={StartScreen} /> */}
             {/* <Stack.Screen name="LoginScreen" component={LoginScreen} /> */}
             {/* <Stack.Screen name="RegisterScreen" component={RegisterScreen} /> */}

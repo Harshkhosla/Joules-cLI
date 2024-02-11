@@ -24,7 +24,7 @@ import ModalRadhe from '../../radheModal'
 // import stripe from '@stripe/stripe-react-native';
 import RazorpayCheckout from 'react-native-razorpay';
 
-const SetCost = ({ open, onClose,startTimer,inputvalue,setButtonText}) => {
+const SetCost = ({ open, onClose,startTimer,inputvalue,setButtonText,setOnStopChargingCost}) => {
   const dispatch=useDispatch()
   const [ShowSetCost, SetShowSetCost] = useState(true)
   const [inputCost,setInputCost]=useState("")
@@ -59,6 +59,8 @@ const handlePayment = () => {
 };
 
  const startCharging=async()=>{
+  const a=(Math.ceil(inputCost/15 * 100) / 100)*1000
+  setOnStopChargingCost(a)
     console.log("heklo");
     if(inputCost){
       console.log("click hus");

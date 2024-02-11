@@ -15,6 +15,9 @@ const Newhome = ({navigation}) => {
   const [buttonText,setButtonText]=useState("") 
   const [ChargingEnergy,setChargingEnergy]=useState("")
   const [getsample,setGetSampledata]=useState(true)
+  const [onstoChargingCost,setOnStopChargingCost]=useState("")
+
+  console.log("onstopchargingCost",onstoChargingCost);
   let SampleDataaa = useSelector((state) => state?.userReducers?.SetEnergy)
   const SamplePowerData = useSelector((state) => state?.userReducers?.SetPower)
   const publicChargerTime = useSelector((state) => state.userReducers.setTimePubCharger)
@@ -59,22 +62,19 @@ const Newhome = ({navigation}) => {
     setIsTimerRunning(false);
     setTotalSeconds(0);
   }; 
-// useEffect(()=>{
-// if(getsample){
-// getSampleData()
-// }
-// },[SampleDataaa])
 
-
-// const getSampleData=()=>{
-//   console.log("SampleDataaa",SampleDataaa)
-//   setChargingEnergy(SampleDataaa)
-//   if(ChargingEnergy || SampleDataaa>=0 || SampleDataaa<=0.0){
-//   // if(ChargingEnergy.length>0 || parseInt(SampleDataaa)>=0){
-//     console.log("charginenery if keander");
-//     setButtonText("Stop Charging")
-//   }
-// }
+  useEffect(()=>{
+    if(parseInt(onstoChargingCost)<=parseInt(SampleDataaa)){
+      console.log("onstopchargincost in useeffect",onstoChargingCost,SampleDataaa);
+    const totalEnergyTime=  formatTime(totalSeconds)
+     dispatch(publicstopCharging(data,totalEnergyTime))
+     handleResetClick()
+     setButtonText("Scan QR")
+     setChargingEnergy("")
+     handleRemoveItem()
+     setData("")
+    }
+  },[SampleDataaa])
 
   const handleCostAndTimeOpen = async(text) => {
     console.log("text",text)
@@ -214,7 +214,7 @@ useEffect(()=>{
           Start Charging and Contribute for your mother earth!
         </Text>
       </View>
-      <SetCost open={isModalOpen} onClose={handleCostAndTimeClose} startTimer={handleStartClick} inputvalue={""} setButtonText={setButtonText} />
+      <SetCost open={isModalOpen} onClose={handleCostAndTimeClose} startTimer={handleStartClick} inputvalue={""} setButtonText={setButtonText} setOnStopChargingCost={setOnStopChargingCost}/>
     </View>
   )
 }
