@@ -62,7 +62,9 @@ const handlePayment = () => {
 
  const startCharging=async()=>{
   const a=(Math.ceil(inputCost/15 * 100) / 100)*1000
-  setOnStopChargingCost(a)
+  if(inputCost){
+    setOnStopChargingCost(a)
+  }
     console.log("heklo");
     if(inputCost||Time ){
       console.log("click hus");
@@ -76,6 +78,17 @@ dispatch(publicstartCharging(publicProductKey,onClose,startTimer,setButtonText))
       //   text1:"Please set the cost of charging"
       // })
       Alert.alert("Please set the cost of charging first")
+    }
+  }
+
+  const onclicksetcostSetTime=(text)=>{
+    if(text=="setcost"){
+      SetShowSetCost(true)
+
+    }
+    if(text=="setTime"){
+      SetShowSetCost(false)
+      setInputCost("")
     }
   }
   return (
@@ -93,25 +106,25 @@ dispatch(publicstartCharging(publicProductKey,onClose,startTimer,setButtonText))
           <View style={styles.contentBox}>
             <View>
               <View style={styles.Toggle_SetCost_SetTime}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>{onclicksetcostSetTime("setcost")}}>
                   <Text
                     style={[
                       styles.TogglerText,
                       { color: ShowSetCost ? '#118615' : '#5B5B5B' },
                     ]}
-                    onPress={() => SetShowSetCost(true)}
+                    
                   >
                     Set Cost
                   </Text>
                 </TouchableOpacity>
                 <Text style={[{ fontSize: fp(4) ,color:"#DBDBDB"}]}>|</Text>
-                <TouchableOpacity>
+                <TouchableOpacity  onPress={()=>{onclicksetcostSetTime("setTime")}}>
                   <Text
                     style={[
                       styles.TogglerText,
                       { color: !ShowSetCost ? '#118615' : '#5B5B5B' },
                     ]}
-                    onPress={() => SetShowSetCost(false)}
+                   
                   >
                     Set Time
                   </Text>
