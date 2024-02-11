@@ -24,10 +24,12 @@ import ModalRadhe from '../../radheModal'
 // import stripe from '@stripe/stripe-react-native';
 import RazorpayCheckout from 'react-native-razorpay';
 
-const SetCost = ({ open, onClose,startTimer,inputvalue,setButtonText,setOnStopChargingCost}) => {
+const SetCost = ({ open, onClose,startTimer,inputvalue,setButtonText,SetTimeinSec,setOnStopChargingCost}) => {
   const dispatch=useDispatch()
   const [ShowSetCost, SetShowSetCost] = useState(true)
   const [inputCost,setInputCost]=useState("")
+  const [Time,settime]=useState("")
+  
   useEffect(()=>{
     setInputCost(inputvalue)
   },[open])
@@ -62,7 +64,7 @@ const handlePayment = () => {
   const a=(Math.ceil(inputCost/15 * 100) / 100)*1000
   setOnStopChargingCost(a)
     console.log("heklo");
-    if(inputCost){
+    if(inputCost||Time ){
       console.log("click hus");
    const publicProductKey= await AsyncStorage.getItem("pid")
 console.log("publicProductKey",publicProductKey)
@@ -116,7 +118,7 @@ dispatch(publicstartCharging(publicProductKey,onClose,startTimer,setButtonText))
                 </TouchableOpacity>
               </View>
               <View>
-                {ShowSetCost ? <ChargingCost setInputCost={setInputCost} inputCost={inputCost}/> : <ChargingSetTime />}
+                {ShowSetCost ? <ChargingCost setInputCost={setInputCost} inputCost={inputCost}/> : <ChargingSetTime  settime={settime} SetTimeinSec={SetTimeinSec} />}
               </View>
             </View>
             <View style={styles.paymentBox}>
@@ -216,10 +218,12 @@ const ChargingCost = ({setInputCost,inputCost}) => {
   )
 }
 
-const ChargingSetTime = () => {
+const ChargingSetTime = ({SetTimeinSec,settime}) => {
   const [activeButton, setActiveButton] = useState(null);
   const [chargingCost,setChargingCost]=useState()
   const buttonClick = (buttonName) => {
+    settime(buttonName)
+    SetTimeinSec(buttonName)
     setActiveButton(buttonName);
     console.log("buttonName");
     if(buttonName=="30min"){
@@ -265,7 +269,7 @@ const ChargingSetTime = () => {
         }}
       >
         {/* <TimerSlider /> */}
-        <ModalRadhe setActiveButton={setActiveButton} activeButton={activeButton} setChargingCost={setChargingCost}/>
+        <ModalRadhe setActiveButton={setActiveButton} SetTimeinSec={SetTimeinSec} activeButton={activeButton} setChargingCost={setChargingCost} settime={settime}/>
       </View>
       <Text
         style={{

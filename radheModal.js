@@ -3,7 +3,7 @@ import { View, Button, Modal, StyleSheet, TextInput, TouchableOpacity, Text } fr
 import Timer from './radhe';
 import Toast from 'react-native-toast-message';
 
-const ModalRadhe = ({setActiveButton,activeButton,setChargingCost}) => {
+const ModalRadhe = ({setActiveButton,activeButton,setChargingCost,SetTimeinSec,settime}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [userTimeHours,setuserTimeHours]=useState("")
   const [userTimeMinutes,setuserTimeMinutes]=useState("")
@@ -16,16 +16,25 @@ const ModalRadhe = ({setActiveButton,activeButton,setChargingCost}) => {
     a= a.toFixed(2);    
     setChargingCost(a)
     if(userTimeHours==0){
-      setShowhrText(userTimeMinutes+" Min.")
+      setShowhrText(userTimeMinutes+"min")
+      SetTimeinSec(userTimeMinutes+"min")
+      settime(userTimeMinutes)
     }
     if(userTimeMinutes==0 && userTimeHours > 1){
-      setShowhrText(userTimeHours+" Hrs")
+      setShowhrText(userTimeHours+"hr")
+      SetTimeinSec(userTimeHours+"hr")
+      settime(userTimeHours)
+
     }
     if(userTimeMinutes==0 && userTimeHours==1){
-      setShowhrText(userTimeHours+" Hour")
+      setShowhrText(userTimeHours+"hr")
+      SetTimeinSec(userTimeHours+"hr")
+      settime(userTimeHours)
     }
     if(userTimeHours>0 && userTimeMinutes>0){
-      setShowhrText(`${userTimeHours} Hrs ${userTimeMinutes} Min.`)
+      setShowhrText(`${userTimeHours} hr ${userTimeMinutes} min`)
+      SetTimeinSec(`${userTimeHours} hr ${userTimeMinutes} min`)
+      settime(`${userTimeHours} hr ${userTimeMinutes} min`)
     }
     if(userTimeHours==0 && userTimeMinutes==0){
       console.log("error in doono zero");

@@ -30,6 +30,28 @@ const Newhome = ({navigation}) => {
   const [totalTime, setTotalTime] = useState(0);
   // console.log(totalTime,"totalTime")
 // timer useeffect
+const [timeInSec , SetTimeinSec]=useState("1");
+
+const  timeToSeconds=(timeValue)=> {
+  // Extract numeric value from the time string
+  const numericValue = parseInt(timeValue);
+
+  // Check if the time string contains "hr"
+  if (timeValue?.includes("hr")) {
+      // Convert hours to seconds (1 hour = 3600 seconds)
+      return numericValue * 3600;
+  } else if (timeValue?.includes("min")) {
+      // Convert minutes to seconds (1 minute = 60 seconds)
+      return numericValue * 60;
+  } else {
+      // If no time unit is specified, assume seconds
+      return numericValue;
+  }
+}
+
+
+const timeInSe = timeToSeconds(timeInSec);
+// const timeInSe = "59";
   useEffect(() => {
     let interval;
     if (isTimerRunning) {
@@ -42,14 +64,38 @@ const Newhome = ({navigation}) => {
     }
     return () => clearInterval(interval); // Cleanup interval on component unmount
   }, [isTimerRunning]);
+// const [product,setProduct ]=useState("")
+//   useEffect(()=>{
+//     const pid = async()=>{
+//       const Product_Key=await AsyncStorage.getItem("pid")
+//       setProduct(Product_Key);
+//     }
+
+//   },[])
 
   const formatTime = (timeInSeconds) => {
+    console.log(timeInSeconds,"uywegfcev");
+    console.log(timeInSe,"kvwubev");
     const hours = Math.floor(timeInSeconds / 3600);
     const minutes = Math.floor((timeInSeconds % 3600) / 60);
     const seconds = timeInSeconds % 60;
+    const time =`${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+    if(timeInSeconds==timeInSe){
+// const Product_Key=await AsyncStorage.getItem("pid")
+console.log("productkye in newhome stop",time)
+console.log("Total Time Charge",data);
+setTotalSeconds(0)
+dispatch(publicstopCharging(data,time))
+handleStopClick();
 
+return `0`;
+    }
     return `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   };
+
+
+
+
   const handleStartClick = () => {
     setIsTimerRunning(true);
   };
@@ -214,7 +260,7 @@ useEffect(()=>{
           Start Charging and Contribute for your mother earth!
         </Text>
       </View>
-      <SetCost open={isModalOpen} onClose={handleCostAndTimeClose} startTimer={handleStartClick} inputvalue={""} setButtonText={setButtonText} setOnStopChargingCost={setOnStopChargingCost}/>
+      <SetCost open={isModalOpen} onClose={handleCostAndTimeClose} startTimer={handleStartClick} inputvalue={""} setButtonText={setButtonText} SetTimeinSec={SetTimeinSec} setOnStopChargingCost={setOnStopChargingCost}/>
     </View>
   )
 }
