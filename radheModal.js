@@ -12,11 +12,11 @@ const ModalRadhe = ({setActiveButton,activeButton,setChargingCost}) => {
   const [showhrText,setShowhrText]=useState("")
   console.log("userTimeHours",userTimeHours,"userTimeMinutes",userTimeMinutes);
   const onSetclick=()=>{
-    const a=((userTimeHours*60+userTimeMinutes)/60)*10
+    let a=((userTimeHours*60+userTimeMinutes)/60)*10
+    a= a.toFixed(2);    
     setChargingCost(a)
     if(userTimeHours==0){
       setShowhrText(userTimeMinutes+" Min.")
-
     }
     if(userTimeMinutes==0 && userTimeHours > 1){
       setShowhrText(userTimeHours+" Hrs")

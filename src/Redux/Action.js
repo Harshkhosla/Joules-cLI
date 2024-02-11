@@ -1065,7 +1065,7 @@ const allClients = [];
 
 export const publicstartCharging = (Porduct_Key,onClose,startTimer,setButtonText) => {
 // Porduct_Key=publicProductKey
-  console.log("Porduct_Key",Porduct_Key)
+  console.log("Porduct_Key in publick start charging",Porduct_Key)
 
   return (dispatch) => {
     const client = new Client({
