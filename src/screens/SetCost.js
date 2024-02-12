@@ -30,7 +30,7 @@ const SetCost = ({ open, onClose,startTimer,inputvalue,setButtonText,SetTimeinSe
   const [inputCost,setInputCost]=useState("")
   const [Time,settime]=useState("")
   
-  useEffect(()=>{
+useEffect(()=>{
     setInputCost(inputvalue)
   },[open])
 const handlePayment = () => {
@@ -66,25 +66,22 @@ const handlePayment = () => {
     setOnStopChargingCost(a)
   }
     console.log("heklo");
-    if(inputCost||Time ){
+    if(inputCost>0||Time ){
       console.log("click hus");
    const publicProductKey= await AsyncStorage.getItem("pid")
 console.log("publicProductKey",publicProductKey)
 dispatch(publicstartCharging(publicProductKey,onClose,startTimer,setButtonText))
     }
-    else{
-      // Toast.show({
-      //   type:"error",
-      //   text1:"Please set the cost of charging"
-      // })
-      Alert.alert("Please set the cost of charging first")
+    else{   
+   Alert.alert("Please set the cost of charging first")
     }
   }
 
   const onclicksetcostSetTime=(text)=>{
     if(text=="setcost"){
       SetShowSetCost(true)
-
+      settime("")
+      setInputCost("")
     }
     if(text=="setTime"){
       SetShowSetCost(false)
@@ -131,7 +128,7 @@ dispatch(publicstartCharging(publicProductKey,onClose,startTimer,setButtonText))
                 </TouchableOpacity>
               </View>
               <View>
-                {ShowSetCost ? <ChargingCost setInputCost={setInputCost} inputCost={inputCost}/> : <ChargingSetTime  settime={settime} SetTimeinSec={SetTimeinSec} />}
+                {ShowSetCost ? <ChargingCost setInputCost={setInputCost} inputCost={inputCost}/> : <ChargingSetTime  settime={settime} SetTimeinSec={SetTimeinSec} setInputCost={setInputCost}/>}
               </View>
             </View>
             <View style={styles.paymentBox}>
@@ -203,7 +200,7 @@ const ChargingCost = ({setInputCost,inputCost}) => {
           keyboardType='numeric'
           placeholder="For ex ₹444"
         onChangeText={(text)=>{setInputCost(text)}}
-        value={inputCost}
+        value={inputCost.toString()}
         />
       </View>
       <Text
@@ -231,7 +228,7 @@ const ChargingCost = ({setInputCost,inputCost}) => {
   )
 }
 
-const ChargingSetTime = ({SetTimeinSec,settime}) => {
+const ChargingSetTime = ({SetTimeinSec,settime,setInputCost}) => {
   const [activeButton, setActiveButton] = useState(null);
   const [chargingCost,setChargingCost]=useState()
   const buttonClick = (buttonName) => {
@@ -241,12 +238,15 @@ const ChargingSetTime = ({SetTimeinSec,settime}) => {
     console.log("buttonName");
     if(buttonName=="30min"){
       setChargingCost(5)
+      setInputCost(5)
     }
     if(buttonName=="1hr"){
       setChargingCost(10)
+      setInputCost(10)
     }
     if(buttonName=="2hrs"){
       setChargingCost(20)
+      setInputCost(20)
     }
     // Add your additional functionality here
   };
@@ -282,7 +282,7 @@ const ChargingSetTime = ({SetTimeinSec,settime}) => {
         }}
       >
         {/* <TimerSlider /> */}
-        <ModalRadhe setActiveButton={setActiveButton} SetTimeinSec={SetTimeinSec} activeButton={activeButton} setChargingCost={setChargingCost} settime={settime}/>
+        <ModalRadhe setActiveButton={setActiveButton} SetTimeinSec={SetTimeinSec} activeButton={activeButton} setChargingCost={setChargingCost} settime={settime} setInputCost={setInputCost}/>
       </View>
       <Text
         style={{

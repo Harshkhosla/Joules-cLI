@@ -49,6 +49,7 @@ import PublicHomePageFinal from './src/screens/PublicHomePageFinal'
 import Timer from './radhe'
 import ModalRadhe from './radheModal'
 import ChartRadhe from './src/screens/Chart'
+import WifiSSID from './src/screens/WifiSSID'
 const Stack = createStackNavigator()
 
 export default function App() {
@@ -69,11 +70,13 @@ export default function App() {
               name="Splash"
               component={Splash}
             /> */}
-            {/* <Stack.Screen name='Chart' component={ChartRadhe}/> */}
+{/* 
+            <Stack.Screen name='wifiold' component={WifiSSID}/>
+            <Stack.Screen name='Chart' component={ChartRadhe}/> */}
              {/* <Stack.Screen name="StartScreen" component={StartScreen} /> */}
             {/* <Stack.Screen name="LoginScreen" component={LoginScreen} /> */}
             {/* <Stack.Screen name="RegisterScreen" component={RegisterScreen} /> */}
-            {/* <Stack.Screen name="SignIn" component={SignIn} /> */}
+            <Stack.Screen name="SignIn" component={SignIn} />
             {/* <Stack.Screen name="Dashboard" component={Dashboard} />  */}
             {/* <Stack.Screen
               name="ResetPasswordScreen"

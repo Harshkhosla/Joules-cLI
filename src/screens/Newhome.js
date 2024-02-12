@@ -145,7 +145,8 @@ return `0`;
       if(data){
         setIsModalOpen(true)
         setGetSampledata(true)
-
+        SetTimeinSec("")
+        setChargingEnergy("")
       }else{
         navigation.navigate('PublicScanner')
         // setData(true);
@@ -204,7 +205,7 @@ useEffect(()=>{
   return (
     <View style={styles.container}>
    {/* <Button title="stopChargig" onPress={getSampleData} disabled={isTimerRunning} /> */}
-   <Button title="del pid" onPress={handleRemoveItem} disabled={isTimerRunning} />
+   {/* <Button title="del pid" onPress={handleRemoveItem} disabled={isTimerRunning} /> */}
       {/* <Button title="Stop" onPress={handleResetClick} disabled={!isTimerRunning} /> */}
       {/* <Button title='delte pid' onPress={handleRemoveItem}/> */}
       <PublicHomePageHeader navigation={navigation}/>

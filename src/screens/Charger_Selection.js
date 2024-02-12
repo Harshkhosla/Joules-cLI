@@ -5,6 +5,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from 'react-native'
 import {
   responsiveHeight as hp,
@@ -16,6 +17,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import Circle from './Circle'
 
 const Charger_Selection = ({ navigation }) => {
+  const onChargerClick=()=>{
+    Alert.alert("currently Not Available")
+  }
   return (
     // <ScrollView>
     <View style={styles.Container}>
@@ -36,7 +40,7 @@ const Charger_Selection = ({ navigation }) => {
             </View>
             <View>
               <View>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={onChargerClick}>
                   <Text style={styles.link}>Home Charger</Text>
                 </TouchableOpacity>
               </View>
