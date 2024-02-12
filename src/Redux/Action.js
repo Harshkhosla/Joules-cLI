@@ -381,11 +381,11 @@ export const loginuser = (input, navigation) => {
       Object.entries(input).map(([key, value]) => [key.toLowerCase(), value])
     );
     const { name, email, password } = lowercaseKeysObject
-    console.log(name);
+    // console.log(name);
     try {
       const response = await fetch(
-        // `https://adminbackendjouls-production.up.railway.app/admin/user/register`,
-        `${ApiURL}/admin/user/register`,
+        `https://backend-production-e1c2.up.railway.app/api/auth/createuser`,
+        // `${ApiURL}/admin/user/register`,
         {
           method: 'POST',
           headers: {
@@ -398,9 +398,17 @@ export const loginuser = (input, navigation) => {
           }),
         }
       )
-
+        console.log("helo in before");
       const data = await response.json()
+      console.log("helo in before after");
+
       console.log(data, 'data in sign up user')
+      if(data?.message){
+        Toast.show({
+          text2:data.message,
+          position:"top"
+        })
+      }
       if(data?.error){
         Toast.show({
           type: 'error',
@@ -411,6 +419,7 @@ export const loginuser = (input, navigation) => {
       }
       // const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '')
       if(data?.authtoken){
+        console.log("data.authtoken",data.authtoken);
       const authtoken = JSON.stringify(data.authtoken)
       await AsyncStorage.setItem('Authtoken', authtoken)
       dispatch(setAuthtoken(authtoken))
@@ -430,6 +439,7 @@ export const loginuser = (input, navigation) => {
         type: 'success',
         // text1: err,
         text2: 'error in catch',
+        text1:err,
         position: 'top',
       });
       console.log(err, 'catch ke andr sign up ')
