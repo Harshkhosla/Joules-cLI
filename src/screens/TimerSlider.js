@@ -5,38 +5,37 @@ import { useDispatch } from 'react-redux'
 import { setPublicChargeTime } from '../Redux/Action'
 
 const TimerSlider = () => {
-  const dispatch=useDispatch()
+  const dispatch = useDispatch()
   const [date, setDate] = useState(new Date(1598051730000))
   const [showTimePicker, setShowTimePicker] = useState(false)
-const [showSetTime,setShowsetTime]=useState(false)
+  const [showSetTime, setShowsetTime] = useState(false)
 
-function parseTime(timeString) {
-  const [hours, minutes, seconds, period] = timeString.split(/[:\s]/);
+  function parseTime(timeString) {
+    const [hours, minutes, seconds, period] = timeString.split(/[:\s]/)
 
-  let totalSeconds =
-    parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseInt(seconds);
-  
-  // Adjust for AM/PM period
-  if (period === "PM") {
-    totalSeconds += 12 * 3600;
+    let totalSeconds =
+      parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseInt(seconds)
+
+    // Adjust for AM/PM period
+    if (period === 'PM') {
+      totalSeconds += 12 * 3600
+    }
+    console.log('totoalseconds', totalSeconds)
+    return totalSeconds
   }
-  console.log("totoalseconds",totalSeconds)
-  return totalSeconds
-}
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date
     setShowTimePicker(false)
     setShowsetTime(true)
-    console.log("currentDate",currentDate.toLocaleTimeString())
+    console.log('currentDate', currentDate.toLocaleTimeString())
     setDate(currentDate)
-    const passData= parseTime(currentDate.toLocaleTimeString())
-    console.log("passData",passData)
+    const passData = parseTime(currentDate.toLocaleTimeString())
+    console.log('passData', passData)
     dispatch(setPublicChargeTime(passData))
   }
   const showTimePickerModal = () => {
     setShowTimePicker(true)
-    
   }
   return (
     <View>
@@ -54,9 +53,8 @@ function parseTime(timeString) {
           is24Hour={true}
           display="spinner"
           onChange={onChange}
-          minuteInterval={15} 
+          minuteInterval={15}
         />
-        
       )}
       <View style={{ flexDirection: 'row', gap: 13, alignSelf: 'center' }}>
         <Text
@@ -80,13 +78,15 @@ function parseTime(timeString) {
           fontSize: 35,
           color: 'green',
           alignSelf: 'center',
-          marginLeft:40
+          marginLeft: 40,
         }}
       >
-        {showSetTime?date.toLocaleTimeString([],{
-          hour: '2-digit',
-          minute: '2-digit',
-        }):"set time"}
+        {showSetTime
+          ? date.toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+            })
+          : 'set time'}
       </Text>
     </View>
   )
