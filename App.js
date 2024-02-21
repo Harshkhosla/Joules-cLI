@@ -50,6 +50,8 @@ import Timer from './radhe'
 import ModalRadhe from './radheModal'
 import ChartRadhe from './src/screens/Chart'
 import WifiSSID from './src/screens/WifiSSID'
+import MobileNoGetOtp from './src/screens/MobileNoGetOtp'
+import Charging_History from './src/screens/Charging_History'
 const Stack = createStackNavigator()
 
 export default function App() {
@@ -76,7 +78,13 @@ export default function App() {
              {/* <Stack.Screen name="StartScreen" component={StartScreen} /> */}
             {/* <Stack.Screen name="LoginScreen" component={LoginScreen} /> */}
             {/* <Stack.Screen name="RegisterScreen" component={RegisterScreen} /> */}
+
+            {/* <Stack.Screen name='Charging_History' component={Charging_History}/> */}
+            {/* <Stack.Screen name='MobileNoGetOtp' component={MobileNoGetOtp}/> */}
+            {/* <Stack.Screen name="Questionnaire" component={Questionnaire} /> */}
+            {/* <Stack.Screen name="QuesVecDetails" component={QuesVecDetails} /> */}
             <Stack.Screen name="SignIn" component={SignIn} />
+            <Stack.Screen name="Quesimg" component={Quesimg} />
             {/* <Stack.Screen name="Dashboard" component={Dashboard} />  */}
             {/* <Stack.Screen
               name="ResetPasswordScreen"
@@ -95,11 +103,8 @@ export default function App() {
             <Stack.Screen name="House" component={House} />
             <Stack.Screen name="Date" component={Date} />
             <Stack.Screen name="Home" component={Home} /> 
-            <Stack.Screen name="Questionnaire" component={Questionnaire} />
-            <Stack.Screen name="Quesimg" component={Quesimg} />
             {/* <Stack.Screen name="QuesAddVhicle" component={QuesAddVhicle} /> */}
             {/* <Stack.Screen name="QuesLive" component={QuesLive} /> */}
-            <Stack.Screen name="QuesVecDetails" component={QuesVecDetails} />
             <Stack.Screen name="Wifi" component={Wifi} />
             <Stack.Screen name="Flat" component={Flat} />
             <Stack.Screen name="SceduleDate" component={SceduleDate} />

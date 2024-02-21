@@ -4,7 +4,7 @@ import { BarChart } from "react-native-gifted-charts";
 const ChartRadhe = () => {
     const barData = [
         {value: 15, label: 'Jan'},
-        {value: 40, label: 'Feb'},
+        {value: 40, label: 'Jan'},
         {value: 10, label: 'Mar'},
         {value: 30, label: 'Apr'},
         ];

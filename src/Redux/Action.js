@@ -401,7 +401,6 @@ export const loginuser = (input, navigation) => {
         console.log("helo in before");
       const data = await response.json()
       console.log("helo in before after");
-
       console.log(data, 'data in sign up user')
       if(data?.message){
         Toast.show({

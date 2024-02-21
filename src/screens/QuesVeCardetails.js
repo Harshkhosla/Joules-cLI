@@ -46,8 +46,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#DAE0E2',
     elevation: 2,
-    borderRadius: 15,
-    // marginBottom: 20,
+    borderRadius: 8,
+    marginBottom: 15,
+    overflow: 'hidden',
   },
   ActionContainer: {
     flexDirection: 'row',
@@ -74,8 +75,6 @@ const styles = StyleSheet.create({
   },
   carDetails: {
     padding: 20,
-    borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15,
     backgroundColor: '#C1E0C2',
   },
 })

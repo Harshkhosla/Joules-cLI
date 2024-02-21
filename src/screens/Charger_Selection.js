@@ -18,6 +18,7 @@ import Circle from './Circle'
 
 const Charger_Selection = ({ navigation }) => {
   const onChargerClick=()=>{
+    console.log("click hua");
     Alert.alert("currently Not Available")
   }
   return (
