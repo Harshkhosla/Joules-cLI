@@ -1,14 +1,6 @@
 import React from 'react'
 import QuesVeCardetails from './QuesVeCardetails'
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native'
-
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import {
   responsiveHeight as hp,
   responsiveWidth as wp,
@@ -21,39 +13,25 @@ import { ScrollView } from 'react-native-gesture-handler'
 const QuesVecDetails = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Quesheader navigation={navigation} />
-      <View style={styles.detailscontainer}>
-        <View>
-          <View>
-            <View>
-              <Text
-                style={{
-                  marginBottom: 20,
-                  fontSize: fp(2),
-                  textAlign: 'right',
-                }}
-              >
-                Question{' '}
-                <Text
-                  style={{
-                    color: 'green',
-                  }}
-                >
-                  4/4
-                </Text>
-              </Text>
-            </View>
-            <View style={styles.CarContainer}>
-              <QuesVeCardetails />
-            </View>
-          </View>
+      <Quesheader title={'Cars Added'} navigation={navigation} />
+      <View style={styles.detailsContainer}>
+        <View style={styles.CarContainer}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <QuesVeCardetails />
+            {/* <QuesVeCardetails />
+            <QuesVeCardetails />
+            <QuesVeCardetails /> */}
+          </ScrollView>
         </View>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Charger_Selection')}
-        >
-          <Text style={styles.buttonText}>Next</Text>
-        </TouchableOpacity>
+
+        <View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate('QuesVecDetails')}
+          >
+            <Text style={styles.buttonText}>Next</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   )
@@ -64,30 +42,34 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  detailscontainer: {
+  detailsContainer: {
     flex: 1,
     backgroundColor: '#fff',
     justifyContent: 'space-between',
-    padding: 20,
     borderWidth: 1,
     borderColor: '#DAE0E2',
-    elevation: 3,
+    elevation: 2,
+    padding: 20,
     margin: 20,
-    borderRadius: 20,
+    borderRadius: 15,
+    overflow: 'hidden',
   },
   CarContainer: {
-    // alignItems: 'center',
-    // gap: 20,
+    flex: 1,
+    // height: 400,
+    marginTop: 20,
+    gap: 10,
+    overflow: 'hidden',
   },
   button: {
-    backgroundColor: '#118615',
-    borderRadius: 15,
+    backgroundColor: 'green',
+    padding: 10,
+    borderRadius: 8,
   },
   buttonText: {
     color: 'white',
-    fontSize: fp(2.7),
+    fontSize: fp(2.5),
     textAlign: 'center',
-    padding: 10,
   },
 })
 

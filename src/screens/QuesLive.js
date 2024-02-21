@@ -1,30 +1,45 @@
 // import React, { useState } from 'react'
-// import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
+// import {
+//   StyleSheet,
+//   Text,
+//   View,
+//   Image,
+//   TouchableOpacity,
+//   Alert,
+// } from 'react-native'
+// import {
+//   responsiveHeight as hp,
+//   responsiveWidth as wp,
+//   responsiveFontSize as fp,
+// } from 'react-native-responsive-dimensions'
 // import Quesheader from './Quesheader'
-// import Toast from 'react-native-toast-message'
 
 // const QuesLive = ({ navigation }) => {
-//   const [borderedImage, setBorderedImage] = useState(null)
-//   const handleImagePress = (imageId) => {
-//     setBorderedImage(imageId)
-//   }
+//   const [houseSelected, SethouseSelected] = useState(false)
+//   const [apartmentSelected, SetapartmentSelected] = useState(false)
 
-//   const nextButtonClick = () => {
-//     if (borderedImage) {
-//       navigation.navigate('QuesAddVhicle')
+//   const homeSelection = () => {
+//     Alert.alert('house clicked')
+//     if (!houseSelected) {
+//       SethouseSelected(true)
 //     } else {
-//       Toast.show({
-//         type: 'error',
-//         text1: 'please select You live',
-//         position: 'bottom',
-//         visibilityTime: 1000,
-//       })
+//       SethouseSelected(false)
 //     }
 //   }
+
+//   const apartmentSelection = () => {
+//     Alert.alert('apartment clicked')
+//     if (!apartmentSelected) {
+//       SetapartmentSelected(true)
+//     } else {
+//       SetapartmentSelected(false)
+//     }
+//   }
+
 //   return (
-//     <View>
-//       <Quesheader />
-//       <View style={styles.container}>
+//     <View style={styles.container}>
+//       <Quesheader title={'Questionnaire'} navigation={navigation} />
+//       <View style={styles.detailscontainer}>
 //         <View>
 //           <View>
 //             <Text
@@ -43,13 +58,7 @@
 //               </Text>
 //             </Text>
 //           </View>
-//           <View
-//             style={{
-//               //   backgroundColor: 'red',
-//               width: '100%',
-//               // alignItems: 'center',
-//             }}
-//           >
+//           <View>
 //             <Text style={styles.text}>Where Do You Live ?</Text>
 //             <View style={styles.ImageView}>
 //               <View
@@ -57,14 +66,19 @@
 //                   alignItems: 'center',
 //                 }}
 //               >
-//                 <TouchableOpacity onPress={() => handleImagePress(1)}>
-//                   <View style={[borderedImage === 1 && styles.imageClick]}>
-//                     <Image
-//                       source={require('../assets/Group.png')}
-//                       style={styles.image}
-//                     />
-//                   </View>
+//                 <TouchableOpacity
+//                   style={[
+//                     styles.imageContainer,
+//                     { borderColor: ${houseSelected ? 'green' : 'white'} },
+//                   ]}
+//                   onPress={() => homeSelection()}
+//                 >
+//                   <Image
+//                     source={require('../assets/housetwo.png')}
+//                     style={styles.image}
+//                   />
 //                 </TouchableOpacity>
+
 //                 <Text>Individual House</Text>
 //               </View>
 //               <View
@@ -72,13 +86,17 @@
 //                   alignItems: 'center',
 //                 }}
 //               >
-//                 <TouchableOpacity onPress={() => handleImagePress(2)}>
-//                   <View style={[borderedImage === 2 && styles.imageClick]}>
-//                     <Image
-//                       source={require('../assets/Group.png')}
-//                       style={styles.image}
-//                     />
-//                   </View>
+//                 <TouchableOpacity
+//                   style={[
+//                     styles.imageContainer,
+//                     { borderColor: ${apartmentSelected ? 'green' : 'white'} },
+//                   ]}
+//                   onPress={() => apartmentSelection()}
+//                 >
+//                   <Image
+//                     source={require('../assets/apartment.png')}
+//                     style={styles.image}
+//                   />
 //                 </TouchableOpacity>
 //                 <Text>Apartment</Text>
 //               </View>
@@ -86,11 +104,12 @@
 //           </View>
 //         </View>
 
-//         <View style={styles.inputContainer}>
-//           <TouchableOpacity style={styles.button} onPress={nextButtonClick}>
-//             <Text style={styles.buttonText}>Next</Text>
-//           </TouchableOpacity>
-//         </View>
+//         <TouchableOpacity
+//           style={styles.button}
+//           onPress={() => navigation.navigate('QuesAddVhicle')}
+//         >
+//           <Text style={styles.buttonText}>Next</Text>
+//         </TouchableOpacity>
 //       </View>
 //     </View>
 //   )
@@ -100,23 +119,21 @@
 //   container: {
 //     flex: 1,
 //     backgroundColor: '#fff',
-//     // borderColor: 'white',
-//     // borderColor: '#DAE0E2',
 //   },
 //   detailscontainer: {
 //     flex: 1,
-//     backgroundColor: '#fff',
 //     justifyContent: 'space-between',
 //     padding: 20,
+//     backgroundColor: '#fff',
 //     borderWidth: 1,
 //     borderColor: '#DAE0E2',
-//     elevation: 2,
+//     elevation: 1,
 //     margin: 20,
 //     borderRadius: 20,
 //   },
 //   text: {
 //     paddingVertical: 10,
-//     // fontSize: fp(2.5)
+//     fontSize: fp(2.5),
 //   },
 //   ImageView: {
 //     flexDirection: 'row',
@@ -133,37 +150,22 @@
 //     borderRadius: 20,
 //     borderWidth: 4,
 //     borderColor: '#fff',
-//     elevation: 2,
+//     elevation: 3,
 //   },
-
 //   image: {
-//     width: 120,
-//     height: 120,
 //     resizeMode: 'contain',
 //     borderRadius: 10,
 //   },
-//   imageClick: {
-//     borderWidth: 8,
-//     borderRadius: 20,
-//     marginBottom: 10,
-//     borderColor: 'green',
-//   },
-//   inputContainer: {
-//     marginHorizontal: 10,
-//     marginTop: 20,
-//     borderRadius: 20,
-//     width: '100%',
-//   },
-
 //   button: {
-//     backgroundColor: '#118615',
-//     borderRadius: 15,
+//     width: '100%',
+//     backgroundColor: 'green',
+//     padding: 10,
+//     borderRadius: 8,
 //   },
 //   buttonText: {
-//     color: 'white',
-//     fontSize: 18,
+//     color: '#fff',
+//     fontSize: fp(2.7),
 //     textAlign: 'center',
-//     padding: 10,
 //   },
 // })
 

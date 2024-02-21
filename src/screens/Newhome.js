@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import SetCost from './SetCost'
 import PublicHomePageHeader from './PublicHomePageHeader'
@@ -177,6 +177,7 @@ useEffect(()=>{
     setButtonText("Start Charging")
     // setTimeout(() => {
     //   handleRemoveItem()
+    //   Alert.alert("pid deleted")
     // }, 100000);
  }
  else{
@@ -207,7 +208,7 @@ useEffect(()=>{
    {/* <Button title="stopChargig" onPress={getSampleData} disabled={isTimerRunning} /> */}
    {/* <Button title="del pid" onPress={handleRemoveItem} disabled={isTimerRunning} /> */}
       {/* <Button title="Stop" onPress={handleResetClick} disabled={!isTimerRunning} /> */}
-      {/* <Button title='delte pid' onPress={handleRemoveItem}/> */}
+      <Button title='delte pid' onPress={handleRemoveItem}/>
       <PublicHomePageHeader navigation={navigation}/>
       <View style={styles.contents}>
         <View style={styles.statusBox}>
