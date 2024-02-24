@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
-  Button,
 } from 'react-native'
 import {
   responsiveHeight as hp,
@@ -20,77 +19,93 @@ import { useDispatch } from 'react-redux'
 import { StopChargingMode, publicstartCharging } from '../Redux/Action'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import TimerSlider from './TimerSlider'
-import ModalRadhe from '../../radheModal'
+// import ModalRadhe from '../../radheModal'
 // import stripe from '@stripe/stripe-react-native';
-import RazorpayCheckout from 'react-native-razorpay';
+// import RazorpayCheckout from 'react-native-razorpay';
 
-const SetCost = ({ open, onClose,startTimer,inputvalue,setButtonText,SetTimeinSec,setOnStopChargingCost}) => {
-  const dispatch=useDispatch()
+const SetCost = ({
+  open,
+  onClose,
+  startTimer,
+  inputvalue,
+  setButtonText,
+  SetTimeinSec,
+  setOnStopChargingCost,
+}) => {
+  const dispatch = useDispatch()
   const [ShowSetCost, SetShowSetCost] = useState(true)
-  const [inputCost,setInputCost]=useState("")
-  const [Time,settime]=useState("")
-  
-useEffect(()=>{
+  const [inputCost, setInputCost] = useState('')
+  const [Time, settime] = useState('')
+
+  useEffect(() => {
     setInputCost(inputvalue)
-  },[open])
-const handlePayment = () => {
-  const options = {
-    description: 'Payment for your order',
-    image: 'https://yourwebsite.com/logo.png',
-    currency: 'INR',
-    key: 'rzp_test_upusuJUWtcZaWm',
-    amount: '100', // amount in paisa
-    name: 'Your Company Name',
-    prefill: {
-      email: 'customer@example.com',
-      contact: '9999999999',
-      name: 'Customer Name',
-    },
-    theme: { color: '#F37254' },
-  };
-
-  RazorpayCheckout.open(options)
-    .then((data) => {
-      console.log('Payment success:', data);
-      Alert.alert('Payment Success', 'Payment was successful.');
-    })
-    .catch((error) => {
-      console.error('Payment Error:', error);
-      Alert.alert('Payment Failed', 'Payment failed. Please try again.');
-    });
-};
-
- const startCharging=async()=>{
-  const a=(Math.ceil(inputCost/15 * 100) / 100)*1000
-  if(inputCost){
-    setOnStopChargingCost(a)
-  }
-    console.log("heklo");
-    if(inputCost>0||Time ){
-      console.log("click hus");
-   const publicProductKey= await AsyncStorage.getItem("pid")
-console.log("publicProductKey",publicProductKey)
-dispatch(publicstartCharging(publicProductKey,onClose,startTimer,setButtonText))
+  }, [open])
+  const handlePayment = () => {
+    const options = {
+      description: 'Payment for your order',
+      image: 'https://yourwebsite.com/logo.png',
+      currency: 'INR',
+      key: 'rzp_test_upusuJUWtcZaWm',
+      amount: '100', // amount in paisa
+      name: 'Your Company Name',
+      prefill: {
+        email: 'customer@example.com',
+        contact: '9999999999',
+        name: 'Customer Name',
+      },
+      theme: { color: '#F37254' },
     }
-    else{   
-   Alert.alert("Please set the cost of charging first")
-    }
+
+    RazorpayCheckout.open(options)
+      .then((data) => {
+        console.log('Payment success:', data)
+        Alert.alert('Payment Success', 'Payment was successful.')
+      })
+      .catch((error) => {
+        console.error('Payment Error:', error)
+        Alert.alert('Payment Failed', 'Payment failed. Please try again.')
+      })
   }
 
-  const onclicksetcostSetTime=(text)=>{
-    if(text=="setcost"){
+  const startCharging = async () => {
+    const a = (Math.ceil((inputCost / 15) * 100) / 100) * 1000
+    if (inputCost) {
+      setOnStopChargingCost(a)
+    }
+    console.log('heklo')
+    if (inputCost > 0 || Time) {
+      console.log('click hus')
+      const publicProductKey = await AsyncStorage.getItem('pid')
+      console.log('publicProductKey', publicProductKey)
+      dispatch(
+        publicstartCharging(
+          publicProductKey,
+          onClose,
+          startTimer,
+          setButtonText
+        )
+      )
+    } else {
+      Alert.alert('Please set the cost of charging first')
+    }
+  }
+
+  const onclicksetcostSetTime = (text) => {
+    if (text == 'setcost') {
       SetShowSetCost(true)
-      settime("")
-      setInputCost("")
+      settime('')
+      setInputCost('')
     }
-    if(text=="setTime"){
+    if (text == 'setTime') {
       SetShowSetCost(false)
-      setInputCost("")
+      setInputCost('')
     }
   }
   return (
-    <Modal visible={open} animationType="slide"   
-    onRequestClose={onClose}
+    <Modal
+      visible={open}
+      animationType="slide"
+      onRequestClose={onClose}
       transparent={true}
     >
       <View style={styles.container}>
@@ -103,32 +118,49 @@ dispatch(publicstartCharging(publicProductKey,onClose,startTimer,setButtonText))
           <View style={styles.contentBox}>
             <View>
               <View style={styles.Toggle_SetCost_SetTime}>
-                <TouchableOpacity onPress={()=>{onclicksetcostSetTime("setcost")}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    onclicksetcostSetTime('setcost')
+                  }}
+                >
                   <Text
                     style={[
                       styles.TogglerText,
                       { color: ShowSetCost ? '#118615' : '#5B5B5B' },
                     ]}
-                    
                   >
                     Set Cost
                   </Text>
                 </TouchableOpacity>
-                <Text style={[{ fontSize: fp(4) ,color:"#DBDBDB"}]}>|</Text>
-                <TouchableOpacity  onPress={()=>{onclicksetcostSetTime("setTime")}}>
+                <Text style={[{ fontSize: fp(4), color: '#DBDBDB' }]}>|</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    onclicksetcostSetTime('setTime')
+                  }}
+                >
                   <Text
                     style={[
                       styles.TogglerText,
                       { color: !ShowSetCost ? '#118615' : '#5B5B5B' },
                     ]}
-                   
                   >
                     Set Time
                   </Text>
                 </TouchableOpacity>
               </View>
               <View>
-                {ShowSetCost ? <ChargingCost setInputCost={setInputCost} inputCost={inputCost}/> : <ChargingSetTime  settime={settime} SetTimeinSec={SetTimeinSec} setInputCost={setInputCost}/>}
+                {ShowSetCost ? (
+                  <ChargingCost
+                    setInputCost={setInputCost}
+                    inputCost={inputCost}
+                  />
+                ) : (
+                  <ChargingSetTime
+                    settime={settime}
+                    SetTimeinSec={SetTimeinSec}
+                    setInputCost={setInputCost}
+                  />
+                )}
               </View>
             </View>
             <View style={styles.paymentBox}>
@@ -137,7 +169,7 @@ dispatch(publicstartCharging(publicProductKey,onClose,startTimer,setButtonText))
                   width: 110,
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginTop:10
+                  marginTop: 10,
                 }}
               >
                 <View
@@ -151,9 +183,20 @@ dispatch(publicstartCharging(publicProductKey,onClose,startTimer,setButtonText))
                   <Text>Pay Using</Text>
                   <Image source={require('../assets/arrow_drop_up.png')} />
                 </View>
-                <Text style={{ fontSize: 16,fontFamily:"sans-serif" ,marginLeft:-40}}>Paytm UPI</Text>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: 'sans-serif',
+                    marginLeft: -40,
+                  }}
+                >
+                  Paytm UPI
+                </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.payButton} onPress={handlePayment}>
+              <TouchableOpacity
+                style={styles.payButton}
+                onPress={handlePayment}
+              >
                 <View>
                   <Text style={styles.payButtonText}>₹{inputCost}</Text>
                   <Text style={[styles.payButtonText, { fontSize: 11 }]}>
@@ -161,7 +204,9 @@ dispatch(publicstartCharging(publicProductKey,onClose,startTimer,setButtonText))
                   </Text>
                 </View>
                 <View>
-                  <Text style={[styles.payButtonText,{fontSize:17}]}>Pay Charge </Text>
+                  <Text style={[styles.payButtonText, { fontSize: 17 }]}>
+                    Pay Charge{' '}
+                  </Text>
                   {/* <Text style={styles.payButtonText}>Charge</Text> */}
                 </View>
               </TouchableOpacity>
@@ -174,10 +219,10 @@ dispatch(publicstartCharging(publicProductKey,onClose,startTimer,setButtonText))
   )
 }
 
-const ChargingCost = ({setInputCost,inputCost}) => {
+const ChargingCost = ({ setInputCost, inputCost }) => {
   return (
     <View style={{ marginVertical: 10 }}>
-      <Text style={{marginTop:5 }}>Enter Amount :-</Text>
+      <Text style={{ marginTop: 5 }}>Enter Amount :-</Text>
       <View
         style={{
           height: 50,
@@ -185,11 +230,11 @@ const ChargingCost = ({setInputCost,inputCost}) => {
           borderWidth: 1,
           borderColor: '#C8C8C8',
           // margin: 3,
-          marginTop:10,
+          marginTop: 10,
           borderRadius: 10,
           paddingHorizontal: 10,
-          width:290,
-          marginLeft:-5
+          width: 290,
+          marginLeft: -5,
         }}
       >
         <TextInput
@@ -197,10 +242,12 @@ const ChargingCost = ({setInputCost,inputCost}) => {
             color: 'black',
             fontSize: 20,
           }}
-          keyboardType='numeric'
+          keyboardType="numeric"
           placeholder="For ex ₹444"
-        onChangeText={(text)=>{setInputCost(text)}}
-        value={inputCost.toString()}
+          onChangeText={(text) => {
+            setInputCost(text)
+          }}
+          value={inputCost.toString()}
         />
       </View>
       <Text
@@ -209,7 +256,7 @@ const ChargingCost = ({setInputCost,inputCost}) => {
           fontSize: 15,
           marginVertical: 5,
           fontWeight: '400',
-          marginTop:10
+          marginTop: 10,
         }}
       >
         Cost of Charging : ₹15 per Kwh (per Unit)
@@ -219,60 +266,72 @@ const ChargingCost = ({setInputCost,inputCost}) => {
           color: '#6C6C6C',
           fontSize: 16,
           fontWeight: 600,
-          marginTop:15
+          marginTop: 15,
         }}
       >
-        Charging Units - {Math.ceil(inputCost/15 * 100) / 100} kwh
+        Charging Units - {Math.ceil((inputCost / 15) * 100) / 100} kwh
       </Text>
     </View>
   )
 }
 
-const ChargingSetTime = ({SetTimeinSec,settime,setInputCost}) => {
-  const [activeButton, setActiveButton] = useState(null);
-  const [chargingCost,setChargingCost]=useState()
+const ChargingSetTime = ({ SetTimeinSec, settime, setInputCost }) => {
+  const [activeButton, setActiveButton] = useState(null)
+  const [chargingCost, setChargingCost] = useState()
   const buttonClick = (buttonName) => {
     settime(buttonName)
     SetTimeinSec(buttonName)
-    setActiveButton(buttonName);
-    console.log("buttonName");
-    if(buttonName=="30min"){
+    setActiveButton(buttonName)
+    console.log('buttonName')
+    if (buttonName == '30min') {
       setChargingCost(5)
       setInputCost(5)
     }
-    if(buttonName=="1hr"){
+    if (buttonName == '1hr') {
       setChargingCost(10)
       setInputCost(10)
     }
-    if(buttonName=="2hrs"){
+    if (buttonName == '2hrs') {
       setChargingCost(20)
       setInputCost(20)
     }
     // Add your additional functionality here
-  };
+  }
   return (
     <View style={{ marginVertical: 10 }}>
-      <Text style={{marginTop:5}}>Set Charging Hours :-</Text>
-         <View style={styles.setTimeContainer}>
-      <TouchableOpacity
-        style={[styles.button, activeButton === '30min' && styles.activeButton]}
-        onPress={() => buttonClick('30min')}
-      >
-        <Text style={{marginLeft:7,color:"#5B5B5B",fontWeight:"500"}}>30 Min.</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.button, activeButton === '1hr' && styles.activeButton]}
-        onPress={() => buttonClick('1hr')}
-      >
-        <Text style={{marginLeft:15,color:"#5B5B5B",fontWeight:"500"}}>1 Hr</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.button, activeButton === '2hrs' && styles.activeButton]}
-        onPress={() => buttonClick('2hrs')}
-      >
-        <Text style={{marginLeft:12,color:"#5B5B5B",fontWeight:"500"}}>2 Hrs</Text>
-      </TouchableOpacity>
-    </View>
+      <Text style={{ marginTop: 5 }}>Set Charging Hours :-</Text>
+      <View style={styles.setTimeContainer}>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            activeButton === '30min' && styles.activeButton,
+          ]}
+          onPress={() => buttonClick('30min')}
+        >
+          <Text style={{ marginLeft: 7, color: '#5B5B5B', fontWeight: '500' }}>
+            30 Min.
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, activeButton === '1hr' && styles.activeButton]}
+          onPress={() => buttonClick('1hr')}
+        >
+          <Text style={{ marginLeft: 15, color: '#5B5B5B', fontWeight: '500' }}>
+            1 Hr
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            activeButton === '2hrs' && styles.activeButton,
+          ]}
+          onPress={() => buttonClick('2hrs')}
+        >
+          <Text style={{ marginLeft: 12, color: '#5B5B5B', fontWeight: '500' }}>
+            2 Hrs
+          </Text>
+        </TouchableOpacity>
+      </View>
       <View
         style={{
           // backgroundColor: 'pink',
@@ -282,7 +341,14 @@ const ChargingSetTime = ({SetTimeinSec,settime,setInputCost}) => {
         }}
       >
         {/* <TimerSlider /> */}
-        <ModalRadhe setActiveButton={setActiveButton} SetTimeinSec={SetTimeinSec} activeButton={activeButton} setChargingCost={setChargingCost} settime={settime} setInputCost={setInputCost}/>
+        <ModalRadhe
+          setActiveButton={setActiveButton}
+          SetTimeinSec={SetTimeinSec}
+          activeButton={activeButton}
+          setChargingCost={setChargingCost}
+          settime={settime}
+          setInputCost={setInputCost}
+        />
       </View>
       <Text
         style={{
@@ -307,7 +373,6 @@ const ChargingSetTime = ({SetTimeinSec,settime,setInputCost}) => {
   )
 }
 
-
 export default SetCost
 
 const styles = StyleSheet.create({
@@ -315,8 +380,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.76)',
   },
-  setTimeContainer:{
-    marginTop:25,
+  setTimeContainer: {
+    marginTop: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -373,14 +438,13 @@ const styles = StyleSheet.create({
     // borderRadius: 8,
     // marginTop: 30,
     padding: 10,
-    height:60,
-    marginTop:20,
+    height: 60,
+    marginTop: 20,
     backgroundColor: 'green',
   },
   payButtonText: {
     fontSize: fp(2.6),
     color: '#fff',
-
   },
   bottomColorBox: {
     position: 'absolute',
@@ -400,14 +464,14 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start', // Align text to the left
     borderWidth: 1, // Add black border
     borderColor: '#9B9B9B', // Black border color
-    width:80,
-    justifyContent:"center"
+    width: 80,
+    justifyContent: 'center',
     // height:50
   },
   activeButton: {
     borderColor: 'green',
     borderWidth: 2,
-    backgroundColor:"#C1E0C2",
-    color:"white"
+    backgroundColor: '#C1E0C2',
+    color: 'white',
   },
 })

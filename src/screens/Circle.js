@@ -8,7 +8,6 @@ import LinearGradient from 'react-native-linear-gradient'
 
 const Circle = () => {
   return (
-    // <LinearGradient colors={['#118615', '#118615']} style={styles.container}>
     <LinearGradient colors={['#118615', '#118615']} style={styles.circle1}>
       <LinearGradient colors={['#118615', '#118615']} style={styles.circle2}>
         <LinearGradient colors={['#118615', '#118615']} style={styles.circle3}>
@@ -18,32 +17,23 @@ const Circle = () => {
           >
             <LinearGradient
               colors={['#118615', '#118615']}
-              // colors={['#E5E5E5', '#118615']}
               style={styles.circle5}
             ></LinearGradient>
           </LinearGradient>
         </LinearGradient>
       </LinearGradient>
     </LinearGradient>
-    // </LinearGradient>
   )
 }
 
 const styles = StyleSheet.create({
-  // container: {
-  //   height: wp(100),
-  //   width: wp(100),
-  //   borderRadius: wp(100) / 2,
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  // },
   circle1: {
     height: wp(100),
     width: wp(100),
     borderRadius: wp(100) / 2,
     alignItems: 'center',
     justifyContent: 'center',
-    opacity: 0.099,
+    opacity: 0.06,
   },
   circle2: {
     backgroundColor: 'transparent',

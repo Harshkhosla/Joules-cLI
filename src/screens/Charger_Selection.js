@@ -20,6 +20,8 @@ const Charger_Selection = ({ navigation }) => {
   const onChargerClick=()=>{
     console.log("click hua");
     Alert.alert("currently Not Available")
+  const onChargerClick = () => {
+    Alert.alert('currently Not Available')
   }
   return (
     // <ScrollView>
@@ -41,14 +43,18 @@ const Charger_Selection = ({ navigation }) => {
             </View>
             <View>
               <View>
-                <TouchableOpacity style={styles.button} onPress={onChargerClick}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={onChargerClick}
+                >
                   <Text style={styles.link}>Home Charger</Text>
                 </TouchableOpacity>
               </View>
               <View>
-                <TouchableOpacity style={styles.button}
+                <TouchableOpacity
+                  style={styles.button}
                   onPress={() => navigation.navigate('Newhome')}
-                  >
+                >
                   <Text style={styles.link}>Public Charger</Text>
                   <Text>(Apartments, Offices, Semi-public areas)</Text>
                 </TouchableOpacity>

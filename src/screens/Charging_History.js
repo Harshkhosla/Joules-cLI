@@ -119,17 +119,20 @@ const Charging_History = ({ navigation }) => {
           </View>
         </View>
         <View style={styles.ChargingDetailsBox}>
+          <View style={styles.publicChargerTextBox}>
+            <Text style={styles.publicChargerText}>public Charger</Text>
+          </View>
           <View style={styles.Vehicle}>
             <Text
               style={{
-                fontSize: 18,
+                fontSize: 16,
               }}
             >
               Vehicle name-
             </Text>
             <Text
               style={{
-                fontSize: 18,
+                fontSize: 16,
                 color: '#118615',
               }}
             >
@@ -193,7 +196,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 10,
     borderRadius: 15,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#C7C7C7',
   },
   toggler: {
@@ -213,21 +216,36 @@ const styles = StyleSheet.create({
     padding: 8,
     backgroundColor: '#fff',
     borderColor: '#DBDBDB',
-    borderWidth: 1,
+    // borderWidth: 1,
   },
   ChargingDetailsBox: {
     backgroundColor: '#fff',
     marginTop: -20,
     borderRadius: 15,
-    borderWidth: 2,
+    borderWidth: 1,
     padding: 10,
     borderColor: '#C7C7C7',
+  },
+  publicChargerTextBox: {
+    marginBottom: 15,
+    marginTop: -10,
+    width: 120,
+  },
+  publicChargerText: {
+    paddingHorizontal: 6,
+    paddingVertical: 4,
+    backgroundColor: '#C1E0C2',
+    color: '#118615',
+    fontSize: 16,
+    textAlign: 'center',
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
   },
   Vehicle: {
     flexDirection: 'row',
     justifyContent: 'center',
     backgroundColor: '#fff',
-    padding: 5,
+    padding: 4,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#C7C7C7',
@@ -243,7 +261,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 5,
-    gap: 8,
+    gap: 4,
     backgroundColor: '#fff',
     borderRadius: 12,
     borderWidth: 1,
@@ -253,13 +271,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 10,
-    gap: 8,
     backgroundColor: '#fff',
   },
   PowerBoxesStyle: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 3,
+    padding: 2,
     width: wp(20),
     backgroundColor: '#fff',
     borderRadius: 12,
@@ -268,61 +285,6 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#118615',
-    fontSize: fp(2.5),
+    fontSize: fp(2.2),
   },
 })
-
-//   imageContainer: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-
-//   containerForView: {
-//     width: 180,
-//     height: 120,
-//     overflow: 'hidden',
-//     marginBottom: 20,
-//     borderWidth: 1,
-//     // position:"relative"
-//   },
-//   image: {
-//     resizeMode: 'contain',
-//     // marginVertical: 40,
-//   },
-//   // image: {
-//   //   width: '100%',
-//   //   height: '100%',
-//   //   resizeMode: 'contain',
-//   //   borderRadius: 10,
-//   //   marginBottom: 40,
-
-//   // },
-//   inputContainer: {
-//     // marginHorizontal: 10,
-//     marginTop: 20,
-//     borderRadius: 20,
-//   },
-//   text: {
-//     marginTop: 10,
-//     fontSize: fp(2.5),
-//   },
-//   input: {
-//     height: 40,
-//     borderColor: 'gray',
-//     borderWidth: 1,
-//     borderRadius: 8,
-//     marginTop: 10,
-//     padding: 8,
-//   },
-//   button: {
-//     backgroundColor: '#118615',
-//     paddingVertical: 10,
-//     borderRadius: 8,
-//     marginTop: 10,
-//   },
-//   buttonText: {
-//     color: 'white',
-//     fontSize: fp(2.6),
-//     textAlign: 'center',
-//   },

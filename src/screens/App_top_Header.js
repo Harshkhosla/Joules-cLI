@@ -27,7 +27,7 @@ export default App_top_Header
 
 const styles = StyleSheet.create({
   container: {
-    height: hp(20),
+    height: hp(15),
     backgroundColor: '#C1E0C2',
     borderBottomRightRadius: 20,
     borderBottomLeftRadius: 20,

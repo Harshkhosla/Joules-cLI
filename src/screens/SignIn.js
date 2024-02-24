@@ -20,64 +20,73 @@ import Circle from './Circle'
 import { ScrollView } from 'react-native-gesture-handler'
 
 const SignIn = ({ navigation }) => {
-  
   const [login, setLogin] = useState(true)
   return (
-    <ScrollView>
-      <View style={styles.Container}>
-        <View style={styles.LogoContainer}>
-          <View style={styles.circles}>
-            <Circle />
-            <Circle />
-          </View>
-
-          <View style={styles.LogoWrapper}>
-            <Image
-              style={styles.Logo}
-              source={require('../assets/jouls.png')}
-            />
-          </View>
-        </View>
-        <View style={styles.SignInBoxContainer}>
-          <View style={styles.SignIn_UpBox}>
-            <View style={styles.Toggle_Login_SignUp}>
-              <Text style={login?styles.TogglerText:styles.onclickTogglerText} onPress={() =>  setLogin(true)}>
-                Login
-              </Text>
-              <Text style={[{ fontSize: fp(4) }]}>|</Text>
-              <Text style={!login?styles.TogglerText:styles.onclickTogglerText}  onPress={() => setLogin(false)}>
-                Sign up
-              </Text>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : '100'}>
+      <ScrollView>
+        <View style={styles.Container}>
+          <View style={styles.LogoContainer}>
+            <View style={styles.circles}>
+              <Circle />
+              <Circle />
             </View>
-            <View style={styles.Inputs}>
-              {login ? (
-                <LoginInput navigation={navigation} />
-              ) : (
-                <SignupInputs navigation={navigation} />
-              )}
-              <View style={styles.row}>
-                <Text style={styles.message}>
-                  {login
-                    ? 'Don’t have an account?'
-                    : 'Already have an account?'}{' '}
+
+            <View style={styles.LogoWrapper}>
+              <Image
+                style={styles.Logo}
+                source={require('../assets/jouls.png')}
+              />
+            </View>
+          </View>
+          <View style={styles.SignInBoxContainer}>
+            <View style={styles.SignIn_UpBox}>
+              <View style={styles.Toggle_Login_SignUp}>
+                <Text
+                  style={login ? styles.TogglerText : styles.onclickTogglerText}
+                  onPress={() => setLogin(true)}
+                >
+                  Login
                 </Text>
-                <TouchableOpacity>
-                  {login ? (
-                    <Text onPress={() => setLogin(false)} style={styles.link}>
-                      Sign up
-                    </Text>
-                  ) : (
-                    <Text onPress={() => setLogin(true)} style={styles.link}>
-                      Sign in
-                    </Text>
-                  )}
-                </TouchableOpacity>
+                <Text style={[{ fontSize: fp(4) }]}>|</Text>
+                <Text
+                  style={
+                    !login ? styles.TogglerText : styles.onclickTogglerText
+                  }
+                  onPress={() => setLogin(false)}
+                >
+                  Sign up
+                </Text>
+              </View>
+              <View style={styles.Inputs}>
+                {login ? (
+                  <LoginInput navigation={navigation} />
+                ) : (
+                  <SignupInputs navigation={navigation} />
+                )}
+                <View style={styles.row}>
+                  <Text style={styles.message}>
+                    {login
+                      ? 'Don’t have an account?'
+                      : 'Already have an account?'}{' '}
+                  </Text>
+                  <TouchableOpacity>
+                    {login ? (
+                      <Text onPress={() => setLogin(false)} style={styles.link}>
+                        Sign up
+                      </Text>
+                    ) : (
+                      <Text onPress={() => setLogin(true)} style={styles.link}>
+                        Sign in
+                      </Text>
+                    )}
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   )
 }
 
@@ -143,13 +152,13 @@ const styles = StyleSheet.create({
     padding: 12,
     color: 'green',
     fontSize: fp(2),
-    fontFamily:"Rubik"
+    fontFamily: 'Rubik',
   },
   onclickTogglerText: {
     padding: 12,
     color: 'black',
     fontSize: fp(2),
-    fontFamily:"Rubik"
+    fontFamily: 'Rubik',
   },
   Inputs: {
     // marginHorizontal: 20,
@@ -160,10 +169,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
-   
   },
-  message:{
-    color:"black"
+  message: {
+    color: 'black',
   },
   link: {
     fontWeight: 600,
