@@ -38,7 +38,7 @@ const handlePayment = () => {
     description: 'Payment for your order',
     image: 'https://yourwebsite.com/logo.png',
     currency: 'INR',
-    key: 'YOUR_RAZORPAY_API_KEY',
+    key: 'rzp_test_upusuJUWtcZaWm',
     amount: '100', // amount in paisa
     name: 'Your Company Name',
     prefill: {
@@ -153,7 +153,7 @@ dispatch(publicstartCharging(publicProductKey,onClose,startTimer,setButtonText))
                 </View>
                 <Text style={{ fontSize: 16,fontFamily:"sans-serif" ,marginLeft:-40}}>Paytm UPI</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.payButton} onPress={startCharging}>
+              <TouchableOpacity style={styles.payButton} onPress={handlePayment}>
                 <View>
                   <Text style={styles.payButtonText}>₹{inputCost}</Text>
                   <Text style={[styles.payButtonText, { fontSize: 11 }]}>

@@ -16,11 +16,11 @@ import {
 } from 'react-native-responsive-dimensions'
 import TextInput from '../components/Inputbox'
 import InputBoxTwo from '../components/InputBoxTwo'
-
 import { Checkbox } from 'react-native-paper'
 import { signItUp } from '../Redux/Action'
 import { useDispatch } from 'react-redux'
 import Toast, { BaseToast } from 'react-native-toast-message'
+import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-google-signin/google-signin';
 
 const LoginInput = ({ navigation }) => {
   const [userData,setuserData]=useState({Email:"",Password:""})
@@ -82,6 +82,38 @@ const LoginInput = ({ navigation }) => {
   
 
   }
+
+
+
+  GoogleSignin.configure({
+    webClientId: '683362406803-fo4tm1la7a8kh2qilell97vf8ae71d7b.apps.googleusercontent.com', // Replace with your web client ID from Google Cloud Console
+  });
+
+  // Function to handle Google login
+  const handleGoogleLogin = async () => {
+    try {
+      // Open Google sign-in prompt
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+
+      console.log(userInfo);
+      // Handle signed-in user data
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // User cancelled the sign-in flow
+        console.log('User cancelled the sign-in flow');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // Sign-in is in progress already
+        console.log('Sign-in is in progress already');
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // Play services not available or outdated
+        console.log('Play services not available or outdated');
+      } else {
+        // Some other error occurred
+        console.error('Error:', error.message);
+      }
+    }
+  };
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -123,10 +155,17 @@ const LoginInput = ({ navigation }) => {
         <View style={styles.socialButtonsContainer}>
           <TouchableOpacity style={styles.socialButton}>
             <View style={styles.socialIconWrapper}>
-              <Image
+              {/* <Image
                 source={require('../assets/googlelogo.png')}
                 // style={styles.socialIconText}
-              />
+              /> */}
+              <GoogleSigninButton
+        style={{ width: 192, height: 48 }}
+        size={GoogleSigninButton.Size.Wide}
+        color={GoogleSigninButton.Color.Dark}
+        onPress={handleGoogleLogin}
+        disabled={false}
+      />
             </View>
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton}>

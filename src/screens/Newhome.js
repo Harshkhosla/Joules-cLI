@@ -200,6 +200,7 @@ useEffect(()=>{
       console.error("Error removing item from AsyncStorage:", error);
     }
   }
+
   const handleCostAndTimeClose = () => {
     setIsModalOpen(false)
   }
@@ -208,7 +209,7 @@ useEffect(()=>{
    {/* <Button title="stopChargig" onPress={getSampleData} disabled={isTimerRunning} /> */}
    {/* <Button title="del pid" onPress={handleRemoveItem} disabled={isTimerRunning} /> */}
       {/* <Button title="Stop" onPress={handleResetClick} disabled={!isTimerRunning} /> */}
-      <Button title='delte pid' onPress={handleRemoveItem}/>
+      {/* <Button title='delte pid' onPress={handleRemoveItem}/> */}
       <PublicHomePageHeader navigation={navigation}/>
       <View style={styles.contents}>
         <View style={styles.statusBox}>

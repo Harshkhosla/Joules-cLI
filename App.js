@@ -84,7 +84,7 @@ export default function App() {
             {/* <Stack.Screen name="Questionnaire" component={Questionnaire} /> */}
             {/* <Stack.Screen name="QuesVecDetails" component={QuesVecDetails} /> */}
             <Stack.Screen name="SignIn" component={SignIn} />
-            <Stack.Screen name="Quesimg" component={Quesimg} />
+            {/* <Stack.Screen name="Quesimg" component={Quesimg} /> */}
             {/* <Stack.Screen name="Dashboard" component={Dashboard} />  */}
             {/* <Stack.Screen
               name="ResetPasswordScreen"
@@ -94,6 +94,7 @@ export default function App() {
             {/* <Stack.Screen name='finalhomepage' component={PublicHomePageFinal}/> */}
             {/* <Stack.Screen name='countDown' component={CountdownTimer}/> */}
             <Stack.Screen name="chargerSelection" component={Charger_Selection}/>
+            <Stack.Screen name="Graphs" component={Meter} />
             <Stack.Screen name='Newhome' component={Newhome}/> 
             {/* <Stack.Screen name="HomePage" component={HomePage} /> */}
             <Stack.Screen name="PublicScanner" component={PublicScanner} />
@@ -113,7 +114,6 @@ export default function App() {
             <Stack.Screen name="Datainput" component={Datainput} />
             <Stack.Screen name="Clamp" component={Clamp} />
             {/* <Stack.Screen name="Navbar" component={Navbar} /> */}
-            {/* <Stack.Screen name="Graphs" component={Meter} /> */}
             <Stack.Screen name="UserProfile" component={UserProfile} />
             <Stack.Screen
               name="EditProfileScreen"
