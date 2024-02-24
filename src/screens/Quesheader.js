@@ -8,24 +8,16 @@ import {
 } from 'react-native-responsive-dimensions'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-const Quesheader = ({ navigation }) => {
+const Quesheader = ({ navigation, title }) => {
+  console.log(title)
   return (
     <View style={styles.container}>
-
-      {/* <Text style={styles.Text} onPress={() => navigation.navigate('Home')}> */}
-      <Text style={styles.Text} >
-        Questionnaire
-      </Text>
-
-      <TouchableOpacity>
-        <View style={styles.Icon}>
+      <View style={styles.Icon}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrowleft" size={25} color="#118615" />
-          <Text style={styles.Text} onPress={() => navigation.navigate('Home')}>
-            Questionnaire
-          </Text>
-        </View>
-      </TouchableOpacity>
-
+        </TouchableOpacity>
+        <Text style={styles.Text}>{title}</Text>
+      </View>
     </View>
   )
 }
@@ -34,8 +26,8 @@ export default Quesheader
 
 const styles = StyleSheet.create({
   container: {
-    height: hp(20),
-    backgroundColor: '#c1e0c2',
+    height: hp(18),
+    backgroundColor: '#C1E0C2',
     borderBottomRightRadius: 20,
     borderBottomLeftRadius: 20,
     justifyContent: 'flex-end',

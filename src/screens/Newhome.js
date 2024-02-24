@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import SetCost from './SetCost'
 import PublicHomePageHeader from './PublicHomePageHeader'
@@ -177,6 +177,7 @@ useEffect(()=>{
     setButtonText("Start Charging")
     // setTimeout(() => {
     //   handleRemoveItem()
+    //   Alert.alert("pid deleted")
     // }, 100000);
  }
  else{
@@ -199,6 +200,7 @@ useEffect(()=>{
       console.error("Error removing item from AsyncStorage:", error);
     }
   }
+
   const handleCostAndTimeClose = () => {
     setIsModalOpen(false)
   }

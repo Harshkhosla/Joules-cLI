@@ -88,7 +88,6 @@ const SignupInputs = ({navigation}) => {
           <InputBoxTwo label="Email" placeholder="Enter your mail id" value={userData.Email} setValue={setuserData}  objectData={userData}/>
         </View>
       </View>
-
       <View style={styles.passwordContainer}>
         <InputBoxTwo label="Password" placeholder="Enter password" value={userData.Password} setValue={setuserData}  objectData={userData} />
         <InputBoxTwo label="ConfirmPassword" placeholder="Enter password"  value={userData.ConfirmPassword} setValue={setuserData}  objectData={userData}/>

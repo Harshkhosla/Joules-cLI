@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Text, View ,PermissionsAndroid} from 'react-native'
+import { Text, View ,PermissionsAndroid, Button} from 'react-native'
 import WifiReborn from "react-native-wifi-reborn";
 import WifiManager from "react-native-wifi-reborn";
 // import DeviceInfo from 'react-native-device-info';
@@ -8,6 +8,7 @@ import WifiManager from "react-native-wifi-reborn";
 
 const WifiSSID = () => {
 const [wifiList,setWifiList]=useState([])
+console.log("wifilist",wifiList);
 // console.log('wifilist',wifiList)
 const [currentSSID,setCurrentSSID]=useState("")
 // const isWifiEnabled = DeviceInfo.isWifiEnabled();
@@ -18,36 +19,38 @@ const [currentSSID,setCurrentSSID]=useState("")
 // },[])
 
 useEffect(()=>{
-    // permission()
-    // WifiReborn.getCurrentWifiSSID().then(
-    //     ssid=>  {
-    //         // console.log("Your current connected wifi SSID is "+ssid)
-    //         setCurrentSSID(ssid)
-    //     },
-    //     ()=>{
-    //         console.log("cannot get current ssid")
-    //     }
-    // )
+    permission()
+    WifiReborn.getCurrentWifiSSID().then(
+        ssid=>  {
+            // console.log("Your current connected wifi SSID is "+ssid)
+            setCurrentSSID(ssid)
+        },
+        ()=>{
+            console.log("cannot get current ssid")
+        }
+    )
 
     // // list
     // WifiReborn.loadWifiList().then((List)=>
     // setWifiList(List))
 // connect
-    WifiManager.connectToProtectedSSID('Jouls Wifi', '123456789', false, connected => {
-        console.log("connected",connected)
-        if (connected) {
-          console.log('Connected to Wi-Fi successfully');
-        } else {
-          console.log('Connection to Wi-Fi failed');
-        }
-      });
+    // WifiManager.connectToProtectedSSID('Jouls Wifi', '123456789', false, connected => {
+    //     console.log("connected",connected)
+    //     if (connected) {
+    //       console.log('Connected to Wi-Fi successfully');
+    //     } else {
+    //       console.log('Connection to Wi-Fi failed');
+    //     }
+    //   });
+console.log("wifilist",wifiList);
       
 },[])
 
 const getWifiList=()=>{
     WifiReborn.getCurrentWifiSSID().then(ssid=> setCurrentSSID(ssid))
 }
-    const permission=async()=>{
+
+const permission=async()=>{
         const granted=await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
             {
@@ -66,6 +69,17 @@ const getWifiList=()=>{
             console.log("not granted");
         }
     }
+const cn=()=>{
+    console.log("helllo");
+    console.log(wifiList[0].SSID);
+    // if(wifiList.includes("Jouls"))
+    // fetch(`http://192.168.4.1/?username=Jouls%20Wifi&password=123456789&`)
+
+}
+const wifilis=()=>{
+    WifiReborn.loadWifiList().then((List)=>
+    setWifiList(List))
+}
   return (
     <View style={{flex:1,margin:20}}>
       <Text
@@ -77,11 +91,12 @@ const getWifiList=()=>{
     >
            How to get Wifi Details
       </Text>
+      <Button title='wifilist' onPress={wifilis}></Button>
+      <Button onPress={cn} title='link'/>
       <Text style={{marginTop:20,color:"red"}}>current SSID:{currentSSID}</Text>
-      {wifiList.map(list=>(<>
-        <Text>WIFI List:: {list.SSID}</Text>
-        {/* <Text>WIFI:: {list.capabilities }</Text> */}
-        </>  ))}
+      {wifiList.map((e)=>{
+        return <Text>{e.SSID}</Text> 
+      })}
     </View>
   )
 }
