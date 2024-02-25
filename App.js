@@ -83,7 +83,7 @@ export default function App() {
             {/* <Stack.Screen name='MobileNoGetOtp' component={MobileNoGetOtp}/> */}
             {/* <Stack.Screen name="Questionnaire" component={Questionnaire} /> */}
             {/* <Stack.Screen name="QuesVecDetails" component={QuesVecDetails} /> */}
-            <Stack.Screen name="SignIn" component={SignIn} />
+            {/* <Stack.Screen name="SignIn" component={SignIn} /> */}
             {/* <Stack.Screen name="Quesimg" component={Quesimg} /> */}
             {/* <Stack.Screen name="Dashboard" component={Dashboard} />  */}
             {/* <Stack.Screen

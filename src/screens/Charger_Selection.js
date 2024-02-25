@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,25 +7,22 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
-} from 'react-native'
+} from 'react-native';
 import {
   responsiveHeight as hp,
   responsiveWidth as wp,
   responsiveFontSize as fp,
-} from 'react-native-responsive-dimensions'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+} from 'react-native-responsive-dimensions';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import Circle from './Circle'
+import Circle from './Circle';
 
 const Charger_Selection = ({ navigation }) => {
-  const onChargerClick=()=>{
-    console.log("click hua");
-    Alert.alert("currently Not Available")
   const onChargerClick = () => {
-    Alert.alert('currently Not Available')
-  }
+    Alert.alert('currently Not Available');
+  };
+
   return (
-    // <ScrollView>
     <View style={styles.Container}>
       <View style={styles.LogoContainer}>
         <View style={styles.circles}>
@@ -32,7 +30,10 @@ const Charger_Selection = ({ navigation }) => {
           <Circle />
         </View>
         <View style={styles.LogoWrapper}>
-          <Image style={styles.Logo} source={require('../assets/jouls.png')} />
+          <Image
+            style={styles.Logo}
+            source={require('../assets/jouls.png')}
+          />
         </View>
       </View>
       <View style={styles.Charger_SelectionBoxContainer}>
@@ -59,12 +60,6 @@ const Charger_Selection = ({ navigation }) => {
                   <Text>(Apartments, Offices, Semi-public areas)</Text>
                 </TouchableOpacity>
               </View>
-              {/* <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate('Newhome')}
-              >
-                <Text style={styles.link}>Go Home</Text>
-              </TouchableOpacity> */}
             </View>
           </View>
         </View>
@@ -80,11 +75,10 @@ const Charger_Selection = ({ navigation }) => {
         </View>
       </View>
     </View>
-    // {/* </ScrollView> */}
-  )
-}
+  );
+};
 
-export default Charger_Selection
+export default Charger_Selection;
 
 const styles = StyleSheet.create({
   Container: {
@@ -102,12 +96,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-end',
     position: 'absolute',
-    // backgroundColor: 'red',
     gap: 8,
     bottom: hp(-25),
   },
   LogoWrapper: {
-    // backgroundColor: 'pink',
     borderRadius: 14,
     elevation: 3,
   },
@@ -137,7 +129,6 @@ const styles = StyleSheet.create({
   },
   AskToStart: {
     flex: 1,
-    // justifyContent: 'space-between',
   },
   headingText: {
     fontSize: 22,
@@ -150,13 +141,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 90,
     elevation: 2,
-    // borderWidth: 1,
-    // borderColor: '#AAAAAA',
     marginVertical: 5,
     borderRadius: 8,
   },
   link: {
-    fontWeight: 600,
+    fontWeight: '600',
     fontSize: 22,
     color: '#118615',
   },
@@ -167,10 +156,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'pink',
   },
   tagNoteImg: {
     height: 40,
     marginRight: 6,
   },
-})
+});

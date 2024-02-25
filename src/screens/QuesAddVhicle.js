@@ -1,24 +1,15 @@
-import React, { useState } from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import { Picker } from '@react-native-picker/picker'
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import {
   responsiveHeight as hp,
   responsiveWidth as wp,
   responsiveFontSize as fp,
-} from 'react-native-responsive-dimensions'
-import Quesheader from './Quesheader'
-import React, { useState } from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import { Picker } from '@react-native-picker/picker'
-import {
-  responsiveHeight as hp,
-  responsiveWidth as wp,
-  responsiveFontSize as fp,
-} from 'react-native-responsive-dimensions'
-import Quesheader from './Quesheader'
+} from 'react-native-responsive-dimensions';
+import Quesheader from './Quesheader';
 
-const QuesAddVhicle = ({ navigation }) => {
-  const [selectedCar, setSelectedCar] = useState()
+const QuesAddVehicle = ({ navigation }) => {
+  const [selectedCar, setSelectedCar] = useState();
 
   return (
     <View style={styles.container}>
@@ -62,60 +53,7 @@ const QuesAddVhicle = ({ navigation }) => {
             </Picker>
           </View>
         </View>
-        return (
-        <View style={styles.container}>
-          <Quesheader title={'Questionnaire'} navigation={navigation} />
-          <View style={styles.detailscontainer}>
-            <View style={styles.QuestiontextContainer}>
-              <Text
-                style={{
-                  fontSize: fp(2),
-                  textAlign: 'right',
-                }}
-              >
-                Question{' '}
-                <Text
-                  style={{
-                    color: 'green',
-                  }}
-                >
-                  2/4
-                </Text>
-              </Text>
-              <View style={styles.imageContainer}>
-                <Image
-                  source={require('../assets/addcar.png')}
-                  style={styles.image}
-                />
-                <Text style={styles.text}>Add your Vehicle</Text>
-              </View>
-              <View style={styles.pickerContainer}>
-                <Picker
-                  selectedValue={selectedCar}
-                  onValueChange={(itemValue, itemIndex) =>
-                    setSelectedCar(itemValue)
-                  }
-                  style={styles.picker}
-                  selectionColor={'red'}
-                >
-                  <Picker.Item label="Tata Motors Nexon EV" value="Nexon EV" />
-                  <Picker.Item label="Mahindra" value="Mahindra" />
-                  <Picker.Item label="KIA" value="kia" />
-                </Picker>
-              </View>
-            </View>
 
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate('QuesVecDetails')}
-              >
-                <Text style={styles.buttonText}>Add Vehicle</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-        ) }
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
@@ -126,8 +64,8 @@ const QuesAddVhicle = ({ navigation }) => {
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -181,6 +119,6 @@ const styles = StyleSheet.create({
     fontSize: fp(2.7),
     textAlign: 'center',
   },
-})
+});
 
-export default QuesAddVhicle
+export default QuesAddVehicle;
