@@ -15,11 +15,15 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import Circle from './Circle'
+import CustomModal from './CustomModal'
+import { useState } from 'react'
 
 const Charger_Selection = ({ navigation }) => {
+  const [isModalVisible,setisModalVisible]=useState(false)
   const onChargerClick=()=>{
     console.log("click hua");
-    Alert.alert("currently Not Available")
+    // Alert.alert("currently Not Available")  
+    setisModalVisible(true)
   }
   return (
     // <ScrollView>
@@ -73,6 +77,9 @@ const Charger_Selection = ({ navigation }) => {
           </Text>
         </View>
       </View>
+      <CustomModal visible={isModalVisible} onClose={() => setisModalVisible(false)}>
+    <Text>This is the content of the modal.</Text>
+  </CustomModal>
     </View>
     // {/* </ScrollView> */}
   )

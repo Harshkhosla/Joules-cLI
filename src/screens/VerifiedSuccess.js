@@ -6,9 +6,9 @@ import {
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
 
-const VerifiedSuccess = (props) => {
-  const { verifyStatus, setIsVerify } = props
-  console.log(props)
+const VerifiedSuccess = (verifyStatus, setIsVerify) => {
+  // const {  } = props
+  // console.log(props)
   return (
     <Modal
       visible={verifyStatus}

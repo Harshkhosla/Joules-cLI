@@ -1,4 +1,4 @@
-package com.Jouls;
+package com.jouls1;
 
 import com.facebook.react.ReactActivity;
 import com.reactlibrary.rnwifi.RNWifiPackage;

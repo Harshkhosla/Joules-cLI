@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
+apply plugin: 'com.google.gms.google-services'
 
 import com.android.build.OutputFile
 
@@ -95,14 +96,14 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.Jouls"
+    namespace "com.jouls1"
     defaultConfig {
-        applicationId "com.Jouls"
+        applicationId "com.jouls1"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         missingDimensionStrategy 'react-native-camera', 'general'
-        versionCode 15
-        versionName "1.0"
+        versionCode 18
+        versionName "0.0.1"
     }
 
     splits {
