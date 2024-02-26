@@ -14,10 +14,10 @@ import {
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
-import TextInput from '../components/Inputbox'
-import InputBoxTwo from '../components/InputBoxTwo'
+import TextInput from '../../components/Inputbox'
+import InputBoxTwo from '../../components/InputBoxTwo'
 import { Checkbox } from 'react-native-paper'
-import { signItUp } from '../Redux/Action'
+import { signItUp } from '../../Redux/Action'
 import { useDispatch } from 'react-redux'
 import Toast, { BaseToast } from 'react-native-toast-message'
 import {
@@ -169,7 +169,7 @@ const LoginInput = ({ navigation }) => {
           <TouchableOpacity style={styles.socialButton}>
             <View style={styles.socialIconWrapper}>
               {/* <Image
-                source={require('../assets/googlelogo.png')}
+                source={require('../../assets/googlelogo.png')}
                 // style={styles.socialIconText}
               /> */}
               <GoogleSigninButton
@@ -183,12 +183,12 @@ const LoginInput = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton}>
             <View>
-              <Image source={require('../assets/facebookvector.png')} />
+              <Image source={require('../../assets/facebookvector.png')} />
             </View>
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton}>
             <View>
-              <Image source={require('../assets/apple.png')} />
+              <Image source={require('../../assets/apple.png')} />
             </View>
           </TouchableOpacity>
         </View>

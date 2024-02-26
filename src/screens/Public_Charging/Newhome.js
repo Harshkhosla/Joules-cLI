@@ -11,7 +11,7 @@ import SetCost from './SetCost'
 import PublicHomePageHeader from './PublicHomePageHeader'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
-import { publicstopCharging } from '../Redux/Action'
+import { publicstopCharging } from '../../Redux/Action'
 
 const Newhome = ({ navigation }) => {
   const dispatch = useDispatch()
@@ -178,7 +178,7 @@ const Newhome = ({ navigation }) => {
         }
       }
       fetchData()
-    })
+    }) 
   }, [])
 
   useEffect(() => {

@@ -33,7 +33,7 @@ const QuesAddVehicle = ({ navigation }) => {
           </Text>
           <View style={styles.imageContainer}>
             <Image
-              source={require('../assets/addcar.png')}
+              source={require('../../assets/addcar.png')}
               style={styles.image}
             />
             <Text style={styles.text}>Add your Vehicle</Text>

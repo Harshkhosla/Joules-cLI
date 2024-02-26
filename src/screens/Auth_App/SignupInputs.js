@@ -8,17 +8,17 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native'
-import TextInput from '../components/Inputbox'
+import TextInput from '../../components/Inputbox'
 import {
   responsiveHeight as hp,
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
-import InputBoxTwo from '../components/InputBoxTwo'
+import InputBoxTwo from '../../components/InputBoxTwo'
 
 import { Checkbox } from 'react-native-paper'
 import { useDispatch } from 'react-redux'
-import { loginuser } from '../Redux/Action'
+import { loginuser } from '../../Redux/Action'
 import Toast from 'react-native-toast-message'
 
 const SignupInputs = ({navigation}) => {
@@ -105,7 +105,7 @@ const SignupInputs = ({navigation}) => {
         <TouchableOpacity style={styles.socialButton}>
           <View style={styles.socialIconWrapper}>
             <Image
-              source={require('../assets/googlelogo.png')}
+              source={require('../../assets/googlelogo.png')}
               // style={styles.socialIconText}
             />
           </View>
@@ -113,7 +113,7 @@ const SignupInputs = ({navigation}) => {
         <TouchableOpacity style={styles.socialButton}>
           <View style={styles.socialIconWrapper}>
             <Image
-              source={require('../assets/facebookvector.png')}
+              source={require('../../assets/facebookvector.png')}
               // style={styles.socialIconText}
             />
           </View>
@@ -121,7 +121,7 @@ const SignupInputs = ({navigation}) => {
         <TouchableOpacity style={styles.socialButton}>
           <View style={styles.socialIconWrapper}>
             <Image
-              source={require('../assets/apple.png')}
+              source={require('../../assets/apple.png')}
               // style={styles.socialIconText}
             />
           </View>

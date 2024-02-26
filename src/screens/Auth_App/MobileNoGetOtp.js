@@ -1,53 +1,46 @@
 import { StyleSheet, Text, View, Image, TextInput } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import {
   responsiveHeight as hp,
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
-import NewAllButton from '../components/NewAllButton'
-import EvCharging from '../components/EvCharging'
-import VerifiedSuccess from './VerifiedSuccess'
+import NewAllButton from '../../components/NewAllButton'
+import EvCharging from '../../components/EvCharging'
 
-const MobileVerifyOtp = () => {
-  const [IsVerify, setIsVerify] = useState(false)
-
+const MobileNoGetOtp = ({ navigation }) => {
   return (
     <View style={styles.cotainer}>
       <View style={styles.LogoContainer}>
         <View style={styles.LogoWrapper}>
-          <Image style={styles.Logo} source={require('../assets/jouls.png')} />
+          <Image style={styles.Logo} source={require('../../assets/jouls.png')} />
         </View>
       </View>
       <View style={styles.containerContent}>
         <View>
           <Text style={[styles.text, { color: 'green' }]}>Hey Aman,</Text>
-          <Text style={styles.text}>We have sent an OTP on</Text>
-          <Text style={[styles.text, { color: 'green' }]}>8118817882</Text>
-          <TextInput placeholder="Enter Phone" style={styles.inputBox} />
-          <Text style={{ fontSize: 15 }}>
-            Didn’t get one? We can
-            <Text style={{ color: 'green' }}>resend it in 10 secs</Text>
+          <Text style={styles.text}>
+            We need to verify your{' '}
+            <Text style={[styles.text, { color: 'green' }]}>Mobile Number</Text>{' '}
+            for our better understanding
           </Text>
+          <TextInput placeholder="Enter Phone" style={styles.inputBox} />
         </View>
-
         <NewAllButton
-          title={'Verify OTP'}
+          title={'Get OTP'}
           action={() => {
-            setIsVerify(true)
+            navigation.navigate('mobailverifyotp')
           }}
         />
-
         <View style={styles.evCharging}>
           <EvCharging />
         </View>
       </View>
-      <VerifiedSuccess verifyStatus={IsVerify} setIsVerify={setIsVerify} />
     </View>
   )
 }
 
-export default MobileVerifyOtp
+export default MobileNoGetOtp
 
 const styles = StyleSheet.create({
   cotainer: {
@@ -78,12 +71,11 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     fontWeight: '400',
-    color: '#666666',
   },
   inputBox: {
     fontSize: 18,
-    marginTop: 10,
-    marginBottom: 5,
+    marginVertical: 10,
+
     height: 50,
     borderRadius: 8,
     padding: 10,

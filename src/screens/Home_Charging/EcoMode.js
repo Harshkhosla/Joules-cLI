@@ -12,8 +12,8 @@ import {
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
-import ChargingHomepage_Buttons from '../components/ChargingHomepage_Buttons'
-import CheckBox from '../components/CheckBox'
+import ChargingHomepage_Buttons from '../../components/ChargingHomepage_Buttons'
+import CheckBox from '../../components/CheckBox'
 import { useState } from 'react'
 
 const EcoMode = ({ open, setisEco }) => {
@@ -35,7 +35,7 @@ const EcoMode = ({ open, setisEco }) => {
                 setisEco(false)
               }}
             >
-              <Image source={require('../assets/cancel.png')} />
+              <Image source={require('../../assets/cancel.png')} />
             </TouchableOpacity>
           </View>
           <View style={styles.contentBox}>
@@ -43,7 +43,7 @@ const EcoMode = ({ open, setisEco }) => {
               <Image
                 style={styles.imgicon}
                 width={100}
-                source={require('../assets/eco.png')}
+                source={require('../../assets/eco.png')}
               />
               <Text style={[styles.text, { color: '#2196F3' }]}>Eco Mode</Text>
             </View>

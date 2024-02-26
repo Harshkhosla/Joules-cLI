@@ -26,7 +26,7 @@ const QuesVeCardetails = () => {
 
       <View style={styles.imageCentering}>
         <Image
-          source={require('../assets/detailscar.png')}
+          source={require('../../assets/detailscar.png')}
           style={styles.image}
         />
       </View>
