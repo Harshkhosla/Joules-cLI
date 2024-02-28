@@ -1,9 +1,9 @@
-import Background from '../components/Background'
-import Logo from '../components/Logo'
-import Header from '../components/Header'
-import Paragraph from '../components/Paragraph'
+import Background from '../../components/Background'
+import Logo from '../../components/Logo'
+import Header from '../../components/Header'
+import Paragraph from '../../components/Paragraph'
 import React, { useState, useEffect } from 'react'
-import Button from '../components/Button'
+import Button from '../../components/Button'
 import {
   Text,
   View,
@@ -19,10 +19,10 @@ import { RNCamera } from 'react-native-camera'
 import WifiManager from 'react-native-wifi-reborn'
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler'
 import { ToastAndroid } from 'react-native'
-import { DoorOpening, UpdatName, setProductKey } from '../Redux/Action'
+import { DoorOpening, UpdatName, setProductKey } from '../../Redux/Action'
 import { useDispatch, useSelector } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import EvCharging from '../components/EvCharging'
+import EvCharging from '../../components/EvCharging'
 import {
   responsiveHeight as hp,
   responsiveWidth as wp,
@@ -203,11 +203,11 @@ export default function Dashboard({ navigation }) {
               width: 30,
               resizeMode: 'contain',
             }}
-            source={require('../assets/picimg.png')}
+            source={require('../../assets/picimg.png')}
           />
           <Image
             style={{ height: 30, width: 30, resizeMode: 'contain' }}
-            source={require('../assets/torch.png')}
+            source={require('../../assets/torch.png')}
           />
         </View>
         <View style={styles.statusBox}>

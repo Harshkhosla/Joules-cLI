@@ -15,25 +15,17 @@ import {
 import Quesheader from './Quesheader'
 
 const QuesLive = ({ navigation }) => {
-  const [houseSelected, SethouseSelected] = useState(false)
-  const [apartmentSelected, SetapartmentSelected] = useState(false)
+  const [houseSelected, setHouseSelected] = useState(false)
+  const [apartmentSelected, setApartmentSelected] = useState(false)
 
   const homeSelection = () => {
     Alert.alert('house clicked')
-    if (!houseSelected) {
-      SethouseSelected(true)
-    } else {
-      SethouseSelected(false)
-    }
+    setHouseSelected(!houseSelected)
   }
 
   const apartmentSelection = () => {
     Alert.alert('apartment clicked')
-    if (!apartmentSelected) {
-      SetapartmentSelected(true)
-    } else {
-      SetapartmentSelected(false)
-    }
+    setApartmentSelected(!apartmentSelected)
   }
 
   return (
@@ -60,46 +52,33 @@ const QuesLive = ({ navigation }) => {
           </View>
           <View>
             <Text style={styles.text}>Where Do You Live ?</Text>
-            <View style={styles.ImageView}>
-              <View
-                style={{
-                  alignItems: 'center',
-                }}
+            <View style={styles.imageView}>
+              <TouchableOpacity
+                style={[
+                  styles.imageContainer,
+                  { borderColor: houseSelected ? 'green' : 'white' },
+                ]}
+                onPress={homeSelection}
               >
-                <TouchableOpacity
-                  style={[
-                    styles.imageContainer,
-                    { borderColor: `${houseSelected ? 'green' : 'white'}` },
-                  ]}
-                  onPress={() => homeSelection()}
-                >
-                  <Image
-                    source={require('../assets/housetwo.png')}
-                    style={styles.image}
-                  />
-                </TouchableOpacity>
-
+                <Image
+                  source={require('../../assets/housetwo.png')}
+                  style={styles.image}
+                />
                 <Text>Individual House</Text>
-              </View>
-              <View
-                style={{
-                  alignItems: 'center',
-                }}
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.imageContainer,
+                  { borderColor: apartmentSelected ? 'green' : 'white' },
+                ]}
+                onPress={apartmentSelection}
               >
-                <TouchableOpacity
-                  style={[
-                    styles.imageContainer,
-                    { borderColor: `${apartmentSelected ? 'green' : 'white'}` },
-                  ]}
-                  onPress={() => apartmentSelection()}
-                >
-                  <Image
-                    source={require('../assets/apartment.png')}
-                    style={styles.image}
-                  />
-                </TouchableOpacity>
+                <Image
+                  source={require('../../assets/apartment.png')}
+                  style={styles.image}
+                />
                 <Text>Apartment</Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -135,7 +114,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     fontSize: fp(2.5),
   },
-  ImageView: {
+  imageView: {
     flexDirection: 'row',
     justifyContent: 'center',
     gap: 14,

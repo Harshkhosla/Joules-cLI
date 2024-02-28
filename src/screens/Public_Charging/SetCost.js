@@ -16,12 +16,12 @@ import {
 import React, { useEffect, useState } from 'react'
 import Toast from 'react-native-toast-message'
 import { useDispatch } from 'react-redux'
-import { StopChargingMode, publicstartCharging } from '../Redux/Action'
+import { StopChargingMode, publicstartCharging } from '../../Redux/Action'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import TimerSlider from './TimerSlider'
-// import ModalRadhe from '../../radheModal'
+import TimerSlider from '../TimerSlider'
+import ModalRadhe from './radheModal'
 // import stripe from '@stripe/stripe-react-native';
-// import RazorpayCheckout from 'react-native-razorpay';
+import RazorpayCheckout from 'react-native-razorpay';
 
 const SetCost = ({
   open,
@@ -112,7 +112,7 @@ const SetCost = ({
         <View style={styles.contents}>
           <View style={styles.cancelButton}>
             <TouchableOpacity onPress={onClose}>
-              <Image source={require('../assets/cancel.png')} />
+              <Image source={require('../../assets/cancel.png')} />
             </TouchableOpacity>
           </View>
           <View style={styles.contentBox}>
@@ -179,9 +179,9 @@ const SetCost = ({
                     gap: 2,
                   }}
                 >
-                  <Image source={require('../assets/paytm.png')} />
+                  <Image source={require('../../assets/paytm.png')} />
                   <Text>Pay Using</Text>
-                  <Image source={require('../assets/arrow_drop_up.png')} />
+                  <Image source={require('../../assets/arrow_drop_up.png')} />
                 </View>
                 <Text
                   style={{

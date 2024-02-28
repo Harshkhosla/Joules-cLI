@@ -1,14 +1,14 @@
-import { Alert, Image, StyleSheet, Text, View, Dimensions } from 'react-native'
+import { Alert, Image, StyleSheet, Text, View } from 'react-native'
 import {
   responsiveHeight as hp,
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
-import HomeCharging_pageHeader from './HomeCharging_pageHeader'
-import React, { useState, useEffect } from 'react'
-import ChargingHomepage_Buttons from '../components/ChargingHomepage_Buttons'
-import Set_ScheduleMode from './Set_ScheduleMode'
-import HomeChargincModeButtons from '../components/HomeChargincModeButtons'
+import HomeCharging_pageHeader from '../HomeCharging_pageHeader'
+import React, { useState } from 'react'
+import ChargingHomepage_Buttons from '../../components/ChargingHomepage_Buttons'
+import Set_ScheduleMode from '../Set_ScheduleMode'
+import HomeChargincModeButtons from '../../components/HomeChargincModeButtons'
 import BalanceMode from './BalanceMode'
 import EcoMode from './EcoMode'
 
@@ -16,10 +16,6 @@ const HomeCharging_Homepage = ({ navigation }) => {
   const [isSchedule, setisSchedule] = useState(false)
   const [isBalanced, setisBalanced] = useState(false)
   const [isEco, setisEco] = useState(false)
-
-  const windowWidth = Dimensions.get('window').width
-  const windowHeight = Dimensions.get('window').height
-  console.log(windowHeight, windowWidth)
 
   return (
     <View style={styles.container}>
@@ -67,7 +63,7 @@ const HomeCharging_Homepage = ({ navigation }) => {
                 <Text style={styles.powerUsedTextGreen}>Power Used</Text>
                 <Image
                   style={styles.imgicon}
-                  source={require('../assets/powerhouse.png')}
+                  source={require('../../assets/powerhouse.png')}
                 />
                 <Text style={{ fontSize: 14, color: '#777272' }}>House</Text>
                 <Text style={styles.powerUsedTextGreen}>0 KW</Text>
@@ -85,7 +81,7 @@ const HomeCharging_Homepage = ({ navigation }) => {
               >
                 <Image
                   style={styles.imgicon}
-                  source={require('../assets/bolt.png')}
+                  source={require('../../assets/bolt.png')}
                 />
                 <Text style={styles.powerUsedText}>Charger</Text>
                 <Text style={styles.powerUsedTextGreen}>0 KW</Text>
@@ -99,28 +95,28 @@ const HomeCharging_Homepage = ({ navigation }) => {
             </Text>
             <View style={styles.ModeBoxContainer}>
               <HomeChargincModeButtons
-                img={require('../assets/balance.png')}
+                img={require('../../assets/balance.png')}
                 ModeName={'Balance'}
                 action={() => {
                   setisBalanced(true)
                 }}
               />
               <HomeChargincModeButtons
-                img={require('../assets/history.png')}
+                img={require('../../assets/history.png')}
                 ModeName={'Schedule'}
                 action={() => {
                   setisSchedule(true)
                 }}
               />
               <HomeChargincModeButtons
-                img={require('../assets/eco.png')}
+                img={require('../../assets/eco.png')}
                 ModeName={'Eco'}
                 action={() => {
                   setisEco(true)
                 }}
               />
               <HomeChargincModeButtons
-                img={require('../assets/power.png')}
+                img={require('../../assets/power.png')}
                 ModeName={'Slow'}
               />
             </View>
@@ -271,7 +267,6 @@ const styles = StyleSheet.create({
   EnergyAnd_Cost_Time_Box: {
     justifyContent: 'center',
     width: wp(25),
-    // paddingVertical: 8,
     backgroundColor: '#fff',
   },
   tagTest: {

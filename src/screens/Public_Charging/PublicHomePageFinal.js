@@ -55,7 +55,7 @@
 //             <View
 //               style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}
 //             >
-//               <Image source={require('../assets/power.png')} />
+//               <Image source={require('../../assets/power.png')} />
 //               <Text>Charger- -- kwh</Text>
 //             </View>
 //           </View>
@@ -67,7 +67,7 @@
 //                 style={{ flexDirection: 'row', gap: 3, alignItems: 'center' }}
 //               >
 //                 <Image
-//                   source={require('../assets/ev_charger.png')}
+//                   source={require('../../assets/ev_charger.png')}
 //                   style={{ height: 15, width: 15 }}
 //                 />
 //                 <Text>Charging Cost</Text>
@@ -78,7 +78,7 @@
 //           <View style={styles.potIconContainer}>
 //             <Image
 //               style={styles.portIcon}
-//               source={require('../assets/porticon.png')}
+//               source={require('../../assets/porticon.png')}
 //             />
 //           </View>
 //           <View style={styles.chargingEnergyAndTime}>
@@ -87,7 +87,7 @@
 //                 style={{ flexDirection: 'row', gap: 3, alignItems: 'center' }}
 //               >
 //                 <Image
-//                   source={require('../assets/charger.png')}
+//                   source={require('../../assets/charger.png')}
 //                   style={{ height: 17, width: 17 }}
 //                 />
 //                 <Text>Energy Consumed</Text>
@@ -98,7 +98,7 @@
 //             <View style={styles.chargingValueText}>
 //               <View style={{ flexDirection: 'row', gap: 3 }}>
 //                 <Image
-//                   source={require('../assets/battery_charging_30.png')}
+//                   source={require('../../assets/battery_charging_30.png')}
 //                   style={{ height: 35, width: 22 }}
 //                 />
 //                 <Text>Charging Time</Text>
@@ -225,14 +225,14 @@ import { StyleSheet, Text, View, Image } from 'react-native'
 import React, { useState } from 'react'
 import SetCost from './SetCost'
 import PublicHomePageHeader from './PublicHomePageHeader'
-import NewAllButton from '../components/NewAllButton'
-import HomeScreenCircles from './HomeScreenCircle'
+import NewAllButton from '../../components/NewAllButton'
+import HomeScreenCircles from '../HomeScreenCircle'
 import {
   responsiveHeight as hp,
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
-import Checker from './Checker'
+import Checker from '../Checker'
 
 const PublicHomePageFinal = ({ navigation }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -275,7 +275,7 @@ const PublicHomePageFinal = ({ navigation }) => {
             >
               <Image
                 style={[styles.Icons, { height: 20 }]}
-                source={require('../assets/power.png')}
+                source={require('../../assets/power.png')}
               />
               <Text>Charger- -- kwh</Text>
             </View>
@@ -287,7 +287,7 @@ const PublicHomePageFinal = ({ navigation }) => {
               <View style={styles.dashboardIconsView}>
                 <Image
                   style={styles.Icons}
-                  source={require('../assets/ev_charger.png')}
+                  source={require('../../assets/ev_charger.png')}
                 />
                 <Text>Charging Cost</Text>
               </View>
@@ -310,7 +310,7 @@ const PublicHomePageFinal = ({ navigation }) => {
           <View style={styles.potIconContainer}>
             <Image
               style={styles.portIcon}
-              source={require('../assets/porticon.png')}
+              source={require('../../assets/porticon.png')}
             />
           </View>
           <View style={styles.chargingEnergyAndTime}>
@@ -318,7 +318,7 @@ const PublicHomePageFinal = ({ navigation }) => {
               <View style={styles.dashboardIconsView}>
                 <Image
                   style={styles.Icons}
-                  source={require('../assets/battery_charging_30.png')}
+                  source={require('../../assets/battery_charging_30.png')}
                 />
                 <Text>Charging Time</Text>
               </View>
@@ -330,7 +330,7 @@ const PublicHomePageFinal = ({ navigation }) => {
               <View style={styles.dashboardIconsView}>
                 <Image
                   style={styles.Icons}
-                  source={require('../assets/charger.png')}
+                  source={require('../../assets/charger.png')}
                 />
                 <Text>Energy Consumed</Text>
               </View>

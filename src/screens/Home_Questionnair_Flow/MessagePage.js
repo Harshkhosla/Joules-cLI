@@ -1,19 +1,24 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect } from 'react'
-import Circle from './Circle'
+import React from 'react'
+// import Circle from './Circle'
+import Circle from '../Circle'
 
 const MessagePage = ({ navigation }) => {
-  useEffect(() => {
-    setTimeout(() => {
-      navigation.navigate('HomechargingHomepage')
-    }, 3000)
-  }, [])
+  setTimeout(() => {
+    navigation.navigate('HomeCharging_Homepage')
+  }, 3000)
 
   return (
     <View style={styles.container}>
       <View style={styles.imgContainer}>
-        <Image style={styles.leafimg} source={require('../assets/leaf.png')} />
-        <Image style={styles.handimg} source={require('../assets/hand.png')} />
+        <Image
+          style={styles.leafimg}
+          source={require('../../assets/leaf.png')}
+        />
+        <Image
+          style={styles.handimg}
+          source={require('../../assets/hand.png')}
+        />
         <View
           style={{
             position: 'absolute',

@@ -5,9 +5,9 @@ import {
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
-import NewAllButton from '../components/NewAllButton'
-import EvCharging from '../components/EvCharging'
-import VerifiedSuccess from './VerifiedSuccess'
+import NewAllButton from '../../components/NewAllButton'
+import EvCharging from '../../components/EvCharging'
+import VerifiedSuccess from '../VerifiedSuccess'
 
 const MobileVerifyOtp = () => {
   const [IsVerify, setIsVerify] = useState(false)
@@ -16,7 +16,10 @@ const MobileVerifyOtp = () => {
     <View style={styles.cotainer}>
       <View style={styles.LogoContainer}>
         <View style={styles.LogoWrapper}>
-          <Image style={styles.Logo} source={require('../assets/jouls.png')} />
+          <Image
+            style={styles.Logo}
+            source={require('../../assets/jouls.png')}
+          />
         </View>
       </View>
       <View style={styles.containerContent}>

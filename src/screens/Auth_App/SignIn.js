@@ -16,7 +16,7 @@ import {
 
 import LoginInput from './LoginInput'
 import SignupInputs from './SignupInputs'
-import Circle from './Circle'
+import Circle from '../Circle'
 import { ScrollView } from 'react-native-gesture-handler'
 
 const SignIn = ({ navigation }) => {
@@ -34,7 +34,7 @@ const SignIn = ({ navigation }) => {
             <View style={styles.LogoWrapper}>
               <Image
                 style={styles.Logo}
-                source={require('../assets/jouls.png')}
+                source={require('../../assets/jouls.png')}
               />
             </View>
           </View>

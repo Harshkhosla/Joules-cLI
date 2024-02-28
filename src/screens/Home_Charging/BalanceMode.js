@@ -12,8 +12,8 @@ import {
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
-import ChargingHomepage_Buttons from '../components/ChargingHomepage_Buttons'
-import CheckBox from '../components/CheckBox'
+import ChargingHomepage_Buttons from '../../components/ChargingHomepage_Buttons'
+import CheckBox from '../../components/CheckBox'
 import { useState } from 'react'
 
 const BalanceMode = ({ open, setisBalanced }) => {
@@ -35,7 +35,7 @@ const BalanceMode = ({ open, setisBalanced }) => {
                 setisBalanced(false)
               }}
             >
-              <Image source={require('../assets/cancel.png')} />
+              <Image source={require('../../assets/cancel.png')} />
             </TouchableOpacity>
           </View>
           <View style={styles.contentBox}>
@@ -43,7 +43,7 @@ const BalanceMode = ({ open, setisBalanced }) => {
               <Image
                 tintColor="green"
                 style={styles.imgicon}
-                source={require('../assets/balance.png')}
+                source={require('../../assets/balance.png')}
               />
               <Text style={[styles.text, { color: 'green' }]}>
                 Balance Mode

@@ -16,7 +16,7 @@ const PublicHomePageHeader = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.openDrawer()}>
           <Image
             style={{ width: 40, resizeMode: 'contain' }}
-            source={require('../assets/menuicon.png')}
+            source={require('../../assets/menuicon.png')}
           />
         </TouchableOpacity>
         <Text style={styles.Text}>Hello Aman!</Text>

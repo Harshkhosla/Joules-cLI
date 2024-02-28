@@ -8,7 +8,7 @@ import {
 } from 'react-native-responsive-dimensions'
 import Quesheader from './Quesheader'
 
-const QuesAddVhicle = ({ navigation }) => {
+const QuesAddVehicle = ({ navigation }) => {
   const [selectedCar, setSelectedCar] = useState()
 
   return (
@@ -33,7 +33,7 @@ const QuesAddVhicle = ({ navigation }) => {
           </Text>
           <View style={styles.imageContainer}>
             <Image
-              source={require('../assets/addcar.png')}
+              source={require('../../assets/addcar.png')}
               style={styles.image}
             />
             <Text style={styles.text}>Add your Vehicle</Text>
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   button: {
-    backgroundColor: '#118615',
+    backgroundColor: 'green',
     padding: 10,
     borderRadius: 8,
   },
@@ -121,4 +121,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default QuesAddVhicle
+export default QuesAddVehicle
