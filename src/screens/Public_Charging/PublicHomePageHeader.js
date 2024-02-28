@@ -29,7 +29,7 @@ export default PublicHomePageHeader
 
 const styles = StyleSheet.create({
   container: {
-    height: hp(16),
+    height: hp(15),
     // height: 90,
     backgroundColor: '#C1E0C2',
     borderBottomRightRadius: 20,

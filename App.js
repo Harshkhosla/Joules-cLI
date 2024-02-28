@@ -55,6 +55,7 @@ import MobileNoGetOtp from './src/screens/Auth_App/MobileNoGetOtp'
 // import MobileVerifyOtp from './src/screens/Auth_App/MobileVerifyOtp'
 import Charging_History from './src/screens/Charging_History'
 import HomeCharging_Homepage from './src/screens/Home_Charging/HomeCharging_Homepage'
+import ChargingAnimation from './src/screens/ChargingAnimation'
 import Customdrawer from './Customdrawer'
 
 const Stack = createStackNavigator()
@@ -75,6 +76,8 @@ const StackNavigator = () => {
       {/* 
     <Stack.Screen name='wifiold' component={WifiSSID}/>
     <Stack.Screen name='Chart' component={ChartRadhe}/> */}
+
+      {/* <Stack.Screen name="ChargingAnimation" component={ChargingAnimation} /> */}
 
       {/* <Stack.Screen name="StartScreen" component={StartScreen} /> */}
       {/* <Stack.Screen name="LoginScreen" component={LoginScreen} /> */}
@@ -97,22 +100,20 @@ const StackNavigator = () => {
         component={HomeCharging_Homepage}
       />
 
-      <Stack.Screen name="SignIn" component={SignIn} />
-
-      <Stack.Screen name="Dashboard" component={Dashboard} />
+      {/* <Stack.Screen name="Dashboard" component={Dashboard} /> */}
       {/* <Stack.Screen
       name="ResetPasswordScreen"
       component={ResetPasswordScreen} 
     /> */}
 
-      {/* <Stack.Screen name='finalhomepage' component={PublicHomePageFinal}/> */}
+      {/* <Stack.Screen name="finalhomepage" component={PublicHomePageFinal} /> */}
       {/* <Stack.Screen name='countDown' component={CountdownTimer}/> */}
-      <Stack.Screen name="chargerSelection" component={Charger_Selection} />
-
-      <Stack.Screen name="Graphs" component={Meter} />
+      {/* <Stack.Screen name="chargerSelection" component={Charger_Selection} />
       <Stack.Screen name="Newhome" component={Newhome} />
+
+      <Stack.Screen name="Graphs" component={Meter} /> */}
       {/* <Stack.Screen name="HomePage" component={HomePage} /> */}
-      <Stack.Screen name="PublicScanner" component={PublicScanner} />
+      {/* <Stack.Screen name="PublicScanner" component={PublicScanner} /> */}
       <Stack.Screen name="Load" component={Load} />
       <Stack.Screen name="Eligible" component={Eligible} />
       <Stack.Screen name="Car" component={Car} />
@@ -166,5 +167,3 @@ export default function App() {
     </Sample>
   )
 }
-
-// import { createDrawerNavigator } from '@react-navigation/drawer'

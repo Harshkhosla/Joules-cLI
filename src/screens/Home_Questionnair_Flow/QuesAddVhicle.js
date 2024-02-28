@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   imageContainer: {
-    marginVertical: 20,
+    marginVertical: 30,
     alignSelf: 'center',
   },
   image: {

@@ -57,8 +57,7 @@ const styles = StyleSheet.create({
   },
   CarContainer: {
     flex: 1,
-    // height: 400,
-    marginTop: 20,
+    marginTop: 30,
     gap: 10,
     overflow: 'hidden',
   },

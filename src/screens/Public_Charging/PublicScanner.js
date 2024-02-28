@@ -197,18 +197,18 @@ export default function Dashboard({ navigation }) {
             flexDirection: 'row',
           }}
         >
-          <Image
-            style={{
-              height: 30,
-              width: 30,
-              resizeMode: 'contain',
-            }}
-            source={require('../../assets/picimg.png')}
-          />
-          <Image
-            style={{ height: 30, width: 30, resizeMode: 'contain' }}
-            source={require('../../assets/torch.png')}
-          />
+          <TouchableOpacity>
+            <Image
+              style={styles.actionimgicon}
+              source={require('../../assets/picimg.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Image
+              style={styles.actionimgicon}
+              source={require('../../assets/torch.png')}
+            />
+          </TouchableOpacity>
         </View>
         <View style={styles.statusBox}>
           <View
@@ -271,6 +271,7 @@ const styles = StyleSheet.create({
     fontSize: 21,
     color: 'rgb(0,122,255)',
   },
+  actionimgicon: { height: 30, width: 30, resizeMode: 'contain' },
   statusBox: {
     backgroundColor: '#fff',
     padding: 15,

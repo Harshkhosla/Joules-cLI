@@ -35,10 +35,10 @@ const CustomModal = ({ visible, onClose, children }) => {
       <View style={styles.modalContainer}>
         <View style={styles.contentContainer}>
           {children}
-          {/* <Image
-            source={require('../assets/Union.png')}
+          <Image
+            source={require('../assets/3.png')}
             style={styles.imageStyle}
-          /> */}
+          />
         </View>
       </View>
     </Modal>

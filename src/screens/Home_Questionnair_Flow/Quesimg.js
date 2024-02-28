@@ -34,7 +34,10 @@ const Quesimg = ({ navigation }) => {
         </Text>
       </View>
       <View style={styles.imageContainer}>
-        <Image source={require('../../assets/house.png')} style={styles.image} />
+        <Image
+          source={require('../../assets/house.png')}
+          style={styles.image}
+        />
       </View>
 
       <View style={styles.inputContainer}>

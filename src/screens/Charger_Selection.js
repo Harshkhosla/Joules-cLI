@@ -15,7 +15,6 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import Circle from './Circle'
-// import CustomModal from './CustomModal'
 import CustomModal from '../components/CustomModal'
 import { useState } from 'react'
 

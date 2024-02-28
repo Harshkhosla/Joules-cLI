@@ -21,7 +21,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import TimerSlider from '../TimerSlider'
 import ModalRadhe from './radheModal'
 // import stripe from '@stripe/stripe-react-native';
-import RazorpayCheckout from 'react-native-razorpay';
+import RazorpayCheckout from 'react-native-razorpay'
 
 const SetCost = ({
   open,
@@ -132,7 +132,13 @@ const SetCost = ({
                     Set Cost
                   </Text>
                 </TouchableOpacity>
-                <Text style={[{ fontSize: fp(4), color: '#DBDBDB' }]}>|</Text>
+                <View
+                  style={{
+                    height: 40,
+                    borderWidth: 1,
+                    borderColor: '#DBDBDB',
+                  }}
+                ></View>
                 <TouchableOpacity
                   onPress={() => {
                     onclicksetcostSetTime('setTime')
@@ -410,6 +416,8 @@ const styles = StyleSheet.create({
   },
   Toggle_SetCost_SetTime: {
     flexDirection: 'row',
+    height: 40,
+    paddingHorizontal: 5,
     elevation: 1,
     backgroundColor: '#fff',
     borderRadius: 8,
@@ -417,14 +425,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   TogglerText: {
-    padding: 10,
     color: '#5B5B5B',
     fontSize: fp(2.7),
   },
   paymentBox: {
     flexDirection: 'row',
     height: 80,
-    // backgroundColor: 'pink',
   },
   payButton: {
     flex: 1,

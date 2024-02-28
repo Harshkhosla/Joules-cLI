@@ -26,7 +26,7 @@ export default Quesheader
 
 const styles = StyleSheet.create({
   container: {
-    height: hp(18),
+    height: hp(15),
     backgroundColor: '#C1E0C2',
     borderBottomRightRadius: 20,
     borderBottomLeftRadius: 20,

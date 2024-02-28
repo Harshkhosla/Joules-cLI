@@ -32,7 +32,19 @@ const QuesVeCardetails = () => {
       </View>
       <View style={styles.carDetails}>
         <Text>Connector Type - </Text>
-        {/* <Text>Connector Type-</Text> */}
+        <Text>CCS-2</Text>
+        <View
+          style={{
+            paddingVertical: 1,
+            paddingHorizontal: 10,
+            borderColor: '#4A4A4A',
+            borderWidth: 1,
+            marginLeft: 5,
+            borderRadius: 10,
+          }}
+        >
+          <Text>DC</Text>
+        </View>
       </View>
     </View>
   )
@@ -72,7 +84,10 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   carDetails: {
+    flexDirection: 'row',
     padding: 20,
+    gap: 5,
+    alignItems: 'center',
     backgroundColor: '#C1E0C2',
   },
 })

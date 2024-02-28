@@ -53,32 +53,37 @@ const QuesLive = ({ navigation }) => {
           <View>
             <Text style={styles.text}>Where Do You Live ?</Text>
             <View style={styles.imageView}>
-              <TouchableOpacity
-                style={[
-                  styles.imageContainer,
-                  { borderColor: houseSelected ? 'green' : 'white' },
-                ]}
-                onPress={homeSelection}
-              >
-                <Image
-                  source={require('../../assets/housetwo.png')}
-                  style={styles.image}
-                />
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <TouchableOpacity
+                  style={[
+                    styles.imageContainer,
+                    { borderColor: houseSelected ? 'green' : 'white' },
+                  ]}
+                  onPress={homeSelection}
+                >
+                  <Image
+                    source={require('../../assets/housetwo.png')}
+                    style={styles.image}
+                  />
+                </TouchableOpacity>
                 <Text>Individual House</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.imageContainer,
-                  { borderColor: apartmentSelected ? 'green' : 'white' },
-                ]}
-                onPress={apartmentSelection}
-              >
-                <Image
-                  source={require('../../assets/apartment.png')}
-                  style={styles.image}
-                />
+              </View>
+
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <TouchableOpacity
+                  style={[
+                    styles.imageContainer,
+                    { borderColor: apartmentSelected ? 'green' : 'white' },
+                  ]}
+                  onPress={apartmentSelection}
+                >
+                  <Image
+                    source={require('../../assets/apartment.png')}
+                    style={styles.image}
+                  />
+                </TouchableOpacity>
                 <Text>Apartment</Text>
-              </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
@@ -111,7 +116,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   text: {
-    paddingVertical: 10,
+    paddingVertical: 40,
     fontSize: fp(2.5),
   },
   imageView: {

@@ -28,8 +28,7 @@ export default HomeCharging_pageHeader
 
 const styles = StyleSheet.create({
   container: {
-    height: hp(16),
-    // height: 90,
+    height: hp(15),
     backgroundColor: '#C1E0C2',
     borderBottomRightRadius: 20,
     borderBottomLeftRadius: 20,
