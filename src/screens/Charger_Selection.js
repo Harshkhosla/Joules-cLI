@@ -23,6 +23,7 @@ const Charger_Selection = ({ navigation }) => {
   const onChargerClick=()=>{
     console.log("click hua");
     // Alert.alert("currently Not Available")  
+    navigation.navigate("Welcomepage")
     setisModalVisible(true)
   }
   return (

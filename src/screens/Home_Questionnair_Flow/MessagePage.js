@@ -4,7 +4,7 @@ import Circle from '../Circle'
 
 const MessagePage = ({ navigation }) => {
   setTimeout(() => {
-    navigation.navigate('HomechargingHomepage')
+    navigation.navigate('HomeCharging_Homepage')
   }, 3000)
 
   return (

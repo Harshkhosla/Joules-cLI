@@ -22,7 +22,7 @@ const QuesVecDetails = ({ navigation }) => {
         <View>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('QuesVecDetails')}
+            onPress={() => navigation.navigate('MessagePage')}
           >
             <Text style={styles.buttonText}>Next</Text>
           </TouchableOpacity>

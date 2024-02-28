@@ -73,33 +73,30 @@ export default function App() {
               name="Splash"
               component={Splash}
             /> */}
-{/* 
-            <Stack.Screen name='wifiold' component={WifiSSID}/>
-            <Stack.Screen name='Chart' component={ChartRadhe}/> */}
+      <Stack.Screen name='finalhomepage' component={PublicHomePageFinal}/>
+            <Stack.Screen name="SignIn" component={SignIn} />
+            <Stack.Screen name="chargerSelection" component={Charger_Selection}/>
+            <Stack.Screen name='Newhome' component={Newhome}/> 
              {/* <Stack.Screen name="StartScreen" component={StartScreen} /> */}
             {/* <Stack.Screen name="LoginScreen" component={LoginScreen} /> */}
             {/* <Stack.Screen name="RegisterScreen" component={RegisterScreen} /> */}
 
             {/* <Stack.Screen name='Charging_History' component={Charging_History}/> */}
             {/* <Stack.Screen name='MobileNoGetOtp' component={MobileNoGetOtp}/> */}
-            {/* <Stack.Screen name="MessagePage" component={MessagePage} /> */}
-            {/* <Stack.Screen name="Questionnaire" component={Questionnaire} /> */}
-            {/* <Stack.Screen name="QuesLive" component={QuesLive} /> */}
-            {/* <Stack.Screen name="QuesVecDetails" component={QuesVecDetails} /> */}
-            {/* <Stack.Screen name="SignIn" component={SignIn} /> */}
+            <Stack.Screen name="MessagePage" component={MessagePage} />
+            <Stack.Screen name="Questionnaire" component={Questionnaire} />
+            <Stack.Screen name="QuesLive" component={QuesLive} />
+            <Stack.Screen name="QuesVecDetails" component={QuesVecDetails} />
             {/* <Stack.Screen name="Quesimg" component={Quesimg} /> */}
             {/* <Stack.Screen name="Dashboard" component={Dashboard} />  */}
             {/* <Stack.Screen
               name="ResetPasswordScreen"
               component={ResetPasswordScreen} 
             /> */}
-            {/* <Stack.Screen name='Welcomepage' component={Welcomepage}/> */}
-            {/* <Stack.Screen name='finalhomepage' component={PublicHomePageFinal}/> */}
             {/* <Stack.Screen name='countDown' component={CountdownTimer}/> */}
-            <Stack.Screen name="chargerSelection" component={Charger_Selection}/>
+            <Stack.Screen name='Welcomepage' component={Welcomepage}/>
             <Stack.Screen name="HomeCharging_Homepage" component={HomeCharging_Homepage}/>
             <Stack.Screen name="Graphs" component={Meter} />
-            <Stack.Screen name='Newhome' component={Newhome}/> 
             {/* <Stack.Screen name="HomePage" component={HomePage} /> */}
             <Stack.Screen name="PublicScanner" component={PublicScanner} />
             <Stack.Screen name="Load" component={Load} />
@@ -109,7 +106,6 @@ export default function App() {
             <Stack.Screen name="Date" component={Date} />
             <Stack.Screen name="Home" component={Home} /> 
             <Stack.Screen name="QuesAddVhicle" component={QuesAddVhicle} />
-            {/* <Stack.Screen name="QuesLive" component={QuesLive} /> */}
             <Stack.Screen name="Wifi" component={Wifi} />
             <Stack.Screen name="Flat" component={Flat} />
             <Stack.Screen name="SceduleDate" component={SceduleDate} />

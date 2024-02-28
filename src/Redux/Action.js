@@ -14,6 +14,7 @@ export const SET_MODE_VALUE = 'SET_MODE_VALUE'
 export const SET_STATE_VALUE = 'SET_STATE_VALUE'
 export const SET_USER_ENERGY = 'SET_USER_ENERGY'
 export const SET_USER_POWER = 'SET_USER_POWER'
+export const SET_USER_CURRENT = 'SET_USER_CURRENT'
 export const SET_USER_PRODUCTKEY = 'SET_USER_PRODUCTKEY'
 export const SET_USER_PRODUCT = 'SET_USER_PRODUCT'
 export const SET_PUBLIC_CHARGER_TIME = 'SET_PUBLIC_CHARGER_TIME'
@@ -114,6 +115,13 @@ export const setPower = (user_Energy) => {
   }
 }
 
+export const setCurrent = (user_Energy) => {
+  // console.log(house_voltage);
+  return {
+    type: SET_USER_CURRENT,
+    payload: user_Energy,
+  }
+}
 
 export const setEmail = (email) => (dispatch) => {
   dispatch({
@@ -1140,6 +1148,7 @@ export const publicstartCharging = (Porduct_Key,onClose,startTimer,setButtonText
 
           dispatch(setEnergy(dataObject.Output_Energy))
           dispatch(setPower(dataObject.Output_Power))
+          dispatch(setCurrent(dataObject.Output_Current))
           console.log(`${Porduct_Key}_Charging_Data:`, message.payloadString)
           console.log("message?.payloadString?.Output_Energy",dataObject.Output_Energy);
           console.log("message?.payloadString?.Output_Power",dataObject.Output_Power);
