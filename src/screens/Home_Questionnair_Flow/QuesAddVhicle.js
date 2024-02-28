@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import React, { useState } from 'react'
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
+import { Picker } from '@react-native-picker/picker'
 import {
   responsiveHeight as hp,
   responsiveWidth as wp,
   responsiveFontSize as fp,
-} from 'react-native-responsive-dimensions';
-import Quesheader from './Quesheader';
+} from 'react-native-responsive-dimensions'
+import Quesheader from './Quesheader'
 
 const QuesAddVehicle = ({ navigation }) => {
-  const [selectedCar, setSelectedCar] = useState();
+  const [selectedCar, setSelectedCar] = useState()
 
   return (
     <View style={styles.container}>
@@ -64,8 +64,8 @@ const QuesAddVehicle = ({ navigation }) => {
         </View>
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -119,6 +119,6 @@ const styles = StyleSheet.create({
     fontSize: fp(2.7),
     textAlign: 'center',
   },
-});
+})
 
-export default QuesAddVehicle;
+export default QuesAddVehicle

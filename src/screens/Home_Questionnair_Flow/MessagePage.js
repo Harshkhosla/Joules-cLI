@@ -1,5 +1,6 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+// import Circle from './Circle'
 import Circle from '../Circle'
 
 const MessagePage = ({ navigation }) => {
@@ -10,8 +11,14 @@ const MessagePage = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.imgContainer}>
-        <Image style={styles.leafimg} source={require('../../assets/leaf.png')} />
-        <Image style={styles.handimg} source={require('../../assets/hand.png')} />
+        <Image
+          style={styles.leafimg}
+          source={require('../../assets/leaf.png')}
+        />
+        <Image
+          style={styles.handimg}
+          source={require('../../assets/hand.png')}
+        />
         <View
           style={{
             position: 'absolute',

@@ -63,8 +63,6 @@ const styles = StyleSheet.create({
   ActionIcons: {
     flexDirection: 'row',
     gap: 4,
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
   imageCentering: {
     alignItems: 'center',

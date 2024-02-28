@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 15,
-    marginBottom: 10,
+    marginBottom: 8,
   },
   Text: {
     fontSize: fp(3),

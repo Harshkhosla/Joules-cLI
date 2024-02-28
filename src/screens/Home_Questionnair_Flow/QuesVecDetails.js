@@ -1,24 +1,29 @@
-import React from 'react';
-import QuesVeCardetails from './QuesVeCardetails';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import React from 'react'
+import QuesVeCardetails from './QuesVeCardetails'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import {
   responsiveHeight as hp,
   responsiveWidth as wp,
   responsiveFontSize as fp,
-} from 'react-native-responsive-dimensions';
+} from 'react-native-responsive-dimensions'
 
-import Quesheader from './Quesheader';
+import Quesheader from './Quesheader'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const QuesVecDetails = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Quesheader title={'Cars Added'} navigation={navigation} />
       <View style={styles.detailsContainer}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.CarContainer}>
+        <View style={styles.CarContainer}>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <QuesVeCardetails />
-          </View>
-        </ScrollView>
+            {/* <QuesVeCardetails />
+            <QuesVeCardetails />
+            <QuesVeCardetails /> */}
+          </ScrollView>
+        </View>
+
         <View>
           <TouchableOpacity
             style={styles.button}
@@ -29,14 +34,15 @@ const QuesVecDetails = ({ navigation }) => {
         </View>
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
   },
+
   detailsContainer: {
     flex: 1,
     backgroundColor: '#fff',
@@ -50,6 +56,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   CarContainer: {
+    flex: 1,
+    // height: 400,
     marginTop: 20,
     gap: 10,
     overflow: 'hidden',
@@ -61,9 +69,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: fp(2.5),
+    fontSize: fp(2.7),
     textAlign: 'center',
   },
-});
+})
 
-export default QuesVecDetails;
+export default QuesVecDetails

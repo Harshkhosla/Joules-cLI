@@ -1,25 +1,25 @@
-import React from 'react';
-import { StyleSheet, Image, View, BackHandler } from 'react-native';
-import Modal from 'react-native-modal';
+import React from 'react'
+import { StyleSheet, Image, View, BackHandler } from 'react-native'
+import Modal from 'react-native-modal'
 
 const CustomModal = ({ visible, onClose, children }) => {
   React.useEffect(() => {
     const handleBackPress = () => {
       if (visible) {
-        onClose();
-        return true; // Return true to prevent default back button action
+        onClose()
+        return true // Return true to prevent default back button action
       }
-      return false; // Allow default back button action if modal is not visible
-    };
+      return false // Allow default back button action if modal is not visible
+    }
 
     // Add event listener for back button press
-    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+    BackHandler.addEventListener('hardwareBackPress', handleBackPress)
 
     // Clean up the event listener when the component unmounts
     return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
-    };
-  }, [visible, onClose]);
+      BackHandler.removeEventListener('hardwareBackPress', handleBackPress)
+    }
+  }, [visible, onClose])
 
   return (
     <Modal
@@ -35,15 +35,15 @@ const CustomModal = ({ visible, onClose, children }) => {
       <View style={styles.modalContainer}>
         <View style={styles.contentContainer}>
           {children}
-          <Image
-            source={require("../assets/Union.png")}
+          {/* <Image
+            source={require('../assets/Union.png')}
             style={styles.imageStyle}
-          />
+          /> */}
         </View>
       </View>
     </Modal>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   modal: {
@@ -80,6 +80,6 @@ const styles = StyleSheet.create({
     bottom: 10,
     right: 16,
   },
-});
+})
 
-export default CustomModal;
+export default CustomModal

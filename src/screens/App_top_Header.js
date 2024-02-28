@@ -1,11 +1,11 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
+import React from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import Icon from 'react-native-vector-icons/AntDesign'
 import {
   responsiveHeight as hp,
   responsiveFontSize as fp,
-} from 'react-native-responsive-dimensions';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+} from 'react-native-responsive-dimensions'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const App_top_Header = ({ navigation, title }) => {
   return (
@@ -17,10 +17,10 @@ const App_top_Header = ({ navigation, title }) => {
         </View>
       </TouchableOpacity>
     </View>
-  );
-};
+  )
+}
 
-export default App_top_Header;
+export default App_top_Header
 
 const styles = StyleSheet.create({
   container: {
@@ -41,4 +41,4 @@ const styles = StyleSheet.create({
     color: '#5A5A5A',
     marginLeft: 8,
   },
-});
+})

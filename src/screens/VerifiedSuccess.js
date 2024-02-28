@@ -5,16 +5,24 @@ import {
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
+import { useNavigation } from '@react-navigation/native'
 
-const VerifiedSuccess = (verifyStatus, setIsVerify) => {
+const VerifiedSuccess = ({ verifyStatus, setIsVerify }) => {
   // const {  } = props
-  // console.log(props)
+  console.log(verifyStatus)
+  const navigation = useNavigation()
+
   return (
     <Modal
       visible={verifyStatus}
       animationType="slide"
       onRequestClose={() => {
         setIsVerify(false)
+      }}
+      onShow={() => {
+        setTimeout(() => {
+          navigation.navigate('HomechargingHomepage')
+        }, 2000)
       }}
     >
       <View style={styles.cotainer}>

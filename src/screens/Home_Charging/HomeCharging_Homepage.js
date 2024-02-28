@@ -85,7 +85,7 @@ const HomeCharging_Homepage = ({ navigation }) => {
                 />
                 <Text style={styles.powerUsedText}>Charger</Text>
                 <Text style={styles.powerUsedTextGreen}>0 KW</Text>
-                <Text style={{ paddingTop: 5 }}>More Details</Text>
+                <Text style={{ padding: 2, fontSize: 12 }}>More Details</Text>
               </View>
             </View>
           </View>
@@ -171,7 +171,7 @@ const HomeCharging_Homepage = ({ navigation }) => {
             Alert.alert('perform hear which you wanted')
           }}
           title={'Start Charging'}
-          modeColor={'#919191'}
+          modeColor={'#118615'}
         />
       </View>
       <View
@@ -267,10 +267,10 @@ const styles = StyleSheet.create({
   EnergyAnd_Cost_Time_Box: {
     justifyContent: 'center',
     width: wp(25),
-    paddingVertical: 8,
     backgroundColor: '#fff',
   },
   tagTest: {
+    margin: 2,
     fontSize: 12,
     alignSelf: 'center',
     color: 'green',

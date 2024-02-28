@@ -15,10 +15,12 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import Circle from './Circle'
-import CustomModal from './CustomModal'
+// import CustomModal from './CustomModal'
+import CustomModal from '../components/CustomModal'
 import { useState } from 'react'
 
 const Charger_Selection = ({ navigation }) => {
+
   const [isModalVisible,setisModalVisible]=useState(false)
   const onChargerClick=()=>{
     console.log("click hua");
@@ -46,14 +48,18 @@ const Charger_Selection = ({ navigation }) => {
             </View>
             <View>
               <View>
-                <TouchableOpacity style={styles.button} onPress={onChargerClick}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={onChargerClick}
+                >
                   <Text style={styles.link}>Home Charger</Text>
                 </TouchableOpacity>
               </View>
               <View>
-                <TouchableOpacity style={styles.button}
+                <TouchableOpacity
+                  style={styles.button}
                   onPress={() => navigation.navigate('Newhome')}
-                  >
+                >
                   <Text style={styles.link}>Public Charger</Text>
                   <Text>(Apartments, Offices, Semi-public areas)</Text>
                 </TouchableOpacity>
@@ -78,9 +84,12 @@ const Charger_Selection = ({ navigation }) => {
           </Text>
         </View>
       </View>
-      <CustomModal visible={isModalVisible} onClose={() => setisModalVisible(false)}>
-    <Text>This is the content of the modal.</Text>
-  </CustomModal>
+      <CustomModal
+        visible={isModalVisible}
+        onClose={() => setisModalVisible(false)}
+      >
+        <Text>This is the content of the modal.</Text>
+      </CustomModal>
     </View>
     // {/* </ScrollView> */}
   )

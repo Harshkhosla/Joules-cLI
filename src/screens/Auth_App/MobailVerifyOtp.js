@@ -16,7 +16,10 @@ const MobileVerifyOtp = () => {
     <View style={styles.cotainer}>
       <View style={styles.LogoContainer}>
         <View style={styles.LogoWrapper}>
-          <Image style={styles.Logo} source={require('../../assets/jouls.png')} />
+          <Image
+            style={styles.Logo}
+            source={require('../../assets/jouls.png')}
+          />
         </View>
       </View>
       <View style={styles.containerContent}>

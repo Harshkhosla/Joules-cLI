@@ -73,10 +73,10 @@ export default function App() {
               name="Splash"
               component={Splash}
             /> */}
+            <Stack.Screen name='Newhome' component={Newhome}/> 
       <Stack.Screen name='finalhomepage' component={PublicHomePageFinal}/>
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen name="chargerSelection" component={Charger_Selection}/>
-            <Stack.Screen name='Newhome' component={Newhome}/> 
              {/* <Stack.Screen name="StartScreen" component={StartScreen} /> */}
             {/* <Stack.Screen name="LoginScreen" component={LoginScreen} /> */}
             {/* <Stack.Screen name="RegisterScreen" component={RegisterScreen} /> */}
