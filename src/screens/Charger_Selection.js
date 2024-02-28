@@ -17,10 +17,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import Circle from './Circle'
 
 const Charger_Selection = ({ navigation }) => {
-  const onChargerClick=()=>{
-    console.log("click hua");
-    Alert.alert("currently Not Available")
   const onChargerClick = () => {
+    console.log('click hua')
     Alert.alert('currently Not Available')
   }
   return (

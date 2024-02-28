@@ -1,11 +1,13 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Circle from './Circle'
 
 const MessagePage = ({ navigation }) => {
-  setTimeout(() => {
-    navigation.navigate('HomechargingHomepage')
-  }, 3000)
+  useEffect(() => {
+    setTimeout(() => {
+      navigation.navigate('HomechargingHomepage')
+    }, 3000)
+  }, [])
 
   return (
     <View style={styles.container}>

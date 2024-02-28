@@ -1,11 +1,11 @@
-import { Alert, Image, StyleSheet, Text, View } from 'react-native'
+import { Alert, Image, StyleSheet, Text, View, Dimensions } from 'react-native'
 import {
   responsiveHeight as hp,
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
 import HomeCharging_pageHeader from './HomeCharging_pageHeader'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import ChargingHomepage_Buttons from '../components/ChargingHomepage_Buttons'
 import Set_ScheduleMode from './Set_ScheduleMode'
 import HomeChargincModeButtons from '../components/HomeChargincModeButtons'
@@ -16,6 +16,10 @@ const HomeCharging_Homepage = ({ navigation }) => {
   const [isSchedule, setisSchedule] = useState(false)
   const [isBalanced, setisBalanced] = useState(false)
   const [isEco, setisEco] = useState(false)
+
+  const windowWidth = Dimensions.get('window').width
+  const windowHeight = Dimensions.get('window').height
+  console.log(windowHeight, windowWidth)
 
   return (
     <View style={styles.container}>
@@ -85,7 +89,7 @@ const HomeCharging_Homepage = ({ navigation }) => {
                 />
                 <Text style={styles.powerUsedText}>Charger</Text>
                 <Text style={styles.powerUsedTextGreen}>0 KW</Text>
-                <Text style={{ paddingTop: 5 }}>More Details</Text>
+                <Text style={{ padding: 2, fontSize: 12 }}>More Details</Text>
               </View>
             </View>
           </View>
@@ -171,7 +175,7 @@ const HomeCharging_Homepage = ({ navigation }) => {
             Alert.alert('perform hear which you wanted')
           }}
           title={'Start Charging'}
-          modeColor={'#919191'}
+          modeColor={'#118615'}
         />
       </View>
       <View
@@ -267,10 +271,11 @@ const styles = StyleSheet.create({
   EnergyAnd_Cost_Time_Box: {
     justifyContent: 'center',
     width: wp(25),
-    paddingVertical: 8,
+    // paddingVertical: 8,
     backgroundColor: '#fff',
   },
   tagTest: {
+    margin: 2,
     fontSize: 12,
     alignSelf: 'center',
     color: 'green',
