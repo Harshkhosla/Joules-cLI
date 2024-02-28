@@ -159,9 +159,9 @@ export default function Dashboard({ navigation }) {
     <View style={styles.container}>
       <PublicHomePageHeader navigation={navigation} />
       <View style={styles.containerContentBox}>
-        <Text style={{ fontSize: 20, fontWeight: '400' }}>
+        <Text style={{ fontSize: 18, fontWeight: '400' }}>
           To start charging, please scan the
-          <Text style={{ color: 'green' }}> Qr Code </Text>
+          <Text style={{ color: 'green' }}> QR Code </Text>
         </Text>
         <View style={styles.barcodebox}>
           <QRCodeScanner

@@ -86,6 +86,10 @@ const StackNavigator = () => {
       {/* <Stack.Screen name="mobailgetotp" component={MobileNoGetOtp} /> */}
       {/* <Stack.Screen name="mobailverifyotp" component={MobileVerifyOtp} /> */}
 
+      {/* <Stack.Screen name="finalhomepage" component={PublicHomePageFinal} /> */}
+      {/* <Stack.Screen name="countDown" component={CountdownTimer} /> */}
+      <Stack.Screen name="chargerSelection" component={Charger_Selection} />
+      <Stack.Screen name="Newhome" component={Newhome} />
       {/* <Stack.Screen name='Charging_History' component={Charging_History}/> */}
 
       <Stack.Screen name="Welcomepage" component={Welcomepage} />
@@ -106,14 +110,9 @@ const StackNavigator = () => {
       component={ResetPasswordScreen} 
     /> */}
 
-      {/* <Stack.Screen name="finalhomepage" component={PublicHomePageFinal} /> */}
-      {/* <Stack.Screen name='countDown' component={CountdownTimer}/> */}
-      {/* <Stack.Screen name="chargerSelection" component={Charger_Selection} />
-      <Stack.Screen name="Newhome" component={Newhome} />
-
-      <Stack.Screen name="Graphs" component={Meter} /> */}
+      <Stack.Screen name="Graphs" component={Meter} />
       {/* <Stack.Screen name="HomePage" component={HomePage} /> */}
-      {/* <Stack.Screen name="PublicScanner" component={PublicScanner} /> */}
+      <Stack.Screen name="PublicScanner" component={PublicScanner} />
       <Stack.Screen name="Load" component={Load} />
       <Stack.Screen name="Eligible" component={Eligible} />
       <Stack.Screen name="Car" component={Car} />

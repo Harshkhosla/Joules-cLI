@@ -19,11 +19,13 @@ import CustomModal from '../components/CustomModal'
 import { useState } from 'react'
 
 const Charger_Selection = ({ navigation }) => {
-  const [isModalVisible, setisModalVisible] = useState(false)
 
-  const onChargerClick = () => {
-    console.log('click hua')
-    Alert.alert('currently Not Available')
+  const [isModalVisible,setisModalVisible]=useState(false)
+  const onChargerClick=()=>{
+    console.log("click hua");
+    // Alert.alert("currently Not Available")  
+    navigation.navigate("Welcomepage")
+    setisModalVisible(true)
   }
   return (
     // <ScrollView>

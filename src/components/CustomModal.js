@@ -36,7 +36,7 @@ const CustomModal = ({ visible, onClose, children }) => {
         <View style={styles.contentContainer}>
           {children}
           <Image
-            source={require('../assets/3.png')}
+            source={require('../assets/Union.png')}
             style={styles.imageStyle}
           />
         </View>
