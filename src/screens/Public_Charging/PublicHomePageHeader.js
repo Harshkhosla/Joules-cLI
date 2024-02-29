@@ -13,7 +13,8 @@ const PublicHomePageHeader = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.Icon}>
         {/* <Icon name="arrowleft" size={25} color="#118615" /> */}
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+        {/* <TouchableOpacity onPress={() => navigation.openDrawer()}> */}
+        <TouchableOpacity>
           <Image
             style={{ width: 40, resizeMode: 'contain' }}
             source={require('../../assets/menuicon.png')}

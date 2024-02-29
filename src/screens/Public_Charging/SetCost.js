@@ -31,6 +31,7 @@ const SetCost = ({
   setButtonText,
   SetTimeinSec,
   setOnStopChargingCost,
+  SetstartTime
 }) => {
   const dispatch = useDispatch()
   const [ShowSetCost, SetShowSetCost] = useState(true)
@@ -82,7 +83,8 @@ const SetCost = ({
           publicProductKey,
           onClose,
           startTimer,
-          setButtonText
+          setButtonText,
+          SetstartTime
         )
       )
     } else {

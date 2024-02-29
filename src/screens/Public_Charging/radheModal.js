@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Button, Modal, StyleSheet, TextInput, TouchableOpacity, Text } from 'react-native';
+import { View, Button, Modal, StyleSheet, TextInput, TouchableOpacity, Text, Image } from 'react-native';
 import Timer from '../../../radhe';
 import Toast from 'react-native-toast-message';
 
@@ -73,6 +73,7 @@ const ModalRadhe = ({setActiveButton,activeButton,setChargingCost,SetTimeinSec,s
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
+      <Image source={require("../../assets/Union.png")} style={styles.image} />
             <Timer setuserTimeHours={setuserTimeHours} userTimeHours={userTimeHours} userTimeMinutes={userTimeMinutes} setuserTimeMinutes={setuserTimeMinutes}/>
             {/* <Button title="set time" onPress={onSetclick}  style={styles.button}/> */}
             <TouchableOpacity onPress={onSetclick} style={styles.buttoninModal}>
@@ -139,6 +140,11 @@ const styles = StyleSheet.create({
     borderColor: 'green',
     backgroundColor:"#C1E0C2",
     color:"white"
+  },
+  image: {
+    width: 20, // Adjust the width of the image
+    height: 20, // Adjust the height of the image
+    marginRight: 10, // Adjust the margin if needed
   },
 });
 

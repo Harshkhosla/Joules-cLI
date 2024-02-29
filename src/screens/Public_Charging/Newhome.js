@@ -1,6 +1,7 @@
 import {
   Alert,
   Button,
+  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -12,7 +13,7 @@ import PublicHomePageHeader from './PublicHomePageHeader'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
 import { publicstopCharging } from '../../Redux/Action'
-
+import HomeScreenCircles from '../HomeScreenCircle'
 const Newhome = ({ navigation }) => {
   const dispatch = useDispatch()
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -24,7 +25,11 @@ const Newhome = ({ navigation }) => {
   const [getsample, setGetSampledata] = useState(true)
   const [onstoChargingCost, setOnStopChargingCost] = useState('')
 
-  console.log('onstopchargingCost', onstoChargingCost)
+  const [ChargingCost,setChargingCost]=useState("")
+  const [startTime,SetstartTime]=useState(1)
+  const [EndTime,SetEndTime]=useState(4)
+  const [checkStopbuttonClick,setStopButtonClick]=useState(true)
+  const [sendDataToChart,setSendDataToChart]=useState([])
   let SampleDataaa = useSelector((state) => state?.userReducers?.SetEnergy)
   const SamplePowerData = useSelector((state) => state?.userReducers?.SetPower)
   const SampleOutputCurrent = useSelector((state) => state?.userReducers?.SetCurrent)
@@ -34,10 +39,10 @@ const Newhome = ({ navigation }) => {
   const [isTimerRunning, setIsTimerRunning] = useState(false)
   const [totalSeconds, setTotalSeconds] = useState(0)
   const [totalTime, setTotalTime] = useState(0)
-  // console.log(totalTime,"totalTime")
-  // timer useeffect
-  const [timeInSec, SetTimeinSec] = useState('')
-
+ 
+ const [timeInSec, SetTimeinSec] = useState('')
+console.log("EndTime,startTime,sendDataToChart",EndTime,startTime,sendDataToChart);
+console.log(ChargingCost,"ChargingCost");
   const timeToSeconds = (timeValue) => {
     // Extract numeric value from the time string
     const numericValue = parseInt(timeValue)
@@ -91,11 +96,12 @@ const Newhome = ({ navigation }) => {
       // const Product_Key=await AsyncStorage.getItem("pid")
       console.log('productkye in newhome stop', time)
       console.log('Total Time Charge', data)
-      dispatch(publicstopCharging(data, time))
+      dispatch(publicstopCharging(data, time,SetEndTime))
       handleResetClick()
       setButtonText('Scan QR')
       setGetSampledata(false)
       setChargingEnergy('')
+      setChargingCost("")
       handleRemoveItem()
       setData('')
       return `0`
@@ -121,6 +127,12 @@ const Newhome = ({ navigation }) => {
   useEffect(() => {
     if (getsample) {
       setChargingEnergy(SampleDataaa)
+      if(SampleDataaa.toString().length>0){
+        let a= (parseInt(SampleDataaa)*15)/1000
+        a=Math.floor(a * 100) / 100
+      console.log("abcdefghi",a);
+      setChargingCost(a)
+      }
     }
     if (parseInt(onstoChargingCost) <= parseInt(SampleDataaa)) {
       console.log(
@@ -134,16 +146,21 @@ const Newhome = ({ navigation }) => {
       handleResetClick()
       setButtonText('Scan QR')
       setChargingEnergy('')
+      setChargingCost("")
       handleRemoveItem()
       setData('')
     }
-    if(SampleOutputCurrent<0.1){
+  console.log("SampleOutputCurrent",SampleOutputCurrent);
+
+    if(SampleOutputCurrent<0.1 && SampleOutputCurrent.toString().length>0){
+      console.log("sampleoutcurrent 0.1 hello");
       const totalEnergyTime = formatTime(totalSeconds)
-      dispatch(publicstopCharging(data, totalEnergyTime))
+      dispatch(publicstopCharging(data, totalEnergyTime,SetEndTime))
       setGetSampledata(false)
       handleResetClick()
       setButtonText('Scan QR')
       setChargingEnergy('')
+      setChargingCost("")
       handleRemoveItem()
       setData('')
     }
@@ -157,11 +174,12 @@ const Newhome = ({ navigation }) => {
       console.log('productkye in newhome stop', Product_Key)
       const TotalTimeCharge = formatTime(totalTime)
       console.log('Total Time Charge', TotalTimeCharge)
-      dispatch(publicstopCharging(Product_Key, TotalTimeCharge))
+      dispatch(publicstopCharging(Product_Key, TotalTimeCharge,SetEndTime))
       handleResetClick()
       setButtonText('Scan QR')
       setGetSampledata(false)
       setChargingEnergy('')
+      setChargingCost("")
       handleRemoveItem()
       setData('')
     } else {
@@ -170,6 +188,8 @@ const Newhome = ({ navigation }) => {
         setGetSampledata(true)
         SetTimeinSec('')
         setChargingEnergy('')
+        setChargingCost("")
+        generateHoursArray()
       } else {
         navigation.navigate('PublicScanner')
         // setData(true);
@@ -222,12 +242,36 @@ const Newhome = ({ navigation }) => {
   const handleCostAndTimeClose = () => {
     setIsModalOpen(false)
   }
+  
+  const generateHoursArray = () => {
+    if (EndTime < 0 || EndTime > 23) {
+      console.error('Invalid end time');
+      return;
+    }
+
+    const newGeneratedHours = [];
+
+    for (let hour = startTime; true; hour = (hour % 24) + 1) {
+      const ampm = hour < 12 ? 'AM' : 'PM';
+      const formattedHour = hour % 12 === 0 ? 12 : hour % 12; // Convert to 12-hour format
+      const timeString = `${formattedHour} ${ampm}`;
+      newGeneratedHours.push(timeString);
+
+      if (hour === EndTime) {
+        break;
+      }
+    }
+    navigation.navigate("Charging_History",{ newGeneratedHours: newGeneratedHours })
+    // Update the state with the new array
+    console.log("newGeneratedHours",newGeneratedHours);
+    setSendDataToChart(newGeneratedHours);
+  };
   return (
     <View style={styles.container}>
       {/* <Button title="stopChargig" onPress={getSampleData} disabled={isTimerRunning} /> */}
-      {/* <Button title="del pid" onPress={handleRemoveItem} disabled={isTimerRunning} /> */}
-      {/* <Button title="Stop" onPress={handleResetClick} disabled={!isTimerRunning} /> */}
-      {/* <Button title='delte pid' onPress={handleRemoveItem}/> */}
+      <Button title="del pid" onPress={handleRemoveItem}  />
+      <Button title="know length" onPress={generateHoursArray}  />
+      <Button title='navigate to chargerhistory' onPress={generateHoursArray}/>
       <PublicHomePageHeader navigation={navigation} />
       <View style={styles.contents}>
         <View style={styles.statusBox}>
@@ -245,22 +289,77 @@ const Newhome = ({ navigation }) => {
             {data ? 'Your charger is connected' : 'Not Connected'}
           </Text>
         </View>
+        <View style={styles.powerAndCharging}>
+          <View style={{ justifyContent: 'center' }}>
+            <Text>Power Used</Text>
+          </View>
+          <View style={{ backgroundColor: '#EDECEC', width: 1 }}></View>
+          <View style={{ justifyContent: 'center' }}>
+            <View
+              style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}
+            >
+              <Image
+                style={[styles.Icons, { height: 20 }]}
+                source={require('../../assets/power.png')}
+              />
+              <Text>Charger- -- kwh</Text>
+            </View>
+          </View>
+        </View>
         <View style={styles.dashboard}>
           <View>
             <View style={styles.chargingCostMeater}>
+            <View style={styles.dashboardIconsView}>
+            <Image
+                  style={styles.Icons}
+                  source={require('../../assets/ev_charger.png')}
+                />
               <Text style={{ color: '#717171' }}>Charging Cost</Text>
-              <Text style={{ color: '#717171' }}>₹{ChargingEnergy*15}</Text>
+              </View>
+              <Text style={{ color: '#717171' }}>₹{ChargingCost?ChargingCost:"0"}</Text>
+              <View
+                style={{
+                  position: 'absolute',
+                  flexDirection: 'row',
+                  gap: 88,
+                  marginBottom: -100,
+                  bottom: 0,
+                }}
+              >
+                <HomeScreenCircles />
+                <HomeScreenCircles />
+              </View>
             </View>
+          </View>
+          <View style={styles.potIconContainer}>
+            <Image
+              style={styles.portIcon}
+              source={require('../../assets/porticon.png')}
+            />
           </View>
           <View style={styles.chargingEnergyAndTime}>
             <View style={styles.chargingValueText}>
+            <View style={styles.dashboardIconsView}>
+            <Image
+                  style={styles.Icons}
+                  source={require('../../assets/battery_charging_30.png')}
+                />
               <Text style={{ color: '#717171' }}>Charging Time</Text>
+              </View>
               <Text style={{ color: '#717171' }}>
                 {formatTime(totalSeconds)} hrs
               </Text>
             </View>
+            <View style={{ backgroundColor: '#C7C7C7', width: 1 }}></View>
+
             <View style={styles.chargingValueText}>
+            <View style={styles.dashboardIconsView}>
+            <Image
+                  style={styles.Icons}
+                  source={require('../../assets/charger.png')}
+                />
               <Text style={{ color: '#717171' }}>Charging Energy</Text>
+              </View>
               <Text style={{ color: '#717171' }}>
                 {ChargingEnergy != ''
                   ? Math.round(ChargingEnergy * 100) / 100
@@ -301,6 +400,7 @@ const Newhome = ({ navigation }) => {
         setButtonText={setButtonText}
         SetTimeinSec={SetTimeinSec}
         setOnStopChargingCost={setOnStopChargingCost}
+        SetstartTime={SetstartTime}
       />
     </View>
   )
@@ -313,10 +413,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  modalopen: {
+    backgroundColor: 'rgba(0, 0, 0, 0.76)',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    top: 0,
+    zIndex: 2,
+  },
   contents: {
     flex: 1,
     padding: 20,
-    // backgroundColor: 'pink',
   },
   statusBox: {
     backgroundColor: '#fff',
@@ -324,25 +432,46 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     elevation: 2,
-
     borderRadius: 8,
   },
-
-  dashboard: {
+  powerAndCharging: {
+    height: 40,
+    width: '85%',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: '#EDECEC',
     marginTop: 10,
-    height: 420,
-    borderRadius: 20,
+    marginBottom: -15,
+  },
+  dashboard: {
+    flex: 1,
+    marginTop: 10,
+    borderRadius: 10,
     backgroundColor: '#fff',
     borderWidth: 1,
+    overflow: 'hidden',
     justifyContent: 'space-between',
     borderColor: '#C7C7C7',
-    marginBottom: -10,
     zIndex: 1,
+  },
+  dashboardIconsView: {
+    flexDirection: 'row',
+    gap: 3,
+    alignItems: 'center',
+  },
+  Icons: {
+    height: 25,
+    resizeMode: 'contain',
+    width: 30,
   },
   chargingCostMeater: {
     backgroundColor: '#fff',
-    width: '60%',
+    width: '70%',
     elevation: 5,
+    overflow: 'hidden',
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     gap: 10,
@@ -351,46 +480,61 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     height: 80,
   },
+  potIconContainer: {
+    opacity: 0.2,
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    bottom: 0,
+    zIndex: 0,
+    transform: [{ rotate: '-15deg' }],
+  },
+  portIcon: {
+    height: 180,
+    overflow: 'hidden',
+    width: 180,
+    marginRight: -90,
+    marginBottom: 20,
+    resizeMode: 'contain',
+  },
   chargingEnergyAndTime: {
     flexDirection: 'row',
-    color: 'black',
-    height: 100,
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // // gap: 10,
+    height: 90,
     justifyContent: 'space-evenly',
-    // backgroundColor: 'pink',
-
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#C7C7C7',
   },
   chargingValueText: {
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10,
-    // width: '100%',
   },
-
   buttonContainer: {
-    height: 110,
+    marginTop: -20,
+    height: 100,
     backgroundColor: '#C1E0C2',
-    alignItems: 'center',
-    elevation: 1,
+    paddingHorizontal: 20,
+    elevation: 2,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     justifyContent: 'center',
   },
+  //add
   ButtonBox: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: '90%',
+    width: '100%',
     padding: 10,
+    marginTop: 10,
     borderRadius: 8,
+    borderWidth: 2,
     backgroundColor: 'green',
+    borderColor: 'green',
   },
   ButtonText: {
     fontSize: 20,
     color: '#fff',
-  },
+  }
 })

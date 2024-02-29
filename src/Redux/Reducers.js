@@ -15,6 +15,7 @@ const initialState = {
     SetPower:"",
     SetCurrent:"",
     Product:[],
+    CurrentPower:[]
 }
 
 function userReducers(state = initialState, action) {
@@ -47,7 +48,7 @@ function userReducers(state = initialState, action) {
       // power public charger
       case SET_USER_POWER:
         // console.log("harshsahgmple",action);
-        return { ...state, SetPower: action.payload };
+        return { ...state, SetPower: action.payload ,CurrentPower: [...state.CurrentPower, action.payload]};
       case SET_USER_CURRENT:
           // console.log("harshsahgmple",action);
           return { ...state, SetCurrent: action.payload };
