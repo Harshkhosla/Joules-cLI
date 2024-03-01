@@ -2,7 +2,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Modal,
   Image,
   TouchableOpacity,
   Alert,
@@ -12,18 +11,18 @@ import {
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
-
+import Modal from 'react-native-modal'
 import ChargingHomepage_Buttons from '../components/ChargingHomepage_Buttons'
 
 const Set_ScheduleMode = ({ open, setisSchedule }) => {
   return (
     <Modal
-      visible={open}
-      animationType="slide"
-      transparent={true}
-      onRequestClose={() => {
-        setisSchedule(false)
-      }}
+      isVisible={open}
+      onSwipeComplete={() => setisSchedule(false)}
+      swipeDirection={['down']}
+      onBackdropPress={() => setisSchedule(false)}
+      onBackButtonPress={() => setisSchedule(false)}
+      style={styles.modal}
     >
       <View style={styles.container}>
         <View style={styles.contents}>
@@ -62,20 +61,22 @@ const Set_ScheduleMode = ({ open, setisSchedule }) => {
                 </Text>{' '}
                 when you can spend less money on charging
               </Text>
-              <TouchableOpacity style={styles.selecters}>
-                <Image
-                  style={styles.imgicon}
-                  source={require('../assets/calendar_month.png')}
-                />
-                <Text>Set date</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.selecters}>
-                <Image
-                  style={styles.imgicon}
-                  source={require('../assets/alarm.png')}
-                />
-                <Text>Set date</Text>
-              </TouchableOpacity>
+              <View style={{ gap: hp(2) }}>
+                <TouchableOpacity style={styles.selecters}>
+                  <Image
+                    style={styles.imgicon}
+                    source={require('../assets/calendar_month.png')}
+                  />
+                  <Text>Set date</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.selecters}>
+                  <Image
+                    style={styles.imgicon}
+                    source={require('../assets/alarm.png')}
+                  />
+                  <Text>Set date</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
           <ChargingHomepage_Buttons
@@ -84,6 +85,7 @@ const Set_ScheduleMode = ({ open, setisSchedule }) => {
             }}
             title={'Start Charging'}
             modeColor={'#7F14EB'}
+            status={true}
           />
 
           <View
@@ -98,9 +100,11 @@ const Set_ScheduleMode = ({ open, setisSchedule }) => {
 export default Set_ScheduleMode
 
 const styles = StyleSheet.create({
+  modal: {
+    margin: 0,
+  },
   container: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   contents: {
     position: 'absolute',
@@ -120,7 +124,7 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: '#fff',
     flex: 1,
-    borderRadius: 10,
+    borderRadius: 14,
     borderColor: '#B7B7B7',
     borderWidth: 1,
   },

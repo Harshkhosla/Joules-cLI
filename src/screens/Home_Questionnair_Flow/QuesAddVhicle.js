@@ -36,8 +36,8 @@ const QuesAddVehicle = ({ navigation }) => {
               source={require('../../assets/addcar.png')}
               style={styles.image}
             />
-            <Text style={styles.text}>Add your Vehicle</Text>
           </View>
+          <Text style={styles.text}>Add your Vehicle</Text>
           <View style={styles.pickerContainer}>
             <Picker
               selectedValue={selectedCar}
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   text: {
-    marginTop: 10,
+    marginVertical: 10,
     fontSize: fp(2.5),
   },
   pickerContainer: {

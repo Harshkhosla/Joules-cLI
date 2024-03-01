@@ -2,7 +2,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Modal,
   Image,
   TouchableOpacity,
   Alert,
@@ -15,17 +14,18 @@ import {
 import ChargingHomepage_Buttons from '../../components/ChargingHomepage_Buttons'
 import CheckBox from '../../components/CheckBox'
 import { useState } from 'react'
+import Modal from 'react-native-modal'
 
 const EcoMode = ({ open, setisEco }) => {
   const [ischecked, setischecked] = useState(false)
   return (
     <Modal
-      visible={open}
-      animationType="slide"
-      transparent={true}
-      onRequestClose={() => {
-        setisEco(false)
-      }}
+      isVisible={open}
+      onSwipeComplete={() => setisEco(false)}
+      swipeDirection={['down']}
+      onBackdropPress={() => setisEco(false)}
+      onBackButtonPress={() => setisEco(false)} // This will close the modal on back button press
+      style={styles.modal}
     >
       <View style={styles.container}>
         <View style={styles.contents}>
@@ -64,6 +64,7 @@ const EcoMode = ({ open, setisEco }) => {
             }}
             title={'Start Charging'}
             modeColor={'#2196F3'}
+            status={true}
           />
 
           <View
@@ -78,9 +79,11 @@ const EcoMode = ({ open, setisEco }) => {
 export default EcoMode
 
 const styles = StyleSheet.create({
+  modal: {
+    margin: 0,
+  },
   container: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   contents: {
     position: 'absolute',
@@ -100,7 +103,7 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: '#fff',
     flex: 1,
-    borderRadius: 10,
+    borderRadius: 14,
     borderColor: '#B7B7B7',
     borderWidth: 1,
     justifyContent: 'space-between',

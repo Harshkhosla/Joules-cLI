@@ -27,7 +27,9 @@ const Newhome = ({ navigation }) => {
   console.log('onstopchargingCost', onstoChargingCost)
   let SampleDataaa = useSelector((state) => state?.userReducers?.SetEnergy)
   const SamplePowerData = useSelector((state) => state?.userReducers?.SetPower)
-  const SampleOutputCurrent = useSelector((state) => state?.userReducers?.SetCurrent)
+  const SampleOutputCurrent = useSelector(
+    (state) => state?.userReducers?.SetCurrent
+  )
   const publicChargerTime = useSelector(
     (state) => state.userReducers.setTimePubCharger
   )
@@ -137,7 +139,7 @@ const Newhome = ({ navigation }) => {
       handleRemoveItem()
       setData('')
     }
-    if(SampleOutputCurrent<0.1){
+    if (SampleOutputCurrent < 0.1) {
       const totalEnergyTime = formatTime(totalSeconds)
       dispatch(publicstopCharging(data, totalEnergyTime))
       setGetSampledata(false)
@@ -147,7 +149,7 @@ const Newhome = ({ navigation }) => {
       handleRemoveItem()
       setData('')
     }
-  }, [SampleDataaa,SampleOutputCurrent])
+  }, [SampleDataaa, SampleOutputCurrent])
 
   const handleCostAndTimeOpen = async (text) => {
     console.log('text', text)
@@ -189,7 +191,7 @@ const Newhome = ({ navigation }) => {
         }
       }
       fetchData()
-    }) 
+    })
   }, [])
 
   useEffect(() => {
@@ -249,7 +251,7 @@ const Newhome = ({ navigation }) => {
           <View>
             <View style={styles.chargingCostMeater}>
               <Text style={{ color: '#717171' }}>Charging Cost</Text>
-              <Text style={{ color: '#717171' }}>₹{ChargingEnergy*15}</Text>
+              <Text style={{ color: '#717171' }}>₹{ChargingEnergy * 15}</Text>
             </View>
           </View>
           <View style={styles.chargingEnergyAndTime}>

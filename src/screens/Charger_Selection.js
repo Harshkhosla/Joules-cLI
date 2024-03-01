@@ -4,7 +4,6 @@ import {
   View,
   Image,
   TouchableOpacity,
-  ScrollView,
   Alert,
 } from 'react-native'
 import {
@@ -19,16 +18,14 @@ import CustomModal from '../components/CustomModal'
 import { useState } from 'react'
 
 const Charger_Selection = ({ navigation }) => {
-
-  const [isModalVisible,setisModalVisible]=useState(false)
-  const onChargerClick=()=>{
-    console.log("click hua");
-    // Alert.alert("currently Not Available")  
-    navigation.navigate("Welcomepage")
+  const [isModalVisible, setisModalVisible] = useState(false)
+  const onChargerClick = () => {
+    console.log('click hua')
+    // Alert.alert("currently Not Available")
+    navigation.navigate('Welcomepage')
     setisModalVisible(true)
   }
   return (
-    // <ScrollView>
     <View style={styles.Container}>
       <View style={styles.LogoContainer}>
         <View style={styles.circles}>
@@ -63,12 +60,6 @@ const Charger_Selection = ({ navigation }) => {
                   <Text>(Apartments, Offices, Semi-public areas)</Text>
                 </TouchableOpacity>
               </View>
-              {/* <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate('Newhome')}
-              >
-                <Text style={styles.link}>Go Home</Text>
-              </TouchableOpacity> */}
             </View>
           </View>
         </View>
@@ -90,7 +81,6 @@ const Charger_Selection = ({ navigation }) => {
         <Text>This is the content of the modal.</Text>
       </CustomModal>
     </View>
-    // {/* </ScrollView> */}
   )
 }
 
@@ -112,12 +102,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-end',
     position: 'absolute',
-    // backgroundColor: 'red',
+
     gap: 8,
     bottom: hp(-25),
   },
   LogoWrapper: {
-    // backgroundColor: 'pink',
     borderRadius: 14,
     elevation: 3,
   },
@@ -147,7 +136,6 @@ const styles = StyleSheet.create({
   },
   AskToStart: {
     flex: 1,
-    // justifyContent: 'space-between',
   },
   headingText: {
     fontSize: 22,
@@ -160,8 +148,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 90,
     elevation: 2,
-    // borderWidth: 1,
-    // borderColor: '#AAAAAA',
+
     marginVertical: 5,
     borderRadius: 8,
   },
@@ -177,7 +164,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'pink',
   },
   tagNoteImg: {
     height: 40,

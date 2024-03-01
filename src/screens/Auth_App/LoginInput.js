@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import {
   View,
-  KeyboardAvoidingView,
-  Platform,
   StyleSheet,
   Text,
   Image,
@@ -89,18 +87,24 @@ const LoginInput = ({ navigation }) => {
   }
 
   GoogleSignin.configure({
+    offlineAccess: true,
     webClientId:
       '683362406803-fo4tm1la7a8kh2qilell97vf8ae71d7b.apps.googleusercontent.com', // Replace with your web client ID from Google Cloud Console
+    androidClientId:
+      '683362406803-tgq3a58u23346etf2pgrrabh23o5hf11.apps.googleusercontent.com',
+    scopes: ['profile', 'email'],
   })
 
   // Function to handle Google login
   const handleGoogleLogin = async () => {
     try {
       // Open Google sign-in prompt
+      await GoogleSignin.signOut()
       await GoogleSignin.hasPlayServices()
+      console.log(' get data')
       const userInfo = await GoogleSignin.signIn()
 
-      console.log(userInfo)
+      console.log(' get data', userInfo.user)
       // Handle signed-in user data
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -120,93 +124,87 @@ const LoginInput = ({ navigation }) => {
   }
   return (
     <View style={styles.container}>
-      <KeyboardAvoidingView style={styles.container} behavior="padding">
-        {/* <Input style={styles.inputone} />  */}
-        <View style={styles.inputsContainer}>
-          <View>
-            <InputBoxTwo
-              label="Email"
-              placeholder="Enter your mail id"
-              value={userData.Email}
-              setValue={setuserData}
-              objectData={userData}
-            />
-          </View>
-          <View>
-            <InputBoxTwo
-              label="Password"
-              placeholder="Enter your password"
-              value={userData.Password}
-              setValue={setuserData}
-              objectData={userData}
-            />
-          </View>
+      <View style={styles.inputsContainer}>
+        <View>
+          <InputBoxTwo
+            label="Email"
+            placeholder="Enter your mail id"
+            value={userData.Email}
+            setValue={setuserData}
+            objectData={userData}
+          />
         </View>
-        <View style={styles.forgotRememberContainer}>
-          <TouchableOpacity
-          //   onPress={() => navigation.navigate('ResetPasswordScreen')}
-          >
-            <Text style={styles.forgot}>Forgot password?</Text>
-          </TouchableOpacity>
-          <View style={styles.checkboxContainer}>
-            <Checkbox.Android
-              status={rememberMe ? 'checked' : 'unchecked'}
-              onPress={() => setRememberMe(!rememberMe)}
-              // uncheckedColor={theme.colors.primary}
-              // color={theme.colors.primary}
-              style={styles.checkbox}
-            />
-            <Text style={styles.rememberMeText}>Remember me</Text>
-          </View>
+        <View>
+          <InputBoxTwo
+            label="Password"
+            placeholder="Enter your password"
+            value={userData.Password}
+            setValue={setuserData}
+            objectData={userData}
+          />
         </View>
-        <TouchableOpacity style={styles.SignupButton} onPress={login}>
-          <Text style={styles.SignupButtonText}>Login</Text>
+      </View>
+      <View style={styles.forgotRememberContainer}>
+        <TouchableOpacity
+        //   onPress={() => navigation.navigate('ResetPasswordScreen')}
+        >
+          <Text style={styles.forgot}>Forgot password?</Text>
         </TouchableOpacity>
+        <View style={styles.checkboxContainer}>
+          <Checkbox.Android
+            status={rememberMe ? 'checked' : 'unchecked'}
+            onPress={() => setRememberMe(!rememberMe)}
+            // uncheckedColor={theme.colors.primary}
+            // color={theme.colors.primary}
+            style={styles.checkbox}
+          />
+          <Text style={styles.rememberMeText}>Remember me</Text>
+        </View>
+      </View>
+      <TouchableOpacity style={styles.SignupButton} onPress={login}>
+        <Text style={styles.SignupButtonText}>Login</Text>
+      </TouchableOpacity>
 
-        <Text style={styles.ortext}>or</Text>
+      <Text style={styles.ortext}>or</Text>
 
-        <View style={styles.socialButtonsContainer}>
-          <TouchableOpacity style={styles.socialButton}>
-            <View style={styles.socialIconWrapper}>
-              {/* <Image
+      <View style={styles.socialButtonsContainer}>
+        <TouchableOpacity style={styles.socialButton}>
+          <View style={styles.socialIconWrapper}>
+            {/* <Image
                 source={require('../../assets/googlelogo.png')}
                 // style={styles.socialIconText}
               /> */}
-              <GoogleSigninButton
-                style={{ width: 192, height: 48 }}
-                size={GoogleSigninButton.Size.Wide}
-                color={GoogleSigninButton.Color.Dark}
-                onPress={handleGoogleLogin}
-                disabled={false}
-              />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.socialButton}>
-            <View>
-              <Image source={require('../../assets/facebookvector.png')} />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.socialButton}>
-            <View>
-              <Image source={require('../../assets/apple.png')} />
-            </View>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
+            <GoogleSigninButton
+              style={{ width: 192, height: 48 }}
+              size={GoogleSigninButton.Size.Wide}
+              color={GoogleSigninButton.Color.Dark}
+              onPress={handleGoogleLogin}
+              disabled={false}
+            />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.socialButton}>
+          <View>
+            <Image source={require('../../assets/facebookvector.png')} />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.socialButton}>
+          <View>
+            <Image source={require('../../assets/apple.png')} />
+          </View>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
+    // backgroundColor: 'red',
+    flex: 1,
     // Adjust container styles if needed
   },
-  inputone: {
-    borderWidth: 2,
-    borderRadius: 8,
-    height: 40,
-    backgroundColor: '#fff',
-  },
+
   inputsContainer: {
     // marginVertical: 8,
   },

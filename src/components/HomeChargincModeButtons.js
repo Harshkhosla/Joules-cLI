@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 8,
     width: wp(20),
-    height: hp(12),
+    height: hp(13),
     backgroundColor: '#fff',
     borderRadius: 8,
     elevation: 2,

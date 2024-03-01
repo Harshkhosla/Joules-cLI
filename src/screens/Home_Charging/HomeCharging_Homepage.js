@@ -85,80 +85,91 @@ const HomeCharging_Homepage = ({ navigation }) => {
                 />
                 <Text style={styles.powerUsedText}>Charger</Text>
                 <Text style={styles.powerUsedTextGreen}>0 KW</Text>
-                <Text style={{ padding: 2, fontSize: 12 }}>More Details</Text>
+                <Text style={{ fontSize: 12 }}>More Details</Text>
               </View>
             </View>
           </View>
           <View style={styles.chargingMods}>
-            <Text style={[styles.powerUsedTextGreen, { fontSize: 20 }]}>
+            <Text style={[styles.powerUsedTextGreen, { fontSize: 16 }]}>
               Choose Charging Mode
             </Text>
-            <View style={styles.ModeBoxContainer}>
-              <HomeChargincModeButtons
-                img={require('../../assets/balance.png')}
-                ModeName={'Balance'}
-                action={() => {
-                  setisBalanced(true)
-                }}
-              />
-              <HomeChargincModeButtons
-                img={require('../../assets/history.png')}
-                ModeName={'Schedule'}
-                action={() => {
-                  setisSchedule(true)
-                }}
-              />
-              <HomeChargincModeButtons
-                img={require('../../assets/eco.png')}
-                ModeName={'Eco'}
-                action={() => {
-                  setisEco(true)
-                }}
-              />
-              <HomeChargincModeButtons
-                img={require('../../assets/power.png')}
-                ModeName={'Slow'}
-              />
-            </View>
-            <View style={styles.EnergyAnd_Cost_Time_Container}>
-              <View
-                style={[
-                  styles.EnergyAnd_Cost_Time_Box,
-                  { borderRightWidth: 2, borderColor: '#EEECEC' },
-                ]}
-              >
-                <Text style={[styles.text, { color: '#797979' }]}>Energy</Text>
-                <Text
-                  style={[styles.text, { color: '#797979', marginBottom: 5 }]}
-                >
-                  Consumed
-                </Text>
-                <Text style={[styles.text]}>- - - -</Text>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'space-between',
+              }}
+            >
+              <View style={styles.ModeBoxContainer}>
+                <HomeChargincModeButtons
+                  img={require('../../assets/balance.png')}
+                  ModeName={'Balance'}
+                  action={() => {
+                    setisBalanced(true)
+                  }}
+                />
+                <HomeChargincModeButtons
+                  img={require('../../assets/history.png')}
+                  ModeName={'Schedule'}
+                  action={() => {
+                    setisSchedule(true)
+                  }}
+                />
+                <HomeChargincModeButtons
+                  img={require('../../assets/eco.png')}
+                  ModeName={'Eco'}
+                  action={() => {
+                    setisEco(true)
+                  }}
+                />
+                <HomeChargincModeButtons
+                  img={require('../../assets/power.png')}
+                  ModeName={'Slow'}
+                />
               </View>
-              <View
-                style={[
-                  styles.EnergyAnd_Cost_Time_Box,
-                  { borderRightWidth: 2, borderColor: '#EEECEC' },
-                ]}
-              >
-                <Text style={[styles.text, { color: '#797979' }]}>Cost of</Text>
-                <Text
-                  style={[styles.text, { color: '#797979', marginBottom: 5 }]}
+              <View style={styles.EnergyAnd_Cost_Time_Container}>
+                <View
+                  style={[
+                    styles.EnergyAnd_Cost_Time_Box,
+                    { borderRightWidth: 2, borderColor: '#EEECEC' },
+                  ]}
                 >
-                  Charging
-                </Text>
-                <Text style={[styles.text]}>- - - -</Text>
-              </View>
-              <View style={styles.EnergyAnd_Cost_Time_Box}>
-                <Text style={[styles.text, { color: '#797979' }]}>
-                  Charging
-                </Text>
-                <Text
-                  style={[styles.text, { color: '#797979', marginBottom: 5 }]}
+                  <Text style={[styles.text, { color: '#797979' }]}>
+                    Energy
+                  </Text>
+                  <Text
+                    style={[styles.text, { color: '#797979', marginBottom: 5 }]}
+                  >
+                    Consumed
+                  </Text>
+                  <Text style={[styles.text]}>- - - -</Text>
+                </View>
+                <View
+                  style={[
+                    styles.EnergyAnd_Cost_Time_Box,
+                    { borderRightWidth: 2, borderColor: '#EEECEC' },
+                  ]}
                 >
-                  Time
-                </Text>
-                <Text style={[styles.text]}>- - - -</Text>
+                  <Text style={[styles.text, { color: '#797979' }]}>
+                    Cost of
+                  </Text>
+                  <Text
+                    style={[styles.text, { color: '#797979', marginBottom: 5 }]}
+                  >
+                    Charging
+                  </Text>
+                  <Text style={[styles.text]}>- - - -</Text>
+                </View>
+                <View style={styles.EnergyAnd_Cost_Time_Box}>
+                  <Text style={[styles.text, { color: '#797979' }]}>
+                    Charging
+                  </Text>
+                  <Text
+                    style={[styles.text, { color: '#797979', marginBottom: 5 }]}
+                  >
+                    Time
+                  </Text>
+                  <Text style={[styles.text]}>- - - -</Text>
+                </View>
               </View>
             </View>
           </View>
@@ -172,6 +183,7 @@ const HomeCharging_Homepage = ({ navigation }) => {
           }}
           title={'Start Charging'}
           modeColor={'#118615'}
+          status={false}
         />
       </View>
       <View
@@ -207,7 +219,7 @@ const styles = StyleSheet.create({
   dashboard: {
     flex: 1,
     marginTop: 10,
-    borderRadius: 8,
+    borderRadius: 14,
     backgroundColor: '#fff',
     borderWidth: 1,
     overflow: 'hidden',
@@ -221,7 +233,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   powerUsed: {
-    padding: 1,
+    paddingVertical: 1,
     borderRadius: 8,
     backgroundColor: '#fff',
     borderWidth: 1,

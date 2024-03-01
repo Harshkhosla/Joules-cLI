@@ -2,7 +2,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Modal,
   Image,
   TouchableOpacity,
   Alert,
@@ -14,18 +13,19 @@ import {
 } from 'react-native-responsive-dimensions'
 import ChargingHomepage_Buttons from '../../components/ChargingHomepage_Buttons'
 import CheckBox from '../../components/CheckBox'
+import Modal from 'react-native-modal'
 import { useState } from 'react'
 
 const BalanceMode = ({ open, setisBalanced }) => {
   const [ischecked, setischecked] = useState(false)
   return (
     <Modal
-      visible={open}
-      animationType="slide"
-      transparent={true}
-      onRequestClose={() => {
-        setisBalanced(false)
-      }}
+      isVisible={open}
+      onSwipeComplete={() => setisBalanced(false)}
+      swipeDirection={['down']}
+      onBackdropPress={() => setisBalanced(false)}
+      onBackButtonPress={() => setisBalanced(false)}
+      style={styles.modal}
     >
       <View style={styles.container}>
         <View style={styles.contents}>
@@ -67,6 +67,7 @@ const BalanceMode = ({ open, setisBalanced }) => {
             }}
             title={'Start Charging'}
             modeColor={'#118615'}
+            status={true}
           />
 
           <View
@@ -81,9 +82,11 @@ const BalanceMode = ({ open, setisBalanced }) => {
 export default BalanceMode
 
 const styles = StyleSheet.create({
+  modal: {
+    margin: 0,
+  },
   container: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   contents: {
     position: 'absolute',
@@ -103,7 +106,7 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: '#fff',
     flex: 1,
-    borderRadius: 10,
+    borderRadius: 14,
     borderColor: '#B7B7B7',
     borderWidth: 1,
     justifyContent: 'space-between',

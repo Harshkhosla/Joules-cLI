@@ -82,15 +82,16 @@ const StackNavigator = () => {
       {/* <Stack.Screen name="StartScreen" component={StartScreen} /> */}
       {/* <Stack.Screen name="LoginScreen" component={LoginScreen} /> */}
       {/* <Stack.Screen name="RegisterScreen" component={RegisterScreen} /> */}
-      {/* <Stack.Screen name="SignIn" component={SignIn} /> */}
+      <Stack.Screen name="SignIn" component={SignIn} />
       {/* <Stack.Screen name="mobailgetotp" component={MobileNoGetOtp} /> */}
       {/* <Stack.Screen name="mobailverifyotp" component={MobileVerifyOtp} /> */}
 
-      {/* <Stack.Screen name="finalhomepage" component={PublicHomePageFinal} /> */}
       {/* <Stack.Screen name="countDown" component={CountdownTimer} /> */}
       <Stack.Screen name="chargerSelection" component={Charger_Selection} />
       <Stack.Screen name="Newhome" component={Newhome} />
-      {/* <Stack.Screen name='Charging_History' component={Charging_History}/> */}
+      <Stack.Screen name="PublicScanner" component={PublicScanner} />
+      <Stack.Screen name="Charging_History" component={Charging_History} />
+      <Stack.Screen name="finalhomepage" component={PublicHomePageFinal} />
 
       <Stack.Screen name="Welcomepage" component={Welcomepage} />
       <Stack.Screen name="Questionnaire" component={Questionnaire} />
@@ -112,7 +113,7 @@ const StackNavigator = () => {
 
       <Stack.Screen name="Graphs" component={Meter} />
       {/* <Stack.Screen name="HomePage" component={HomePage} /> */}
-      <Stack.Screen name="PublicScanner" component={PublicScanner} />
+
       <Stack.Screen name="Load" component={Load} />
       <Stack.Screen name="Eligible" component={Eligible} />
       <Stack.Screen name="Car" component={Car} />

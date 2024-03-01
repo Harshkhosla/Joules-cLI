@@ -2,7 +2,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Modal,
+  // Modal,
   Image,
   TouchableOpacity,
   TextInput,
@@ -22,6 +22,7 @@ import TimerSlider from '../TimerSlider'
 import ModalRadhe from './radheModal'
 // import stripe from '@stripe/stripe-react-native';
 import RazorpayCheckout from 'react-native-razorpay'
+import Modal from 'react-native-modal'
 
 const SetCost = ({
   open,
@@ -103,10 +104,13 @@ const SetCost = ({
   }
   return (
     <Modal
-      visible={open}
-      animationType="slide"
-      onRequestClose={onClose}
-      transparent={true}
+      isVisible={open}
+      onSwipeComplete={onClose}
+      swipeDirection={'down'}
+      onBackdropPress={onClose}
+      onBackButtonPress={onClose}
+      style={styles.modal}
+      animationOut={'slideOutDown'}
     >
       <View style={styles.container}>
         <View style={styles.contents}>
@@ -382,9 +386,12 @@ const ChargingSetTime = ({ SetTimeinSec, settime, setInputCost }) => {
 export default SetCost
 
 const styles = StyleSheet.create({
+  modal: {
+    margin: 0,
+  },
   container: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.76)',
+    // backgroundColor: 'rgba(0, 0, 0, 0.76)',
   },
   setTimeContainer: {
     marginTop: 25,
