@@ -40,6 +40,11 @@ const topic3State = {
   messages: [],
 }
 
+const getCurrenttime=()=>{
+  const currentTime = new Date();
+  return currentTime.getHours()
+}
+
 // const Porduct_Key = useSelector(state => state?.userReducers?.Product)
 init({
   size: 10000,
@@ -1080,7 +1085,7 @@ export const SubcribingtoTopic = (topic) => {
 const allClients = [];
 // =-------------------------------------------------------------------------------------Start  charging for public-------------------//
 
-export const publicstartCharging = (Porduct_Key,onClose,startTimer,setButtonText) => {
+export const publicstartCharging = (Porduct_Key,onClose,startTimer,setButtonText,SetstartTime) => {
 // Porduct_Key=publicProductKey
   console.log("Porduct_Key in publick start charging",Porduct_Key)
 
@@ -1130,6 +1135,8 @@ export const publicstartCharging = (Porduct_Key,onClose,startTimer,setButtonText
           console.log(`${Porduct_Key}_Updates:`, message.payloadString)
            if(message.payloadString=="Charging Started"){
              Alert.alert("charging started")
+            const response= getCurrenttime()
+            SetstartTime(response)
              setButtonText("Stop Charging")
              startTimer()
              onClose()
@@ -1231,7 +1238,7 @@ export const DoorOpening = (Porduct_Key) => {
 
 // stop chargin for public
 
-export const publicstopCharging = (Porduct_Key,totalTime) => {
+export const publicstopCharging = (Porduct_Key,totalTime,SetEndTime) => {
   // Porduct_Key=publicProductKey
     console.log("Porduct_Key in publickstop charging",Porduct_Key,totalTime)
     return (dispatch) => {
@@ -1262,7 +1269,9 @@ export const publicstopCharging = (Porduct_Key,totalTime) => {
             dispatch(setStateValue(message.payloadString))
             console.log(`${Porduct_Key}_Updates:`, message.payloadString)
              if(message.payloadString=="Charging Completed"){
-               Alert.alert(`charging completed ${totalTime}`)
+              const response=getCurrenttime()
+              Alert.alert(`charging completed ${totalTime}`)
+              SetEndTime(response)
                disconnectAllClients();
             }
             client.disconnect();
