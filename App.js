@@ -156,11 +156,72 @@ function MyDrawer() {
 
 export default function App() {
   return (
+
     <Sample store={Store}>
+     
       <Provider theme={theme}>
         <NavigationContainer>
-          <MyDrawer />
-          <Toast />
+          <Stack.Navigator
+            initialRouteName="StartScreen"
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            {/* <Stack.Screen
+              options={{ headerShown: false }}
+              name="Splash"
+              component={Splash}
+            /> */}
+    <Stack.Screen name='Charging_History' component={Charging_History}/>
+            <Stack.Screen name='Newhome' component={Newhome}/> 
+      <Stack.Screen name='finalhomepage' component={PublicHomePageFinal}/>
+            <Stack.Screen name="SignIn" component={SignIn} />
+            <Stack.Screen name="chargerSelection" component={Charger_Selection}/>
+             {/* <Stack.Screen name="StartScreen" component={StartScreen} /> */}
+            {/* <Stack.Screen name="LoginScreen" component={LoginScreen} /> */}
+            {/* <Stack.Screen name="RegisterScreen" component={RegisterScreen} /> */}
+
+            {/* <Stack.Screen name='MobileNoGetOtp' component={MobileNoGetOtp}/> */}
+            <Stack.Screen name="MessagePage" component={MessagePage} />
+            <Stack.Screen name="Questionnaire" component={Questionnaire} />
+            <Stack.Screen name="QuesLive" component={QuesLive} />
+            <Stack.Screen name="QuesVecDetails" component={QuesVecDetails} />
+            {/* <Stack.Screen name="Quesimg" component={Quesimg} /> */}
+            {/* <Stack.Screen name="Dashboard" component={Dashboard} />  */}
+            {/* <Stack.Screen
+              name="ResetPasswordScreen"
+              component={ResetPasswordScreen} 
+            /> */}
+            {/* <Stack.Screen name='countDown' component={CountdownTimer}/> */}
+            <Stack.Screen name='Welcomepage' component={Welcomepage}/>
+            <Stack.Screen name="HomeCharging_Homepage" component={HomeCharging_Homepage}/>
+            <Stack.Screen name="Graphs" component={Meter} />
+            {/* <Stack.Screen name="HomePage" component={HomePage} /> */}
+            <Stack.Screen name="PublicScanner" component={PublicScanner} />
+            <Stack.Screen name="Load" component={Load} />
+            <Stack.Screen name="Eligible" component={Eligible} />
+            <Stack.Screen name="Car" component={Car} />
+            <Stack.Screen name="House" component={House} />
+            <Stack.Screen name="Date" component={Date} />
+            <Stack.Screen name="Home" component={Home} /> 
+            <Stack.Screen name="QuesAddVhicle" component={QuesAddVhicle} />
+            <Stack.Screen name="Wifi" component={Wifi} />
+            <Stack.Screen name="Flat" component={Flat} />
+            <Stack.Screen name="SceduleDate" component={SceduleDate} />
+            <Stack.Screen name="UserDetails" component={UserDetails} />
+            <Stack.Screen name="Test" component={Test} />
+            <Stack.Screen name="Datainput" component={Datainput} />
+            <Stack.Screen name="Clamp" component={Clamp} />
+            {/* <Stack.Screen name="Navbar" component={Navbar} /> */}
+            <Stack.Screen name="UserProfile" component={UserProfile} />
+            <Stack.Screen
+              name="EditProfileScreen"
+              component={EditProfileScreen}
+            />
+            <Stack.Screen name="AddCharger" component={AddCharger} />
+            <Stack.Screen name="Notifications" component={Notifications} />
+            <Stack.Screen name="ChargerSettings" component={ChargerSettings} />
+          </Stack.Navigator>
           {/* <Toast ref={(ref) => Toast.setRef(ref)} /> */}
         </NavigationContainer>
       </Provider>

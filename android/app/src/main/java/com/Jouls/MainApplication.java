@@ -1,4 +1,4 @@
-package com.jouls1;
+package com.Jouls;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

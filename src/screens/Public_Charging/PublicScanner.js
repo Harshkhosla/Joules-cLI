@@ -36,6 +36,7 @@ export default function Dashboard({ navigation }) {
   const [scanned, setScanned] = useState(false)
   const [text, setText] = useState('Not yet scanned')
   const [Data, setData] = useState('HGHG')
+  const [flashOn, setFlashOn] = useState(false);
   console.log(Data)
 
   const id = useSelector((state) => state?.userReducers?.Product?._id)
@@ -173,6 +174,7 @@ export default function Dashboard({ navigation }) {
                 on your computer and scan the QR code.
               </Text>
             }
+            flashMode={flashOn ? RNCamera.Constants.FlashMode.torch : RNCamera.Constants.FlashMode.off}
             bottomContent={
               <TouchableOpacity style={styles.buttonTouchable}>
                 <Text style={styles.buttonText}>OK. Got it!</Text>
@@ -203,7 +205,7 @@ export default function Dashboard({ navigation }) {
               source={require('../../assets/picimg.png')}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>{setFlashOn(!flashOn)}}>
             <Image
               style={styles.actionimgicon}
               source={require('../../assets/torch.png')}
