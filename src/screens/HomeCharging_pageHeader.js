@@ -12,7 +12,7 @@ const HomeCharging_pageHeader = ({ navigation, title, color }) => {
   return (
     <View style={[styles.container, { backgroundColor: color }]}>
       <View style={styles.Icon}>
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+        <TouchableOpacity >
           <Image
             style={{ width: 35, resizeMode: 'contain' }}
             source={require('../assets/menuicon.png')}
