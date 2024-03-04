@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   responsiveHeight as hp,
   responsiveWidth as wp,
@@ -18,9 +18,22 @@ import LoginInput from './LoginInput'
 import SignupInputs from './SignupInputs'
 import Circle from '../Circle'
 import { ScrollView } from 'react-native-gesture-handler'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useFocusEffect } from '@react-navigation/native'
 
 const SignIn = ({ navigation }) => {
   const [login, setLogin] = useState(true)
+  useFocusEffect(()=>{
+    const fetchdata=async()=>{
+      const data=await AsyncStorage.getItem("Authtoken")
+      if(data){
+        navigation.navigate("chargerSelection")
+      }
+      console.log("data",data);
+    }
+    fetchdata()
+  })
+
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : '100'}>
       <ScrollView>

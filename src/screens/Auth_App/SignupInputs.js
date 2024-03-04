@@ -24,8 +24,7 @@ import Toast from 'react-native-toast-message'
 const SignupInputs = ({navigation}) => {
   const [userData,setuserData]=useState({Name:"",Email:"",Password:"",ConfirmPassword:""})
   const dispatch=useDispatch()
-    console.log("userData",userData);
-  const signup=()=>{
+  const signup=async()=>{
     const allValuesEmpty = Object.keys(userData).every(key => userData[key] !== "");
     if(!allValuesEmpty){
       return Toast.show({
@@ -68,9 +67,12 @@ const SignupInputs = ({navigation}) => {
       })
     }
     try {
+      
       const response=dispatch(loginuser(userData,navigation))
+      // const response = await fetch('http://192.168.45.3:5200/hardware/code/getcode/1');
+      console.log("click in sign up",response);
     } catch (error) {
-      console.log("error in singup",error)
+      console.log("error in singup in signupinputs component",error)
     }
   }
   }
