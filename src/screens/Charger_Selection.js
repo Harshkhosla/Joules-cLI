@@ -22,7 +22,7 @@ const Charger_Selection = ({ navigation }) => {
   const onChargerClick = () => {
     console.log('click hua')
     // Alert.alert("currently Not Available")
-    navigation.navigate('Welcomepage')
+    // navigation.navigate('Welcomepage')
     setisModalVisible(true)
   }
   return (
@@ -78,7 +78,7 @@ const Charger_Selection = ({ navigation }) => {
         visible={isModalVisible}
         onClose={() => setisModalVisible(false)}
       >
-        <Text>This is the content of the modal.</Text>
+        <Text>Currently Not Available</Text>
       </CustomModal>
     </View>
   )

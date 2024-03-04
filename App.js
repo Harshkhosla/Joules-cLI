@@ -57,9 +57,13 @@ import Charging_History from './src/screens/Charging_History'
 import HomeCharging_Homepage from './src/screens/Home_Charging/HomeCharging_Homepage'
 import ChargingAnimation from './src/screens/ChargingAnimation'
 import Customdrawer from './Customdrawer'
+import Support from './src/components/Support'
+import HomeScreen from './src/components/Support'
+import { TouchableOpacity, View } from 'react-native'
 
 const Stack = createStackNavigator()
 
+const Drawer = createDrawerNavigator()
 
 
 export default function App() {
@@ -75,21 +79,12 @@ export default function App() {
               headerShown: false,
             }}
           >
-            {/* <Stack.Screen
-              options={{ headerShown: false }}
-              name="Splash"
-              component={Splash}
-            /> */}
-            {/* <Stack.Screen name="SignIn" component={SignIn} /> */}
+            <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen name="chargerSelection" component={Charger_Selection}/>
             <Stack.Screen name='Newhome' component={Newhome}/> 
+            <Stack.Screen name="support" component={Support} />
     <Stack.Screen name='Charging_History' component={Charging_History}/>
       <Stack.Screen name='finalhomepage' component={PublicHomePageFinal}/>
-             {/* <Stack.Screen name="StartScreen" component={StartScreen} /> */}
-            {/* <Stack.Screen name="LoginScreen" component={LoginScreen} /> */}
-            {/* <Stack.Screen name="RegisterScreen" component={RegisterScreen} /> */}
-
-            {/* <Stack.Screen name='MobileNoGetOtp' component={MobileNoGetOtp}/> */}
             <Stack.Screen name="MessagePage" component={MessagePage} />
             <Stack.Screen name="Questionnaire" component={Questionnaire} />
             <Stack.Screen name="QuesLive" component={QuesLive} />
@@ -129,8 +124,34 @@ export default function App() {
             <Stack.Screen name="AddCharger" component={AddCharger} />
             <Stack.Screen name="Notifications" component={Notifications} />
             <Stack.Screen name="ChargerSettings" component={ChargerSettings} />
+            <Stack.Screen
+          name="Support"
+          component={HomeScreen}
+          options={{
+            title: 'Chat App',
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => alert('Go back')}>
+                {/* You can replace this arrow with your own back icon */}
+                <Text>{'<'}</Text>
+              </TouchableOpacity>
+            ),
+            headerRight: () => (
+              <View style={{ flexDirection: 'row', marginRight: 10 }}>
+                <TouchableOpacity onPress={() => alert('Phone')}>
+                  {/* You can replace this phone icon with your own icon */}
+                  <Text>📞</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => alert('WhatsApp')}>
+                  {/* You can replace this WhatsApp icon with your own icon */}
+                  <Text>Whatsapp</Text>
+                </TouchableOpacity>
+              </View>
+            ),
+          }}
+        />
           </Stack.Navigator>
           {/* <Toast ref={(ref) => Toast.setRef(ref)} /> */}
+          <Toast/>
         </NavigationContainer>
       </Provider>
     </Sample>

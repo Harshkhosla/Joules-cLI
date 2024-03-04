@@ -25,9 +25,9 @@ import { Alert } from 'react-native'
 // const [data34, setData34] = useState('')
 // const [data123, setData123] = useState('')
 
-const MqqtUrl="ws://34.93.32.239:9001/mqtt"
-// const ApiURL="https://adminbackendjouls-production.up.railway.app"
-const ApiURL="http://localhost:5200"
+const MqqtUrl="ws://34.93.173.35:9001/mqtt"
+const ApiURL="https://adminbackendjouls-production.up.railway.app"
+// const ApiURL="http://192.168.45.3:5200"
 
 const topic1State = {
   messages: [],
@@ -397,8 +397,9 @@ export const loginuser = (input, navigation) => {
     // console.log(name);
     try {
       const response = await fetch(
-        `https://backend-production-e1c2.up.railway.app/api/auth/createuser`,
-        // `${ApiURL}/admin/user/register`,
+        // `https://backend-production-e1c2.up.railway.app/api/auth/createuser`,
+        `${ApiURL}/admin/user/register`,
+        // `http://192.168.45.3:5200/admin/user/register`,
         {
           method: 'POST',
           headers: {
@@ -415,6 +416,14 @@ export const loginuser = (input, navigation) => {
       const data = await response.json()
       console.log("helo in before after");
       console.log(data, 'data in sign up user')
+      if(data?.message=="Email already exists"){
+        console.log("email already exist")
+        Toast.show({
+          text2:data.message,
+          position:"top"
+        })
+        return 
+      }
       if(data?.message){
         Toast.show({
           text2:data.message,
@@ -436,25 +445,16 @@ export const loginuser = (input, navigation) => {
       await AsyncStorage.setItem('Authtoken', authtoken)
       dispatch(setAuthtoken(authtoken))
       }
-      if (!data?.success) {
-        Toast.show({
-          type: 'success',
-          text1: data.error,
-          text2: data.error,
-          position: 'bottom',
-        })
-        throw new Error(data.error)
-      }
       navigation.navigate('chargerSelection')
     } catch (err) {
       Toast.show({
-        type: 'success',
+        type: 'error',
         // text1: err,
         text2: 'error in catch',
         text1:err,
         position: 'top',
       });
-      console.log(err, 'catch ke andr sign up ')
+      console.log(err, 'catch ke andr sign up action.js')
     }
   }
 }
@@ -470,7 +470,8 @@ export const signItUp = (field, navigation) => {
     const { email, password } = lowercaseKeysObject
     try {
       const response = await fetch(
-        `https://backend-production-e1c2.up.railway.app/api/auth/login`,
+        // `https://backend-production-e1c2.up.railway.app/api/auth/login`,
+        `${ApiURL}/admin/user/signin`,
         {
           method: 'POST',
           headers: {
@@ -485,42 +486,51 @@ export const signItUp = (field, navigation) => {
 
       const data = await response.json()
       console.log(data, 'login data ')
-      if(data?.error){
+      if(data?.message=="Invalid email or password"){
         Toast.show({
           type: 'error',
           // text1: data,
+          text1: "Invalid email or password",
+          position: 'top',
+        })
+        return 
+      }
+      if(data?.message=="Email not verified"){
+        Toast.show({
+          type: 'error',
+          // text1: data,
+          text1: "Email not verified",
+          position: 'top',
+        })
+        return 
+      }
+      if(data?.success){
+        Toast.show({
+          type: 'success',
+          text1: "login Successfull",
           text2: data?.toast,
+          text1Style:{color:"green"},
+          text2Style:{color:"black"},
           position: 'top',
         })
       }
-      if(data?.success){
-      Toast.show({
-        type: 'success',
-        text1: "login Successfull",
-        text2: data?.toast,
-        text1Style:{color:"green"},
-        text2Style:{color:"black"},
-        position: 'top',
-      })
-    }
       // const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '')
-    if(data?.authtoken){
-      const authtoken = JSON.stringify(data.authtoken)
-      console.log('authtoken', authtoken)
-      await AsyncStorage.setItem('Authtoken', authtoken)
-      dispatch(setAuthtoken(authtoken))
-    }
-      if (!data?.success) {
-        throw new Error(data.error)
+      if(data?.authToken){
+        const authtoken = JSON.stringify(data.authToken)
+        console.log('authtoken', authtoken)
+        await AsyncStorage.setItem('Authtoken', authtoken)
+        dispatch(setAuthtoken(authtoken))
+        Toast.show({
+          type: 'success',
+          text1: "login Successfull",
+          text2: data?.toast,
+          text1Style:{color:"green"},
+          text2Style:{color:"black"},
+          position: 'top',
+        })
       }
       navigation.navigate('chargerSelection')
     } catch (err) {
-      Toast.show({
-        type: 'error',
-        // text1: err,
-        text2: 'Operation completed successfully!',
-        position: 'top',
-      })
       console.log(err, 'err in login')
     }
   }

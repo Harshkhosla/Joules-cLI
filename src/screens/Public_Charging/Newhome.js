@@ -188,12 +188,12 @@ const Newhome = ({ navigation }) => {
       setData('')
     } else {
       if (data) {
+        console.log("click start charging");
         setIsModalOpen(true)
         setGetSampledata(true)
         SetTimeinSec('')
         setChargingEnergy('')
         setChargingCost('')
-        generateHoursArray()
       } else {
         navigation.navigate('PublicScanner')
         // setData(true);
