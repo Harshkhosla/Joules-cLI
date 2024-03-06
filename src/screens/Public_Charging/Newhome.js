@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
 import { publicstopCharging } from '../../Redux/Action'
 import HomeScreenCircles from '../HomeScreenCircle'
+import Wave from '../../components/wave'
 const Newhome = ({ navigation }) => {
   const dispatch = useDispatch()
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -274,6 +275,7 @@ const Newhome = ({ navigation }) => {
   }
   return (
     <View style={styles.container}>
+      <Wave size={250} progress={20}/>
       {/* <Button title="stopChargig" onPress={getSampleData} disabled={isTimerRunning} /> */}
       {/* <Button title="del pid" onPress={handleRemoveItem} />
       <Button title="know length" onPress={generateHoursArray} />
