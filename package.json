@@ -21,7 +21,7 @@
     "@react-navigation/drawer": "^6.6.7",
     "@react-navigation/native": "^5.9.8",
     "@react-navigation/stack": "^5.14.9",
-    "@shopify/react-native-skia": "^0.1.241",
+    "@shopify/react-native-skia": "0.1.207",
     "@stripe/stripe-react-native": "^0.36.0",
     "d3": "^7.8.5",
     "deprecated-react-native-prop-types": "^4.2.3",

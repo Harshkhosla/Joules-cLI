@@ -1,4 +1,19 @@
-import { useValue, useClockValue, Canvas, Circle, Group, Path, Skia, rect, rrect } from '@shopify/react-native-skia';
+import {
+  useValue,
+  useClockValue,
+  Canvas,
+  Circle,
+  Group,
+  Path,
+  Skia,
+  rect,
+  rrect,
+  useComputedValue,
+} from '@shopify/react-native-skia'
+
+
+
+
   import {curveBasis, line} from 'd3';
   import React, {useEffect, useState} from 'react';
 
@@ -10,8 +25,8 @@ import { useValue, useClockValue, Canvas, Circle, Group, Path, Skia, rect, rrect
     const padding = size / 25;
     const outerCircleRadius = r - padding / 2;
     const innerCircleSize = size - padding * 2;
-    const frequency = 4;
-    const amplitude = 15;
+    const frequency = 1;
+    const amplitude = 35;
     const verticalOffset = useValue(100);
     const clock = useClockValue();
   
@@ -28,6 +43,16 @@ import { useValue, useClockValue, Canvas, Circle, Group, Path, Skia, rect, rrect
       const wavePath = lineGenerator(d3Points);
       return `${wavePath} L ${size}, ${size} ${0}, ${size} Z`;
     };
+
+    const createAnimatedPath2 = (phase = 1000) => {
+      const d3Points = Array.from({length: size}).map((_, i) => {
+        const angle = (i / size) * (Math.PI * (frequency)) + phase;
+        return [i, (Math.sin(angle) * (amplitude+20)) / 2 + verticalOffset.current];
+      });
+      const lineGenerator = line().curve(curveBasis);
+      const wavePath = lineGenerator(d3Points);
+      return `${wavePath} L ${size}, ${size} ${0}, ${size} Z`;
+    };
   
     const animatedPath = useComputedValue(() => {
       const current = (clock.current / 250) % 200;
@@ -35,27 +60,53 @@ import { useValue, useClockValue, Canvas, Circle, Group, Path, Skia, rect, rrect
       const end = Skia.Path.MakeFromSVGString(
         createAnimatedPath(current * Math.PI),
       );
+      
+      return start.interpolate(end, 0.5);
+    }, [clock, progress, size]);
+
+
+    const animatedPath2 = useComputedValue(() => {
+      const current = (clock.current / 250) % 200;
+      const start = Skia.Path.MakeFromSVGString(createAnimatedPath2(current));
+      const end = Skia.Path.MakeFromSVGString(
+        createAnimatedPath2(current * Math.PI),
+      );
+      
       return start.interpolate(end, 0.5);
     }, [clock, progress, size]);
   
     const roundedRectangle = rrect(
-      rect(padding, padding, innerCircleSize, innerCircleSize),
+      rect(padding+5, padding+5, innerCircleSize-10, innerCircleSize-10),
       r,
       r,
     );
+
   
     return (
       <Canvas style={{width: size, height: size}}>
         <Circle
           cx={r}
           cy={r}
+          r={outerCircleRadius*0.9}
+          style="stroke"
+          strokeWidth={padding-10}
+          color="#15C31B"
+        />
+        <Circle
+          cx={r}
+          cy={r}
           r={outerCircleRadius}
           style="stroke"
-          strokeWidth={padding}
-          color="#239"
+          strokeWidth={padding-5}
+          color="#15C31B"
+          
         />
         <Group clip={roundedRectangle}>
-          <Path path={animatedPath} color="#119" />
+          <Path path={animatedPath} color="#15C31B" />
+
+          <Path path={animatedPath2} color="rgba(21, 195, 27, 0.6)" />
+
+          
         </Group>
       </Canvas>
     );
