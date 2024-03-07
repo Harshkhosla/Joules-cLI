@@ -13,6 +13,7 @@ import {
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
 import Quesheader from './Quesheader'
+import App_top_Header from '../App_top_Header'
 
 const QuesLive = ({ navigation }) => {
   const [houseSelected, setHouseSelected] = useState(false)
@@ -30,7 +31,13 @@ const QuesLive = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Quesheader title={'Questionnaire'} navigation={navigation} />
+      {/* <Quesheader title={'Questionnaire'} navigation={navigation} /> */}
+      <App_top_Header
+        title={'Questionnaire'}
+        navigation={navigation}
+        color={'#C1E0C2'}
+      />
+
       <View style={styles.detailscontainer}>
         <View>
           <View>

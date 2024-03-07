@@ -28,7 +28,7 @@ import {
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
-import PublicHomePageHeader from './PublicHomePageHeader'
+import App_top_Header from '../App_top_Header'
 
 export default function Dashboard({ navigation }) {
   const dispatch = useDispatch()
@@ -36,7 +36,7 @@ export default function Dashboard({ navigation }) {
   const [scanned, setScanned] = useState(false)
   const [text, setText] = useState('Not yet scanned')
   const [Data, setData] = useState('HGHG')
-  const [flashOn, setFlashOn] = useState(false);
+  const [flashOn, setFlashOn] = useState(false)
   console.log(Data)
 
   const id = useSelector((state) => state?.userReducers?.Product?._id)
@@ -158,7 +158,13 @@ export default function Dashboard({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <PublicHomePageHeader navigation={navigation} />
+      <App_top_Header
+        title={`Hello Aman!`}
+        navigation={navigation}
+        color={'#C1E0C2'}
+        isHome={true}
+      />
+
       <View style={styles.containerContentBox}>
         <Text style={{ fontSize: 18, fontWeight: '400' }}>
           To start charging, please scan the
@@ -174,7 +180,11 @@ export default function Dashboard({ navigation }) {
                 on your computer and scan the QR code.
               </Text>
             }
-            flashMode={flashOn ? RNCamera.Constants.FlashMode.torch : RNCamera.Constants.FlashMode.off}
+            flashMode={
+              flashOn
+                ? RNCamera.Constants.FlashMode.torch
+                : RNCamera.Constants.FlashMode.off
+            }
             bottomContent={
               <TouchableOpacity style={styles.buttonTouchable}>
                 <Text style={styles.buttonText}>OK. Got it!</Text>
@@ -205,7 +215,11 @@ export default function Dashboard({ navigation }) {
               source={require('../../assets/picimg.png')}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=>{setFlashOn(!flashOn)}}>
+          <TouchableOpacity
+            onPress={() => {
+              setFlashOn(!flashOn)
+            }}
+          >
             <Image
               style={styles.actionimgicon}
               source={require('../../assets/torch.png')}

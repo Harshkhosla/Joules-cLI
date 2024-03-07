@@ -16,9 +16,9 @@ import App_top_Header from './App_top_Header'
 import ChargingHistoryButton from '../components/ChargingHistoryButton'
 import CustomChart from '../components/CustomChart'
 
-const Charging_History = ({ navigation,route }) => {
-  const { newGeneratedHours } = route.params;
-  console.log("newgeneratedhours",newGeneratedHours);
+const Charging_History = ({ navigation, route }) => {
+  // const { newGeneratedHours } = route.params;
+  // console.log("newgeneratedhours",newGeneratedHours);
   const [isPowergraph, setisPowergraph] = useState(true)
   const [isEnergygraph, setisisEnergygraph] = useState(false)
 
@@ -53,7 +53,11 @@ const Charging_History = ({ navigation,route }) => {
 
   return (
     <View style={styles.container}>
-      <App_top_Header navigation={navigation} title={'Charging History'} />
+      <App_top_Header
+        title={'Charging History'}
+        navigation={navigation}
+        color={'#C1E0C2'}
+      />
       <View style={styles.containerContent}>
         <View style={styles.TopButtons}>
           <ChargingHistoryButton
@@ -75,9 +79,7 @@ const Charging_History = ({ navigation,route }) => {
           />
         </View>
         <View style={styles.ChartContainer}>
-          <View>
-            <CustomChart xlabels={newGeneratedHours}/>
-          </View>
+          <View>{/* <CustomChart xlabels={newGeneratedHours} /> */}</View>
           <View style={styles.toggler}>
             <TouchableOpacity
               onPress={HandleTouggl}

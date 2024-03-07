@@ -9,11 +9,11 @@ import {
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import SetCost from './SetCost'
-import PublicHomePageHeader from './PublicHomePageHeader'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
 import { publicstopCharging } from '../../Redux/Action'
 import HomeScreenCircles from '../HomeScreenCircle'
+import App_top_Header from '../App_top_Header'
 const Newhome = ({ navigation }) => {
   const dispatch = useDispatch()
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -278,7 +278,12 @@ const Newhome = ({ navigation }) => {
       <Button title="del pid" onPress={handleRemoveItem} />
       <Button title="know length" onPress={generateHoursArray} />
       <Button title="navigate to chargerhistory" onPress={generateHoursArray} />
-      <PublicHomePageHeader navigation={navigation} />
+      <App_top_Header
+        title={`Hello Aman!`}
+        navigation={navigation}
+        color={'#C1E0C2'}
+        isHome={true}
+      />
       <View style={styles.contents}>
         <View style={styles.statusBox}>
           <View

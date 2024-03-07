@@ -12,7 +12,7 @@ import {
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
 import Modal from 'react-native-modal'
-import ChargingHomepage_Buttons from '../components/ChargingHomepage_Buttons'
+import ChargingHomepage_Buttons from '../../components/ChargingHomepage_Buttons'
 
 const Set_ScheduleMode = ({ open, setisSchedule }) => {
   return (
@@ -32,14 +32,15 @@ const Set_ScheduleMode = ({ open, setisSchedule }) => {
                 setisSchedule(false)
               }}
             >
-              <Image source={require('../assets/cancel.png')} />
+              <Image source={require('../../assets/cancel.png')} />
+              {/* <Image source={require('../assets/cancel.png')} /> */}
             </TouchableOpacity>
           </View>
           <View style={styles.contentBox}>
             <View style={[styles.header]}>
               <Image
                 style={styles.imgicon}
-                source={require('../assets/history.png')}
+                source={require('../../assets/history.png')}
               />
               <Text style={[styles.text, { color: '#7F14EB' }]}>
                 Schedule Mode
@@ -65,14 +66,14 @@ const Set_ScheduleMode = ({ open, setisSchedule }) => {
                 <TouchableOpacity style={styles.selecters}>
                   <Image
                     style={styles.imgicon}
-                    source={require('../assets/calendar_month.png')}
+                    source={require('../../assets/calendar_month.png')}
                   />
                   <Text>Set date</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.selecters}>
                   <Image
                     style={styles.imgicon}
-                    source={require('../assets/alarm.png')}
+                    source={require('../../assets/alarm.png')}
                   />
                   <Text>Set date</Text>
                 </TouchableOpacity>

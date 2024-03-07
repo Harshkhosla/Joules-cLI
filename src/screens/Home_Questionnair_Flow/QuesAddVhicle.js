@@ -6,14 +6,19 @@ import {
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
-import Quesheader from './Quesheader'
+
+import App_top_Header from '../App_top_Header'
 
 const QuesAddVehicle = ({ navigation }) => {
   const [selectedCar, setSelectedCar] = useState()
 
   return (
     <View style={styles.container}>
-      <Quesheader title={'Questionnaire'} navigation={navigation} />
+      <App_top_Header
+        title={'Questionnaire'}
+        navigation={navigation}
+        color={'#C1E0C2'}
+      />
       <View style={styles.detailscontainer}>
         <View style={styles.QuestiontextContainer}>
           <Text
