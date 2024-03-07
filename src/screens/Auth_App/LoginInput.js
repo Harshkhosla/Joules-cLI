@@ -6,6 +6,7 @@ import {
   Image,
   TextInput as Input,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native'
 import {
   responsiveHeight as hp,
@@ -25,6 +26,7 @@ import {
 } from '@react-native-google-signin/google-signin'
 
 const LoginInput = ({ navigation }) => {
+  const [loading, setLoading] = useState(false);
   const [userData, setuserData] = useState({ Email: '', Password: '' })
   const [rememberMe, setRememberMe] = useState(true)
   const dispatch = useDispatch()
@@ -67,7 +69,9 @@ const LoginInput = ({ navigation }) => {
     }
     if (isValid && allValuesPresent) {
       try {
-        const response = dispatch(signItUp(userData, navigation))
+        setLoading(true);
+        const response = dispatch(signItUp(userData, navigation,setLoading))
+        setuserData({...userData,Email:"",Password:""})
       } catch (error) {
         console.error('error in login user', error)
       }
@@ -150,7 +154,7 @@ const LoginInput = ({ navigation }) => {
         >
           <Text style={styles.forgot}>Forgot password?</Text>
         </TouchableOpacity>
-        <View style={styles.checkboxContainer}>
+        {/* <View style={styles.checkboxContainer}>
           <Checkbox.Android
             status={rememberMe ? 'checked' : 'unchecked'}
             onPress={() => setRememberMe(!rememberMe)}
@@ -159,10 +163,14 @@ const LoginInput = ({ navigation }) => {
             style={styles.checkbox}
           />
           <Text style={styles.rememberMeText}>Remember me</Text>
-        </View>
+        </View> */}
       </View>
-      <TouchableOpacity style={styles.SignupButton} onPress={login}>
-        <Text style={styles.SignupButtonText}>Login</Text>
+      <TouchableOpacity style={styles.SignupButton} onPress={login} disabled={loading}>
+      {loading ? (
+          <ActivityIndicator size="small" color="green"/>
+        ) :  
+        (<Text style={styles.SignupButtonText}>Login</Text>
+        )}
       </TouchableOpacity>
 
       <Text style={styles.ortext}>or</Text>
