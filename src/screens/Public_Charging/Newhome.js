@@ -158,17 +158,17 @@ const Newhome = ({ navigation }) => {
       handleRemoveItem()
       setData('')
     }
-    if (SampleOutputCurrent < 0.1) {
-      const totalEnergyTime = formatTime(totalSeconds)
-      dispatch(publicstopCharging(data, totalEnergyTime, SetEndTime))
-      setGetSampledata(false)
-      handleResetClick()
-      setButtonText('Scan QR')
-      setChargingEnergy('')
-      setChargingCost('')
-      handleRemoveItem()
-      setData('')
-    }
+    // if (SampleOutputCurrent < 0.1) {
+    //   const totalEnergyTime = formatTime(totalSeconds)
+    //   dispatch(publicstopCharging(data, totalEnergyTime, SetEndTime))
+    //   setGetSampledata(false)
+    //   handleResetClick()
+    //   setButtonText('Scan QR')
+    //   setChargingEnergy('')
+    //   setChargingCost('')
+    //   handleRemoveItem()
+    //   setData('')
+    // }
   }, [SampleDataaa, SampleOutputCurrent])
 
   const handleCostAndTimeOpen = async (text) => {

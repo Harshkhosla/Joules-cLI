@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Provider, Text } from 'react-native-paper'
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, useFocusEffect } from '@react-navigation/native'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { createStackNavigator } from '@react-navigation/stack'
 import { theme } from './src/core/theme'
@@ -40,6 +40,16 @@ import MessagePage from './src/screens/Home_Questionnair_Flow/MessagePage'
 import Charging_History from './src/screens/Charging_History'
 import HomeCharging_Homepage from './src/screens/Home_Charging/HomeCharging_Homepage'
 import Wave from './src/components/wave'
+import ChargingAnimation from './src/screens/ChargingAnimation'
+import Customdrawer from './Customdrawer'
+import Support from './src/components/Support'
+import HomeScreen from './src/components/Support'
+import { TouchableOpacity, View } from 'react-native'
+import Support2 from './src/components/ChatSupport'
+import DusraScreen from './radhe'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import HeaderWithArrow from './src/components/ChatSupport'
+import AddRfid from './src/components/AddRfid'
 
 const Stack = createStackNavigator()
 
@@ -47,6 +57,33 @@ const Drawer = createDrawerNavigator()
 
 
 export default function App() {
+  const AuthLoadingScreen = ({ navigation }) => {
+    useEffect(() => {
+      // AsyncStorage se userToken fetch karein
+      const checkSignInStatus = async () => {
+        try {
+          const userToken = await AsyncStorage.getItem('Authtoken');
+          console.log("usertoken",userToken);
+          // Agar userToken hai, toh newhome screen pe navigate karein
+          if (userToken) {
+            navigation.replace('chargerSelection');
+          } else {
+            // Agar userToken nahi hai, toh authentication screen pe navigate karein
+            navigation.replace('SignIn');
+          }
+        } catch (error) {
+          console.error('Error fetching userToken:', error);
+        }
+      };
+  
+      checkSignInStatus();
+    }, [navigation]);
+  
+    // return (
+    //   // Koi loading spinner ya indicator add karein agar required ho
+    //   <YourLoadingComponent />
+    // );
+  };
   return (
 
     <Sample store={Store}>
@@ -59,8 +96,12 @@ export default function App() {
               headerShown: false,
             }}
           >
-            {/* <Stack.Screen name="SignIn" component={SignIn} /> */}
-            {/* <Stack.Screen name="chargerSelection" component={Wave}/> */}
+
+            {/* <Stack.Screen name='addrfid' component={AddRfid}/>   */}
+            {/* <Stack.Screen name='support2' component={HeaderWithArrow}/>   */}
+            <Stack.Screen name="AuthLoading" component={AuthLoadingScreen} />
+            <Stack.Screen name="SignIn" component={SignIn} />
+            <Stack.Screen name="chargerSelection" component={Charger_Selection}/>
             <Stack.Screen name='Newhome' component={Newhome}/> 
     <Stack.Screen name='Charging_History' component={Charging_History}/>
       <Stack.Screen name='finalhomepage' component={PublicHomePageFinal}/>
