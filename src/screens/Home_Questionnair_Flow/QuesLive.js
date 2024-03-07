@@ -12,7 +12,6 @@ import {
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
-import Quesheader from './Quesheader'
 import App_top_Header from '../App_top_Header'
 
 const QuesLive = ({ navigation }) => {
@@ -31,7 +30,6 @@ const QuesLive = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* <Quesheader title={'Questionnaire'} navigation={navigation} /> */}
       <App_top_Header
         title={'Questionnaire'}
         navigation={navigation}

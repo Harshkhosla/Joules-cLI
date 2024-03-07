@@ -189,7 +189,7 @@ const Newhome = ({ navigation }) => {
       setData('')
     } else {
       if (data) {
-        console.log("click start charging");
+        console.log('click start charging')
         setIsModalOpen(true)
         setGetSampledata(true)
         SetTimeinSec('')
@@ -278,7 +278,7 @@ const Newhome = ({ navigation }) => {
       {/* <Button title="stopChargig" onPress={getSampleData} disabled={isTimerRunning} /> */}
       {/* <Button title="del pid" onPress={handleRemoveItem} />
       <Button title="know length" onPress={generateHoursArray} />
-      <Button title="navigate to chargerhistory" onPress={generateHoursArray} />
+      <Button title="navigate to chargerhistory" onPress={generateHoursArray} />*/}
       <App_top_Header
         title={`Hello Aman!`}
         navigation={navigation}
@@ -310,7 +310,6 @@ const Newhome = ({ navigation }) => {
             <View
               style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}
             >
-            
               <Image
                 style={[styles.Icons, { height: 20 }]}
                 source={require('../../assets/power.png')}
@@ -346,7 +345,7 @@ const Newhome = ({ navigation }) => {
               </View>
             </View>
           </View>
-                  <Wave size={200} progress={40}/>
+          <Wave size={200} progress={40} />
           <View style={styles.potIconContainer}>
             <Image
               style={styles.portIcon}

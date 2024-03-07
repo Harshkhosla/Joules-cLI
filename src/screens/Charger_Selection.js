@@ -22,36 +22,42 @@ import { useFocusEffect } from '@react-navigation/native'
 
 const Charger_Selection = ({ navigation }) => {
   const [isModalVisible, setisModalVisible] = useState(false)
-  const exitApp = useRef(false);
+  const exitApp = useRef(false)
   const onChargerClick = () => {
     console.log('click hua')
     // Alert.alert("currently Not Available")
-    // navigation.navigate('Welcomepage')
+    navigation.navigate('Welcomepage')
     setisModalVisible(true)
   }
   useFocusEffect(
     React.useCallback(() => {
       const backAction = () => {
         if (!exitApp.current) {
-          ToastAndroid.show('Please press back again to exit', ToastAndroid.SHORT);
-          exitApp.current = true;
+          ToastAndroid.show(
+            'Please press back again to exit',
+            ToastAndroid.SHORT
+          )
+          exitApp.current = true
 
           setTimeout(() => {
-            exitApp.current = false;
-          }, 2000);
+            exitApp.current = false
+          }, 2000)
 
-          return true; // prevent default back button behavior
+          return true // prevent default back button behavior
         } else {
-          BackHandler.exitApp();
-          return false;
+          BackHandler.exitApp()
+          return false
         }
-      };
+      }
 
-      const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction
+      )
 
-      return () => backHandler.remove();
+      return () => backHandler.remove()
     }, [])
-  );
+  )
   // useEffect(() => {
   //   const backAction = () => {
   //     if (!exitApp.current) {
