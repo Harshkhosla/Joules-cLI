@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
 import { publicstopCharging } from '../../Redux/Action'
 import HomeScreenCircles from '../HomeScreenCircle'
+import Wave from '../../components/wave'
 import App_top_Header from '../App_top_Header'
 const Newhome = ({ navigation }) => {
   const dispatch = useDispatch()
@@ -188,12 +189,12 @@ const Newhome = ({ navigation }) => {
       setData('')
     } else {
       if (data) {
+        console.log("click start charging");
         setIsModalOpen(true)
         setGetSampledata(true)
         SetTimeinSec('')
         setChargingEnergy('')
         setChargingCost('')
-        generateHoursArray()
       } else {
         navigation.navigate('PublicScanner')
         // setData(true);
@@ -275,7 +276,7 @@ const Newhome = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {/* <Button title="stopChargig" onPress={getSampleData} disabled={isTimerRunning} /> */}
-      <Button title="del pid" onPress={handleRemoveItem} />
+      {/* <Button title="del pid" onPress={handleRemoveItem} />
       <Button title="know length" onPress={generateHoursArray} />
       <Button title="navigate to chargerhistory" onPress={generateHoursArray} />
       <App_top_Header
@@ -309,6 +310,7 @@ const Newhome = ({ navigation }) => {
             <View
               style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}
             >
+            
               <Image
                 style={[styles.Icons, { height: 20 }]}
                 source={require('../../assets/power.png')}
@@ -344,6 +346,7 @@ const Newhome = ({ navigation }) => {
               </View>
             </View>
           </View>
+                  <Wave size={200} progress={40}/>
           <View style={styles.potIconContainer}>
             <Image
               style={styles.portIcon}
