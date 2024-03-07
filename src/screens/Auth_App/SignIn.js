@@ -23,16 +23,20 @@ import { useFocusEffect } from '@react-navigation/native'
 
 const SignIn = ({ navigation }) => {
   const [login, setLogin] = useState(true)
-  useFocusEffect(()=>{
-    const fetchdata=async()=>{
-      const data=await AsyncStorage.getItem("Authtoken")
-      if(data){
-        navigation.navigate("chargerSelection")
-      }
-      console.log("data",data);
-    }
-    fetchdata()
-  })
+  // useFocusEffect(()=>{
+  //   const fetchdata=async()=>{
+  //     const data=await AsyncStorage.getItem("Authtoken")
+  //     if(data){
+  //       // navigation.navigate("chargerSelection")
+  //       navigation.reset({
+  //         index: 0,
+  //         routes: [{ name: 'chargerSelection' }],
+  //       });
+  //     }
+  //     console.log("data",data);
+  //   }
+  //   fetchdata()
+  // })
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : '100'}>

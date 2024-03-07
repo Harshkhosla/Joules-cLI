@@ -7,6 +7,7 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native'
 import TextInput from '../../components/Inputbox'
 import {
@@ -22,6 +23,7 @@ import { loginuser } from '../../Redux/Action'
 import Toast from 'react-native-toast-message'
 
 const SignupInputs = ({navigation}) => {
+  const [loading, setLoading] = useState(false);
   const [userData,setuserData]=useState({Name:"",Email:"",Password:"",ConfirmPassword:""})
   const dispatch=useDispatch()
   const signup=async()=>{
@@ -67,10 +69,11 @@ const SignupInputs = ({navigation}) => {
       })
     }
     try {
-      
-      const response=dispatch(loginuser(userData,navigation))
+      setLoading(true)
+      const response=dispatch(loginuser(userData,navigation,setLoading))
       // const response = await fetch('http://192.168.45.3:5200/hardware/code/getcode/1');
       console.log("click in sign up",response);
+      setuserData({...userData,Email:"",Password:"",ConfirmPassword:"",Name:""})
     } catch (error) {
       console.log("error in singup in signupinputs component",error)
     }
@@ -94,8 +97,12 @@ const SignupInputs = ({navigation}) => {
         <InputBoxTwo label="Password" placeholder="Enter password" value={userData.Password} setValue={setuserData}  objectData={userData} />
         <InputBoxTwo label="ConfirmPassword" placeholder="Enter password"  value={userData.ConfirmPassword} setValue={setuserData}  objectData={userData}/>
       </View>
-      <TouchableOpacity style={styles.SignupButton} onPress={signup}>
+      <TouchableOpacity style={styles.SignupButton} onPress={signup} disabled={loading}>
+        {loading?(
+          <ActivityIndicator size="small" color="green"/>
+        ):(
         <Text style={styles.SignupButtonText}>Sign up</Text>
+        )}
       </TouchableOpacity>
       <Text style={styles.TermsAndConditions}>
         By Signing up you agree to

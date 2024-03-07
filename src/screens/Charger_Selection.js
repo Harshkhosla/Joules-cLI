@@ -5,6 +5,8 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  ToastAndroid,
+  BackHandler,
 } from 'react-native'
 import {
   responsiveHeight as hp,
@@ -15,16 +17,69 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import Circle from './Circle'
 import CustomModal from '../components/CustomModal'
-import { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
 
 const Charger_Selection = ({ navigation }) => {
   const [isModalVisible, setisModalVisible] = useState(false)
+  const exitApp = useRef(false);
   const onChargerClick = () => {
     console.log('click hua')
     // Alert.alert("currently Not Available")
     // navigation.navigate('Welcomepage')
     setisModalVisible(true)
   }
+  useFocusEffect(
+    React.useCallback(() => {
+      const backAction = () => {
+        if (!exitApp.current) {
+          ToastAndroid.show('Please press back again to exit', ToastAndroid.SHORT);
+          exitApp.current = true;
+
+          setTimeout(() => {
+            exitApp.current = false;
+          }, 2000);
+
+          return true; // prevent default back button behavior
+        } else {
+          BackHandler.exitApp();
+          return false;
+        }
+      };
+
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+      return () => backHandler.remove();
+    }, [])
+  );
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     if (!exitApp.current) {
+  //       // Show a toast message indicating that the app will exit
+  //       ToastAndroid.show('Please Press back again to exit', ToastAndroid.SHORT);
+
+  //       // Set exitApp to true after the first back button press
+  //       exitApp.current = true;
+
+  //       // Reset exitApp after 2 seconds
+  //       setTimeout(() => {
+  //         exitApp.current = false;
+  //       }, 2000);
+
+  //       return true; // prevent default back button behavior
+  //     } else {
+  //       // Exit the app if the back button is pressed again within 2 seconds
+  //       BackHandler.exitApp();
+  //       return false;
+  //     }
+  //   };
+
+  //   // Add the event listener for the back button
+  //   const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+  //   // Clean up the event listener on component unmount
+  //   return () => backHandler.remove();
+  // }, []);
   return (
     <View style={styles.Container}>
       <View style={styles.LogoContainer}>

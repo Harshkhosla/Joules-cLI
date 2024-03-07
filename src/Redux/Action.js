@@ -386,7 +386,7 @@ export const Click = (user) => {
 
 // ----------------------------------------CREATING ACCOUNT DATA--------------------------------------------------------------------------------//
 
-export const loginuser = (input, navigation) => {
+export const loginuser = (input, navigation,setLoading) => {
   // debugger;
   // console.log("harsh", input);
   return async (dispatch) => {
@@ -399,6 +399,7 @@ export const loginuser = (input, navigation) => {
       const response = await fetch(
         // `https://backend-production-e1c2.up.railway.app/api/auth/createuser`,
         `${ApiURL}/admin/user/register`,
+        // "https://adminbackendjouls-production.up.railway.app/admin/user/register",
         // `http://192.168.45.3:5200/admin/user/register`,
         {
           method: 'POST',
@@ -414,20 +415,22 @@ export const loginuser = (input, navigation) => {
       )
         console.log("helo in before");
       const data = await response.json()
-      console.log("helo in before after");
       console.log(data, 'data in sign up user')
       if(data?.message=="Email already exists"){
+        setLoading(false)
         console.log("email already exist")
         Toast.show({
           text2:data.message,
-          position:"top"
+          position:"top",
+          text1Style: { color: 'red', fontSize: 14 },
         })
         return 
       }
       if(data?.message){
         Toast.show({
           text2:data.message,
-          position:"top"
+          position:"top",
+        text1Style: { color: 'green', fontSize: 14 },
         })
       }
       if(data?.error){
@@ -445,12 +448,14 @@ export const loginuser = (input, navigation) => {
       await AsyncStorage.setItem('Authtoken', authtoken)
       dispatch(setAuthtoken(authtoken))
       }
+      setLoading(false)
       navigation.navigate('chargerSelection')
     } catch (err) {
       Toast.show({
         type: 'error',
-        // text1: err,
+        text1: "Login Failed",
         text2: 'error in catch',
+        text1Style: { color: 'red', fontSize: 14 },
         text1:err,
         position: 'top',
       });
@@ -461,7 +466,7 @@ export const loginuser = (input, navigation) => {
 
 // ------------------------------------------------------CREATING LOGIN AUTHTOKEN AND SENDING IT -----------------------------------------//
 
-export const signItUp = (field, navigation) => {
+export const signItUp = (field, navigation,setLoading) => {
   return async (dispatch) => {
 
     const lowercaseKeysObject = Object.fromEntries(
@@ -487,24 +492,28 @@ export const signItUp = (field, navigation) => {
       const data = await response.json()
       console.log(data, 'login data ')
       if(data?.message=="Invalid email or password"){
+        setLoading(false)
         Toast.show({
           type: 'error',
-          // text1: data,
+          text1Style:{color:"red",fontSize:18},
           text1: "Invalid email or password",
           position: 'top',
         })
         return 
       }
       if(data?.message=="Email not verified"){
+        setLoading(false)
         Toast.show({
           type: 'error',
           // text1: data,
+          text1Style:{color:"red",fontSize:18},
           text1: "Email not verified",
           position: 'top',
         })
         return 
       }
       if(data?.success){
+        setLoading(false)
         Toast.show({
           type: 'success',
           text1: "login Successfull",
@@ -529,8 +538,18 @@ export const signItUp = (field, navigation) => {
           position: 'top',
         })
       }
+      setLoading(false)
       navigation.navigate('chargerSelection')
     } catch (err) {
+      setLoading(false)
+      Toast.show({
+        type: 'error',
+        text1: "Login Failed",
+        text2: 'error in catch',
+        text1Style: { color: 'red', fontSize: 14 },
+        text1:err,
+        position: 'top',
+      });
       console.log(err, 'err in login')
     }
   }
