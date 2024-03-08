@@ -9,12 +9,12 @@ import {
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import SetCost from './SetCost'
-import PublicHomePageHeader from './PublicHomePageHeader'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
 import { publicstopCharging } from '../../Redux/Action'
 import HomeScreenCircles from '../HomeScreenCircle'
 import Wave from '../../components/wave'
+import App_top_Header from '../App_top_Header'
 const Newhome = ({ navigation }) => {
   const dispatch = useDispatch()
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -189,7 +189,7 @@ const Newhome = ({ navigation }) => {
       setData('')
     } else {
       if (data) {
-        console.log("click start charging");
+        console.log('click start charging')
         setIsModalOpen(true)
         setGetSampledata(true)
         SetTimeinSec('')
@@ -278,8 +278,13 @@ const Newhome = ({ navigation }) => {
       {/* <Button title="stopChargig" onPress={getSampleData} disabled={isTimerRunning} /> */}
       {/* <Button title="del pid" onPress={handleRemoveItem} />
       <Button title="know length" onPress={generateHoursArray} />
-    <Button title="navigate to chargerhistory" onPress={generateHoursArray} /> */}
-      <PublicHomePageHeader navigation={navigation} />
+      <Button title="navigate to chargerhistory" onPress={generateHoursArray} />*/}
+      <App_top_Header
+        title={`Hello Aman!`}
+        navigation={navigation}
+        color={'#C1E0C2'}
+        isHome={true}
+      />
       <View style={styles.contents}>
         <View style={styles.statusBox}>
           <View
@@ -298,19 +303,18 @@ const Newhome = ({ navigation }) => {
         </View>
         <View style={styles.powerAndCharging}>
           <View style={{ justifyContent: 'center' }}>
-            <Text>Power Used</Text>
+            <Text style={{color:"#9A9A9A"}}>Power Used</Text>
           </View>
           <View style={{ backgroundColor: '#EDECEC', width: 1 }}></View>
           <View style={{ justifyContent: 'center' }}>
             <View
               style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}
             >
-            
               <Image
                 style={[styles.Icons, { height: 20 }]}
                 source={require('../../assets/power.png')}
               />
-              <Text>Charger- -- kwh</Text>
+              <Text style={{color:"#9A9A9A"}}>Charger- -- kwh</Text>
             </View>
           </View>
         </View>
@@ -341,7 +345,10 @@ const Newhome = ({ navigation }) => {
               </View>
             </View>
           </View>
-                  <Wave size={200} progress={40}/>
+          <View style={{marginLeft:70}}>
+             <Wave size={220} progress={40} />
+          </View>
+
           <View style={styles.potIconContainer}>
             <Image
               style={styles.portIcon}

@@ -99,9 +99,9 @@ export default function App() {
 
             {/* <Stack.Screen name='addrfid' component={AddRfid}/>   */}
             {/* <Stack.Screen name='support2' component={HeaderWithArrow}/>   */}
-            
+            <Stack.Screen name='AuthLoadingScreen' component={AuthLoadingScreen}/>
             <Stack.Screen name="SignIn" component={SignIn} />
-            {/* <Stack.Screen name="chargerSelection" component={Charger_Selection}/> */}
+            <Stack.Screen name="chargerSelection" component={Charger_Selection}/>
             <Stack.Screen name='Newhome' component={Newhome}/> 
     <Stack.Screen name='Charging_History' component={Charging_History}/>
       <Stack.Screen name='finalhomepage' component={PublicHomePageFinal}/>

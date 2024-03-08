@@ -73,7 +73,7 @@ const ModalRadhe = ({setActiveButton,activeButton,setChargingCost,SetTimeinSec,s
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-      <Image source={require("../../assets/Union.png")} style={styles.image} />
+      {/* <Image source={require("../../assets/Union.png")} style={styles.image} /> */}
             <Timer setuserTimeHours={setuserTimeHours} userTimeHours={userTimeHours} userTimeMinutes={userTimeMinutes} setuserTimeMinutes={setuserTimeMinutes}/>
             {/* <Button title="set time" onPress={onSetclick}  style={styles.button}/> */}
             <TouchableOpacity onPress={onSetclick} style={styles.buttoninModal}>

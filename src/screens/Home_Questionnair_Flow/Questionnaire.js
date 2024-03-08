@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, View, KeyboardAvoidingView, Platform } from 'react-native'
-import Quesheader from './Quesheader'
 import Quesimg from './Quesimg'
 import { ScrollView } from 'react-native-gesture-handler'
+import App_top_Header from '../App_top_Header'
 
 const Questionnaire = ({ navigation }) => {
   const behavior = Platform.OS === 'ios' ? 'padding' : '100'
@@ -15,7 +15,11 @@ const Questionnaire = ({ navigation }) => {
     >
       <ScrollView>
         <View style={styles.container}>
-          <Quesheader title={'Questionnaire'} navigation={navigation} />
+          <App_top_Header
+            title={'Questionnaire'}
+            navigation={navigation}
+            color={'#C1E0C2'}
+          />
           <Quesimg navigation={navigation} />
         </View>
       </ScrollView>

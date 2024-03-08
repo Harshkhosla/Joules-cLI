@@ -4,13 +4,13 @@ import {
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
-import HomeCharging_pageHeader from '../HomeCharging_pageHeader'
 import React, { useState } from 'react'
 import ChargingHomepage_Buttons from '../../components/ChargingHomepage_Buttons'
-import Set_ScheduleMode from '../Set_ScheduleMode'
+import Set_ScheduleMode from './Set_ScheduleMode'
 import HomeChargincModeButtons from '../../components/HomeChargincModeButtons'
 import BalanceMode from './BalanceMode'
 import EcoMode from './EcoMode'
+import App_top_Header from '../App_top_Header'
 
 const HomeCharging_Homepage = ({ navigation }) => {
   const [isSchedule, setisSchedule] = useState(false)
@@ -19,10 +19,11 @@ const HomeCharging_Homepage = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <HomeCharging_pageHeader
-        navigation={navigation}
+      <App_top_Header
         title={'Hello Aman!'}
+        navigation={navigation}
         color={'#C1E0C2'}
+        isHome={true}
       />
       <View style={styles.contents}>
         <View style={styles.statusBox}>

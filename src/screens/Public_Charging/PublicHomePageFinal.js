@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
 import React, { useState } from 'react'
 import SetCost from './SetCost'
-import PublicHomePageHeader from './PublicHomePageHeader'
 import NewAllButton from '../../components/NewAllButton'
 import HomeScreenCircles from '../HomeScreenCircle'
 import {
@@ -10,6 +9,7 @@ import {
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
 import Checker from '../Checker'
+import App_top_Header from '../App_top_Header'
 
 const PublicHomePageFinal = ({ navigation }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -24,7 +24,12 @@ const PublicHomePageFinal = ({ navigation }) => {
     <View style={styles.container}>
       {isModalOpen ? <View style={styles.modalopen}></View> : ''}
 
-      <PublicHomePageHeader navigation={navigation} />
+      <App_top_Header
+        title={`Hello Aman!`}
+        navigation={navigation}
+        color={'#C1E0C2'}
+        isHome={true}
+      />
       <View style={styles.contents}>
         <View style={styles.statusBox}>
           <View

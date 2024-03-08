@@ -6,14 +6,17 @@ import {
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
-
-import Quesheader from './Quesheader'
 import { ScrollView } from 'react-native-gesture-handler'
+import App_top_Header from '../App_top_Header'
 
 const QuesVecDetails = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Quesheader title={'Cars Added'} navigation={navigation} />
+      <App_top_Header
+        title={'Cars Added'}
+        navigation={navigation}
+        color={'#C1E0C2'}
+      />
       <View style={styles.detailsContainer}>
         <View style={styles.CarContainer}>
           <ScrollView showsVerticalScrollIndicator={false}>
