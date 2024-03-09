@@ -64,7 +64,7 @@ const SignIn = ({ navigation }) => {
                 >
                   Login
                 </Text>
-                <Text style={[{ fontSize: fp(4) }]}>|</Text>
+                <Text style={[{ fontSize: fp(4),color:"#BFBFBF" }]}>|</Text>
                 <Text
                   style={
                     !login ? styles.TogglerText : styles.onclickTogglerText

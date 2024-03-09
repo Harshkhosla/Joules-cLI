@@ -1,38 +1,34 @@
+import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import {
   responsiveHeight as hp,
+  responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
+import { useNavigation } from '@react-navigation/native'
 
-const App_top_Header = ({ navigation, title, color, isHome }) => {
+const HomeCharging_pageHeader = ({ navigation, title, color }) => {
   return (
     <View style={[styles.container, { backgroundColor: color }]}>
       <View style={styles.Icon}>
-        {isHome ? (
-          <TouchableOpacity onPress={() => navigation.openDrawer()}>
-            <Image
-              style={{ width: 35, resizeMode: 'contain' }}
-              source={require('../assets/menuicon.png')}
-            />
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon name="arrowleft" size={25} color="#118615" />
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity >
+          <Image
+            style={{ width: 35, resizeMode: 'contain' }}
+            source={require('../assets/menuicon.png')}
+          />
+        </TouchableOpacity>
         <Text style={styles.Text}>{title}</Text>
       </View>
     </View>
   )
 }
 
-export default App_top_Header
+export default HomeCharging_pageHeader
 
 const styles = StyleSheet.create({
   container: {
-    height: hp(11),
+    height: hp(15),
     backgroundColor: '#C1E0C2',
     borderBottomRightRadius: 20,
     borderBottomLeftRadius: 20,
@@ -42,8 +38,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 15,
-    gap: 5,
-    marginBottom: 10,
+    marginBottom: 8,
   },
   Text: {
     fontSize: fp(3),

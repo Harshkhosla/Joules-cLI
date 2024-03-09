@@ -11,7 +11,7 @@ const InputBoxTwo = ({ label, placeholder ,value,setValue,objectData}) => {
       <View style={styles.lableContainer}>
         <Text style={styles.lable}>{label}</Text>
       </View>
-      <TextInput style={styles.input} placeholder={placeholder} value={value} onChangeText={(e)=>{setValue({...objectData,[label]:e})}}/>
+      <TextInput style={styles.input} placeholderTextColor={"#BEBEBE"} placeholder={placeholder} value={value} onChangeText={(e)=>{setValue({...objectData,[label]:e})}}/>
       {/* <TextInput style={styles.input} placeholder={placeholder} value={value} onChangeText={(e)=>{handleSetData(e)}}/> */}
     </View>
   )

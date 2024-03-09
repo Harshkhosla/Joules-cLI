@@ -192,7 +192,7 @@ const SetCost = ({
                   }}
                 >
                   <Image source={require('../../assets/paytm.png')} />
-                  <Text>Pay Using</Text>
+                  <Text style={{color:"#9A9999"}}>Pay Using</Text>
                   <Image source={require('../../assets/arrow_drop_up.png')} />
                 </View>
                 <Text
@@ -200,6 +200,7 @@ const SetCost = ({
                     fontSize: 16,
                     fontFamily: 'sans-serif',
                     marginLeft: -40,
+                    color:"#636363"
                   }}
                 >
                   Paytm UPI
@@ -234,7 +235,7 @@ const SetCost = ({
 const ChargingCost = ({ setInputCost, inputCost }) => {
   return (
     <View style={{ marginVertical: 10 }}>
-      <Text style={{ marginTop: 5 }}>Enter Amount :-</Text>
+      <Text style={{ marginTop: 5 ,color:"#6C6C6C",fontSize:19,fontWeight:"600"}}>Enter Amount </Text>
       <View
         style={{
           height: 50,
@@ -254,8 +255,9 @@ const ChargingCost = ({ setInputCost, inputCost }) => {
             color: 'black',
             fontSize: 20,
           }}
+          placeholderTextColor={"#DBDBDB"}
           keyboardType="numeric"
-          placeholder="For ex ₹444"
+          placeholder="For example ₹50"
           onChangeText={(text) => {
             setInputCost(text)
           }}
@@ -311,7 +313,7 @@ const ChargingSetTime = ({ SetTimeinSec, settime, setInputCost }) => {
   }
   return (
     <View style={{ marginVertical: 10 }}>
-      <Text style={{ marginTop: 5 }}>Set Charging Hours :-</Text>
+      <Text style={{ marginTop: 5,color:"#6C6C6C",fontSize:18,fontWeight:"600"}}>Set Charging Hours</Text>
       <View style={styles.setTimeContainer}>
         <TouchableOpacity
           style={[

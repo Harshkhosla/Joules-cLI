@@ -26,7 +26,7 @@ const Charger_Selection = ({ navigation }) => {
   const onChargerClick = () => {
     console.log('click hua')
     // Alert.alert("currently Not Available")
-    navigation.navigate('Welcomepage')
+    // navigation.navigate('Welcomepage')
     setisModalVisible(true)
   }
   useFocusEffect(
@@ -118,7 +118,7 @@ const Charger_Selection = ({ navigation }) => {
                   onPress={() => navigation.navigate('Newhome')}
                 >
                   <Text style={styles.link}>Public Charger</Text>
-                  <Text>(Apartments, Offices, Semi-public areas)</Text>
+                  <Text style={{color:"#717171"}}>(Apartments, Offices, Semi-public areas)</Text>
                 </TouchableOpacity>
               </View>
             </View>

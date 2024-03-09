@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Image, View, BackHandler } from 'react-native'
+import { StyleSheet, Image, View, BackHandler, Text } from 'react-native'
 import Modal from 'react-native-modal'
 
 const CustomModal = ({ visible, onClose, children }) => {
@@ -34,7 +34,7 @@ const CustomModal = ({ visible, onClose, children }) => {
     >
       <View style={styles.modalContainer}>
         <View style={styles.contentContainer}>
-          {children}
+          <Text style={{color:"#717171",fontWeight:"800",fontSize:30}}>{children}</Text>
           <Image
             source={require('../assets/Union.png')}
             style={styles.imageStyle}

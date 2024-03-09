@@ -303,7 +303,7 @@ const Newhome = ({ navigation }) => {
         </View>
         <View style={styles.powerAndCharging}>
           <View style={{ justifyContent: 'center' }}>
-            <Text>Power Used</Text>
+            <Text style={{color:"#9A9A9A"}}>Power Used</Text>
           </View>
           <View style={{ backgroundColor: '#EDECEC', width: 1 }}></View>
           <View style={{ justifyContent: 'center' }}>
@@ -314,7 +314,7 @@ const Newhome = ({ navigation }) => {
                 style={[styles.Icons, { height: 20 }]}
                 source={require('../../assets/power.png')}
               />
-              <Text>Charger- -- kwh</Text>
+              <Text style={{color:"#9A9A9A"}}>Charger- -- kwh</Text>
             </View>
           </View>
         </View>
@@ -345,7 +345,10 @@ const Newhome = ({ navigation }) => {
               </View>
             </View>
           </View>
-          <Wave size={200} progress={40} />
+          <View style={{marginLeft:70}}>
+             <Wave size={220} progress={40} />
+          </View>
+
           <View style={styles.potIconContainer}>
             <Image
               style={styles.portIcon}

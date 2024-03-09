@@ -166,7 +166,7 @@ export default function Dashboard({ navigation }) {
       />
 
       <View style={styles.containerContentBox}>
-        <Text style={{ fontSize: 18, fontWeight: '400' }}>
+        <Text style={{ fontSize: 18, fontWeight: '400',color:"#707070" }}>
           To start charging, please scan the
           <Text style={{ color: 'green' }}> QR Code </Text>
         </Text>
@@ -187,7 +187,7 @@ export default function Dashboard({ navigation }) {
             }
             bottomContent={
               <TouchableOpacity style={styles.buttonTouchable}>
-                <Text style={styles.buttonText}>OK. Got it!</Text>
+                {/* <Text style={styles.buttonText}>OK. Got it!</Text> */}
               </TouchableOpacity>
             }
           />
