@@ -1114,7 +1114,7 @@ export const SubcribingtoTopic = (topic) => {
 const allClients = [];
 // =-------------------------------------------------------------------------------------Start  charging for public-------------------//
 
-export const publicstartCharging = (Porduct_Key,onClose,startTimer,setButtonText,SetstartTime) => {
+export const publicstartCharging = (Porduct_Key,onClose,startTimer,setButtonText,SetstartTime,setcheckChargingStarted) => {
 // Porduct_Key=publicProductKey
   console.log("Porduct_Key in publick start charging",Porduct_Key)
 
@@ -1164,6 +1164,7 @@ export const publicstartCharging = (Porduct_Key,onClose,startTimer,setButtonText
           console.log(`${Porduct_Key}_Updates:`, message.payloadString)
            if(message.payloadString=="Charging Started"){
              Alert.alert("charging started")
+             setcheckChargingStarted(true)
             const response= getCurrenttime()
             SetstartTime(response)
              setButtonText("Stop Charging")
