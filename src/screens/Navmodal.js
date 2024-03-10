@@ -110,10 +110,13 @@ const Navmodal = ({ naveopen, closeNave }) => {
                     alignItems: 'center',
                   }}
                 >
-                  <Image
-                    source={items.Nav_icon}
-                    style={{ height: 20, width: 20, resizeMode: 'contain' }}
-                  />
+                  <View style={{ padding: 3, backgroundColor: '#F7F7F7' }}>
+                    <Image
+                      source={items.Nav_icon}
+                      style={{ height: 18, width: 18, resizeMode: 'contain' }}
+                    />
+                  </View>
+
                   <Text style={{ fontSize: 16, color: '#5F615F' }}>
                     {items.Nav_name}
                   </Text>
@@ -165,6 +168,7 @@ const styles = StyleSheet.create({
     padding: 8,
     gap: 5,
     justifyContent: 'space-between',
+    marginTop: 5,
     marginBottom: 20,
     alignItems: 'center',
     borderRadius: 20,
@@ -179,7 +183,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   logout: {
-    marginTop: 20,
+    marginTop: 5,
     flexDirection: 'row',
     justifyContent: 'center',
     width: '40%',
