@@ -55,39 +55,36 @@ const Stack = createStackNavigator()
 
 const Drawer = createDrawerNavigator()
 
-
 export default function App() {
   const AuthLoadingScreen = ({ navigation }) => {
     useEffect(() => {
       // AsyncStorage se userToken fetch karein
       const checkSignInStatus = async () => {
         try {
-          const userToken = await AsyncStorage.getItem('Authtoken');
-          console.log("usertoken",userToken);
+          const userToken = await AsyncStorage.getItem('Authtoken')
+          console.log('usertoken', userToken)
           // Agar userToken hai, toh newhome screen pe navigate karein
           if (userToken) {
-            navigation.replace('chargerSelection');
+            navigation.replace('chargerSelection')
           } else {
             // Agar userToken nahi hai, toh authentication screen pe navigate karein
-            navigation.replace('SignIn');
+            navigation.replace('SignIn')
           }
         } catch (error) {
-          console.error('Error fetching userToken:', error);
+          console.error('Error fetching userToken:', error)
         }
-      };
-  
-      checkSignInStatus();
-    }, [navigation]);
-  
+      }
+
+      checkSignInStatus()
+    }, [navigation])
+
     // return (
     //   // Koi loading spinner ya indicator add karein agar required ho
     //   <YourLoadingComponent />
     // );
-  };
+  }
   return (
-
     <Sample store={Store}>
-     
       <Provider theme={theme}>
         <NavigationContainer>
           <Stack.Navigator
@@ -96,21 +93,32 @@ export default function App() {
               headerShown: false,
             }}
           >
-
             {/* <Stack.Screen name='addrfid' component={AddRfid}/>   */}
             {/* <Stack.Screen name='support2' component={HeaderWithArrow}/>   */}
-            <Stack.Screen name='AuthLoadingScreen' component={AuthLoadingScreen}/>
-            <Stack.Screen name="SignIn" component={SignIn} />
-            <Stack.Screen name="chargerSelection" component={Charger_Selection}/>
-            <Stack.Screen name='Newhome' component={Newhome}/> 
-    <Stack.Screen name='Charging_History' component={Charging_History}/>
-      <Stack.Screen name='finalhomepage' component={PublicHomePageFinal}/>
+            {/* <Stack.Screen name='AuthLoadingScreen' component={AuthLoadingScreen}/>
+            <Stack.Screen name="SignIn" component={SignIn} /> */}
+            <Stack.Screen
+              name="chargerSelection"
+              component={Charger_Selection}
+            />
+            <Stack.Screen name="Newhome" component={Newhome} />
+            <Stack.Screen
+              name="Charging_History"
+              component={Charging_History}
+            />
+            <Stack.Screen
+              name="finalhomepage"
+              component={PublicHomePageFinal}
+            />
             <Stack.Screen name="MessagePage" component={MessagePage} />
             <Stack.Screen name="Questionnaire" component={Questionnaire} />
             <Stack.Screen name="QuesLive" component={QuesLive} />
             <Stack.Screen name="QuesVecDetails" component={QuesVecDetails} />
-            <Stack.Screen name='Welcomepage' component={Welcomepage}/>
-            <Stack.Screen name="HomeCharging_Homepage" component={HomeCharging_Homepage}/>
+            <Stack.Screen name="Welcomepage" component={Welcomepage} />
+            <Stack.Screen
+              name="HomeCharging_Homepage"
+              component={HomeCharging_Homepage}
+            />
             <Stack.Screen name="Graphs" component={Meter} />
             <Stack.Screen name="PublicScanner" component={PublicScanner} />
             <Stack.Screen name="Load" component={Load} />
@@ -118,7 +126,7 @@ export default function App() {
             <Stack.Screen name="Car" component={Car} />
             <Stack.Screen name="House" component={House} />
             <Stack.Screen name="Date" component={Date} />
-            <Stack.Screen name="Home" component={Home} /> 
+            <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="QuesAddVhicle" component={QuesAddVhicle} />
             <Stack.Screen name="Wifi" component={Wifi} />
             <Stack.Screen name="Flat" component={Flat} />
@@ -135,9 +143,8 @@ export default function App() {
             <Stack.Screen name="AddCharger" component={AddCharger} />
             <Stack.Screen name="Notifications" component={Notifications} />
             <Stack.Screen name="ChargerSettings" component={ChargerSettings} />
-           
           </Stack.Navigator>
-          <Toast/>
+          <Toast />
         </NavigationContainer>
       </Provider>
     </Sample>

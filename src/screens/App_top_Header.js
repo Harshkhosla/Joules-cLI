@@ -1,17 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import {
   responsiveHeight as hp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
+import Navmodal from './Navmodal'
 
 const App_top_Header = ({ navigation, title, color, isHome }) => {
+  const [isNavOpen, setNavOpen] = useState(false)
+
+  const naveClose = () => {
+    setNavOpen(false)
+  }
+
   return (
     <View style={[styles.container, { backgroundColor: color }]}>
       <View style={styles.Icon}>
         {isHome ? (
-          <TouchableOpacity onPress={() => navigation.openDrawer()}>
+          <TouchableOpacity onPress={() => setNavOpen(true)}>
             <Image
               style={{ width: 35, resizeMode: 'contain' }}
               source={require('../assets/menuicon.png')}
@@ -24,6 +31,7 @@ const App_top_Header = ({ navigation, title, color, isHome }) => {
         )}
         <Text style={styles.Text}>{title}</Text>
       </View>
+      <Navmodal naveopen={isNavOpen} closeNave={naveClose} />
     </View>
   )
 }

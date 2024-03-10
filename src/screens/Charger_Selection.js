@@ -118,7 +118,9 @@ const Charger_Selection = ({ navigation }) => {
                   onPress={() => navigation.navigate('Newhome')}
                 >
                   <Text style={styles.link}>Public Charger</Text>
-                  <Text style={{color:"#717171"}}>(Apartments, Offices, Semi-public areas)</Text>
+                  <Text style={{ color: '#717171' }}>
+                    (Apartments, Offices, Semi-public areas)
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>

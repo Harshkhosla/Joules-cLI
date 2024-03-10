@@ -303,7 +303,7 @@ const Newhome = ({ navigation }) => {
         </View>
         <View style={styles.powerAndCharging}>
           <View style={{ justifyContent: 'center' }}>
-            <Text style={{color:"#9A9A9A"}}>Power Used</Text>
+            <Text style={{ color: '#9A9A9A' }}>Power Used</Text>
           </View>
           <View style={{ backgroundColor: '#EDECEC', width: 1 }}></View>
           <View style={{ justifyContent: 'center' }}>
@@ -314,7 +314,7 @@ const Newhome = ({ navigation }) => {
                 style={[styles.Icons, { height: 20 }]}
                 source={require('../../assets/power.png')}
               />
-              <Text style={{color:"#9A9A9A"}}>Charger- -- kwh</Text>
+              <Text style={{ color: '#9A9A9A' }}>Charger- -- kwh</Text>
             </View>
           </View>
         </View>
@@ -345,8 +345,8 @@ const Newhome = ({ navigation }) => {
               </View>
             </View>
           </View>
-          <View style={{marginLeft:70}}>
-             <Wave size={220} progress={40} />
+          <View style={{ alignSelf: 'center', paddingVertical: 5 }}>
+            <Wave size={150} progress={40} />
           </View>
 
           <View style={styles.potIconContainer}>
@@ -401,10 +401,10 @@ const Newhome = ({ navigation }) => {
         </View>
         <Text
           style={{
-            color: 'green',
+            color: '#118615',
             textAlign: 'center',
             fontSize: 12,
-            padding: 8,
+            paddingTop: 8,
           }}
         >
           Start Charging and Contribute for your mother earth!

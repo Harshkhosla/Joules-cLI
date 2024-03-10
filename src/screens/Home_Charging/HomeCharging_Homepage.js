@@ -11,6 +11,7 @@ import HomeChargincModeButtons from '../../components/HomeChargincModeButtons'
 import BalanceMode from './BalanceMode'
 import EcoMode from './EcoMode'
 import App_top_Header from '../App_top_Header'
+import Wave from '../../components/wave'
 
 const HomeCharging_Homepage = ({ navigation }) => {
   const [isSchedule, setisSchedule] = useState(false)
@@ -45,11 +46,12 @@ const HomeCharging_Homepage = ({ navigation }) => {
               style={{
                 alignItems: 'center',
                 width: '60%',
-                justifyContent: 'center',
+                justifyContent: 'space-between',
                 // backgroundColor: 'orange',
               }}
             >
               <Text>Balance Mode</Text>
+              <Wave size={150} progress={50} />
 
               <View
                 style={{
