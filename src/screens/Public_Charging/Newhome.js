@@ -25,7 +25,7 @@ const Newhome = ({ navigation }) => {
   const [ChargingEnergy, setChargingEnergy] = useState('')
   const [getsample, setGetSampledata] = useState(true)
   const [onstoChargingCost, setOnStopChargingCost] = useState('')
-
+  const [checkChargingStarted,setcheckChargingStarted]=useState(false)
   const [ChargingCost, setChargingCost] = useState('')
   const [startTime, SetstartTime] = useState(1)
   const [EndTime, SetEndTime] = useState(4)
@@ -106,6 +106,7 @@ const Newhome = ({ navigation }) => {
       console.log('Total Time Charge', data)
       dispatch(publicstopCharging(data, time, SetEndTime))
       handleResetClick()
+      setcheckChargingStarted(false)
       setButtonText('Scan QR')
       setGetSampledata(false)
       setChargingEnergy('')
@@ -151,6 +152,7 @@ const Newhome = ({ navigation }) => {
       const totalEnergyTime = formatTime(totalSeconds)
       dispatch(publicstopCharging(data, totalEnergyTime))
       setGetSampledata(false)
+      setcheckChargingStarted(false)
       handleResetClick()
       setButtonText('Scan QR')
       setChargingEnergy('')
@@ -161,6 +163,7 @@ const Newhome = ({ navigation }) => {
     // if (SampleOutputCurrent < 0.1) {
     //   const totalEnergyTime = formatTime(totalSeconds)
     //   dispatch(publicstopCharging(data, totalEnergyTime, SetEndTime))
+    //   setcheckChargingStarted(false)
     //   setGetSampledata(false)
     //   handleResetClick()
     //   setButtonText('Scan QR')
@@ -180,6 +183,7 @@ const Newhome = ({ navigation }) => {
       const TotalTimeCharge = formatTime(totalTime)
       console.log('Total Time Charge', TotalTimeCharge)
       dispatch(publicstopCharging(Product_Key, TotalTimeCharge, SetEndTime))
+      setcheckChargingStarted(false)
       handleResetClick()
       setButtonText('Scan QR')
       setGetSampledata(false)
@@ -276,9 +280,9 @@ const Newhome = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {/* <Button title="stopChargig" onPress={getSampleData} disabled={isTimerRunning} /> */}
-      {/* <Button title="del pid" onPress={handleRemoveItem} />
-      <Button title="know length" onPress={generateHoursArray} />
-      <Button title="navigate to chargerhistory" onPress={generateHoursArray} />*/}
+      {/* <Button title="del pid" onPress={handleRemoveItem} /> */}
+      {/* <Button title="know length" onPress={generateHoursArray} />
+      <Button title="navigate to chargerhistory" onPress={generateHoursArray} /> */}
       <App_top_Header
         title={`Hello Aman!`}
         navigation={navigation}
@@ -298,8 +302,17 @@ const Newhome = ({ navigation }) => {
           ></View>
           <Text style={{ color: '#717171' }}>Status:</Text>
           <Text style={{ paddingLeft: 10, color: colorChange }}>
-            {data ? 'Your charger is connected' : 'Not Connected'}
-          </Text>
+      {data && checkChargingStarted ? (
+    // Condition: Both AsyncStorage data and charging started
+    "Charging"
+  ) : data ? (
+    // Condition 1: Only AsyncStorage data is available
+   "Your charger is connected"
+  ) : (
+    // Default case: No data available
+    "Your charger is connected"
+  )}
+ </Text>
         </View>
         <View style={styles.powerAndCharging}>
           <View style={{ justifyContent: 'center' }}>
@@ -345,9 +358,25 @@ const Newhome = ({ navigation }) => {
               </View>
             </View>
           </View>
-          <View style={{marginLeft:70}}>
-             <Wave size={220} progress={40} />
-          </View>
+          <View style={{marginLeft:50}}>
+  {data && checkChargingStarted ? (
+    // Condition: Both AsyncStorage data and charging started
+    <Wave size={220} progress={40} />
+  ) : data ? (
+    // Condition 1: Only AsyncStorage data is available
+    <Image
+      source={require("../../assets/GreenWavesPhoto.png")}
+      style={{ width: 200, height: 200, resizeMode: 'contain' }}
+    />
+  ) : (
+    // Default case: No data available
+    <Image
+      source={require("../../assets/pidNotAvailable.png")}
+      style={{ width: 200, height: 200, resizeMode: 'contain' }}
+    />
+  )}
+</View>
+
 
           <View style={styles.potIconContainer}>
             <Image
@@ -419,6 +448,7 @@ const Newhome = ({ navigation }) => {
         SetTimeinSec={SetTimeinSec}
         setOnStopChargingCost={setOnStopChargingCost}
         SetstartTime={SetstartTime}
+        setcheckChargingStarted={setcheckChargingStarted}
       />
     </View>
   )
@@ -449,9 +479,16 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    elevation: 2,
     borderRadius: 8,
-  },
+    // Android
+    elevation: 5,
+    // iOS
+    shadowColor: 'green',
+    shadowOffset: { width: 10, height: 6 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+  }
+  ,
   powerAndCharging: {
     height: 40,
     width: '85%',

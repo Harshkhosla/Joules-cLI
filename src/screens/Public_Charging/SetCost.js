@@ -32,7 +32,8 @@ const SetCost = ({
   setButtonText,
   SetTimeinSec,
   setOnStopChargingCost,
-  SetstartTime
+  SetstartTime,
+  setcheckChargingStarted
 }) => {
   const dispatch = useDispatch()
   const [ShowSetCost, SetShowSetCost] = useState(true)
@@ -85,7 +86,8 @@ const SetCost = ({
           onClose,
           startTimer,
           setButtonText,
-          SetstartTime
+          SetstartTime,
+          setcheckChargingStarted
         )
       )
     } else {
@@ -192,6 +194,7 @@ const SetCost = ({
                   }}
                 >
                   <Image source={require('../../assets/paytm.png')} />
+
                   <Text style={{color:"#9A9999"}}>Pay Using</Text>
                   <Image source={require('../../assets/arrow_drop_up.png')} />
                 </View>
