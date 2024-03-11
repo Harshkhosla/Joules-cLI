@@ -33,7 +33,8 @@ const SetCost = ({
   SetTimeinSec,
   setOnStopChargingCost,
   SetstartTime,
-  setcheckChargingStarted
+  setcheckChargingStarted,
+  handleStopCharging
 }) => {
   const dispatch = useDispatch()
   const [ShowSetCost, SetShowSetCost] = useState(true)
@@ -43,13 +44,14 @@ const SetCost = ({
   useEffect(() => {
     setInputCost(inputvalue)
   }, [open])
+
   const handlePayment = () => {
     const options = {
       description: 'Payment for your order',
       image: 'https://yourwebsite.com/logo.png',
       currency: 'INR',
       key: 'rzp_live_V4Palfsx7GsPm3',
-      amount: '100', // amount in paisa
+      amount: inputCost*100, // amount in paisa
       name: 'Your Company Name',
       prefill: {
         email: 'customer@example.com',
@@ -63,6 +65,10 @@ const SetCost = ({
       .then((data) => {
         console.log('Payment success:', data)
         Alert.alert('Payment Success', 'Payment was successful.')
+        if(data && data.razorpay_payment_id ){
+          console.log("navigate to start charging")
+          startCharging()
+        }
       })
       .catch((error) => {
         console.error('Payment Error:', error)
@@ -87,7 +93,8 @@ const SetCost = ({
           startTimer,
           setButtonText,
           SetstartTime,
-          setcheckChargingStarted
+          setcheckChargingStarted,
+          handleStopCharging
         )
       )
     } else {
@@ -212,6 +219,7 @@ const SetCost = ({
               <TouchableOpacity
                 style={styles.payButton}
                 onPress={handlePayment}
+                // onPress={startCharging}
               >
                 <View>
                   <Text style={styles.payButtonText}>₹{inputCost}</Text>
