@@ -48,7 +48,7 @@ const SetCost = ({
       description: 'Payment for your order',
       image: 'https://yourwebsite.com/logo.png',
       currency: 'INR',
-      key: 'rzp_test_upusuJUWtcZaWm',
+      key: 'rzp_live_V4Palfsx7GsPm3',
       amount: '100', // amount in paisa
       name: 'Your Company Name',
       prefill: {
@@ -211,7 +211,7 @@ const SetCost = ({
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.payButton}
-                onPress={startCharging}
+                onPress={handlePayment}
               >
                 <View>
                   <Text style={styles.payButtonText}>₹{inputCost}</Text>
