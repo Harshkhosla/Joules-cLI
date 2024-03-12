@@ -1114,7 +1114,7 @@ export const SubcribingtoTopic = (topic) => {
 const allClients = [];
 // =-------------------------------------------------------------------------------------Start  charging for public-------------------//
 
-export const publicstartCharging = (Porduct_Key,onClose,startTimer,setButtonText,SetstartTime,setcheckChargingStarted) => {
+export const publicstartCharging = (Porduct_Key,onClose,startTimer,setButtonText,SetstartTime,setcheckChargingStarted,handleStopCharging) => {
 // Porduct_Key=publicProductKey
   console.log("Porduct_Key in publick start charging",Porduct_Key)
 
@@ -1171,6 +1171,12 @@ export const publicstartCharging = (Porduct_Key,onClose,startTimer,setButtonText
              startTimer()
              onClose()
           }
+          if(message.payloadString=="Charging Completed"){
+            Alert.alert("Automatic Disconnect by Device")
+            handleStopCharging("Stop Charging","StoppedByDevice")
+            disconnectAllClients()
+
+         }
         }
         
         
@@ -1300,7 +1306,7 @@ export const publicstopCharging = (Porduct_Key,totalTime,SetEndTime) => {
             console.log(`${Porduct_Key}_Updates:`, message.payloadString)
              if(message.payloadString=="Charging Completed"){
               const response=getCurrenttime()
-              Alert.alert(`charging completed ${totalTime}`)
+              Alert.alert(`Charging Completed ${totalTime}`)
               SetEndTime(response)
                disconnectAllClients();
             }
