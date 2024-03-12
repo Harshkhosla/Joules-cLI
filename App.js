@@ -46,10 +46,12 @@ import Support from './src/components/Support'
 import HomeScreen from './src/components/Support'
 import { TouchableOpacity, View } from 'react-native'
 import Support2 from './src/components/ChatSupport'
-import DusraScreen from './radhe'
+import DusraScreen from './RadhePractice/radhe'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import HeaderWithArrow from './src/components/ChatSupport'
 import AddRfid from './src/components/AddRfid'
+import MyComponent from './RadhePractice/radhe'
+import SLide from './RadhePractice/slide'
 
 const Stack = createStackNavigator()
 
@@ -93,10 +95,11 @@ export default function App() {
               headerShown: false,
             }}
           >
-            {/* <Stack.Screen name='addrfid' component={AddRfid}/>   */}
-            {/* <Stack.Screen name='support2' component={HeaderWithArrow}/>   */}
-            {/* <Stack.Screen name='AuthLoadingScreen' component={AuthLoadingScreen}/>
-            <Stack.Screen name="SignIn" component={SignIn} /> */}
+            {/* <Stack.Screen name='addrfid' component={SLide}/>   */}
+            {/* <Stack.Screen name='support2' component={MyComponent}/>   */}
+
+            <Stack.Screen name='AuthLoadingScreen' component={AuthLoadingScreen}/>
+            <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen
               name="chargerSelection"
               component={Charger_Selection}
