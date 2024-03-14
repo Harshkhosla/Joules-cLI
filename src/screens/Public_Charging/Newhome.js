@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Alert,
   Button,
   Image,
@@ -17,6 +18,7 @@ import Wave from '../../components/wave'
 import App_top_Header from '../App_top_Header'
 const Newhome = ({ navigation }) => {
   const dispatch = useDispatch()
+  const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [colorChange, setColorChange] = useState('#DBDBDB')
   const [data, setData] = useState()
@@ -31,6 +33,7 @@ const Newhome = ({ navigation }) => {
   const [EndTime, SetEndTime] = useState(4)
   const [checkStopbuttonClick, setStopButtonClick] = useState(true)
   const [sendDataToChart, setSendDataToChart] = useState([])
+  const [name, setName] = useState("User");
   let SampleDataaa = useSelector((state) => state?.userReducers?.SetEnergy)
   const SamplePowerData = useSelector((state) => state?.userReducers?.SetPower)
   const SampleOutputCurrent = useSelector(
@@ -203,7 +206,7 @@ const Newhome = ({ navigation }) => {
         setChargingEnergy('')
         setChargingCost('')
       } else {
-        navigation.navigate('PublicScanner')
+        navigation.navigate('PublicScanner',{name:name})
         // setData(true);
         setTotalTime(0)
       }
@@ -280,6 +283,23 @@ const Newhome = ({ navigation }) => {
     console.log('newGeneratedHours', newGeneratedHours)
     setSendDataToChart(newGeneratedHours)
   }
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const storedName = await AsyncStorage.getItem("name");
+        console.log("storedName",storedName);
+        if (storedName) {
+          setName(storedName);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
   return (
     <View style={styles.container}>
       {/* <Button title="stopChargig" onPress={getSampleData} disabled={isTimerRunning} /> */}
@@ -287,10 +307,11 @@ const Newhome = ({ navigation }) => {
       {/* <Button title="know length" onPress={generateHoursArray} />
       <Button title="navigate to chargerhistory" onPress={generateHoursArray} /> */}
       <App_top_Header
-        title={`Hello Aman!`}
+        title={`Hello ${name}!`}
         navigation={navigation}
         color={'#C1E0C2'}
         isHome={true}
+        name={name}
       />
       <View style={styles.contents}>
         <View style={styles.statusBox}>
@@ -328,7 +349,7 @@ const Newhome = ({ navigation }) => {
                 style={[styles.Icons, { height: 20 }]}
                 source={require('../../assets/power.png')}
               />
-              <Text style={{ color: '#9A9A9A' }}>Charger- -- kwh</Text>
+              <Text style={{ color: '#9A9A9A' }}>Charger- {SamplePowerData?SamplePowerData:"0"} kw</Text>
             </View>
           </View>
         </View>
@@ -362,9 +383,9 @@ const Newhome = ({ navigation }) => {
           <View style={{ alignSelf: 'center', paddingVertical: 5 }}>
           {data && checkChargingStarted
               ? // Condition: Both AsyncStorage data and charging started
-              <Wave size={150} progress={40} />
-                
-              : data
+              // <Wave size={150} progress={40} />
+              <Text>hello</Text>
+                : data
               ? // Condition 1: Only AsyncStorage data is available
                <Image source={require("../../assets/GreenWavesPhoto.png")} style={{height:190,width:190}}/>
               : // Default case: No data available

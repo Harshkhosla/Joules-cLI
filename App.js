@@ -45,52 +45,50 @@ import Customdrawer from './Customdrawer'
 import Support from './src/components/Support'
 import HomeScreen from './src/components/Support'
 import { TouchableOpacity, View } from 'react-native'
-import Support2 from './src/components/ChatSupport'
-import DusraScreen from './RadhePractice/radhe'
+import ExpertSupport from './src/components/ExpertSupport'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import HeaderWithArrow from './src/components/ChatSupport'
 import AddRfid from './src/components/AddRfid'
-import MyComponent from './RadhePractice/radhe'
-import SLide from './RadhePractice/slide'
+import AuthLoadingScreen from './src/components/OpenSplash'
+
 
 const Stack = createStackNavigator()
 
 const Drawer = createDrawerNavigator()
 
 export default function App() {
-  const AuthLoadingScreen = ({ navigation }) => {
-    useEffect(() => {
-      // AsyncStorage se userToken fetch karein
-      const checkSignInStatus = async () => {
-        try {
-          const userToken = await AsyncStorage.getItem('Authtoken')
-          console.log('usertoken', userToken)
-          // Agar userToken hai, toh newhome screen pe navigate karein
-          if (userToken) {
-            navigation.replace('chargerSelection')
-          } else {
-            // Agar userToken nahi hai, toh authentication screen pe navigate karein
-            navigation.replace('SignIn')
-          }
-        } catch (error) {
-          console.error('Error fetching userToken:', error)
-        }
-      }
+  // const AuthLoadingScreen = ({ navigation }) => {
+  //   useEffect(() => {
+  //     // AsyncStorage se userToken fetch karein
+  //     const checkSignInStatus = async () => {
+  //       try {
+  //         const userToken = await AsyncStorage.getItem('Authtoken')
+  //         console.log('usertoken', userToken)
+  //         // Agar userToken hai, toh newhome screen pe navigate karein
+  //         if (userToken) {
+  //           navigation.replace('chargerSelection')
+  //         } else {
+  //           // Agar userToken nahi hai, toh authentication screen pe navigate karein
+  //           navigation.replace('SignIn')
+  //         }
+  //       } catch (error) {
+  //         console.error('Error fetching userToken:', error)
+  //       }
+  //     }
 
-      checkSignInStatus()
-    }, [navigation])
+  //     checkSignInStatus()
+  //   }, [navigation])
 
-    // return (
-    //   // Koi loading spinner ya indicator add karein agar required ho
-    //   <YourLoadingComponent />
-    // );
-  }
+  //   // return (
+  //   //   // Koi loading spinner ya indicator add karein agar required ho
+  //   //   <YourLoadingComponent />
+  //   // );
+  // }
   return (
     <Sample store={Store}>
       <Provider theme={theme}>
         <NavigationContainer>
           <Stack.Navigator
-            initialRouteName="StartScreen"
+            initialRouteName="AuthLoadingScreen"
             screenOptions={{
               headerShown: false,
             }}
@@ -98,7 +96,7 @@ export default function App() {
             {/* <Stack.Screen name='addrfid' component={SLide}/>   */}
             {/* <Stack.Screen name='support2' component={MyComponent}/>   */}
 
-            <Stack.Screen name='AuthLoadingScreen' component={AuthLoadingScreen}/>
+            <Stack.Screen name='AuthLoadingScreen' component={AuthLoadingScreen}/> 
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen
               name="chargerSelection"
@@ -139,6 +137,7 @@ export default function App() {
             <Stack.Screen name="Datainput" component={Datainput} />
             <Stack.Screen name="Clamp" component={Clamp} />
             <Stack.Screen name="UserProfile" component={UserProfile} />
+            <Stack.Screen name="support" component={ExpertSupport} />
             <Stack.Screen
               name="EditProfileScreen"
               component={EditProfileScreen}
