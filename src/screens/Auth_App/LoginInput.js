@@ -72,10 +72,15 @@ const LoginInput = ({ navigation }) => {
         setLoading(true);
         const response = dispatch(signItUp(userData, navigation,setLoading))
         setuserData({...userData,Email:"",Password:""})
+        console.log("click in login button");
+        setTimeout(() => {
+          setLoading(false)
+        }, 10000);
       } catch (error) {
         console.error('error in login user', error)
       }
-    } else {
+    } 
+    else {
       Toast.show({
         type: 'error',
         position: 'top',
