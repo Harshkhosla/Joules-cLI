@@ -387,6 +387,52 @@ export const Click = (user) => {
   }
 }
 
+
+// add transaction detail
+export const AddTrasationDetail = (input, navigation,setLoading) => {
+  // debugger;
+  // console.log("harsh", input);
+  return async (dispatch) => {
+    const { AppUserName, pid ,AppUid} = input
+    console.log(AppUserName,pid,AppUid);
+    try {
+      const response = await fetch(
+        // `http://192.168.112.3:5000/user/addpid/transaction/PES-1112`,
+        `${ApiURL}/user/addpid/transaction/${pid}`,
+
+        // `https://backend-production-e1c2.up.railway.app/api/auth/createuser`,
+        // `${ApiURL}/client/scan/adduser`,
+        // "https://adminbackendjouls-production.up.railway.app/admin/user/register",
+        {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify({transaction:input}),
+        }
+      )
+      console.log("helo in before",response);
+      const data =await response.json()
+      console.log(data, 'data in sign up user')
+      if(data.message=="data save successfully"){
+        setLoading(false)
+      }
+      // const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '')
+      // navigation.navigate('Newhome')
+      return data
+    } catch (err) {
+      Toast.show({
+        type: 'error',
+        text1: "Login Failed",
+        text2: 'error in catch',
+        text1Style: { color: 'red', fontSize: 14 },
+        text1:err,
+        position: 'top',
+      });
+      console.log(err, 'catch ke andr sign up action.js')
+    }
+  }
+}
 // user detail and pid save to db
 export const NameAndPid = (input, navigation,setLoading) => {
   // debugger;

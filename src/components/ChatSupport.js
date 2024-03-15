@@ -7,8 +7,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SupportAndRfidHeader from './SupportAndAddRfidHeader';
 
-const HeaderWithArrow = ({ onPress }) => {
-    const Number="6367133688"
+const HeaderWithArrow = ({ navigation }) => {
+    const Number="6377650430"
     const handlePhoneCall = () => {
         // Phone number jise call karna hai
         const phoneNumber = `tel:${Number}`;
@@ -23,6 +23,9 @@ const HeaderWithArrow = ({ onPress }) => {
         // Linking API ka istemal WhatsApp khole ke liye
         Linking.openURL(phoneNumber);
       };
+     const talktoexpert=()=>{
+      navigation.navigate("chatsupport")
+     } 
   return (
     <View style={styles.container}>
     {/* <TouchableOpacity onPress={onPress} style={styles.headerContainer}>
@@ -52,7 +55,7 @@ const HeaderWithArrow = ({ onPress }) => {
     </TouchableOpacity>
 
     <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 221, marginLeft: 20 ,width:300}}>
-      <TouchableOpacity style={styles.sendMessageButton}>
+      <TouchableOpacity style={styles.sendMessageButton} onPress={talktoexpert}>
         <Text style={styles.sendMessageText}>Talk to our expert</Text>
       </TouchableOpacity>
     </View>
