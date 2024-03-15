@@ -25,7 +25,7 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
     {
       Nav_icon: require('../assets/directions_car.png'),
       Nav_name: 'My Vehicles',
-      navigat: 'Screen2',
+      // navigat: 'Screen2',
     },
     {
       Nav_icon: require('../assets/wifiicon.png'),
@@ -46,7 +46,9 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
 
   const handleitemsClick = (item) => {
     closeNave()
-    navigation.navigate(item)
+    if(item){
+      navigation.navigate(item)
+    }
   }
   return (
     <View>
@@ -59,6 +61,7 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
         style={styles.modal}
         hideModalContentWhileAnimating={true}
         animationIn={'slideInLeft'}
+        animationInTiming={100} 
         animationOut={'slideOutLeft'}
         animationOutTiming={500}
       >

@@ -33,7 +33,7 @@ const Charging_History = ({ navigation, route }) => {
     {
       statusname: 'Current',
       value: 44,
-      statusType: 'amp',
+      statusType: 'Amp',
     },
 
     {
@@ -49,7 +49,7 @@ const Charging_History = ({ navigation, route }) => {
     {
       statusname: 'Energy',
       value: 44,
-      statusType: 'Joules',
+      statusType: 'KwH',
     },
   ]
 
@@ -131,7 +131,7 @@ const Charging_History = ({ navigation, route }) => {
         </View>
         <View style={styles.ChargingDetailsBox}>
           <View style={styles.publicChargerTextBox}>
-            <Text style={styles.publicChargerText}>public Charger</Text>
+            <Text style={styles.publicChargerText}>Public Charger</Text>
           </View>
           <View style={styles.Vehicle}>
             <Text
@@ -153,7 +153,7 @@ const Charging_History = ({ navigation, route }) => {
           <View style={styles.ChargingTimeCostBox}>
             <View style={styles.ChargingDetailsStyle}>
               <Text style={[styles.text, { color: '#797979' }]}>
-                Charging time
+                Charging Time
               </Text>
               <Text style={styles.text}>1.5 hrs</Text>
             </View>
@@ -161,7 +161,7 @@ const Charging_History = ({ navigation, route }) => {
               <Text style={[styles.text, { color: '#797979' }]}>
                 Charging Cost
               </Text>
-              <Text style={styles.text}> 1.5 hrs</Text>
+              <Text style={styles.text}> ₹ 50 </Text>
             </View>
           </View>
           <View style={styles.PowerBoxContainer}>
