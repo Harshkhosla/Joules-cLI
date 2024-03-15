@@ -9,11 +9,11 @@ import {
 import React from 'react'
 import Modal from 'react-native-modal'
 import { useNavigation } from '@react-navigation/native'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 // import { Item } from 'react-native-paper/lib/typescript/components/List/List'
 // import { index } from 'd3'
 
-const Navmodal = ({ naveopen, closeNave ,name}) => {
+const Navmodal = ({ naveopen, closeNave, name }) => {
   const navigation = useNavigation()
 
   const navitems = [
@@ -31,20 +31,20 @@ const Navmodal = ({ naveopen, closeNave ,name}) => {
       Nav_icon: require('../assets/wifiicon.png'),
       Nav_name: 'Support',
       navigat: 'support',
-    }
+    },
   ]
 
   const removeItemFromAsyncStorage = async () => {
     try {
-      await AsyncStorage.removeItem('Authtoken');
-      console.log('Item removed successfully');
-      navigation.navigate("SignIn")
+      await AsyncStorage.removeItem('Authtoken')
+      console.log('Item removed successfully')
+      navigation.navigate('SignIn')
     } catch (error) {
-      console.error('Error removing item from AsyncStorage:', error);
+      console.error('Error removing item from AsyncStorage:', error)
     }
-  };
+  }
 
-  const handleitemsClick=(item)=>{
+  const handleitemsClick = (item) => {
     closeNave()
     navigation.navigate(item)
   }
@@ -60,7 +60,7 @@ const Navmodal = ({ naveopen, closeNave ,name}) => {
         hideModalContentWhileAnimating={true}
         animationIn={'slideInLeft'}
         animationOut={'slideOutLeft'}
-        animationOutTiming={500} 
+        animationOutTiming={500}
       >
         <View style={styles.container}>
           <View style={{ backgroundColor: '' }}>
@@ -120,7 +120,10 @@ const Navmodal = ({ naveopen, closeNave ,name}) => {
                 />
               </TouchableOpacity>
             ))}
-            <TouchableOpacity style={styles.logout} onPress={removeItemFromAsyncStorage}>
+            <TouchableOpacity
+              style={styles.logout}
+              onPress={removeItemFromAsyncStorage}
+            >
               <View>
                 <Text style={{ fontSize: 16, color: '#118615' }}>Sign Out</Text>
               </View>

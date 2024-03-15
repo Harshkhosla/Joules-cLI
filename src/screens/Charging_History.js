@@ -15,6 +15,8 @@ import {
 import App_top_Header from './App_top_Header'
 import ChargingHistoryButton from '../components/ChargingHistoryButton'
 import CustomChart from '../components/CustomChart'
+import Energy_time_chart from './Energy_time_chart'
+import Power_time_chart from './power_time_chart'
 
 const Charging_History = ({ navigation, route }) => {
   // const { newGeneratedHours } = route.params;
@@ -80,6 +82,10 @@ const Charging_History = ({ navigation, route }) => {
         </View>
         <View style={styles.ChartContainer}>
           <View>{/* <CustomChart xlabels={newGeneratedHours} /> */}</View>
+          <View style={{ flex: 1 }}>
+            {isEnergygraph && <Energy_time_chart />}
+            {isPowergraph && <Power_time_chart />}
+          </View>
           <View style={styles.toggler}>
             <TouchableOpacity
               onPress={HandleTouggl}
@@ -203,6 +209,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 1,
     borderColor: '#C7C7C7',
+    overflow: 'hidden',
   },
   toggler: {
     marginBottom: 30,
