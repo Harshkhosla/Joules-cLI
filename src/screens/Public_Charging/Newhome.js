@@ -174,16 +174,16 @@ const Newhome = ({ navigation }) => {
     // }
   }, [SampleDataaa, SampleOutputCurrent])
 
-  const handleCostAndTimeOpen = async (text,unique) => {
-    console.log('text', text,unique)
+  const handleCostAndTimeOpen = async (text, unique) => {
+    console.log('text', text, unique)
     if (text == 'Stop Charging') {
       console.log('you are in stop in')
       const Product_Key = await AsyncStorage.getItem('pid')
       console.log('productkye in newhome stop', Product_Key)
       const TotalTimeCharge = formatTime(totalTime)
       console.log('Total Time Charge', TotalTimeCharge)
-      if(!unique){
-        console.log("in unique condition pulicstopchargin call");
+      if (!unique) {
+        console.log('in unique condition pulicstopchargin call')
         dispatch(publicstopCharging(Product_Key, TotalTimeCharge, SetEndTime))
       }
       setcheckChargingStarted(false)
@@ -360,16 +360,22 @@ const Newhome = ({ navigation }) => {
             </View>
           </View>
           <View style={{ alignSelf: 'center', paddingVertical: 5 }}>
-          {data && checkChargingStarted
-              ? // Condition: Both AsyncStorage data and charging started
+            {data && checkChargingStarted ? (
+              // Condition: Both AsyncStorage data and charging started
               <Wave size={150} progress={40} />
-                
-              : data
-              ? // Condition 1: Only AsyncStorage data is available
-               <Image source={require("../../assets/GreenWavesPhoto.png")} style={{height:190,width:190}}/>
-              : // Default case: No data available
-                <Image source={require("../../assets/pidNotAvailable.png")} style={{height:190,width:190}}/>
-                }
+            ) : data ? (
+              // Condition 1: Only AsyncStorage data is available
+              <Image
+                source={require('../../assets/GreenWavesPhoto.png')}
+                style={{ height: 190, width: 190 }}
+              />
+            ) : (
+              // Default case: No data available
+              <Image
+                source={require('../../assets/pidNotAvailable.png')}
+                style={{ height: 190, width: 190 }}
+              />
+            )}
           </View>
 
           <View style={styles.potIconContainer}>

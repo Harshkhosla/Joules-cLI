@@ -34,7 +34,7 @@ const Wave = ({ size = 256, progress = 90 }) => {
   const createAnimatedPath = (phase = 20) => {
     const d3Points = Array.from({ length: size }).map((_, i) => {
       const angle = (i / size) * (Math.PI * 2 * frequency) + phase
-      return [i, (Math.sin(angle) * amplitude) / 2 + verticalOffset.current]
+      return [i, (Math.sin(angle) * amplitude) / 4 + verticalOffset.current]
     })
     const lineGenerator = line()
     const wavePath = lineGenerator(d3Points)
@@ -52,7 +52,7 @@ const Wave = ({ size = 256, progress = 90 }) => {
   }
 
   const animatedPath = useComputedValue(() => {
-    const current = (clock.current / 250) % 200
+    const current = (clock.current / 300) % 200
     const start = Skia.Path.MakeFromSVGString(createAnimatedPath(current))
     const end = Skia.Path.MakeFromSVGString(createAnimatedPath(current * 1))
 
@@ -60,7 +60,7 @@ const Wave = ({ size = 256, progress = 90 }) => {
   }, [clock, progress, size])
 
   const animatedSeaWavePath = useComputedValue(() => {
-    const current = (clock.current / 250) % 200
+    const current = (clock.current / 350) % 200
     const start = Skia.Path.MakeFromSVGString(createSeaWavePath(current))
     const end = Skia.Path.MakeFromSVGString(createSeaWavePath(current * 1))
 
@@ -87,10 +87,10 @@ const Wave = ({ size = 256, progress = 90 }) => {
       <SweepGradient
         c={center}
         colors={[
-          '#7E16E6',
-          'rgba(227, 201, 253, 1)',
-          '#7E16E6',
-          'rgba(227, 201, 253, 1)',
+          '#118615',
+          'rgba(17, 134, 21, 1)',
+          '#118615',
+          'rgba(17, 134, 21, 1)',
         ]}
       />
       <Circle
@@ -102,8 +102,12 @@ const Wave = ({ size = 256, progress = 90 }) => {
         // color="#15C31B"
       />
       <Group clip={roundedRectangle}>
-        <Path path={animatedSeaWavePath} color="rgba(227, 201, 253, 1)" />
-        <Path path={animatedPath} color="#7F14EB" />
+        <Path
+          path={animatedSeaWavePath}
+          color="rgba(17, 134, 21, 1)"
+          opacity={0.8}
+        />
+        <Path path={animatedPath} color="#118615" opacity={0.7} />
       </Group>
     </Canvas>
   )

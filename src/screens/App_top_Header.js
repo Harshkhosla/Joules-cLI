@@ -18,8 +18,8 @@ const App_top_Header = ({ navigation, title, color, isHome }) => {
     <View style={[styles.container, { backgroundColor: color }]}>
       <View style={styles.Icon}>
         {isHome ? (
-          // <TouchableOpacity onPress={() => setNavOpen(true)}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setNavOpen(true)}>
+            {/* <TouchableOpacity> */}
             <Image
               style={{ width: 35, resizeMode: 'contain' }}
               source={require('../assets/menuicon.png')}

@@ -69,6 +69,7 @@ const Navmodal = ({ naveopen, closeNave }) => {
         hideModalContentWhileAnimating={true}
         animationIn={'slideInLeft'}
         animationOut={'slideOutLeft'}
+        animationInTiming={400}
       >
         <View style={styles.container}>
           <View style={{ backgroundColor: '' }}>
