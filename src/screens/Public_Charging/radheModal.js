@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Button, Modal, StyleSheet, TextInput, TouchableOpacity, Text, Image } from 'react-native';
-import Timer from '../../../radhe';
 import Toast from 'react-native-toast-message';
+import Timer from './radhe';
 
 const ModalRadhe = ({setActiveButton,activeButton,setChargingCost,SetTimeinSec,settime,setInputCost}) => {
   const [modalVisible, setModalVisible] = useState(false);

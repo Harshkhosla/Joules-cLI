@@ -16,7 +16,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import Toast from 'react-native-toast-message'
 import { useDispatch } from 'react-redux'
-import { StopChargingMode, publicstartCharging } from '../../Redux/Action'
+import { AddTrasationDetail, StopChargingMode, publicstartCharging } from '../../Redux/Action'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import TimerSlider from '../TimerSlider'
 import ModalRadhe from './radheModal'
@@ -45,6 +45,24 @@ const SetCost = ({
     setInputCost(inputvalue)
   }, [open])
 
+  const retrieveData = async () => {
+    const AppUserName = await AsyncStorage.getItem("name");
+    const AppUid = await AsyncStorage.getItem("mid");
+    const pid = await AsyncStorage.getItem("pid");
+    const amount = inputCost; // Assuming inputCost is defined somewhere
+    
+    return { AppUserName, pid, AppUid, amount };
+  };
+  
+  const sendData = async (paymentId) => {
+    const data = await retrieveData();
+    data.paymentId=paymentId
+    console.log(data, "sendData");
+    dispatch(AddTrasationDetail(data))
+    // return data;
+  };
+  
+
   const handlePayment = () => {
     const options = {
       description: 'Payment for your order',
@@ -67,6 +85,7 @@ const SetCost = ({
         Alert.alert('Payment Success', 'Payment was successful.')
         if(data && data.razorpay_payment_id ){
           console.log("navigate to start charging")
+          // sendData(data.razorpay_payment_id)
           startCharging()
         }
       })
@@ -157,6 +176,7 @@ const SetCost = ({
                 <TouchableOpacity
                   onPress={() => {
                     onclicksetcostSetTime('setTime')
+                    // sendData("11123")
                   }}
                 >
                   <Text
@@ -218,8 +238,8 @@ const SetCost = ({
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.payButton}
-                // onPress={handlePayment}
-                onPress={startCharging}
+                onPress={handlePayment}
+                // onPress={startCharging}
               >
                 <View>
                   <Text style={styles.payButtonText}>₹{inputCost}</Text>

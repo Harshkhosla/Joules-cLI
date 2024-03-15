@@ -385,8 +385,7 @@ const Newhome = ({ navigation }) => {
           <View style={{ alignSelf: 'center', paddingVertical: 5 }}>
             {data && checkChargingStarted ? (
               // Condition: Both AsyncStorage data and charging started
-              // <Wave size={150} progress={40} />
-              <Text>hello</Text>
+              <Wave size={150} progress={40} />
             ) : data ? (
               // Condition 1: Only AsyncStorage data is available
               <Image
