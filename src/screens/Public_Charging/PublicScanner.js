@@ -19,7 +19,7 @@ import { RNCamera } from 'react-native-camera'
 import WifiManager from 'react-native-wifi-reborn'
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler'
 import { ToastAndroid } from 'react-native'
-import { DoorOpening, UpdatName, setProductKey } from '../../Redux/Action'
+import { DoorOpening, NameAndPid, SendUsername, UpdatName, setProductKey } from '../../Redux/Action'
 import { useDispatch, useSelector } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import EvCharging from '../../components/EvCharging'
@@ -29,15 +29,19 @@ import {
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
 import App_top_Header from '../App_top_Header'
+import LoaderComponent from '../../components/loader'
 
-export default function Dashboard({ navigation }) {
+export default function Dashboard({ navigation,route }) {
   const dispatch = useDispatch()
+  const [loading,setloading]=useState(false)
   const [hasPermission, setHasPermission] = useState(null)
   const [scanned, setScanned] = useState(false)
   const [text, setText] = useState('Not yet scanned')
   const [Data, setData] = useState('HGHG')
   const [flashOn, setFlashOn] = useState(false)
   console.log(Data)
+
+  const receivedData = route.params?.name || 'User';
 
   const id = useSelector((state) => state?.userReducers?.Product?._id)
   const onSuccess = async (e) => {
@@ -60,6 +64,7 @@ export default function Dashboard({ navigation }) {
     await AsyncStorage.setItem('pid', cleanedWifiString)
     if (cleanedWifiString) {
       dispatch(DoorOpening(cleanedWifiString))
+      apicall(cleanedWifiString)
       navigation.navigate('Newhome')
     }
     // const scannedWifiValues = cleanedWifiString.split(";");
@@ -156,15 +161,38 @@ export default function Dashboard({ navigation }) {
     // navigation.navigate('Newhome');
   }
 
-  return (
-    <View style={styles.container}>
+const apicall=async(pid)=>{
+let SendData={}
+if(!pid || !receivedData){
+  return 
+}
+  if(pid){  
+    SendData.Porduct_Key=pid
+  }
+  if(receivedData){
+    SendData.name=receivedData
+  }
+  try {
+    console.log("in try api calll");
+    // const response=await dispatch(NameAndPid(SendData,navigation,setloading))
+    const response=await dispatch(SendUsername(SendData))
+    console.log("response",response);
+
+  } catch (error) {
+    console.log("Error",error)
+  }
+}
+  return (<>
+    {!loading ? <View style={styles.container}>
       <App_top_Header
-        title={`Hello Aman!`}
+        title={`Hello ${receivedData}`}
         navigation={navigation}
         color={'#C1E0C2'}
         isHome={true}
       />
-
+      {/* <TouchableOpacity onPress={()=>{apicall("PEL")}}>
+        <Text style={{color:"red",fontSize:20}}>api call</Text> 
+      </TouchableOpacity> */}
       <View style={styles.containerContentBox}>
         <Text style={{ fontSize: 18, fontWeight: '400',color:"#707070" }}>
           To start charging, please scan the
@@ -245,6 +273,10 @@ export default function Dashboard({ navigation }) {
       </View>
       <View style={styles.bottomColorBox}></View>
     </View>
+    :<View>
+      <LoaderComponent loading={loading}/>
+      </View>}
+    </>
   )
 }
 

@@ -18,6 +18,7 @@ export const SET_USER_CURRENT = 'SET_USER_CURRENT'
 export const SET_USER_PRODUCTKEY = 'SET_USER_PRODUCTKEY'
 export const SET_USER_PRODUCT = 'SET_USER_PRODUCT'
 export const SET_PUBLIC_CHARGER_TIME = 'SET_PUBLIC_CHARGER_TIME'
+export const SET_MID_VALUE = 'SET_MID_VALUE'
 import { Client, Message } from 'react-native-paho-mqtt'
 import Toast from 'react-native-toast-message'
 import { Alert } from 'react-native'
@@ -26,7 +27,9 @@ import { Alert } from 'react-native'
 // const [data123, setData123] = useState('')
 
 const MqqtUrl="ws://34.93.173.35:9001/mqtt"
-const ApiURL="https://adminbackendjouls-production.up.railway.app"
+// const ApiURL="https://adminbackendjouls-production.up.railway.app"
+// const ApiURL="http://165.22.223.26:5200"
+const ApiURL="http://165.22.223.26:5000"
 // const ApiURL="http://192.168.45.3:5200"
 
 const topic1State = {
@@ -384,6 +387,55 @@ export const Click = (user) => {
   }
 }
 
+// user detail and pid save to db
+export const NameAndPid = (input, navigation,setLoading) => {
+  // debugger;
+  // console.log("harsh", input);
+  return async (dispatch) => {
+    const { name, pid } = input
+    console.log(name,pid);
+    try {
+      const response = await fetch(
+        `http://192.168.43.158:5200/client/scan/adduser`,
+        // `https://backend-production-e1c2.up.railway.app/api/auth/createuser`,
+        // `${ApiURL}/client/scan/adduser`,
+        // "https://adminbackendjouls-production.up.railway.app/admin/user/register",
+        {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            name,
+            pid
+          }),
+        }
+      )
+      console.log("helo in before");
+      const data = await response.json()
+      console.log(data, 'data in sign up user')
+      if(data.message=="data save successfully"){
+        setLoading(false)
+      }
+      // const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '')
+      navigation.navigate('Newhome')
+      return data
+    } catch (err) {
+      Toast.show({
+        type: 'error',
+        text1: "Login Failed",
+        text2: 'error in catch',
+        text1Style: { color: 'red', fontSize: 14 },
+        text1:err,
+        position: 'top',
+      });
+      console.log(err, 'catch ke andr sign up action.js')
+    }
+  }
+}
+
+
+
 // ----------------------------------------CREATING ACCOUNT DATA--------------------------------------------------------------------------------//
 
 export const loginuser = (input, navigation,setLoading) => {
@@ -473,10 +525,12 @@ export const signItUp = (field, navigation,setLoading) => {
       Object.entries(field).map(([key, value]) => [key.toLowerCase(), value])
     );
     const { email, password } = lowercaseKeysObject
+    console.log(email,password);
     try {
       const response = await fetch(
         // `https://backend-production-e1c2.up.railway.app/api/auth/login`,
         `${ApiURL}/admin/user/signin`,
+        // `http://192.168.122.3:5200/admin/user/signin`,
         {
           method: 'POST',
           headers: {
@@ -523,9 +577,18 @@ export const signItUp = (field, navigation,setLoading) => {
           position: 'top',
         })
       }
+
+      if(data.mid){
+        const mid=data.mid
+        await AsyncStorage.setItem('mid', mid);
+      }
+      if(data.name){
+        const name=data.name
+        await AsyncStorage.setItem('name', name);
+      }
       // const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '')
       if(data?.authToken){
-        const authtoken = JSON.stringify(data.authToken)
+        const authtoken = JSON.stringify(data.authToken)   
         console.log('authtoken', authtoken)
         await AsyncStorage.setItem('Authtoken', authtoken)
         dispatch(setAuthtoken(authtoken))
@@ -570,6 +633,13 @@ export const setStateValue = (data) => {
 export const setModeValue = (data) => {
   return {
     type: SET_MODE_VALUE,
+    payload: data,
+  }
+}
+// mid
+export const setMIDValue = (data) => {
+  return {
+    type: SET_MID_VALUE,
     payload: data,
   }
 }
@@ -1226,6 +1296,64 @@ export const publicstartCharging = (Porduct_Key,onClose,startTimer,setButtonText
   }
 }
 
+
+
+//public charging send username to userpanel
+export const SendUsername = (SendData) => {
+  return (dispatch) => {
+    const client = new Client({
+      uri: MqqtUrl,
+      clientId: 'client' + Math.random().toString(36).substring(7),
+      storage: myStorage,
+    })
+    const { name, Porduct_Key } = SendData
+    console.log("Porduct_Key door ",Porduct_Key,name);
+    client.on('connectionLost', (responseObject) => {
+      if (responseObject.errorCode !== 0) {
+        console.log(responseObject.errorMessage,"sendusername in  try")
+        // DoorOpening(Porduct_Key)
+        client
+        .connect()
+        .then(() => {
+          console.log("mqtt reconnect in sendusername");
+          const sample = new Message(`${name}`)
+          sample.destinationName = `${Porduct_Key}_Username`
+          client.send(sample)
+        })
+      }
+    })
+    client.on('messageReceived', (message) => {
+      console.log("message in on client",message.payloadString)
+    })
+    client.connect()
+  .then(() => {
+    // allClients.push(client);
+    console.log("mqtt connect in sendusername");
+    // Assuming you have an object named 'dataObject' that you want to send
+    // const sample = new Message("name")
+    // sample.destinationName = `${Porduct_Key}_Username`
+    // client.send(sample)
+    const dataObject = {
+      name, 
+      address:"ajmer"
+    };
+    // onvert the object to JSON format
+    const jsonString = JSON.stringify(dataObject);
+    // Create a new message object
+    const sample = new Message(jsonString);
+    // Set the destination name
+    sample.destinationName = `${Porduct_Key}_Username`;
+    // Send the message
+    client.send(sample);
+
+  }).catch((responseObject) => {
+        if (responseObject.errorCode !== 0) {
+          console.log('onConnectionLost: sendusername ' + responseObject)
+          SendUsername(SendData)
+        }
+      })
+  }
+}
 
 // mqtt code for door opening after scan Qr in public charging
 

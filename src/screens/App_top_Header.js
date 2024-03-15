@@ -5,20 +5,25 @@ import {
   responsiveHeight as hp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
-import Navmodal from './Navmodal'
+import Navmodal from './Public_Navmodal'
 
-const App_top_Header = ({ navigation, title, color, isHome }) => {
+const App_top_Header = ({ navigation, title, color, isHome, name }) => {
   const [isNavOpen, setNavOpen] = useState(false)
 
   const naveClose = () => {
     setNavOpen(false)
   }
 
+  const navopen = () => {
+    console.log('click header nav', isNavOpen)
+    setNavOpen(true)
+  }
+
   return (
     <View style={[styles.container, { backgroundColor: color }]}>
       <View style={styles.Icon}>
         {isHome ? (
-          <TouchableOpacity onPress={() => setNavOpen(true)}>
+          <TouchableOpacity onPress={navopen}>
             {/* <TouchableOpacity> */}
             <Image
               style={{ width: 35, resizeMode: 'contain' }}
@@ -32,7 +37,7 @@ const App_top_Header = ({ navigation, title, color, isHome }) => {
         )}
         <Text style={styles.Text}>{title}</Text>
       </View>
-      <Navmodal naveopen={isNavOpen} closeNave={naveClose} />
+      <Navmodal naveopen={isNavOpen} closeNave={naveClose} name={name} />
     </View>
   )
 }

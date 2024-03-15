@@ -218,8 +218,8 @@ const SetCost = ({
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.payButton}
-                onPress={handlePayment}
-                // onPress={startCharging}
+                // onPress={handlePayment}
+                onPress={startCharging}
               >
                 <View>
                   <Text style={styles.payButtonText}>₹{inputCost}</Text>
