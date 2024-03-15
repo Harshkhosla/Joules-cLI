@@ -66,7 +66,10 @@ export default function App() {
           >
             {/* <Stack.Screen name='addrfid' component={AddRfid}/>   */}
             {/* <Stack.Screen name='support2' component={HeaderWithArrow}/>   */}
-            <Stack.Screen name='AuthLoadingScreen' component={AuthLoadingScreen}/>
+            <Stack.Screen
+              name="AuthLoadingScreen"
+              component={AuthLoadingScreen}
+            />
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen
               name="chargerSelection"
