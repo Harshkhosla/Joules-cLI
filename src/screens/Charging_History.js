@@ -82,7 +82,7 @@ const Charging_History = ({ navigation, route }) => {
         </View>
         <View style={styles.ChartContainer}>
           <View>{/* <CustomChart xlabels={newGeneratedHours} /> */}</View>
-          <View style={{ flex: 1 }}>
+          <View style={{ height: 220 }}>
             {isEnergygraph && <Energy_time_chart />}
             {isPowergraph && <Power_time_chart />}
           </View>
