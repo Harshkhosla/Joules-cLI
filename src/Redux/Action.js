@@ -397,8 +397,8 @@ export const AddTrasationDetail = (input, navigation,setLoading) => {
     console.log(AppUserName,pid,AppUid);
     try {
       const response = await fetch(
-        // `http://192.168.112.3:5000/user/addpid/transaction/PES-1112`,
-        `${ApiURL}/user/addpid/transaction/${pid}`,
+        `http://192.168.112.3:5000/user/addpid/transaction/${pid}`,
+        // `${ApiURL}/user/addpid/transaction/${pid}`,
 
         // `https://backend-production-e1c2.up.railway.app/api/auth/createuser`,
         // `${ApiURL}/client/scan/adduser`,
