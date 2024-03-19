@@ -48,6 +48,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import HeaderWithArrow from './src/components/ChatSupport'
 import AddRfid from './src/components/AddRfid'
 import AuthLoadingScreen from './src/components/OpenSplash'
+import Editprofile from './src/screens/Edit_profile/Editprofile'
 
 const Stack = createStackNavigator()
 
@@ -66,11 +67,13 @@ export default function App() {
           >
             {/* <Stack.Screen name='addrfid' component={AddRfid}/>   */}
             {/* <Stack.Screen name='support2' component={HeaderWithArrow}/>   */}
-            <Stack.Screen
+
+            {/* <Stack.Screen
               name="AuthLoadingScreen"
               component={AuthLoadingScreen}
             />
-            <Stack.Screen name="SignIn" component={SignIn} />
+            <Stack.Screen name="SignIn" component={SignIn} /> */}
+            {/* <Stack.Screen name="Editprofile" component={Editprofile} /> */}
             <Stack.Screen
               name="chargerSelection"
               component={Charger_Selection}

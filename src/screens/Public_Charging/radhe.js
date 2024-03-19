@@ -1,37 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react'
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native'
 
-const Timer = ({setuserTimeHours,userTimeHours,userTimeMinutes,setuserTimeMinutes}) => {
+const Timer = ({
+  setuserTimeHours,
+  userTimeHours,
+  userTimeMinutes,
+  setuserTimeMinutes,
+}) => {
   // const [hours, setHours] = useState("");
   // const [minutes, setMinutes] = useState("");
-  const [seconds, setSeconds] = useState("");
-  const [isActive, setIsActive] = useState(false);
-const [showWarring,setShowWarring]=useState(false)
+  const [seconds, setSeconds] = useState('')
+  const [isActive, setIsActive] = useState(false)
+  const [showWarring, setShowWarring] = useState(false)
 
-const minutesSET=(text)=>{
-    if(parseInt(text)<=59){
-    setuserTimeMinutes(parseInt(text))
-    setShowWarring(false)
-    } 
-    else{
+  const minutesSET = (text) => {
+    if (parseInt(text) <= 59) {
+      setuserTimeMinutes(parseInt(text))
+      setShowWarring(false)
+    } else {
       setuserTimeMinutes(parseInt(0))
-        if(parseInt(text)>59){
-            setShowWarring(true)
-        }
-    }
-}
-const HoursSET=(text)=>{
-  if(parseInt(text)<=12){
-    setuserTimeHours(parseInt(text))
-  setShowWarring(false)
-  } 
-  else{
-      setuserTimeHours(parseInt(0))
-      if(parseInt(text)>12){
-          setShowWarring(true)
+      if (parseInt(text) > 59) {
+        setShowWarring(true)
       }
+    }
   }
-}
+  const HoursSET = (text) => {
+    if (parseInt(text) <= 12) {
+      setuserTimeHours(parseInt(text))
+      setShowWarring(false)
+    } else {
+      setuserTimeHours(parseInt(0))
+      if (parseInt(text) > 12) {
+        setShowWarring(true)
+      }
+    }
+  }
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
@@ -50,6 +53,7 @@ const HoursSET=(text)=>{
           value={userTimeMinutes.toString()}
           onChangeText={minutesSET}
         />
+
         {/* <Text style={styles.separator}>:</Text> */}
         {/* <TextInput
           style={styles.input}
@@ -59,15 +63,17 @@ const HoursSET=(text)=>{
           onChangeText={text => setSeconds(parseInt(text) || 0)}
         /> */}
       </View>
-       {showWarring&& <Text style={styles.inputColor}>please input correct time</Text>}
+      {showWarring && (
+        <Text style={styles.inputColor}>please input correct time</Text>
+      )}
       <View style={styles.buttonsContainer}>
         {/* <Button title={isActive ? 'Stop' : 'Start'} onPress={handleStartStop} />
         <Button title="Reset" onPress={handleReset} /> */}
         {/* <Button title='Set Time' onPress={}/> */}
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -78,28 +84,27 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
   },
   input: {
-    width: 50,
-    height: 40,
+    padding: 2,
     borderWidth: 1,
     borderColor: 'gray',
     paddingHorizontal: 10,
-    marginRight: 10,
-    color:"black"
+    borderRadius: 5,
+    // marginRight: 10,
+    color: 'black',
   },
   separator: {
     fontSize: 20,
-    marginHorizontal: 5,
+    marginHorizontal: 10,
   },
-  inputColor:{
-    color:"red",
-    marginTop:-1
+  inputColor: {
+    color: 'red',
+    marginTop: 5,
   },
   buttonsContainer: {
     flexDirection: 'row',
   },
-});
+})
 
-export default Timer;
+export default Timer

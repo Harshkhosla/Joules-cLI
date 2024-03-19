@@ -16,7 +16,11 @@ import {
 import React, { useEffect, useState } from 'react'
 import Toast from 'react-native-toast-message'
 import { useDispatch } from 'react-redux'
-import { AddTrasationDetail, StopChargingMode, publicstartCharging } from '../../Redux/Action'
+import {
+  AddTrasationDetail,
+  StopChargingMode,
+  publicstartCharging,
+} from '../../Redux/Action'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import TimerSlider from '../TimerSlider'
 import ModalRadhe from './radheModal'
@@ -34,7 +38,7 @@ const SetCost = ({
   setOnStopChargingCost,
   SetstartTime,
   setcheckChargingStarted,
-  handleStopCharging
+  handleStopCharging,
 }) => {
   const dispatch = useDispatch()
   const [ShowSetCost, SetShowSetCost] = useState(true)
@@ -46,22 +50,21 @@ const SetCost = ({
   }, [open])
 
   const retrieveData = async () => {
-    const AppUserName = await AsyncStorage.getItem("name");
-    const AppUid = await AsyncStorage.getItem("mid");
-    const pid = await AsyncStorage.getItem("pid");
-    const amount = inputCost; // Assuming inputCost is defined somewhere
-    
-    return { AppUserName, pid, AppUid, amount };
-  };
-  
+    const AppUserName = await AsyncStorage.getItem('name')
+    const AppUid = await AsyncStorage.getItem('mid')
+    const pid = await AsyncStorage.getItem('pid')
+    const amount = inputCost // Assuming inputCost is defined somewhere
+
+    return { AppUserName, pid, AppUid, amount }
+  }
+
   const sendData = async (paymentId) => {
-    const data = await retrieveData();
-    data.paymentId=paymentId
-    console.log(data, "sendData");
+    const data = await retrieveData()
+    data.paymentId = paymentId
+    console.log(data, 'sendData')
     dispatch(AddTrasationDetail(data))
     // return data;
-  };
-  
+  }
 
   const handlePayment = () => {
     const options = {
@@ -69,7 +72,7 @@ const SetCost = ({
       image: 'https://yourwebsite.com/logo.png',
       currency: 'INR',
       key: 'rzp_live_V4Palfsx7GsPm3',
-      amount: inputCost*100, // amount in paisa
+      amount: inputCost * 100, // amount in paisa
       name: 'Your Company Name',
       prefill: {
         email: 'customer@example.com',
@@ -83,8 +86,8 @@ const SetCost = ({
       .then((data) => {
         console.log('Payment success:', data)
         Alert.alert('Payment Success', 'Payment was successful.')
-        if(data && data.razorpay_payment_id ){
-          console.log("navigate to start charging")
+        if (data && data.razorpay_payment_id) {
+          console.log('navigate to start charging')
           // sendData(data.razorpay_payment_id)
           startCharging()
         }
@@ -222,7 +225,7 @@ const SetCost = ({
                 >
                   <Image source={require('../../assets/paytm.png')} />
 
-                  <Text style={{color:"#9A9999"}}>Pay Using</Text>
+                  <Text style={{ color: '#9A9999' }}>Pay Using</Text>
                   <Image source={require('../../assets/arrow_drop_up.png')} />
                 </View>
                 <Text
@@ -230,7 +233,7 @@ const SetCost = ({
                     fontSize: 16,
                     fontFamily: 'sans-serif',
                     marginLeft: -40,
-                    color:"#636363"
+                    color: '#636363',
                   }}
                 >
                   Paytm UPI
@@ -266,7 +269,16 @@ const SetCost = ({
 const ChargingCost = ({ setInputCost, inputCost }) => {
   return (
     <View style={{ marginVertical: 10 }}>
-      <Text style={{ marginTop: 5 ,color:"#6C6C6C",fontSize:19,fontWeight:"600"}}>Enter Amount </Text>
+      <Text
+        style={{
+          marginTop: 5,
+          color: '#6C6C6C',
+          fontSize: 19,
+          fontWeight: '600',
+        }}
+      >
+        Enter Amount{' '}
+      </Text>
       <View
         style={{
           height: 50,
@@ -286,7 +298,7 @@ const ChargingCost = ({ setInputCost, inputCost }) => {
             color: 'black',
             fontSize: 20,
           }}
-          placeholderTextColor={"#DBDBDB"}
+          placeholderTextColor={'#DBDBDB'}
           keyboardType="numeric"
           placeholder="For example ₹50"
           onChangeText={(text) => {
@@ -344,7 +356,16 @@ const ChargingSetTime = ({ SetTimeinSec, settime, setInputCost }) => {
   }
   return (
     <View style={{ marginVertical: 10 }}>
-      <Text style={{ marginTop: 5,color:"#6C6C6C",fontSize:18,fontWeight:"600"}}>Set Charging Hours</Text>
+      <Text
+        style={{
+          marginTop: 5,
+          color: '#6C6C6C',
+          fontSize: 18,
+          fontWeight: '600',
+        }}
+      >
+        Set Charging Hours
+      </Text>
       <View style={styles.setTimeContainer}>
         <TouchableOpacity
           style={[
@@ -506,15 +527,15 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#FFFFFF', // White background color
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
+    padding: 8,
+    borderRadius: 8,
     alignItems: 'flex-start', // Align text to the left
     borderWidth: 1, // Add black border
     borderColor: '#9B9B9B', // Black border color
     width: 80,
     justifyContent: 'center',
-    // height:50
+    // paddingHorizontal: 8,
+    // height: 50,
   },
   activeButton: {
     borderColor: 'green',

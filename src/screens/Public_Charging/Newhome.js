@@ -19,8 +19,8 @@ import App_top_Header from '../App_top_Header'
 const Newhome = ({ navigation }) => {
   const dispatch = useDispatch()
   // for 10 min not click start charging
-  const [buttonPressed, setButtonPressed] = useState(false);
-  const [timerExpired, setTimerExpired] = useState(false);
+  const [buttonPressed, setButtonPressed] = useState(false)
+  const [timerExpired, setTimerExpired] = useState(false)
 
   const [isLoading, setIsLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -210,7 +210,7 @@ const Newhome = ({ navigation }) => {
         setChargingEnergy('')
         setChargingCost('')
         // for click start charging
-        setButtonPressed(true);
+        setButtonPressed(true)
       } else {
         navigation.navigate('PublicScanner', { name: name })
         // setData(true);
@@ -237,13 +237,11 @@ const Newhome = ({ navigation }) => {
     if (data) {
       setColorChange('#118615')
       setButtonText('Start Charging')
-  
     } else {
       setColorChange('#DBDBDB')
       setButtonText('Scan QR')
     }
   }, [data])
-
 
   const handleRemoveItem = async () => {
     try {
@@ -253,7 +251,7 @@ const Newhome = ({ navigation }) => {
       setData(null) // Reset the data state
       setColorChange('#DBDBDB')
       setButtonText('Scan QR')
-      setButtonPressed(false);
+      setButtonPressed(false)
     } catch (error) {
       console.error('Error removing item from AsyncStorage:', error)
     }
@@ -304,38 +302,38 @@ const Newhome = ({ navigation }) => {
 
     fetchData()
   }, [])
-// for not click startcharing 10 min
-useEffect(() => {
-  let timer;
-  if (!buttonPressed && data) {
-    timer = setTimeout(() => {
-      setTimerExpired(true);
-    }, 10000);
-  }
-  console.log(timer,"timer");
-  return () => {
-    clearTimeout(timer);
-  };
-}, [buttonPressed, data,buttonText]);
+  // for not click startcharing 10 min
+  useEffect(() => {
+    let timer
+    if (!buttonPressed && data) {
+      timer = setTimeout(() => {
+        setTimerExpired(true)
+      }, 10000)
+    }
+    console.log(timer, 'timer')
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [buttonPressed, data, buttonText])
 
   useEffect(() => {
     const clearAsyncStorage = async () => {
       if (timerExpired) {
         // await AsyncStorage.removeItem('pid');
         handleRemoveItem()
-        console.log('AsyncStorage remove!');
-        Alert.alert("asyncstoarge itme remove auto")
+        console.log('AsyncStorage remove!')
+        Alert.alert('asyncstoarge itme remove auto')
       }
       setTimerExpired(false)
-    };
-    clearAsyncStorage();
-  }, [timerExpired]);
+    }
+    clearAsyncStorage()
+  }, [timerExpired])
 
-  useEffect(()=>{
-    if(checkChargingStarted && data){
+  useEffect(() => {
+    if (checkChargingStarted && data) {
       setButtonPressed(true)
     }
-  },[checkChargingStarted])
+  }, [checkChargingStarted])
   // const handleButtonClick = () => {
   //   setButtonPressed(true);
   //   // Yahaan par aap kuch aur kaam kar sakte hain agar button press ho gaya hai.
@@ -515,7 +513,6 @@ useEffect(() => {
         setcheckChargingStarted={setcheckChargingStarted}
         handleStopCharging={handleCostAndTimeOpen}
         setButtonPressed={setButtonPressed}
-
       />
     </View>
   )
