@@ -46,7 +46,7 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
 
   const handleitemsClick = (item) => {
     closeNave()
-    if(item){
+    if (item) {
       navigation.navigate(item)
     }
   }
@@ -61,7 +61,7 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
         style={styles.modal}
         hideModalContentWhileAnimating={true}
         animationIn={'slideInLeft'}
-        animationInTiming={100} 
+        animationInTiming={100}
         animationOut={'slideOutLeft'}
         animationOutTiming={500}
       >
@@ -81,7 +81,10 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
               <Text style={{ fontSize: 18, color: '#118615' }}>{name}</Text>
               <Text style={{ fontSize: 12 }}>mailg@gmail.com</Text>
 
-              <TouchableOpacity style={styles.prfileEdit}>
+              <TouchableOpacity
+                style={styles.prfileEdit}
+                onPress={() => navigation.navigate('Editprofile')}
+              >
                 <Image
                   source={require('../assets/account_circle.png')}
                   style={{ height: 20, width: 20, resizeMode: 'contain' }}
