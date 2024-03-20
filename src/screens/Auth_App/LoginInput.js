@@ -27,72 +27,73 @@ import {
 
 const LoginInput = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
-  const [userData, setuserData] = useState({ Email: '', Password: '' })
+  const [userData, setuserData] = useState({ email: '', password: '' })
   const [rememberMe, setRememberMe] = useState(true)
   const dispatch = useDispatch()
 
-  const login = () => {
-    const allValuesPresent = Object.keys(userData).every(
-      (key) => userData[key] !== ''
-    )
-    if (!allValuesPresent) {
-      return Toast.show({
-        type: 'error',
-        position: 'top',
-        text1: 'Login Error',
-        text2: 'please input all field',
-        visibilityTime: 4000,
-        text1Style: { color: 'red', fontSize: 14 },
-        autoHide: true,
-        bottomOffset: 40,
-        swipeable: true,
-      })
-    }
-    const generalEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    // const hasNumber = /\d/.test(userData.Email);
-    // const isValid = generalEmailRegex.test(userData.Email) && userData.Email.toLowerCase().includes('@gmail.com') && hasNumber;
-    const isValid =
-      generalEmailRegex.test(userData.Email) &&
-      userData.Email.toLowerCase().includes('@gmail.com')
-    if (!isValid) {
-      return Toast.show({
-        type: 'error',
-        position: 'top',
-        text1: 'Login Error',
-        text2: 'email is invalid',
-        visibilityTime: 4000,
-        text1Style: { color: 'red', fontSize: 14 },
-        autoHide: true,
-        bottomOffset: 40,
-        swipeable: true,
-      })
-    }
-    if (isValid && allValuesPresent) {
-      try {
-        setLoading(true);
-        const response = dispatch(signItUp(userData, navigation,setLoading))
-        setuserData({...userData,Email:"",Password:""})
-        console.log("click in login button");
-        setTimeout(() => {
-          setLoading(false)
-        }, 10000);
-      } catch (error) {
-        console.error('error in login user', error)
-      }
-    } 
-    else {
-      Toast.show({
-        type: 'error',
-        position: 'top',
-        text1: 'Login Error',
-        text2: 'Please input all field',
-        visibilityTime: 4000,
-        text1Style: { color: 'red', fontSize: 14 },
-        autoHide: true,
-        bottomOffset: 40,
-        swipeable: true,
-      })
-    }
+  const login = async() => {
+    await dispatch(signItUp(userData, navigation))
+    // const allValuesPresent = Object.keys(userData).every(
+    //   (key) => userData[key] !== ''
+    // )
+    // if (!allValuesPresent) {
+    //   return Toast.show({
+    //     type: 'error',
+    //     position: 'top',
+    //     text1: 'Login Error',
+    //     text2: 'please input all field',
+    //     visibilityTime: 4000,
+    //     text1Style: { color: 'red', fontSize: 14 },
+    //     autoHide: true,
+    //     bottomOffset: 40,
+    //     swipeable: true,
+    //   })
+    // }
+    // const generalEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    // // const hasNumber = /\d/.test(userData.Email);
+    // // const isValid = generalEmailRegex.test(userData.Email) && userData.Email.toLowerCase().includes('@gmail.com') && hasNumber;
+    // const isValid =
+    //   generalEmailRegex.test(userData.Email) &&
+    //   userData.Email.toLowerCase().includes('@gmail.com')
+    // if (!isValid) {
+    //   return Toast.show({
+    //     type: 'error',
+    //     position: 'top',
+    //     text1: 'Login Error',
+    //     text2: 'email is invalid',
+    //     visibilityTime: 4000,
+    //     text1Style: { color: 'red', fontSize: 14 },
+    //     autoHide: true,
+    //     bottomOffset: 40,
+    //     swipeable: true,
+    //   })
+    // }
+    // if (isValid && allValuesPresent) {
+    //   try {
+    //     setLoading(true);
+    //     const response = dispatch(signItUp(userData, navigation,setLoading))
+    //     setuserData({...userData,Email:"",Password:""})
+    //     console.log("click in login button");
+    //     setTimeout(() => {
+    //       setLoading(false)
+    //     }, 10000);
+    //   } catch (error) {
+    //     console.error('error in login user', error)
+    //   }
+    // } 
+    // else {
+    //   Toast.show({
+    //     type: 'error',
+    //     position: 'top',
+    //     text1: 'Login Error',
+    //     text2: 'Please input all field',
+    //     visibilityTime: 4000,
+    //     text1Style: { color: 'red', fontSize: 14 },
+    //     autoHide: true,
+    //     bottomOffset: 40,
+    //     swipeable: true,
+    //   })
+    // }
   }
 
   GoogleSignin.configure({
@@ -100,7 +101,7 @@ const LoginInput = ({ navigation }) => {
     webClientId:
       '683362406803-fo4tm1la7a8kh2qilell97vf8ae71d7b.apps.googleusercontent.com', // Replace with your web client ID from Google Cloud Console
     androidClientId:
-      '683362406803-tgq3a58u23346etf2pgrrabh23o5hf11.apps.googleusercontent.com',
+    "156987578910-re1s445qg4f4p0183a04u7benv2caa78.apps.googleusercontent.com",
     scopes: ['profile', 'email'],
   })
 
@@ -136,18 +137,18 @@ const LoginInput = ({ navigation }) => {
       <View style={styles.inputsContainer}>
         <View>
           <InputBoxTwo
-            label="Email"
+            label="email"
             placeholder="Enter your mail id"
-            value={userData.Email}
+            value={userData.email}
             setValue={setuserData}
             objectData={userData}
           />
         </View>
         <View>
           <InputBoxTwo
-            label="Password"
+            label="password"
             placeholder="Enter your password"
-            value={userData.Password}
+            value={userData.password}
             setValue={setuserData}
             objectData={userData}
           />
@@ -181,21 +182,21 @@ const LoginInput = ({ navigation }) => {
       <Text style={styles.ortext}>or</Text>
 
       <View style={styles.socialButtonsContainer}>
-        <TouchableOpacity style={styles.socialButton}>
-          <View style={styles.socialIconWrapper}>
+        {/* <TouchableOpacity style={styles.socialButton}> */}
+          {/* <View style={styles.socialIconWrapper}> */}
             {/* <Image
                 source={require('../../assets/googlelogo.png')}
                 // style={styles.socialIconText}
               /> */}
-            <GoogleSigninButton
+            {/* <GoogleSigninButton
               style={{ width: 192, height: 48 }}
               size={GoogleSigninButton.Size.Wide}
               color={GoogleSigninButton.Color.Dark}
               onPress={handleGoogleLogin}
               disabled={false}
-            />
-          </View>
-        </TouchableOpacity>
+            /> */}
+          {/* </View> */}
+        {/* </TouchableOpacity> */}
         <TouchableOpacity style={styles.socialButton}>
           <View>
             <Image source={require('../../assets/facebookvector.png')} />

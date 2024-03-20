@@ -1,41 +1,70 @@
 {
   "project_info": {
-    "project_number": "683362406803",
-    "project_id": "login-500ca",
-    "storage_bucket": "login-500ca.appspot.com"
+    "project_number": "156987578910",
+    "project_id": "sylvan-epoch-414511",
+    "storage_bucket": "sylvan-epoch-414511.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:683362406803:android:b5a04ca97febfaf42a5866",
+        "mobilesdk_app_id": "1:156987578910:android:eb43ee753f55cf064e6c0f",
         "android_client_info": {
           "package_name": "com.Jouls"
         }
       },
       "oauth_client": [
         {
-          "client_id": "683362406803-tgq3a58u23346etf2pgrrabh23o5hf11.apps.googleusercontent.com",
+          "client_id": "156987578910-mh16soc5k45kvf0heu87uaqtmnhm1h2p.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.jouls1",
+            "package_name": "com.Jouls",
             "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },
         {
-          "client_id": "683362406803-fo4tm1la7a8kh2qilell97vf8ae71d7b.apps.googleusercontent.com",
+          "client_id": "156987578910-re1s445qg4f4p0183a04u7benv2caa78.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAn0_1axzYbmm_1w1D2tfTSWOXoF--fInY"
+          "current_key": "AIzaSyAN7nqxM_uxsbuCmVO6PbaO44QxC85ewTA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "683362406803-fo4tm1la7a8kh2qilell97vf8ae71d7b.apps.googleusercontent.com",
+              "client_id": "156987578910-01qcv838l6qo0pmcc6btd8apean8n3nj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156987578910:android:aee4239d5fcd47bf4e6c0f",
+        "android_client_info": {
+          "package_name": "com.jouls1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "156987578910-re1s445qg4f4p0183a04u7benv2caa78.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAN7nqxM_uxsbuCmVO6PbaO44QxC85ewTA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "156987578910-01qcv838l6qo0pmcc6btd8apean8n3nj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

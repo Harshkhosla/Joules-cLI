@@ -342,7 +342,7 @@ const Newhome = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {/* <Button title="stopChargig" onPress={getSampleData} disabled={isTimerRunning} /> */}
-      <Button title="del pid" onPress={handleRemoveItem} />
+      {/* <Button title="del pid" onPress={handleRemoveItem} /> */}
       {/* <Button title="know length" onPress={generateHoursArray} />
       <Button title="navigate to chargerhistory" onPress={generateHoursArray} /> */}
       <App_top_Header

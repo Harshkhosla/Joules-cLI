@@ -26,7 +26,7 @@ import { Alert } from 'react-native'
 // const [data34, setData34] = useState('')
 // const [data123, setData123] = useState('')
 
-const MqqtUrl="ws://34.93.173.35:9001/mqtt"
+const MqqtUrl="ws://34.100.251.160:9001/mqtt"
 // const ApiURL="https://adminbackendjouls-production.up.railway.app"
 // const ApiURL="http://165.22.223.26:5200"
 const ApiURL="http://165.22.223.26:5000"
@@ -198,7 +198,7 @@ export const CarDetails = (value) => {
     //   });
 
     const client = new Client({
-      uri: 'ws://34.93.62.206:9001/mqtt',
+      uri: 'ws://34.100.251.160:9001/mqtt',
       clientId: 'clientRadhe',
       storage: myStorage,
     })
@@ -270,7 +270,7 @@ export const CarDetails = (value) => {
 export const setName = (title) => {
   return (dispatch) => {
     const client = new Client({
-      uri: 'ws://34.93.62.206:9001/mqtt',
+      uri: 'ws://34.100.251.160:9001/mqtt',
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -344,7 +344,7 @@ export const setName = (title) => {
 export const Click = (user) => {
   return (dispatch) => {
     const client = new Client({
-      uri: 'ws://34.93.62.206:9001/mqtt',
+      uri: 'ws://34.100.251.160:9001/mqtt',
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -592,7 +592,7 @@ export const signItUp = (field, navigation,setLoading) => {
       const data = await response.json()
       console.log(data, 'login data ')
       if(data?.message=="Invalid email or password"){
-        setLoading(false)
+        // setLoading(false)
         Toast.show({
           type: 'error',
           text1Style:{color:"red",fontSize:18},
@@ -602,7 +602,7 @@ export const signItUp = (field, navigation,setLoading) => {
         return 
       }
       if(data?.message=="Email not verified"){
-        setLoading(false)
+        // setLoading(false)
         Toast.show({
           type: 'error',
           // text1: data,
@@ -613,7 +613,7 @@ export const signItUp = (field, navigation,setLoading) => {
         return 
       }
       if(data?.success){
-        setLoading(false)
+        // setLoading(false)
         Toast.show({
           type: 'success',
           text1: "login Successfull",
@@ -624,11 +624,11 @@ export const signItUp = (field, navigation,setLoading) => {
         })
       }
 
-      if(data.mid){
+      if(data?.mid){
         const mid=data.mid
         await AsyncStorage.setItem('mid', mid);
       }
-      if(data.name){
+      if(data?.name){
         const name=data.name
         await AsyncStorage.setItem('name', name);
       }
@@ -647,7 +647,7 @@ export const signItUp = (field, navigation,setLoading) => {
           position: 'top',
         })
       }
-      setLoading(false)
+      // setLoading(false)
       navigation.navigate('chargerSelection')
     } catch (err) {
       setLoading(false)
@@ -697,7 +697,7 @@ export const Clicked = (storingTime, Porduct_Key) => {
   console.log(storingTime, 'this is this')
   return (dispatch) => {
     const client = new Client({
-      uri: 'ws://34.93.62.206:9001/mqtt',
+      uri: 'ws://34.100.251.160:9001/mqtt',
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -744,7 +744,7 @@ export const Clicked = (storingTime, Porduct_Key) => {
 export const EcoMode = (Porduct_Key) => {
   return (dispatch) => {
     const client = new Client({
-      uri: 'ws://34.93.62.206:9001/mqtt',
+      uri: 'ws://34.100.251.160:9001/mqtt',
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -819,7 +819,7 @@ export const ScheduleMode = (scheduleData, Porduct_Key) => {
   console.log(Porduct_Key, 'coming hear')
   return (dispatch) => {
     const client = new Client({
-      uri: 'ws://34.93.62.206:9001/mqtt',
+      uri: 'ws://34.100.251.160:9001/mqtt',
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -892,7 +892,7 @@ export const BalanceMode = (Porduct_Key) => {
   console.log(Porduct_Key, 'suiii')
   return (dispatch) => {
     const client = new Client({
-      uri: 'ws://34.93.62.206:9001/mqtt',
+      uri: 'ws://34.100.251.160:9001/mqtt',
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -965,7 +965,7 @@ export const BalanceMode = (Porduct_Key) => {
 export const StopChargingMode = (Porduct_Key) => {
   return (dispatch) => {
     const client = new Client({
-      uri: 'ws://34.93.32.239:9001/mqtt',
+      uri: 'ws://34.100.251.160:9001/mqtt',
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
@@ -1044,7 +1044,7 @@ export const StopChargingMode = (Porduct_Key) => {
 export const ResolveMode = (Porduct_Key) => {
   return (dispatch) => {
     const client = new Client({
-      uri: 'ws://34.93.32.239:9001/mqtt',
+      uri: 'ws://34.100.251.160:9001/mqtt',
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
