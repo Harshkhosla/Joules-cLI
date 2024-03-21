@@ -1,25 +1,32 @@
 import React from 'react'
-import { StyleSheet, Image, View, BackHandler, Text } from 'react-native'
+import {
+  StyleSheet,
+  Image,
+  View,
+  BackHandler,
+  Text,
+  TouchableWithoutFeedback,
+} from 'react-native'
 import Modal from 'react-native-modal'
 
 const CustomModal = ({ visible, onClose, children }) => {
-  React.useEffect(() => {
-    const handleBackPress = () => {
-      if (visible) {
-        onClose()
-        return true // Return true to prevent default back button action
-      }
-      return false // Allow default back button action if modal is not visible
-    }
+  // React.useEffect(() => {
+  //   const handleBackPress = () => {
+  //     if (visible) {
+  //       onClose()
+  //       return true // Return true to prevent default back button action
+  //     }
+  //     return false // Allow default back button action if modal is not visible
+  //   }
 
-    // Add event listener for back button press
-    BackHandler.addEventListener('hardwareBackPress', handleBackPress)
+  //   // Add event listener for back button press
+  //   BackHandler.addEventListener('hardwareBackPress', handleBackPress)
 
-    // Clean up the event listener when the component unmounts
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackPress)
-    }
-  }, [visible, onClose])
+  //   // Clean up the event listener when the component unmounts
+  //   return () => {
+  //     BackHandler.removeEventListener('hardwareBackPress', handleBackPress)
+  //   }
+  // }, [visible, onClose])
 
   return (
     <Modal
@@ -32,15 +39,19 @@ const CustomModal = ({ visible, onClose, children }) => {
       animationIn="slideInUp"
       animationOut="slideOutDown"
     >
-      <View style={styles.modalContainer}>
-        <View style={styles.contentContainer}>
-          <Text style={{color:"#717171",fontWeight:"800",fontSize:30}}>{children}</Text>
-          <Image
-            source={require('../assets/Union.png')}
-            style={styles.imageStyle}
-          />
+      <TouchableWithoutFeedback onPress={onClose}>
+        <View style={styles.modalContainer}>
+          <View style={styles.contentContainer}>
+            <Text style={{ color: '#717171', fontWeight: '800', fontSize: 30 }}>
+              {children}
+            </Text>
+            <Image
+              source={require('../assets/Union.png')}
+              style={styles.imageStyle}
+            />
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </Modal>
   )
 }
