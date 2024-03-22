@@ -26,7 +26,7 @@ const Editprofile = () => {
           <View style={styles.ellipse}>
             <View style={styles.profileimgContain}>
               <Image
-                source={require('../../assets/mypic.jpg')}
+                source={require('../../assets/defaultuser.png')}
                 style={styles.profileimg}
                 resizeMode="contain"
               />

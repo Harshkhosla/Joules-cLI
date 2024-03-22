@@ -50,6 +50,11 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
       navigation.navigate(item)
     }
   }
+
+  const navigateToEdit = () => {
+    navigation.navigate('Editprofile')
+    closeNave()
+  }
   return (
     <View>
       <Modal
@@ -74,7 +79,7 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
             />
             <View style={styles.profileContainer}>
               <Image
-                source={require('../assets/mypic.jpg')}
+                source={require('../assets/defaultuser.png')}
                 style={styles.profileimg}
                 resizeMode="contain"
               />
@@ -83,7 +88,7 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
 
               <TouchableOpacity
                 style={styles.prfileEdit}
-                onPress={() => navigation.navigate('Editprofile')}
+                onPress={() => navigateToEdit()}
               >
                 <Image
                   source={require('../assets/account_circle.png')}
