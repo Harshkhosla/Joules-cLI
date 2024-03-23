@@ -13,6 +13,8 @@ export const SET_USER_FLAT = 'SET_USER_FLAT'
 export const SET_MODE_VALUE = 'SET_MODE_VALUE'
 export const SET_STATE_VALUE = 'SET_STATE_VALUE'
 export const SET_USER_ENERGY = 'SET_USER_ENERGY'
+export const SET_CHARGING_COST = 'SET_CHARGING_COST'
+export const SET_CHARGING_COST_PER_HOUR = 'SET_CHARGING_COST_PER_HOUR'
 export const SET_USER_POWER = 'SET_USER_POWER'
 export const SET_USER_CURRENT = 'SET_USER_CURRENT'
 export const SET_USER_PRODUCTKEY = 'SET_USER_PRODUCTKEY'
@@ -28,9 +30,30 @@ import { Alert } from 'react-native'
 
 const MqqtUrl="ws://34.100.251.160:9001/mqtt"
 // const ApiURL="https://adminbackendjouls-production.up.railway.app"
-// const ApiURL="http://165.22.223.26:5200"
-const ApiURL="http://165.22.223.26:5000"
-// const ApiURL="http://192.168.45.3:5200"
+const ApiURL="http://165.22.223.26:5000" // live url
+
+// const ApiURL="http://192.168.45.3:5200" // localhost
+
+// current time and current date 
+const getCurrentDateTime = () => {
+  // Current date aur time ke liye Date object ka istemal
+  const currentDate = new Date();
+  
+  // Date ko desired format mein convert karna
+  const day = String(currentDate.getDate()).padStart(2, '0');
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+  const year = String(currentDate.getFullYear()).slice(2); // Last two digits of the year
+  const formattedDate = `${day}/${month}/${year}`;
+  
+  // Time ko desired format mein convert karna
+  const hours = String(currentDate.getHours()).padStart(2, '0');
+  const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+  const formattedTime = `${hours}:${minutes}`;
+
+  // Output ko return karna
+  return { formattedDate, formattedTime };
+};
+
 
 const topic1State = {
   messages: [],
@@ -119,6 +142,22 @@ export const setPower = (user_Energy) => {
   // console.log(house_voltage);
   return {
     type: SET_USER_POWER,
+    payload: user_Energy,
+  }
+}
+
+export const setChargingCost = (user_Energy) => {
+  // console.log(house_voltage);
+  return {
+    type: SET_CHARGING_COST,
+    payload: user_Energy,
+  }
+}
+
+export const setChargingCostPerHour = (user_Energy) => {
+  // console.log(house_voltage);
+  return {
+    type: SET_CHARGING_COST_PER_HOUR,
     payload: user_Energy,
   }
 }
@@ -393,12 +432,15 @@ export const AddTrasationDetail = (input, navigation,setLoading) => {
   // debugger;
   // console.log("harsh", input);
   return async (dispatch) => {
+    const { formattedDate, formattedTime } = getCurrentDateTime();
+    input.date=formattedDate
+    input.time=formattedTime
     const { AppUserName, pid ,AppUid} = input
     console.log(AppUserName,pid,AppUid);
     try {
       const response = await fetch(
-        `http://192.168.112.3:5000/user/addpid/transaction/${pid}`,
-        // `${ApiURL}/user/addpid/transaction/${pid}`,
+        // `http://192.168.112.3:5000/user/addpid/transaction/${pid}`,
+        `${ApiURL}/user/addpid/transaction/${pid}`,
 
         // `https://backend-production-e1c2.up.railway.app/api/auth/createuser`,
         // `${ApiURL}/client/scan/adduser`,
@@ -411,7 +453,7 @@ export const AddTrasationDetail = (input, navigation,setLoading) => {
           body: JSON.stringify({transaction:input}),
         }
       )
-      console.log("helo in before",response);
+     
       const data =await response.json()
       console.log(data, 'data in sign up user')
       if(data.message=="data save successfully"){
@@ -433,6 +475,47 @@ export const AddTrasationDetail = (input, navigation,setLoading) => {
     }
   }
 }
+
+
+export const findChargingCost = (pid, navigation,setLoading) => {
+  // debugger;
+  // console.log("harsh", input);
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        // `http://192.168.110.3:5000/user/addpid/getchargingcost/${pid}`,
+        `${ApiURL}/user/addpid/getchargingcost/${pid}`
+      )
+      console.log("helo in before");
+      const data = await response.json()
+      console.log(data, 'data in find charging cost')
+      if(data.message=="data save successfully"){
+        setLoading(false)
+      }
+      if(data.chargingCost){
+        dispatch(setChargingCost(data.chargingCost))
+      }
+      
+      if(data.chargingCostPerHour){
+        dispatch(setChargingCostPerHour(data.chargingCostPerHour))
+      }
+      // const authtoken = JSON.stringify(data.authtoken).replaceAll('"', '')
+      return data
+    } catch (err) {
+      Toast.show({
+        type: 'error',
+        text1: "Login Failed",
+        text2: 'error in catch',
+        text1Style: { color: 'red', fontSize: 14 },
+        text1:err,
+        position: 'top',
+      });
+      console.log(err, 'catch ke andr sign up action.js')
+    }
+  }
+}
+
+
 // user detail and pid save to db
 export const NameAndPid = (input, navigation,setLoading) => {
   // debugger;
@@ -442,10 +525,9 @@ export const NameAndPid = (input, navigation,setLoading) => {
     console.log(name,pid);
     try {
       const response = await fetch(
-        `http://192.168.43.158:5200/client/scan/adduser`,
-        // `https://backend-production-e1c2.up.railway.app/api/auth/createuser`,
-        // `${ApiURL}/client/scan/adduser`,
-        // "https://adminbackendjouls-production.up.railway.app/admin/user/register",
+        // `http://192.168.43.158:5200/client/scan/adduser`,
+        `${ApiURL}/client/scan/adduser`,
+        
         {
           method: 'POST',
           headers: {

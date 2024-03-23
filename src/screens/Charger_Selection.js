@@ -19,6 +19,7 @@ import Circle from './Circle'
 import CustomModal from '../components/CustomModal'
 import React, { useEffect, useRef, useState } from 'react'
 import { useFocusEffect } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Charger_Selection = ({ navigation }) => {
   const [isModalVisible, setisModalVisible] = useState(false)
@@ -58,6 +59,17 @@ const Charger_Selection = ({ navigation }) => {
       return () => backHandler.remove()
     }, [])
   )
+
+  useEffect(() => {
+    // AsyncStorage se data delete karna
+    AsyncStorage.removeItem('pid') // 'key' ki jagah aap apne data ke key ko daal sakte hain
+      .then(() => {
+        console.log('pid successfully deleted from AsyncStorage');
+      })
+      .catch((error) => {
+        console.log('Error deleting data from AsyncStorage:', error);
+      });
+  }, []);
   // useEffect(() => {
   //   const backAction = () => {
   //     if (!exitApp.current) {
