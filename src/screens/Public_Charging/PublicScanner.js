@@ -19,7 +19,7 @@ import { RNCamera } from 'react-native-camera'
 import WifiManager from 'react-native-wifi-reborn'
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler'
 import { ToastAndroid } from 'react-native'
-import { DoorOpening, NameAndPid, SendUsername, UpdatName, setProductKey } from '../../Redux/Action'
+import { DoorOpening, NameAndPid, SendUsername, UpdatName, findChargingCost, setProductKey } from '../../Redux/Action'
 import { useDispatch, useSelector } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import EvCharging from '../../components/EvCharging'
@@ -174,6 +174,7 @@ if(!pid || !receivedData){
   }
   try {
     console.log("in try api calll");
+    const findChargingCost1=await dispatch(findChargingCost(pid))
     // const response=await dispatch(NameAndPid(SendData,navigation,setloading))
     const response=await dispatch(SendUsername(SendData))
     console.log("response",response);

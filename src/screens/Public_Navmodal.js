@@ -36,11 +36,12 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
 
   const removeItemFromAsyncStorage = async () => {
     try {
-      await AsyncStorage.removeItem('Authtoken')
-      console.log('Item removed successfully')
+      // AsyncStorage se sabhi data ko hatao
+      await AsyncStorage.clear();
+      console.log('All data removed from AsyncStorage');
       navigation.navigate('SignIn')
     } catch (error) {
-      console.error('Error removing item from AsyncStorage:', error)
+      console.error('Error clearing data from AsyncStorage:', error);
     }
   }
 

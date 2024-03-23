@@ -65,15 +65,12 @@ export default function App() {
               headerShown: false,
             }}
           >
-            {/* <Stack.Screen name='addrfid' component={AddRfid}/>   */}
-            {/* <Stack.Screen name='support2' component={HeaderWithArrow}/>   */}
-
-            {/* <Stack.Screen
+            <Stack.Screen
               name="AuthLoadingScreen"
               component={AuthLoadingScreen}
             />
-            <Stack.Screen name="SignIn" component={SignIn} /> */}
-            {/* <Stack.Screen name="Editprofile" component={Editprofile} /> */}
+            <Stack.Screen name="SignIn" component={SignIn} />
+            <Stack.Screen name="Editprofile" component={Editprofile} />
 
             <Stack.Screen
               name="chargerSelection"
@@ -88,7 +85,6 @@ export default function App() {
               name="finalhomepage"
               component={PublicHomePageFinal}
             />
-            <Stack.Screen name="Editprofile" component={Editprofile} />
             <Stack.Screen name="MessagePage" component={MessagePage} />
             <Stack.Screen name="Questionnaire" component={Questionnaire} />
             <Stack.Screen name="QuesLive" component={QuesLive} />

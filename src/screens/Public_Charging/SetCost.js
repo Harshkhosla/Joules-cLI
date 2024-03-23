@@ -15,12 +15,8 @@ import {
 } from 'react-native-responsive-dimensions'
 import React, { useEffect, useState } from 'react'
 import Toast from 'react-native-toast-message'
-import { useDispatch } from 'react-redux'
-import {
-  AddTrasationDetail,
-  StopChargingMode,
-  publicstartCharging,
-} from '../../Redux/Action'
+import { useDispatch, useSelector } from 'react-redux'
+import { AddTrasationDetail, StopChargingMode, publicstartCharging } from '../../Redux/Action'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import TimerSlider from '../TimerSlider'
 import ModalRadhe from './radheModal'
@@ -44,7 +40,14 @@ const SetCost = ({
   const [ShowSetCost, SetShowSetCost] = useState(true)
   const [inputCost, setInputCost] = useState('')
   const [Time, settime] = useState('')
-
+  let findchargingCost=useSelector((state)=>state.userReducers.setchargingcost)
+  let findchargingCostPerHour=useSelector((state)=>state.userReducers.setchargingcostperhour)
+  if(!findchargingCost || findchargingCost=="0"){
+    findchargingCost=12
+  }
+  if(!findchargingCostPerHour || findchargingCostPerHour=="0"){
+    findchargingCostPerHour=12
+  }
   useEffect(() => {
     setInputCost(inputvalue)
   }, [open])
@@ -66,7 +69,12 @@ const SetCost = ({
     // return data;
   }
 
-  const handlePayment = () => {
+  const handlePayment = async() => {
+    const AsyncStoragepid = await AsyncStorage.getItem('pid')
+    if(!AsyncStoragepid){
+      Alert.alert("scan please")
+      return
+    }
     const options = {
       description: 'Payment for your order',
       image: 'https://yourwebsite.com/logo.png',
@@ -88,10 +96,10 @@ const SetCost = ({
         Alert.alert('Payment Success', 'Payment was successful.')
         if (data && data.razorpay_payment_id) {
           console.log('navigate to start charging')
-          // sendData(data.razorpay_payment_id)
+          sendData(data.razorpay_payment_id)
           startCharging()
         }
-      })
+  })
       .catch((error) => {
         console.error('Payment Error:', error)
         Alert.alert('Payment Failed', 'Payment failed. Please try again.')
@@ -99,7 +107,8 @@ const SetCost = ({
   }
 
   const startCharging = async () => {
-    const a = (Math.ceil((inputCost / 15) * 100) / 100) * 1000
+    // const a = (Math.ceil((inputCost / 15) * 100) / 100) * 1000
+    const a = (Math.ceil((inputCost / findchargingCost) * 100) / 100) * 1000
     if (inputCost) {
       setOnStopChargingCost(a)
     }
@@ -197,12 +206,14 @@ const SetCost = ({
                   <ChargingCost
                     setInputCost={setInputCost}
                     inputCost={inputCost}
+                    findchargingCost={findchargingCost}
                   />
                 ) : (
                   <ChargingSetTime
                     settime={settime}
                     SetTimeinSec={SetTimeinSec}
                     setInputCost={setInputCost}
+                    findchargingCostPerHour={findchargingCostPerHour}
                   />
                 )}
               </View>
@@ -266,7 +277,8 @@ const SetCost = ({
   )
 }
 
-const ChargingCost = ({ setInputCost, inputCost }) => {
+const ChargingCost = ({ setInputCost, inputCost ,findchargingCost}) => {
+  console.log(findchargingCost,"chargincost in chargingcost")
   return (
     <View style={{ marginVertical: 10 }}>
       <Text
@@ -316,7 +328,7 @@ const ChargingCost = ({ setInputCost, inputCost }) => {
           marginTop: 10,
         }}
       >
-        Cost of Charging : ₹15 per Kwh (per Unit)
+        Cost of Charging : ₹{findchargingCost} per Kwh (per Unit)
       </Text>
       <Text
         style={{
@@ -326,13 +338,13 @@ const ChargingCost = ({ setInputCost, inputCost }) => {
           marginTop: 15,
         }}
       >
-        Charging Units - {Math.ceil((inputCost / 15) * 100) / 100} kwh
+        Charging Units - {Math.ceil((inputCost / findchargingCost) * 100) / 100} kwh
       </Text>
     </View>
   )
 }
 
-const ChargingSetTime = ({ SetTimeinSec, settime, setInputCost }) => {
+const ChargingSetTime = ({ SetTimeinSec, settime, setInputCost ,findchargingCostPerHour}) => {
   const [activeButton, setActiveButton] = useState(null)
   const [chargingCost, setChargingCost] = useState()
   const buttonClick = (buttonName) => {
@@ -424,7 +436,7 @@ const ChargingSetTime = ({ SetTimeinSec, settime, setInputCost }) => {
           fontWeight: '400',
         }}
       >
-        Cost of Charging- ₹10 per hour
+        Cost of Charging- ₹{findchargingCostPerHour} per hour
       </Text>
       <Text
         style={{
@@ -433,7 +445,7 @@ const ChargingSetTime = ({ SetTimeinSec, settime, setInputCost }) => {
           fontWeight: '400',
         }}
       >
-        Charging Cost- ₹{chargingCost}
+        Charging Cost- ₹{chargingCost || "0"}
       </Text>
     </View>
   )
