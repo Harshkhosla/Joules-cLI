@@ -389,7 +389,7 @@ const Newhome = ({ navigation }) => {
                 source={require('../../assets/power.png')}
               />
               <Text style={{ color: '#9A9A9A' }}>
-                Charger- {SamplePowerData ? SamplePowerData : '0'} kw
+                Charger- {SamplePowerData ? SamplePowerData : '0'} w
               </Text>
             </View>
           </View>
