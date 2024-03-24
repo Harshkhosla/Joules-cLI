@@ -39,6 +39,7 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
       // AsyncStorage se sabhi data ko hatao
       await AsyncStorage.clear();
       console.log('All data removed from AsyncStorage');
+      closeNave()
       navigation.navigate('SignIn')
     } catch (error) {
       console.error('Error clearing data from AsyncStorage:', error);

@@ -16,7 +16,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import Toast from 'react-native-toast-message'
 import { useDispatch, useSelector } from 'react-redux'
-import { AddTrasationDetail, StopChargingMode, publicstartCharging } from '../../Redux/Action'
+import { AddTrasationDetail, StopChargingMode, publicstartCharging} from '../../Redux/Action'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import TimerSlider from '../TimerSlider'
 import ModalRadhe from './radheModal'
@@ -42,11 +42,16 @@ const SetCost = ({
   const [Time, settime] = useState('')
   let findchargingCost=useSelector((state)=>state.userReducers.setchargingcost)
   let findchargingCostPerHour=useSelector((state)=>state.userReducers.setchargingcostperhour)
+  let findchargername=useSelector((state)=>state.userReducers.setchargername)
+
   if(!findchargingCost || findchargingCost=="0"){
     findchargingCost=12
   }
   if(!findchargingCostPerHour || findchargingCostPerHour=="0"){
     findchargingCostPerHour=12
+  }
+  if(!findchargername){
+    findchargername="none"
   }
   useEffect(() => {
     setInputCost(inputvalue)
@@ -125,7 +130,9 @@ const SetCost = ({
           setButtonText,
           SetstartTime,
           setcheckChargingStarted,
-          handleStopCharging
+          handleStopCharging,
+          inputCost,
+          findchargername
         )
       )
     } else {
