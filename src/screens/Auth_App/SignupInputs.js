@@ -22,62 +22,77 @@ import { useDispatch } from 'react-redux'
 import { loginuser } from '../../Redux/Action'
 import Toast from 'react-native-toast-message'
 
-const SignupInputs = ({navigation}) => {
-  const [loading, setLoading] = useState(false);
-  const [userData,setuserData]=useState({Name:"",Email:"",Password:"",ConfirmPassword:""})
-  const dispatch=useDispatch()
-  const signup=async()=>{
-    const allValuesEmpty = Object.keys(userData).every(key => userData[key] !== "");
-    if(!allValuesEmpty){
+const SignupInputs = ({ navigation }) => {
+  const [loading, setLoading] = useState(false)
+  const [userData, setuserData] = useState({
+    Name: '',
+    Email: '',
+    Password: '',
+    ConfirmPassword: '',
+  })
+  const dispatch = useDispatch()
+  const signup = async () => {
+    const allValuesEmpty = Object.keys(userData).every(
+      (key) => userData[key] !== ''
+    )
+    if (!allValuesEmpty) {
       return Toast.show({
         type: 'error',
         position: 'top',
         text1: 'Sign up Error',
         text2: 'please input all field',
         visibilityTime: 4000,
-        text1Style:{color:"red",fontSize:14},
+        text1Style: { color: 'red', fontSize: 14 },
         autoHide: true,
         bottomOffset: 40,
-        swipeable:true
-      }); 
+        swipeable: true,
+      })
     }
-    const generalEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const generalEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     // const hasNumber = /\d/.test(userData.Email);
-    const isValid = generalEmailRegex.test(userData.Email) && userData.Email.toLowerCase().includes('@gmail.com');
-    if(!isValid){
+    const isValid =
+      generalEmailRegex.test(userData.Email) &&
+      userData.Email.toLowerCase().includes('@gmail.com')
+    if (!isValid) {
       return Toast.show({
         type: 'error',
         position: 'top',
         text1: 'Login Error',
         text2: 'email is invalid',
         visibilityTime: 4000,
-        text1Style:{color:"red",fontSize:14},
+        text1Style: { color: 'red', fontSize: 14 },
         autoHide: true,
         bottomOffset: 40,
-        swipeable:true
-      });
-    }
-   if(isValid && allValuesEmpty){
-    if(userData.Password!=userData.ConfirmPassword){
-      return Toast.show({
-        type:"error",
-        text2:"password and confirm password are same",
-        text1:"validation error",
-        text1Style:{color:"red",fontSize:14},
-        text2Style:{color:"black"},
-        swipeable:true
+        swipeable: true,
       })
     }
-    try {
-      setLoading(true)
-      const response=dispatch(loginuser(userData,navigation,setLoading))
-      // const response = await fetch('http://192.168.45.3:5200/hardware/code/getcode/1');
-      console.log("click in sign up",response);
-      setuserData({...userData,Email:"",Password:"",ConfirmPassword:"",Name:""})
-    } catch (error) {
-      console.log("error in singup in signupinputs component",error)
+    if (isValid && allValuesEmpty) {
+      if (userData.Password != userData.ConfirmPassword) {
+        return Toast.show({
+          type: 'error',
+          text2: 'password and confirm password are same',
+          text1: 'validation error',
+          text1Style: { color: 'red', fontSize: 14 },
+          text2Style: { color: 'black' },
+          swipeable: true,
+        })
+      }
+      try {
+        setLoading(true)
+        const response = dispatch(loginuser(userData, navigation, setLoading))
+        // const response = await fetch('http://192.168.45.3:5200/hardware/code/getcode/1');
+        console.log('click in sign up', response)
+        setuserData({
+          ...userData,
+          Email: '',
+          Password: '',
+          ConfirmPassword: '',
+          Name: '',
+        })
+      } catch (error) {
+        console.log('error in singup in signupinputs component', error)
+      }
     }
-  }
   }
   return (
     <View style={styles.container}>
@@ -87,26 +102,56 @@ const SignupInputs = ({navigation}) => {
       > */}
       <View style={styles.inputsContainer}>
         <View>
-          <InputBoxTwo label="Name" placeholder="Enter your name" value={userData.Name} setValue={setuserData} objectData={userData}/>
+          <InputBoxTwo
+            label="Name"
+            placeholder="Enter your name"
+            value={userData.Name}
+            setValue={setuserData}
+            objectData={userData}
+          />
         </View>
         <View>
-          <InputBoxTwo label="Email" placeholder="Enter your mail id" value={userData.Email} setValue={setuserData}  objectData={userData}/>
+          <InputBoxTwo
+            label="Email"
+            placeholder="Enter your mail id"
+            value={userData.Email}
+            setValue={setuserData}
+            objectData={userData}
+          />
         </View>
       </View>
       <View style={styles.passwordContainer}>
-        <InputBoxTwo label="Password" placeholder="Enter password" value={userData.Password} setValue={setuserData}  objectData={userData} />
-        <InputBoxTwo label="ConfirmPassword" placeholder="Enter password"  value={userData.ConfirmPassword} setValue={setuserData}  objectData={userData}/>
+        <InputBoxTwo
+          label="Password"
+          placeholder="Enter password"
+          value={userData.Password}
+          setValue={setuserData}
+          objectData={userData}
+        />
+        <InputBoxTwo
+          label="ConfirmPassword"
+          placeholder="Enter password"
+          value={userData.ConfirmPassword}
+          setValue={setuserData}
+          objectData={userData}
+        />
       </View>
-      <TouchableOpacity style={styles.SignupButton} onPress={signup} disabled={loading}>
-        {loading?(
-          <ActivityIndicator size="small" color="green"/>
-        ):(
-        <Text style={styles.SignupButtonText}>Sign up</Text>
+      <TouchableOpacity
+        style={styles.SignupButton}
+        onPress={signup}
+        disabled={loading}
+      >
+        {loading ? (
+          <ActivityIndicator size="small" color="green" />
+        ) : (
+          <Text style={styles.SignupButtonText}>Sign up</Text>
         )}
       </TouchableOpacity>
       <Text style={styles.TermsAndConditions}>
         By Signing up you agree to
-        <Text style={{ color: 'green',textDecorationLine:"underline"}}> Terms & Conditions</Text>
+        <Text style={{ color: 'green', textDecorationLine: 'underline' }}>
+          Terms & Conditions
+        </Text>
       </Text>
 
       <Text style={styles.ortext}>or</Text>
@@ -149,7 +194,7 @@ const styles = StyleSheet.create({
   },
   inputsContainer: {
     // marginVertical: 8,
-    color:"black"
+    color: 'black',
   },
   input: {
     borderRadius: 8,
@@ -179,7 +224,7 @@ const styles = StyleSheet.create({
     fontSize: fp(1.5),
     paddingTop: 10,
     textAlign: 'center',
-    color:"black"
+    color: 'black',
   },
   ortext: {
     padding: 12,

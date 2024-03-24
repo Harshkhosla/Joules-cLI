@@ -1,32 +1,32 @@
-import React, { useEffect } from 'react';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect } from 'react'
+import { View, ActivityIndicator, StyleSheet } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const AuthLoadingScreen = ({ navigation }) => {
   useEffect(() => {
     const checkSignInStatus = async () => {
       try {
-        const userToken = await AsyncStorage.getItem('Authtoken');
+        const userToken = await AsyncStorage.getItem('Authtoken')
         if (userToken) {
-          navigation.replace('chargerSelection');
+          navigation.replace('chargerSelection')
         } else {
-          navigation.replace('SignIn');
+          navigation.replace('SignIn')
         }
       } catch (error) {
-        console.error('Error fetching userToken:', error);
+        console.error('Error fetching userToken:', error)
       }
-    };
+    }
 
-    checkSignInStatus();
-  }, [navigation]);
+    checkSignInStatus()
+  }, [navigation])
 
   return (
     <View style={styles.container}>
       {/* Add your loading component here */}
       <ActivityIndicator size="large" color="#0000ff" />
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -34,6 +34,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-});
+})
 
-export default AuthLoadingScreen;
+export default AuthLoadingScreen

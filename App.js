@@ -69,9 +69,8 @@ export default function App() {
               name="AuthLoadingScreen"
               component={AuthLoadingScreen}
             />
-            <Stack.Screen name="SignIn" component={SignIn} />
-            <Stack.Screen name="Editprofile" component={Editprofile} />
 
+            <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen
               name="chargerSelection"
               component={Charger_Selection}
@@ -85,6 +84,7 @@ export default function App() {
               name="finalhomepage"
               component={PublicHomePageFinal}
             />
+            <Stack.Screen name="Editprofile" component={Editprofile} />
             <Stack.Screen name="MessagePage" component={MessagePage} />
             <Stack.Screen name="Questionnaire" component={Questionnaire} />
             <Stack.Screen name="QuesLive" component={QuesLive} />

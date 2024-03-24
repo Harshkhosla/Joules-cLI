@@ -23,17 +23,17 @@ import { useFocusEffect } from '@react-navigation/native'
 
 const SignIn = ({ navigation }) => {
   const [login, setLogin] = useState(true)
-  // useFocusEffect(()=>{
-  //   const fetchdata=async()=>{
-  //     const data=await AsyncStorage.getItem("Authtoken")
-  //     if(data){
+  // useFocusEffect(() => {
+  //   const fetchdata = async () => {
+  //     const data = await AsyncStorage.getItem('Authtoken')
+  //     if (data) {
   //       // navigation.navigate("chargerSelection")
   //       navigation.reset({
   //         index: 0,
   //         routes: [{ name: 'chargerSelection' }],
-  //       });
+  //       })
   //     }
-  //     console.log("data",data);
+  //     console.log('data', data)
   //   }
   //   fetchdata()
   // })
@@ -64,7 +64,7 @@ const SignIn = ({ navigation }) => {
                 >
                   Login
                 </Text>
-                <Text style={[{ fontSize: fp(4),color:"#BFBFBF" }]}>|</Text>
+                <Text style={[{ fontSize: fp(4), color: '#BFBFBF' }]}>|</Text>
                 <Text
                   style={
                     !login ? styles.TogglerText : styles.onclickTogglerText
