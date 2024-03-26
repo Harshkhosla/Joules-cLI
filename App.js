@@ -55,6 +55,8 @@ const Stack = createStackNavigator()
 const Drawer = createDrawerNavigator()
 
 export default function App() {
+ const data = AsyncStorage.getItem('mid')
+ console.log(data);
   return (
     <Sample store={Store}>
       <Provider theme={theme}>

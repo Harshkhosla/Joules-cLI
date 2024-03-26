@@ -766,6 +766,7 @@ export const updateUser = (updatedData, navigation) => {
   return async () => {
     try {
       // Make PUT request to the backend endpoint
+      // const response = await fetch(`${ApiURL}/admin/user/${updatedData.mid}`, {
       const response = await fetch(`${ApiURL}/admin/user/${updatedData.mid}`, {
         method: 'PUT',
         headers: {

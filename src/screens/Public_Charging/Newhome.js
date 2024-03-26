@@ -12,7 +12,7 @@ import React, { useEffect, useState } from 'react'
 import SetCost from './SetCost'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
-import { publicstopCharging } from '../../Redux/Action'
+import { getUserData, publicstopCharging } from '../../Redux/Action'
 import HomeScreenCircles from '../HomeScreenCircle'
 import Wave from '../../components/wave'
 import App_top_Header from '../App_top_Header'
@@ -288,20 +288,24 @@ const Newhome = ({ navigation }) => {
   }
 
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       try {
-        const storedName = await AsyncStorage.getItem('name')
-        console.log('storedName', storedName)
-        if (storedName) {
-          setName(storedName)
-        }
+        // Get the stored MID from AsyncStorage
+        const storedMid = await AsyncStorage.getItem('mid');
+        
+        // Dispatch action to get user data using the retrieved MID
+        const data = await dispatch(getUserData(storedMid));
+        // Set the retrieved MID and user data in state
+        const userdata = await data;
+        setName(userdata.name);
       } catch (error) {
-        console.error('Error fetching data:', error)
+        console.error('Error fetching data:', error);
       }
-    }
+    };
 
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
+
   // for not click startcharing 10 min
   useEffect(() => {
     let timer
