@@ -27,13 +27,13 @@ export default SupportAndRfidHeader
 const styles = StyleSheet.create({
   container: {
     height: hp(12),
-    marginLeft:-10,
     backgroundColor: '#C1E0C2',
     borderBottomRightRadius: 20,
     borderBottomLeftRadius: 20,
     justifyContent: 'flex-end',
-    width:hp(48),
-    marginTop:-10
+    // marginLeft: -10,
+    // width: hp(48),
+    // marginTop: -10,
   },
   Icon: {
     flexDirection: 'row',

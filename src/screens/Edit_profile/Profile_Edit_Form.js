@@ -1,4 +1,5 @@
-import React, { useRef } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import React, { useEffect, useState } from 'react'
 import {
   View,
   TextInput,
@@ -9,21 +10,65 @@ import {
 import {
   responsiveHeight as hp,
   responsiveWidth as wp,
-  responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
+import { updateUser } from '../../Redux/Action'
+import { getUserData } from '../../Redux/Action'
+import { useDispatch } from 'react-redux'
+import { useNavigation } from '@react-navigation/native'
 
 const Profile_Edit_Form = () => {
+  const navigation = useNavigation()
+
+  const dispatch = useDispatch()
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [mid, setMid] = useState('')
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const storedMid = await AsyncStorage.getItem('mid')
+        const data = await dispatch(getUserData(storedMid))
+        setMid(storedMid)
+        const userdata = await data
+        await setName(userdata.name)
+        await setEmail(userdata.email)
+        console.log('from front', userdata.name)
+      } catch (error) {
+        console.error('Error retrieving data:', error)
+      }
+    }
+
+    fetchData()
+  }, [])
+
+  const update = async () => {
+    const updatedData = {
+      email: email,
+      password: password,
+      name: name,
+      mid: mid,
+    }
+    console.log('from front', updatedData)
+    dispatch(updateUser(updatedData, navigation))
+  }
+
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
         placeholder="Full Name"
+        value={name}
+        onChangeText={(text) => setName(text)}
         placeholderTextColor="gray"
         returnKeyType="next"
       />
       <TextInput
         style={styles.input}
         placeholder="Email"
+        value={email}
+        onChangeText={(text) => setEmail(text)}
         placeholderTextColor="gray"
         keyboardType="email-address"
         returnKeyType="next"
@@ -31,14 +76,13 @@ const Profile_Edit_Form = () => {
       <TextInput
         style={styles.input}
         placeholder="Password"
+        value={password}
+        onChangeText={(text) => setPassword(text)}
         placeholderTextColor="gray"
         secureTextEntry={true}
         returnKeyType="done"
       />
-      <TouchableOpacity
-        style={styles.buttonContainer}
-        onPress={() => console.log('press')}
-      >
+      <TouchableOpacity style={styles.buttonContainer} onPress={update}>
         <Text style={styles.buttonText}>Save</Text>
       </TouchableOpacity>
     </View>
@@ -60,7 +104,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginBottom: hp(6),
     paddingHorizontal: 20,
-    color: 'red',
+    // color: 'red',
   },
   buttonContainer: {
     width: wp(50),

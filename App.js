@@ -27,7 +27,7 @@ import Clamp from './src/screens/Clamp'
 import House from './src/screens/House'
 import Meter from './src/screens/Graphs'
 import UserProfile from './src/screens/UserProfile'
-// import EditProfileScreen from './src/screens/EditProfileScreen'
+import EditProfileScreen from './src/screens/EditProfileScreen'
 import AddCharger from './src/screens/AddCharger'
 import Notifications from './src/screens/Notifications'
 import ChargerSettings from './src/screens/ChargerSettings'
@@ -48,7 +48,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import HeaderWithArrow from './src/components/ChatSupport'
 import AddRfid from './src/components/AddRfid'
 import AuthLoadingScreen from './src/components/OpenSplash'
-// import Editprofile from './src/screens/Edit_profile/Editprofile'
+import Editprofile from './src/screens/Edit_profile/Editprofile'
 
 const Stack = createStackNavigator()
 
@@ -65,15 +65,12 @@ export default function App() {
               headerShown: false,
             }}
           >
-            {/* <Stack.Screen name='addrfid' component={AddRfid}/>   */}
-            {/* <Stack.Screen name='support2' component={HeaderWithArrow}/>   */}
-
-            {/* <Stack.Screen
+            <Stack.Screen
               name="AuthLoadingScreen"
               component={AuthLoadingScreen}
             />
-            {/* <Stack.Screen name="Editprofile" component={Editprofile} /> */}
-             <Stack.Screen name="SignIn" component={SignIn} /> 
+
+            <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen
               name="chargerSelection"
               component={Charger_Selection}
@@ -87,6 +84,7 @@ export default function App() {
               name="finalhomepage"
               component={PublicHomePageFinal}
             />
+            <Stack.Screen name="Editprofile" component={Editprofile} />
             <Stack.Screen name="MessagePage" component={MessagePage} />
             <Stack.Screen name="Questionnaire" component={Questionnaire} />
             <Stack.Screen name="QuesLive" component={QuesLive} />
@@ -115,10 +113,10 @@ export default function App() {
             <Stack.Screen name="Datainput" component={Datainput} />
             <Stack.Screen name="Clamp" component={Clamp} />
             <Stack.Screen name="UserProfile" component={UserProfile} />
-            {/* <Stack.Screen
+            <Stack.Screen
               name="EditProfileScreen"
               component={EditProfileScreen}
-            /> */}
+            />
             <Stack.Screen name="AddCharger" component={AddCharger} />
             <Stack.Screen name="Notifications" component={Notifications} />
             <Stack.Screen name="ChargerSettings" component={ChargerSettings} />

@@ -210,7 +210,7 @@ const Newhome = ({ navigation }) => {
         setChargingEnergy('')
         setChargingCost('')
         // for click start charging
-        setButtonPressed(true)
+        // setButtonPressed(true)
       } else {
         navigation.navigate('PublicScanner', { name: name })
         // setData(true);
@@ -308,7 +308,7 @@ const Newhome = ({ navigation }) => {
     if (!buttonPressed && data) {
       timer = setTimeout(() => {
         setTimerExpired(true)
-      }, 10000)
+      }, 120000)
     }
     console.log(timer, 'timer')
     return () => {
@@ -322,7 +322,7 @@ const Newhome = ({ navigation }) => {
         // await AsyncStorage.removeItem('pid');
         handleRemoveItem()
         console.log('AsyncStorage remove!')
-        Alert.alert('asyncstoarge itme remove auto')
+        Alert.alert('automatic remove')
       }
       setTimerExpired(false)
     }
@@ -389,7 +389,7 @@ const Newhome = ({ navigation }) => {
                 source={require('../../assets/power.png')}
               />
               <Text style={{ color: '#9A9A9A' }}>
-                Charger- {SamplePowerData ? SamplePowerData : '0'} kw
+                Charger- {SamplePowerData ? SamplePowerData : '0'} w
               </Text>
             </View>
           </View>

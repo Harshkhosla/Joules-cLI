@@ -1,21 +1,31 @@
 // App.js
-import React, { useState } from 'react';
-import { View, TextInput, Button, FlatList, Text, TouchableOpacity } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useState } from 'react'
+import {
+  View,
+  TextInput,
+  Button,
+  FlatList,
+  Text,
+  TouchableOpacity,
+} from 'react-native'
+import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator()
 
 const HomeScreen = () => {
-  const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState([])
+  const [message, setMessage] = useState('')
 
   const sendMessage = () => {
     if (message.trim() !== '') {
-      setMessages([...messages, { id: messages.length.toString(), text: message }]);
-      setMessage('');
+      setMessages([
+        ...messages,
+        { id: messages.length.toString(), text: message },
+      ])
+      setMessage('')
     }
-  };
+  }
 
   return (
     <View style={{ flex: 1, justifyContent: 'flex-end' }}>
@@ -49,7 +59,7 @@ const HomeScreen = () => {
         <Button title="Send" onPress={sendMessage} />
       </View>
     </View>
-  );
-};
+  )
+}
 
-export default HomeScreen;
+export default HomeScreen

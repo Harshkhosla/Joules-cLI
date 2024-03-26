@@ -36,19 +36,26 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
 
   const removeItemFromAsyncStorage = async () => {
     try {
-      await AsyncStorage.removeItem('Authtoken')
-      console.log('Item removed successfully')
+      // AsyncStorage se sabhi data ko hatao
+      await AsyncStorage.clear();
+      console.log('All data removed from AsyncStorage');
+      closeNave()
       navigation.navigate('SignIn')
     } catch (error) {
-      console.error('Error removing item from AsyncStorage:', error)
+      console.error('Error clearing data from AsyncStorage:', error);
     }
   }
 
   const handleitemsClick = (item) => {
     closeNave()
-    if(item){
+    if (item) {
       navigation.navigate(item)
     }
+  }
+
+  const navigateToEdit = () => {
+    navigation.navigate('Editprofile')
+    closeNave()
   }
   return (
     <View>
@@ -61,7 +68,7 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
         style={styles.modal}
         hideModalContentWhileAnimating={true}
         animationIn={'slideInLeft'}
-        animationInTiming={100} 
+        animationInTiming={100}
         animationOut={'slideOutLeft'}
         animationOutTiming={500}
       >
@@ -74,14 +81,17 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
             />
             <View style={styles.profileContainer}>
               <Image
-                source={require('../assets/mypic.jpg')}
+                source={require('../assets/defaultuser.png')}
                 style={styles.profileimg}
                 resizeMode="contain"
               />
               <Text style={{ fontSize: 18, color: '#118615' }}>{name}</Text>
               <Text style={{ fontSize: 12 }}>mailg@gmail.com</Text>
 
-              <TouchableOpacity style={styles.prfileEdit}>
+              <TouchableOpacity
+                style={styles.prfileEdit}
+                onPress={() => navigateToEdit()}
+              >
                 <Image
                   source={require('../assets/account_circle.png')}
                   style={{ height: 20, width: 20, resizeMode: 'contain' }}

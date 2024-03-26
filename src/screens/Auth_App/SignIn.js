@@ -6,6 +6,7 @@ import {
   Platform,
   TouchableOpacity,
   KeyboardAvoidingView,
+  BackHandler,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import {
@@ -23,21 +24,17 @@ import { useFocusEffect } from '@react-navigation/native'
 
 const SignIn = ({ navigation }) => {
   const [login, setLogin] = useState(true)
-  // useFocusEffect(()=>{
-  //   const fetchdata=async()=>{
-  //     const data=await AsyncStorage.getItem("Authtoken")
-  //     if(data){
-  //       // navigation.navigate("chargerSelection")
-  //       navigation.reset({
-  //         index: 0,
-  //         routes: [{ name: 'chargerSelection' }],
-  //       });
-  //     }
-  //     console.log("data",data);
-  //   }
-  //   fetchdata()
-  // })
+ useEffect(() => {
+  const backHandler = BackHandler.addEventListener(
+    'hardwareBackPress',
+    () => {
+      BackHandler.exitApp(); // Back button press par app exit kare
+      return true;
+    }
+  );
 
+  return () => backHandler.remove();
+}, [navigation]);
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : '100'}>
       <ScrollView>
@@ -64,7 +61,7 @@ const SignIn = ({ navigation }) => {
                 >
                   Login
                 </Text>
-                <Text style={[{ fontSize: fp(4),color:"#BFBFBF" }]}>|</Text>
+                <Text style={[{ fontSize: fp(4), color: '#BFBFBF' }]}>|</Text>
                 <Text
                   style={
                     !login ? styles.TogglerText : styles.onclickTogglerText
