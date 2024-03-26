@@ -42,7 +42,7 @@ const SetCost = ({
   const [Time, settime] = useState('')
   let findchargingCost=useSelector((state)=>state.userReducers.setchargingcost)
   let findchargingCostPerHour=useSelector((state)=>state.userReducers.setchargingcostperhour)
-  let findchargername=useSelector((state)=>state.userReducers.setchargername)
+  let findChargingEnergy=useSelector((state)=>state.userReducers.SetEnergy)
 
   if(!findchargingCost || findchargingCost=="0"){
     findchargingCost=12
@@ -50,8 +50,8 @@ const SetCost = ({
   if(!findchargingCostPerHour || findchargingCostPerHour=="0"){
     findchargingCostPerHour=12
   }
-  if(!findchargername){
-    findchargername="none"
+  if(!findChargingEnergy){
+    findChargingEnergy="0"
   }
   useEffect(() => {
     setInputCost(inputvalue)
@@ -132,7 +132,7 @@ const SetCost = ({
           setcheckChargingStarted,
           handleStopCharging,
           inputCost,
-          findchargername
+          findChargingEnergy
         )
       )
     } else {

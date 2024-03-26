@@ -32,7 +32,7 @@ const HeaderWithArrow = ({ navigation }) => {
       <Icon name="arrow-back" size={24} color="black" />
       <Text style={styles.headerText}>Contacts Us</Text>
     </TouchableOpacity> */}
-      <SupportAndRfidHeader title={'Support'} />
+      <SupportAndRfidHeader title={'Support'} navigation={navigation}/>
       <View style={styles.formcontent}>
         <View>
           <TouchableOpacity onPress={handlePhoneCall}>

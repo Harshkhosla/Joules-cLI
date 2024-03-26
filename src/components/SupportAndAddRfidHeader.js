@@ -10,10 +10,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const SupportAndRfidHeader = ({ navigation, title }) => {
   console.log(title)
+  const navigate=()=>{
+    navigation.navigate("Newhome")
+  }
   return (
     <View style={styles.container}>
       <View style={styles.Icon}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={navigate}>
           <Icon name="arrowleft" size={25} color="#118615" />
         </TouchableOpacity>
         <Text style={styles.Text}>{title}</Text>

@@ -32,7 +32,6 @@ import { Alert } from 'react-native'
 const MqqtUrl = 'ws://34.100.251.160:9001/mqtt'
 // const ApiURL="https://adminbackendjouls-production.up.railway.app"
 const ApiURL = 'http://165.22.223.26:5000' // live url
-// let findchargername=useSelector((state)=>state.userReducers.setchargername)
 
 // const ApiURL="http://192.168.45.3:5200" // localhost
 
@@ -482,6 +481,95 @@ export const AddTrasationDetail = (input, navigation, setLoading) => {
     }
   }
 }
+
+// chargerhistory add to db 
+export const ChargerHistory = (SendData, setLoading) => {
+  return async (dispatch) => {
+    const { inputCost, Porduct_Key} = SendData
+    const { formattedDate, formattedTime } = getCurrentDateTime()
+    let name, mid;
+    console.log("in chargerhistry a;dkjsf;laskjff;aldf");
+    const userData = await getuserData();
+    console.log("userddata",userData);
+    name = userData.name;
+    mid = userData.mid;
+const dataObject = {
+  Date:formattedDate,
+  StartTime: formattedTime,
+  pid:Porduct_Key,
+  payment:inputCost,
+  // ChargerName:findchargername,
+  UsedBy:name,
+  Appmid:mid
+}
+    try {
+      const response = await fetch(
+        `${ApiURL}/user/chargerhistory/create`,
+        {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify(dataObject),
+        }
+      )
+
+      const data = await response.json()
+      console.log(data, 'data in sign up user')
+      if (data.message == 'add charger successfully' && setLoading) {
+        setLoading(false)
+      }
+      if (data?.Uniqueid) {
+        const Uniqueid=data?.Uniqueid
+        await AsyncStorage.setItem('Uniqueid',Uniqueid)
+      }
+      return data
+    } catch (err) {
+      console.log(err, 'catch ke chargerhistory action.js')
+    }
+  }
+}
+
+// if  charging stopped
+export const ChargerHistoryEndTime = (SendData, setLoading) => {
+  return async (dispatch) => {
+    const Uniqueid=await AsyncStorage.getItem("Uniqueid")
+    console.log("uniqueid",Uniqueid);
+    if(!Uniqueid){
+      console.log("uniqueid nhi hai")
+      return 
+    }
+    const { formattedDate, formattedTime } = getCurrentDateTime()
+    const dataObject = {
+      EndTime: formattedTime,
+      EnergyUsed:SendData
+    }
+    try {
+      const response = await fetch(
+        `${ApiURL}/user/chargerhistory/update/${Uniqueid}`,
+        {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify(dataObject),
+        }
+      )
+
+      const data = await response.json()
+      console.log(data, 'data in charger history end time')
+      if (data.message == 'update successfully') {
+        await AsyncStorage.removeItem("Uniqueid")
+        console.log("successfull deleted unique id");
+      }
+      return data
+    } catch (err) {
+      console.log(err, 'catch in err chargerhistoryendtime action.js')
+    }
+  }
+}
+
+
 
 export const findChargingCost = (pid, navigation, setLoading) => {
   // debugger;
@@ -1400,7 +1488,7 @@ export const publicstartCharging = (
   setcheckChargingStarted,
   handleStopCharging,
   inputCost,
-  findchargername
+  findChargingEnergy
 ) => {
   // Porduct_Key=publicProductKey
   console.log('Porduct_Key in publick start charging', Porduct_Key)
@@ -1464,7 +1552,6 @@ export const publicstartCharging = (
             const sendData={
               Porduct_Key,
               inputCost,
-              findchargername
             }
             dispatch(ChargerHistory(sendData))
           }
@@ -1472,6 +1559,7 @@ export const publicstartCharging = (
             Alert.alert('Automatic Disconnect by Device')
             handleStopCharging('Stop Charging', 'StoppedByDevice')
             disconnectAllClients()
+            dispatch(ChargerHistoryEndTime(findChargingEnergy))
           }
         } else if (message.destinationName === `${Porduct_Key}_Charging_Data`) {
           const updatedMessages = [
@@ -1634,7 +1722,7 @@ export const DoorOpening = (Porduct_Key) => {
 
 // stop chargin for public
 
-export const publicstopCharging = (Porduct_Key, totalTime, SetEndTime) => {
+export const publicstopCharging = (Porduct_Key, totalTime, SetEndTime,SampleDataaa) => {
   // Porduct_Key=publicProductKey
   console.log('Porduct_Key in publickstop charging', Porduct_Key, totalTime)
   return (dispatch) => {
@@ -1673,6 +1761,7 @@ export const publicstopCharging = (Porduct_Key, totalTime, SetEndTime) => {
             Alert.alert(`Charging Completed ${totalTime}`)
             SetEndTime(response)
             disconnectAllClients()
+           dispatch(ChargerHistoryEndTime(SampleDataaa))
           }
           client.disconnect()
           console.log('Disconnected from MQTT broker')
@@ -1725,57 +1814,57 @@ const getuserData = async () => {
 }
 
 /// send data to userpanel and save to charging history
-export const ChargerHistory = (SendData) => {
-  return (dispatch) => {
-    const client = new Client({
-      uri: MqqtUrl,
-      clientId: 'client' + Math.random().toString(36).substring(7),
-      storage: myStorage,
-    })
-    const { inputCost, Porduct_Key ,findchargername} = SendData
-    let name, mid;
-    console.log("in chargerhistry a;dkjsf;laskjff;aldf");
+// export const ChargerHistory = (SendData) => {
+//   return (dispatch) => {
+//     const client = new Client({
+//       uri: MqqtUrl,
+//       clientId: 'client' + Math.random().toString(36).substring(7),
+//       storage: myStorage,
+//     })
+//     const { inputCost, Porduct_Key ,findchargername} = SendData
+//     let name, mid;
+//     console.log("in chargerhistry a;dkjsf;laskjff;aldf");
 
-getuserData().then(userData => {
-  name = userData.name;
-  mid = userData.mid;
+// getuserData().then(userData => {
+//   name = userData.name;
+//   mid = userData.mid;
 
-  // Yahaan par name aur mid ka use karke further processing karein
-}).catch(error => {
-  console.error("Error fetching user data:", error);
-});
+//   // Yahaan par name aur mid ka use karke further processing karein
+// }).catch(error => {
+//   console.error("Error fetching user data:", error);
+// });
 
-    console.log('Porduct_Key door ', Porduct_Key, name)
-    client
-      .connect()
-      .then(() => {
-        // allClients.push(client);
-        console.log('mqtt connect in chargerhistory')
-        const { formattedDate, formattedTime } = getCurrentDateTime()
-        const dataObject = {
-          date:formattedDate,
-          starttime: formattedTime,
-          pid:Porduct_Key,
-          payment:inputCost,
-          ChargerName:findchargername,
-          usedBy:name,
-          Appmid:mid
-        }
-        // onvert the object to JSON format
-        const jsonString = JSON.stringify(dataObject)
-        // Create a new message object
-        const sample = new Message(jsonString)
-        // Set the destination name
-        sample.destinationName = `1wN2x3dR4vF5gT6hY7jU_Charging_History`
-        // Send the message
-        client.send(sample)
+//     console.log('Porduct_Key door ', Porduct_Key, name)
+//     client
+//       .connect()
+//       .then(() => {
+//         // allClients.push(client);
+//         console.log('mqtt connect in chargerhistory')
+//         const { formattedDate, formattedTime } = getCurrentDateTime()
+//         const dataObject = {
+//           date:formattedDate,
+//           starttime: formattedTime,
+//           pid:Porduct_Key,
+//           payment:inputCost,
+//           ChargerName:findchargername,
+//           usedBy:name,
+//           Appmid:mid
+//         }
+//         // onvert the object to JSON format
+//         const jsonString = JSON.stringify(dataObject)
+//         // Create a new message object
+//         const sample = new Message(jsonString)
+//         // Set the destination name
+//         sample.destinationName = `1wN2x3dR4vF5gT6hY7jU_Charging_History`
+//         // Send the message
+//         client.send(sample)
 
-// Disconnect the client after sending the message
-      client.disconnect();
-      console.log("Disconnect the client after sending the message");
-      })
-      .catch((responseObject) => {    
-          console.log('onConnectionLost: charger history ' + responseObject)
-      })
-  }
-}
+// // Disconnect the client after sending the message
+//       client.disconnect();
+//       console.log("Disconnect the client after sending the message");
+//       })
+//       .catch((responseObject) => {    
+//           console.log('onConnectionLost: charger history ' + responseObject)
+//       })
+//   }
+// }

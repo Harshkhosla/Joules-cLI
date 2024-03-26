@@ -111,7 +111,7 @@ const Newhome = ({ navigation }) => {
       // const Product_Key=await AsyncStorage.getItem("pid")
       console.log('productkye in newhome stop', time)
       console.log('Total Time Charge', data)
-      dispatch(publicstopCharging(data, time, SetEndTime))
+      dispatch(publicstopCharging(data, time, SetEndTime,SampleDataaa))
       handleResetClick()
       setcheckChargingStarted(false)
       setButtonText('Scan QR')
@@ -157,7 +157,7 @@ const Newhome = ({ navigation }) => {
         SampleDataaa
       )
       const totalEnergyTime = formatTime(totalSeconds)
-      dispatch(publicstopCharging(data, totalEnergyTime))
+      dispatch(publicstopCharging(data, totalEnergyTime,SetEndTime,SampleDataaa))
       setGetSampledata(false)
       setcheckChargingStarted(false)
       handleResetClick()
@@ -169,7 +169,7 @@ const Newhome = ({ navigation }) => {
     }
     // if (SampleOutputCurrent < 0.1) {
     //   const totalEnergyTime = formatTime(totalSeconds)
-    //   dispatch(publicstopCharging(data, totalEnergyTime, SetEndTime))
+    //   dispatch(publicstopCharging(data, totalEnergyTime, SetEndTime,SampleDataaa))
     //   setcheckChargingStarted(false)
     //   setGetSampledata(false)
     //   handleResetClick()
@@ -191,7 +191,7 @@ const Newhome = ({ navigation }) => {
       console.log('Total Time Charge', TotalTimeCharge)
       if (!unique) {
         console.log('in unique condition pulicstopchargin call')
-        dispatch(publicstopCharging(Product_Key, TotalTimeCharge, SetEndTime))
+        dispatch(publicstopCharging(Product_Key, TotalTimeCharge, SetEndTime,SampleDataaa))
       }
       setcheckChargingStarted(false)
       handleResetClick()
@@ -424,6 +424,7 @@ const Newhome = ({ navigation }) => {
           <View style={{ alignSelf: 'center', paddingVertical: 5 }}>
             {data && checkChargingStarted ? (
               // Condition: Both AsyncStorage data and charging started
+              // <Text>hello</Text>
               <Wave size={150} progress={40} />
             ) : data ? (
               // Condition 1: Only AsyncStorage data is available
