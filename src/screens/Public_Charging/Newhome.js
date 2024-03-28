@@ -21,7 +21,9 @@ const Newhome = ({ navigation }) => {
   // for 10 min not click start charging
   const [buttonPressed, setButtonPressed] = useState(false)
   const [timerExpired, setTimerExpired] = useState(false)
-
+  const [inputcostfromsetcost,setinputcostfromsetcost]=useState("")
+  const [ShowChargingCostPerSecond,SetShowChargingCostPerSecond]=useState("")
+  console.log("inputcostfromsetcostradhekinagkjamer",inputcostfromsetcost);
   const [isLoading, setIsLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [colorChange, setColorChange] = useState('#DBDBDB')
@@ -49,8 +51,10 @@ const Newhome = ({ navigation }) => {
   const [isTimerRunning, setIsTimerRunning] = useState(false)
   const [totalSeconds, setTotalSeconds] = useState(0)
   const [totalTime, setTotalTime] = useState(0)
-
+  
   const [timeInSec, SetTimeinSec] = useState('')
+  console.log("timeInSectimeInSectimeInSec.length",timeInSec.length);
+  console.log("timeInSectimeInSectimeInSec.length",!timeInSec);
   console.log(
     'EndTime,startTime,sendDataToChart',
     EndTime,
@@ -58,6 +62,7 @@ const Newhome = ({ navigation }) => {
     sendDataToChart
   )
   console.log(ChargingCost, 'ChargingCost')
+
   const timeToSeconds = (timeValue) => {
     // Extract numeric value from the time string
     const numericValue = parseInt(timeValue)
@@ -73,8 +78,11 @@ const Newhome = ({ navigation }) => {
       return numericValue
     }
   }
-
   const timeInSe = timeToSeconds(timeInSec)
+  const prevdata = parseInt(ShowChargingCostPerSecond) + (inputcostfromsetcost / timeInSe);
+  // console.log("prevdata",prevdata)
+
+  console.log("timeInSetimeInSe",timeInSe);
   // const timeInSe = "59";
   useEffect(() => {
     let interval
@@ -82,6 +90,14 @@ const Newhome = ({ navigation }) => {
       interval = setInterval(() => {
         setTotalSeconds((prevTotalSeconds) => prevTotalSeconds + 1)
         setTotalTime((prevTotalSeconds) => prevTotalSeconds + 1)
+        if(timeInSec && inputcostfromsetcost){
+          const timeinseconds = timeToSeconds(timeInSec);
+          // const prevdata = parseInt(ShowChargingCostPerSecond) + (inputcostfromsetcost / timeinseconds);
+          const prevdata = parseInt(ShowChargingCostPerSecond) || 0 + 1;
+          console.log("prevdataprevdataprevdataprevdata",prevdata)
+          SetShowChargingCostPerSecond(prevdata.toString());
+          console.log("ShowChargingCostPerSecondShowChargingCostPerSecond",ShowChargingCostPerSecond);
+        }
       }, 1000)
     } else {
       clearInterval(interval)
@@ -140,10 +156,44 @@ const Newhome = ({ navigation }) => {
     setTotalSeconds(0)
   }
 
+useEffect(()=>{
+if(timeInSec.length<=0 || !timeInSec){
+  if(parseInt(inputcostfromsetcost)<=parseInt(ChargingCost)){
+    console.log("stop charging onn set cost in newhome.js");
+    const totalEnergyTime = formatTime(totalSeconds)
+      dispatch(publicstopCharging(data, totalEnergyTime,SetEndTime,SampleDataaa))
+      setGetSampledata(false)
+      setcheckChargingStarted(false)
+      handleResetClick()
+      setButtonText('Scan QR')
+      setChargingEnergy('')
+      setChargingCost('')
+      handleRemoveItem()
+      setData('')
+  }
+}
+  if(timeInSec.length>0 && timeInSec){
+  if(parseInt(inputcostfromsetcost)<=parseInt(ShowChargingCostPerSecond)){
+    console.log("stop charging onn set time in newhome.js");
+    const totalEnergyTime = formatTime(totalSeconds)
+      dispatch(publicstopCharging(data, totalEnergyTime,SetEndTime,SampleDataaa))
+      setGetSampledata(false)
+      setcheckChargingStarted(false)  
+      handleResetClick()
+      setButtonText('Scan QR')
+      setChargingEnergy('')
+      setChargingCost('')
+      handleRemoveItem()
+      setData('')
+  }
+}
+},[ChargingCost,ShowChargingCostPerSecond])
+
+
   useEffect(() => {
     if (getsample) {
       setChargingEnergy(SampleDataaa)
-      if (SampleDataaa.toString().length > 0) {
+      if (SampleDataaa.toString().length > 0 && timeInSec.length<=0) {
         let a = (parseInt(SampleDataaa) * 15) / 1000
         a = Math.floor(a * 100) / 100
         console.log('abcdefghi', a)
@@ -167,6 +217,7 @@ const Newhome = ({ navigation }) => {
       handleRemoveItem()
       setData('')
     }
+
     // if (SampleOutputCurrent < 0.1) {
     //   const totalEnergyTime = formatTime(totalSeconds)
     //   dispatch(publicstopCharging(data, totalEnergyTime, SetEndTime,SampleDataaa))
@@ -179,6 +230,7 @@ const Newhome = ({ navigation }) => {
     //   handleRemoveItem()
     //   setData('')
     // }
+
   }, [SampleDataaa, SampleOutputCurrent])
 
   const handleCostAndTimeOpen = async (text, unique) => {
@@ -259,6 +311,7 @@ const Newhome = ({ navigation }) => {
 
   const handleCostAndTimeClose = () => {
     setIsModalOpen(false)
+    // SetTimeinSec("")
   }
 
   const generateHoursArray = () => {
@@ -409,7 +462,7 @@ const Newhome = ({ navigation }) => {
                 <Text style={{ color: '#717171' }}>Charging Cost</Text>
               </View>
               <Text style={{ color: '#717171' }}>
-                ₹{ChargingCost ? ChargingCost : '0'}
+              ₹{timeInSec && timeInSec.length > 0 ? ShowChargingCostPerSecond || "0" : ChargingCost || "0"}
               </Text>
               <View
                 style={{
@@ -428,7 +481,8 @@ const Newhome = ({ navigation }) => {
           <View style={{ alignSelf: 'center', paddingVertical: 5 }}>
             {data && checkChargingStarted ? (
               // Condition: Both AsyncStorage data and charging started
-              // <Text>hello</Text>
+              // <Text>{ShowChargingCostPerSecond}</Text>
+              // {ShowChargingCostPerSecond}
               <Wave size={150} progress={40} />
             ) : data ? (
               // Condition 1: Only AsyncStorage data is available
@@ -518,6 +572,7 @@ const Newhome = ({ navigation }) => {
         setcheckChargingStarted={setcheckChargingStarted}
         handleStopCharging={handleCostAndTimeOpen}
         setButtonPressed={setButtonPressed}
+        setinputcostfromsetcost={setinputcostfromsetcost}
       />
     </View>
   )

@@ -35,6 +35,7 @@ const SetCost = ({
   SetstartTime,
   setcheckChargingStarted,
   handleStopCharging,
+  setinputcostfromsetcost
 }) => {
   const dispatch = useDispatch()
   const [ShowSetCost, SetShowSetCost] = useState(true)
@@ -57,6 +58,9 @@ const SetCost = ({
     setInputCost(inputvalue)
   }, [open])
 
+  useEffect(() => {
+    setinputcostfromsetcost(inputCost)
+  }, [inputCost])
   const retrieveData = async () => {
     const AppUserName = await AsyncStorage.getItem('name')
     const AppUid = await AsyncStorage.getItem('mid')
@@ -113,10 +117,12 @@ const SetCost = ({
 
   const startCharging = async () => {
     // const a = (Math.ceil((inputCost / 15) * 100) / 100) * 1000
+    if(ShowSetCost){
     const a = (Math.ceil((inputCost / findchargingCost) * 100) / 100) * 1000
     if (inputCost) {
       setOnStopChargingCost(a)
     }
+  }
     console.log('heklo')
     if (inputCost > 0 || Time) {
       console.log('click hus')
@@ -145,6 +151,7 @@ const SetCost = ({
       SetShowSetCost(true)
       settime('')
       setInputCost('')
+      SetTimeinSec("")
     }
     if (text == 'setTime') {
       SetShowSetCost(false)
@@ -214,6 +221,7 @@ const SetCost = ({
                     setInputCost={setInputCost}
                     inputCost={inputCost}
                     findchargingCost={findchargingCost}
+                    setinputcostfromsetcost={setinputcostfromsetcost}
                   />
                 ) : (
                   <ChargingSetTime
@@ -254,7 +262,7 @@ const SetCost = ({
                     color: '#636363',
                   }}
                 >
-                  Paytm UPI
+                  Razorpay 
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -284,8 +292,12 @@ const SetCost = ({
   )
 }
 
-const ChargingCost = ({ setInputCost, inputCost ,findchargingCost}) => {
+const ChargingCost = ({ setInputCost, inputCost ,findchargingCost,setinputcostfromsetcost}) => {
   console.log(findchargingCost,"chargincost in chargingcost")
+  const handleinputchangecost=(text)=>{
+    setInputCost(text)
+    // setinputcostfromsetcost(text)
+  }
   return (
     <View style={{ marginVertical: 10 }}>
       <Text
@@ -321,7 +333,7 @@ const ChargingCost = ({ setInputCost, inputCost ,findchargingCost}) => {
           keyboardType="numeric"
           placeholder="For example ₹50"
           onChangeText={(text) => {
-            setInputCost(text)
+            handleinputchangecost(text)
           }}
           value={inputCost.toString()}
         />
@@ -360,16 +372,16 @@ const ChargingSetTime = ({ SetTimeinSec, settime, setInputCost ,findchargingCost
     setActiveButton(buttonName)
     console.log('buttonName')
     if (buttonName == '30min') {
-      setChargingCost(5)
-      setInputCost(5)
+      setChargingCost(findchargingCostPerHour/2)
+      setInputCost(findchargingCostPerHour/2)
     }
     if (buttonName == '1hr') {
-      setChargingCost(10)
-      setInputCost(10)
+      setChargingCost(findchargingCostPerHour)
+      setInputCost(findchargingCostPerHour)
     }
     if (buttonName == '2hrs') {
-      setChargingCost(20)
-      setInputCost(20)
+      setChargingCost(findchargingCostPerHour*2)
+      setInputCost(findchargingCostPerHour*2)
     }
     // Add your additional functionality here
   }
@@ -433,6 +445,7 @@ const ChargingSetTime = ({ SetTimeinSec, settime, setInputCost ,findchargingCost
           setChargingCost={setChargingCost}
           settime={settime}
           setInputCost={setInputCost}
+          findchargingCostPerHour={findchargingCostPerHour}
         />
       </View>
       <Text

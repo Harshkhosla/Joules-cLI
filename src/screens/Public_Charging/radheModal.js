@@ -19,6 +19,7 @@ const ModalRadhe = ({
   SetTimeinSec,
   settime,
   setInputCost,
+  findchargingCostPerHour
 }) => {
   const [modalVisible, setModalVisible] = useState(false)
   const [userTimeHours, setuserTimeHours] = useState('')
@@ -33,7 +34,7 @@ const ModalRadhe = ({
     userTimeMinutes
   )
   const onSetclick = () => {
-    let a = ((userTimeHours * 60 + userTimeMinutes) / 60) * 10
+    let a = ((userTimeHours * 60 + userTimeMinutes) / 60) * findchargingCostPerHour
     a = a.toFixed(2)
     setChargingCost(a)
     setInputCost(a)
