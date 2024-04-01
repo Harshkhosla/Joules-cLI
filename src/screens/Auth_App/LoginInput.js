@@ -13,11 +13,13 @@ import {
   responsiveWidth as wp,
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import TextInput from '../../components/Inputbox'
 import InputBoxTwo from '../../components/InputBoxTwo'
 import { Checkbox } from 'react-native-paper'
-import { signItUp } from '../../Redux/Action'
+import { setAuthtoken, signItUp } from '../../Redux/Action'
 import { useDispatch } from 'react-redux'
+// import axios from 'axios';
 import Toast, { BaseToast } from 'react-native-toast-message'
 import {
   GoogleSignin,
@@ -26,6 +28,9 @@ import {
 } from '@react-native-google-signin/google-signin'
 
 const LoginInput = ({ navigation }) => {
+  
+const ApiURL = 'http://165.22.223.26:5000' // live url
+// const ApiURL = 'http://192.168.1.6:5200' // live url
   const [loading, setLoading] = useState(false);
   const [userData, setuserData] = useState({ email: '', password: '' })
   const [rememberMe, setRememberMe] = useState(true)
@@ -99,9 +104,9 @@ const LoginInput = ({ navigation }) => {
   GoogleSignin.configure({
     offlineAccess: true,
     webClientId:
-      '683362406803-fo4tm1la7a8kh2qilell97vf8ae71d7b.apps.googleusercontent.com', // Replace with your web client ID from Google Cloud Console
+      '156987578910-u2mg62hrg7dk6d2deunerts475sr59mb.apps.googleusercontent.com', // Replace with your web client ID from Google Cloud Console
     androidClientId:
-    "156987578910-re1s445qg4f4p0183a04u7benv2caa78.apps.googleusercontent.com",
+    "156987578910-mh16soc5k45kvf0heu87uaqtmnhm1h2p.apps.googleusercontent.com",
     scopes: ['profile', 'email'],
   })
 
@@ -116,6 +121,52 @@ const LoginInput = ({ navigation }) => {
 
       console.log(' get data', userInfo.user)
       // Handle signed-in user data
+      const response = await fetch(`${ApiURL}/admin/user/signin`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            tokenId: userInfo.idToken,
+            email: userInfo.user.email,
+            // Add any other required user data here
+        }),
+    });
+
+    // Handle the response from your backend API
+    const data = await response.json();
+    console.log('Backend API response:', data);
+    
+    if (response.ok) {
+        if (data?.mid) {
+            const mid = data.mid;
+            await AsyncStorage.setItem('mid', mid);
+        }
+        if (data?.name) {
+            const name = data.name;
+            await AsyncStorage.setItem('name', name);
+        }
+        if (data?.authToken) {
+            const authtoken = JSON.stringify(data.authToken);
+            console.log('authtoken', authtoken);
+            await AsyncStorage.setItem('Authtoken', authtoken);
+            dispatch(setAuthtoken(authtoken));
+            Toast.show({
+                type: 'success',
+                text1: 'login Successfull',
+                text2: data?.toast,
+                text1Style: { color: 'green' },
+                text2Style: { color: 'black' },
+                position: 'top',
+            });
+            navigation.navigate('chargerSelection');
+        }
+    } else {
+        // Handle non-200 responses here
+        console.error('Non-200 response received:', response.status);
+    }
+    
+    // console.log('Backend API response:', response.data);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // User cancelled the sign-in flow
@@ -188,13 +239,13 @@ const LoginInput = ({ navigation }) => {
                 source={require('../../assets/googlelogo.png')}
                 // style={styles.socialIconText}
               /> */}
-            {/* <GoogleSigninButton
+            <GoogleSigninButton
               style={{ width: 192, height: 48 }}
               size={GoogleSigninButton.Size.Wide}
               color={GoogleSigninButton.Color.Dark}
               onPress={handleGoogleLogin}
               disabled={false}
-            /> */}
+            />
           {/* </View> */}
         {/* </TouchableOpacity> */}
         <TouchableOpacity style={styles.socialButton}>
