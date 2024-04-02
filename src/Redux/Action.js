@@ -482,37 +482,34 @@ export const AddTrasationDetail = (input, navigation, setLoading) => {
   }
 }
 
-// chargerhistory add to db 
+// chargerhistory add to db
 export const ChargerHistory = (SendData, setLoading) => {
   return async (dispatch) => {
-    const { inputCost, Porduct_Key} = SendData
+    const { inputCost, Porduct_Key } = SendData
     const { formattedDate, formattedTime } = getCurrentDateTime()
-    let name, mid;
-    console.log("in chargerhistry a;dkjsf;laskjff;aldf");
-    const userData = await getuserData();
-    console.log("userddata",userData);
-    name = userData.name;
-    mid = userData.mid;
-const dataObject = {
-  Date:formattedDate,
-  StartTime: formattedTime,
-  pid:Porduct_Key,
-  payment:inputCost,
-  // ChargerName:findchargername,
-  UsedBy:name,
-  Appmid:mid
-}
+    let name, mid
+    console.log('in chargerhistry a;dkjsf;laskjff;aldf')
+    const userData = await getuserData()
+    console.log('userddata', userData)
+    name = userData.name
+    mid = userData.mid
+    const dataObject = {
+      Date: formattedDate,
+      StartTime: formattedTime,
+      pid: Porduct_Key,
+      payment: inputCost,
+      // ChargerName:findchargername,
+      UsedBy: name,
+      Appmid: mid,
+    }
     try {
-      const response = await fetch(
-        `${ApiURL}/user/chargerhistory/create`,
-        {
-          method: 'POST',
-          headers: {
-            'content-type': 'application/json',
-          },
-          body: JSON.stringify(dataObject),
-        }
-      )
+      const response = await fetch(`${ApiURL}/user/chargerhistory/create`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(dataObject),
+      })
 
       const data = await response.json()
       console.log(data, 'data in sign up user')
@@ -520,8 +517,8 @@ const dataObject = {
         setLoading(false)
       }
       if (data?.Uniqueid) {
-        const Uniqueid=data?.Uniqueid
-        await AsyncStorage.setItem('Uniqueid',Uniqueid)
+        const Uniqueid = data?.Uniqueid
+        await AsyncStorage.setItem('Uniqueid', Uniqueid)
       }
       return data
     } catch (err) {
@@ -533,16 +530,16 @@ const dataObject = {
 // if  charging stopped
 export const ChargerHistoryEndTime = (SendData, setLoading) => {
   return async (dispatch) => {
-    const Uniqueid=await AsyncStorage.getItem("Uniqueid")
-    console.log("uniqueid",Uniqueid);
-    if(!Uniqueid){
-      console.log("uniqueid nhi hai")
-      return 
+    const Uniqueid = await AsyncStorage.getItem('Uniqueid')
+    console.log('uniqueid', Uniqueid)
+    if (!Uniqueid) {
+      console.log('uniqueid nhi hai')
+      return
     }
     const { formattedDate, formattedTime } = getCurrentDateTime()
     const dataObject = {
       EndTime: formattedTime,
-      EnergyUsed:SendData
+      EnergyUsed: SendData,
     }
     try {
       const response = await fetch(
@@ -559,8 +556,8 @@ export const ChargerHistoryEndTime = (SendData, setLoading) => {
       const data = await response.json()
       console.log(data, 'data in charger history end time')
       if (data.message == 'update successfully') {
-        await AsyncStorage.removeItem("Uniqueid")
-        console.log("successfull deleted unique id");
+        await AsyncStorage.removeItem('Uniqueid')
+        console.log('successfull deleted unique id')
       }
       return data
     } catch (err) {
@@ -568,8 +565,6 @@ export const ChargerHistoryEndTime = (SendData, setLoading) => {
     }
   }
 }
-
-
 
 export const findChargingCost = (pid, navigation, setLoading) => {
   // debugger;
@@ -701,8 +696,8 @@ export const loginuser = (input, navigation, setLoading) => {
         return
       }
       if (data?.mid) {
-        const mid=data?.mid
-        await AsyncStorage.setItem('mid',mid)
+        const mid = data?.mid
+        await AsyncStorage.setItem('mid', mid)
       }
       if (data?.name) {
         const name = data.name
@@ -854,7 +849,6 @@ export const updateUser = (updatedData, navigation) => {
   return async () => {
     try {
       // Make PUT request to the backend endpoint
-      // const response = await fetch(`${ApiURL}/admin/user/${updatedData.mid}`, {
       const response = await fetch(`${ApiURL}/admin/user/${updatedData.mid}`, {
         method: 'PUT',
         headers: {
@@ -1550,7 +1544,7 @@ export const publicstartCharging = (
             setButtonText('Stop Charging')
             startTimer()
             onClose()
-            const sendData={
+            const sendData = {
               Porduct_Key,
               inputCost,
             }
@@ -1662,9 +1656,9 @@ export const SendUsername = (SendData) => {
         sample.destinationName = `${Porduct_Key}_Username`
         // Send the message
         client.send(sample)
-       
-      client.disconnect();
-       console.log("client disconnect from senduser name"); 
+
+        client.disconnect()
+        console.log('client disconnect from senduser name')
       })
       .catch((responseObject) => {
         if (responseObject.errorCode !== 0) {
@@ -1709,8 +1703,8 @@ export const DoorOpening = (Porduct_Key) => {
         sample.destinationName = `${Porduct_Key}_Notifications`
         client.send(sample)
 
-        client.disconnect();
-        console.log("client disconnect from door openinig");
+        client.disconnect()
+        console.log('client disconnect from door openinig')
       })
       .catch((responseObject) => {
         if (responseObject.errorCode !== 0) {
@@ -1723,7 +1717,12 @@ export const DoorOpening = (Porduct_Key) => {
 
 // stop chargin for public
 
-export const publicstopCharging = (Porduct_Key, totalTime, SetEndTime,SampleDataaa) => {
+export const publicstopCharging = (
+  Porduct_Key,
+  totalTime,
+  SetEndTime,
+  SampleDataaa
+) => {
   // Porduct_Key=publicProductKey
   console.log('Porduct_Key in publickstop charging', Porduct_Key, totalTime)
   return (dispatch) => {
@@ -1762,7 +1761,7 @@ export const publicstopCharging = (Porduct_Key, totalTime, SetEndTime,SampleData
             Alert.alert(`Charging Completed ${totalTime}`)
             SetEndTime(response)
             disconnectAllClients()
-           dispatch(ChargerHistoryEndTime(SampleDataaa))
+            dispatch(ChargerHistoryEndTime(SampleDataaa))
           }
           client.disconnect()
           console.log('Disconnected from MQTT broker')
@@ -1805,13 +1804,11 @@ function disconnectAllClients() {
   allClients.length = 0
 }
 
-
-
 const getuserData = async () => {
-  const name = await AsyncStorage.getItem("name");
-  const mid = await AsyncStorage.getItem("mid");
+  const name = await AsyncStorage.getItem('name')
+  const mid = await AsyncStorage.getItem('mid')
 
-  return { name, mid }; // Ek object mein name aur mid dono values ko store kiya gaya hai
+  return { name, mid } // Ek object mein name aur mid dono values ko store kiya gaya hai
 }
 
 /// send data to userpanel and save to charging history
@@ -1864,7 +1861,7 @@ const getuserData = async () => {
 //       client.disconnect();
 //       console.log("Disconnect the client after sending the message");
 //       })
-//       .catch((responseObject) => {    
+//       .catch((responseObject) => {
 //           console.log('onConnectionLost: charger history ' + responseObject)
 //       })
 //   }

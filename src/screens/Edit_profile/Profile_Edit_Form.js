@@ -14,12 +14,12 @@ import {
 import { updateUser } from '../../Redux/Action'
 import { getUserData } from '../../Redux/Action'
 import { useDispatch } from 'react-redux'
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/MaterialIcons'
 import { useNavigation } from '@react-navigation/native'
 
 const Profile_Edit_Form = () => {
   const navigation = useNavigation()
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
   const dispatch = useDispatch()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -58,7 +58,7 @@ const Profile_Edit_Form = () => {
   return (
     <View style={styles.container}>
       <TextInput
-       style={[styles.input, { color: 'gray' }]}
+        style={[styles.input, { color: 'gray' }]}
         placeholder="Full Name"
         value={name}
         onChangeText={(text) => setName(text)}
@@ -66,7 +66,7 @@ const Profile_Edit_Form = () => {
         returnKeyType="next"
       />
       <TextInput
-    style={[styles.input, { color: 'gray' }]}
+        style={[styles.input, { color: 'gray' }]}
         placeholder="Email"
         value={email}
         onChangeText={(text) => setEmail(text)}
@@ -74,27 +74,28 @@ const Profile_Edit_Form = () => {
         keyboardType="email-address"
         returnKeyType="next"
       />
-     <View style={{ position: 'relative' }}>
-          <TextInput
-            style={[styles.input, { color: 'gray' }]}
-            placeholder="Password"
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-            placeholderTextColor="gray"
-            secureTextEntry={!showPassword} // Toggle secureTextEntry based on showPassword state
-            returnKeyType="done"
+      <View style={{ position: 'relative' }}>
+        <TextInput
+          style={[styles.input, { color: 'gray' }]}
+          placeholder="Password"
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+          placeholderTextColor="gray"
+          secureTextEntry={!showPassword} // Toggle secureTextEntry based on showPassword state
+          returnKeyType="done"
+        />
+        {/* Eye button to toggle password visibility */}
+        <TouchableOpacity
+          style={styles.eyeButton}
+          onPress={() => setShowPassword(!showPassword)}
+        >
+          <Icon
+            name={showPassword ? 'visibility-off' : 'visibility'} // Show different icon based on showPassword state
+            size={24}
+            color="gray"
           />
-          {/* Eye button to toggle password visibility */}
-          <TouchableOpacity
-            style={styles.eyeButton}
-            onPress={() => setShowPassword(!showPassword)}>
-            <Icon
-              name={showPassword ? 'visibility-off' : 'visibility'} // Show different icon based on showPassword state
-              size={24}
-              color="gray"
-            />
-          </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
+      </View>
       <TouchableOpacity style={styles.buttonContainer} onPress={update}>
         <Text style={styles.buttonText}>Save</Text>
       </TouchableOpacity>
@@ -118,7 +119,8 @@ const styles = StyleSheet.create({
     marginBottom: hp(6),
     paddingHorizontal: 20,
     // color: 'red',
-  },  eyeButton: {
+  },
+  eyeButton: {
     position: 'absolute',
     top: 12,
     right: 10,

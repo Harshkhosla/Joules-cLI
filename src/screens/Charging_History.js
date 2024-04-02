@@ -24,7 +24,7 @@ const Charging_History = ({ navigation, route }) => {
   const [isPowergraph, setisPowergraph] = useState(true)
   const [isEnergygraph, setisisEnergygraph] = useState(false)
 
-  const HandleTouggl = () => {
+  const handleToggle = () => {
     setisPowergraph(!isPowergraph)
     setisisEnergygraph(!isEnergygraph)
   }
@@ -88,7 +88,7 @@ const Charging_History = ({ navigation, route }) => {
           </View>
           <View style={styles.toggler}>
             <TouchableOpacity
-              onPress={HandleTouggl}
+              onPress={handleToggle}
               style={[
                 styles.togglerButton,
                 { backgroundColor: isPowergraph ? 'green' : 'transparent' },
@@ -112,7 +112,7 @@ const Charging_History = ({ navigation, route }) => {
               }}
             ></View>
             <TouchableOpacity
-              onPress={HandleTouggl}
+              onPress={handleToggle}
               style={[
                 styles.togglerButton,
                 { backgroundColor: isEnergygraph ? 'green' : 'transparent' },

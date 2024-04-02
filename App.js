@@ -49,14 +49,15 @@ import HeaderWithArrow from './src/components/ChatSupport'
 import AddRfid from './src/components/AddRfid'
 import AuthLoadingScreen from './src/components/OpenSplash'
 import Editprofile from './src/screens/Edit_profile/Editprofile'
+import Timer_with_package from './src/screens/Timer_with_package'
 
 const Stack = createStackNavigator()
 
 const Drawer = createDrawerNavigator()
 
 export default function App() {
- const data = AsyncStorage.getItem('mid')
- console.log(data);
+  const data = AsyncStorage.getItem('mid')
+  console.log(data)
   return (
     <Sample store={Store}>
       <Provider theme={theme}>
@@ -67,6 +68,10 @@ export default function App() {
               headerShown: false,
             }}
           >
+            <Stack.Screen
+              name="Timer_with_package"
+              component={Timer_with_package}
+            />
             <Stack.Screen
               name="AuthLoadingScreen"
               component={AuthLoadingScreen}
