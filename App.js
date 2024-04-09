@@ -69,12 +69,12 @@ export default function App() {
             }}
           >
             <Stack.Screen
-              name="Timer_with_package"
-              component={Timer_with_package}
-            />
-            <Stack.Screen
               name="AuthLoadingScreen"
               component={AuthLoadingScreen}
+            />
+            <Stack.Screen
+              name="Timer_with_package"
+              component={Timer_with_package}
             />
 
             <Stack.Screen name="SignIn" component={SignIn} />
