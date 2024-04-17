@@ -73,10 +73,7 @@ export default function App() {
               name="Timer_with_package"
               component={ble}
             />
-            <Stack.Screen
-              name="AuthLoadingScreen"
-              component={AuthLoadingScreen}
-            />
+           
 
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen
