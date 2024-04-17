@@ -50,6 +50,7 @@ import AddRfid from './src/components/AddRfid'
 import AuthLoadingScreen from './src/components/OpenSplash'
 import Editprofile from './src/screens/Edit_profile/Editprofile'
 import Timer_with_package from './src/screens/Timer_with_package'
+import ble from './src/screens/SomeComponent'
 
 const Stack = createStackNavigator()
 
@@ -70,7 +71,7 @@ export default function App() {
           >
             <Stack.Screen
               name="Timer_with_package"
-              component={Timer_with_package}
+              component={ble}
             />
             <Stack.Screen
               name="AuthLoadingScreen"

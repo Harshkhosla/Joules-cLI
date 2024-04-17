@@ -1,97 +1,86 @@
-import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native'
-import PushNotification from 'react-native-push-notification'
-import BackgroundService from 'react-native-background-actions'
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import PushNotification from 'react-native-push-notification';
+import BackgroundService from 'react-native-background-actions';
 
 const Timer_with_packagekage = () => {
-  const [hours, setHours] = useState('')
-  const [minutes, setMinutes] = useState('')
-  const [seconds, setSeconds] = useState('')
-  const [totalSeconds, setTotalSeconds] = useState(0)
-  const [timerActive, setTimerActive] = useState(false)
+  const [hours, setHours] = useState('');
+  const [minutes, setMinutes] = useState('');
+  const [seconds, setSeconds] = useState('');
+  const [totalSeconds, setTotalSeconds] = useState(0);
+  const [timerActive, setTimerActive] = useState(false);
 
-  const sleep = (time) =>
-    new Promise((resolve) => setTimeout(() => resolve(), time))
+  const sleep = (time) => new Promise((resolve) => setTimeout(() => resolve(), time));
 
   const veryIntensiveTask = async (taskDataArguments) => {
-    const { delay } = taskDataArguments
+    const { delay } = taskDataArguments;
 
     await new Promise(async (resolve) => {
       const timer = setInterval(() => {
         if (timerActive && totalSeconds > 0) {
-          console.log(delay)
-          setTotalSeconds((prevTotalSeconds) => prevTotalSeconds - 1)
+          setTotalSeconds((prevTotalSeconds) => prevTotalSeconds - 1);
         }
-      }, 1000)
+      }, 1000);
 
-      await sleep(delay * 1000)
-      clearInterval(timer)
-      resolve()
-    })
-  }
+      await sleep(delay);
+      clearInterval(timer);
+      resolve();
+    });
+  };
 
   const handleStartTimer = async () => {
-    const totalHours = parseInt(hours) || 0
-    const totalMinutes = parseInt(minutes) || 0
-    const totalSecondsInput = parseInt(seconds) || 0
-    const totalSeconds =
-      totalHours * 3600 + totalMinutes * 60 + totalSecondsInput
-    setTotalSeconds(totalSeconds)
-    setTimerActive(true)
-
-    const options = {
-      taskName: 'check timer',
-      taskTitle: 'check timer',
-      taskDesc: 'ExampleTask description',
-      taskIcon: {
-        name: 'ic_launcher',
-        type: 'mipmap',
-      },
-      color: '#FF3E4D',
-      linkingURI: 'yourSchemeHere://chat/jane', // See Deep Linking for more info
-      parameters: {
-        delay: totalSeconds,
-      },
+    try {
+      if (!BackgroundService) {
+        throw new Error('BackgroundService is null or undefined');
+      }
+  
+      const totalHours = parseInt(hours) || 0;
+      const totalMinutes = parseInt(minutes) || 0;
+      const totalSecondsInput = parseInt(seconds) || 0;
+      const totalSeconds = totalHours * 3600 + totalMinutes * 60 + totalSecondsInput;
+      setTotalSeconds(totalSeconds);
+      setTimerActive(true);
+  
+      const options = {
+        taskName: 'check timer',
+        taskTitle: 'check timer',
+        taskDesc: 'ExampleTask description',
+        taskIcon: {
+          name: 'ic_launcher',
+          type: 'mipmap',
+        },
+        color: '#FF3E4D',
+        linkingURI: 'yourSchemeHere://chat/jane',
+        parameters: {
+          delay: totalSeconds * 1000,
+        },
+      };
+  
+      await BackgroundService.start(veryIntensiveTask, options);
+    } catch (error) {
+      console.error('Error starting background service:', error);
     }
-
-    await BackgroundService.start(veryIntensiveTask, options)
-    await BackgroundService.updateNotification({
-      taskName: 'check timer',
-      taskTitle: 'charging',
-      taskDesc: 'for charging',
-    })
-  }
+  };
+  
 
   useEffect(() => {
-    if (timerActive && totalSeconds > 0) {
-      const timer = setInterval(() => {
-        setTotalSeconds((prevTotalSeconds) => prevTotalSeconds - 1)
-      }, 1000)
-
-      return () => {
-        clearInterval(timer)
-        // Stop background task when the component unmounts
-        // BackgroundService.stop();
+    // Stop background task when the component unmounts or the timer reaches 0
+    return () => {
+      if (timerActive && totalSeconds === 0) {
+        BackgroundService.stop();
       }
-    } else if (timerActive && totalSeconds === 0) {
-      PushNotification.localNotification({
-        channelId: 'channel-id',
-        title: 'Timer Expired',
-        message: 'Charging complete',
-      })
-      setTimerActive(false)
-    }
-  }, [timerActive, totalSeconds])
+    };
+  }, [timerActive, totalSeconds]);
 
   const formatTime = (seconds) => {
-    const hours = Math.floor(seconds / 3600)
-    const minutes = Math.floor((seconds % 3600) / 60)
-    const remainingSeconds = seconds % 60
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(
       2,
       '0'
-    )}:${String(remainingSeconds).padStart(2, '0')}`
-  }
+    )}:${String(remainingSeconds).padStart(2, '0')}`;
+  };
 
   return (
     <View style={styles.container}>
@@ -123,8 +112,8 @@ const Timer_with_packagekage = () => {
         <Text style={styles.timerText}>{formatTime(totalSeconds)}</Text>
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -151,6 +140,6 @@ const styles = StyleSheet.create({
   timerText: {
     fontSize: 24,
   },
-})
+});
 
-export default Timer_with_packagekage
+export default Timer_with_packagekage;
