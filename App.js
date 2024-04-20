@@ -70,10 +70,13 @@ export default function App() {
             }}
           >
             <Stack.Screen
+              name="Authloading"
+              component={AuthLoadingScreen}
+            />
+            <Stack.Screen
               name="Timer_with_package"
               component={ble}
             />
-           
 
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen
