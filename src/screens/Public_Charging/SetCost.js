@@ -105,8 +105,8 @@ const SetCost = ({
         Alert.alert('Payment Success', 'Payment was successful.')
         if (data && data.razorpay_payment_id) {
           console.log('navigate to start charging')
-          sendData(data.razorpay_payment_id)
-          startCharging()
+          // sendData(data.razorpay_payment_id)
+          startCharging(data.razorpay_payment_id)
         }
   })
       .catch((error) => {
@@ -115,7 +115,7 @@ const SetCost = ({
       })
   }
 
-  const startCharging = async () => {
+  const startCharging = async (paymentId) => {
     // const a = (Math.ceil((inputCost / 15) * 100) / 100) * 1000
     if(ShowSetCost){
     const a = (Math.ceil((inputCost / findchargingCost) * 100) / 100) * 1000
@@ -138,6 +138,7 @@ const SetCost = ({
           setcheckChargingStarted,
           handleStopCharging,
           inputCost,
+          paymentId,
           findChargingEnergy
         )
       )

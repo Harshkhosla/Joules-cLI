@@ -485,12 +485,12 @@ export const AddTrasationDetail = (input, navigation, setLoading) => {
 // chargerhistory add to db
 export const ChargerHistory = (SendData, setLoading) => {
   return async (dispatch) => {
-    const { inputCost, Porduct_Key } = SendData
+    const { inputCost, Porduct_Key ,paymentId} = SendData
     const { formattedDate, formattedTime } = getCurrentDateTime()
     let name, mid
-    console.log('in chargerhistry a;dkjsf;laskjff;aldf')
+   
     const userData = await getuserData()
-    console.log('userddata', userData)
+    console.log('userddataradhe', userData)
     name = userData.name
     mid = userData.mid
     const dataObject = {
@@ -501,9 +501,11 @@ export const ChargerHistory = (SendData, setLoading) => {
       // ChargerName:findchargername,
       UsedBy: name,
       Appmid: mid,
+      paymentId:paymentId
     }
     try {
       const response = await fetch(`${ApiURL}/user/chargerhistory/create`, {
+      // const response = await fetch(`http://192.168.17.3:5000/user/chargerhistory/create`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -512,8 +514,8 @@ export const ChargerHistory = (SendData, setLoading) => {
       })
 
       const data = await response.json()
-      console.log(data, 'data in sign up user')
-      if (data.message == 'add charger successfully' && setLoading) {
+      console.log(data, 'ChargerHistroryradhe')
+      if (data.message == 'ChargerHistory added successfully' && setLoading) {
         setLoading(false)
       }
       if (data?.Uniqueid) {
@@ -1483,6 +1485,7 @@ export const publicstartCharging = (
   setcheckChargingStarted,
   handleStopCharging,
   inputCost,
+  paymentId,
   findChargingEnergy
 ) => {
   // Porduct_Key=publicProductKey
@@ -1547,6 +1550,7 @@ export const publicstartCharging = (
             const sendData = {
               Porduct_Key,
               inputCost,
+              paymentId
             }
             dispatch(ChargerHistory(sendData))
           }
@@ -1555,6 +1559,7 @@ export const publicstartCharging = (
             handleStopCharging('Stop Charging', 'StoppedByDevice')
             disconnectAllClients()
             dispatch(ChargerHistoryEndTime(findChargingEnergy))
+            // dispatch(ChargerHistoryEndTime("120"))
           }
         } else if (message.destinationName === `${Porduct_Key}_Charging_Data`) {
           const updatedMessages = [
@@ -1762,6 +1767,7 @@ export const publicstopCharging = (
             SetEndTime(response)
             disconnectAllClients()
             dispatch(ChargerHistoryEndTime(SampleDataaa))
+            // dispatch(ChargerHistoryEndTime("120"))
           }
           client.disconnect()
           console.log('Disconnected from MQTT broker')
