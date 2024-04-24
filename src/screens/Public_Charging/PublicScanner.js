@@ -19,7 +19,7 @@ import { RNCamera } from 'react-native-camera'
 import WifiManager from 'react-native-wifi-reborn'
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler'
 import { ToastAndroid } from 'react-native'
-import { ChargerHistory, DoorOpening, NameAndPid, SendUsername, UpdatName, findChargingCost, setProductKey } from '../../Redux/Action'
+import { ChargerHistory, DoorOpening, NameAndPid, SendUsername, UpdatName, findChargingCost, setModal, setProductKey } from '../../Redux/Action'
 import { useDispatch, useSelector } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import EvCharging from '../../components/EvCharging'
@@ -65,6 +65,7 @@ export default function Dashboard({ navigation,route }) {
     if (cleanedWifiString) {
       dispatch(DoorOpening(cleanedWifiString))
       apicall(cleanedWifiString)
+      dispatch(setModal(true))
       navigation.navigate('Newhome')
     }
     // const scannedWifiValues = cleanedWifiString.split(";");

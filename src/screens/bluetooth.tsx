@@ -10,7 +10,7 @@ import {
 import {PERMISSIONS, requestMultiple} from 'react-native-permissions';
 import DeviceInfo from 'react-native-device-info';
 
-import {atob} from 'react-native-quick-base64';
+import {atob, btoa} from 'react-native-quick-base64';
 
 const HEART_RATE_UUID = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
 const HEART_RATE_CHARACTERISTIC = '6E400003-B5A3-F393-E0A9-E50E24DCCA9E';
@@ -126,7 +126,7 @@ function useBLE(): BluetoothLowEnergyApi {
     }
 
     const rawData = atob(characteristic.value);
-    // console.log(rawData,"dhndvbh");
+    console.log(rawData,"dhndvbhradhe",characteristic.value);
     
     let innerHeartRate: number = -1;
 
@@ -161,7 +161,9 @@ function useBLE(): BluetoothLowEnergyApi {
       if (connectedDevice) {
         const serviceUUID = HEART_RATE_UUID; // Replace with your service UUID
         const characteristicUUID = HEART_RATE_CHARACTERISTIC1; // Replace with your characteristic UUID
-        const jsonString = JSON.stringify(jsonData);
+        // const jsonString = JSON.stringify(jsonData);
+
+        const jsonString = btoa(jsonData);
         await bleManager.writeCharacteristicWithResponseForDevice(
           connectedDevice.id,
           serviceUUID,
