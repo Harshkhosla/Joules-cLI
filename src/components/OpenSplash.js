@@ -6,19 +6,27 @@ const AuthLoadingScreen = ({ navigation }) => {
   useEffect(() => {
     const checkSignInStatus = async () => {
       try {
-        const userToken = await AsyncStorage.getItem('Authtoken')
-        if (userToken) {
-          navigation.replace('chargerSelection')
+        const [[, userToken], [, IsChargingStarted]] = await AsyncStorage.multiGet(['Authtoken', 'ChargingStarted']);
+  
+        // Check if user is signed in and charging has started
+        const isSignedIn = userToken && IsChargingStarted === 'true';
+        console.log("userToken",userToken,IsChargingStarted);
+        if (isSignedIn) {
+          navigation.replace('Newhome');
+        } else if (userToken) {
+          navigation.replace('chargerSelection');
         } else {
-          navigation.replace('SignIn')
+          navigation.replace('SignIn');
         }
       } catch (error) {
-        console.error('Error fetching userToken:', error)
+        console.error('Error fetching userToken:', error);
       }
-    }
-
-    checkSignInStatus()
-  }, [navigation])
+    };
+  
+    checkSignInStatus();
+  }, [navigation]);
+  
+  
 
   return (
     <View style={styles.container}>

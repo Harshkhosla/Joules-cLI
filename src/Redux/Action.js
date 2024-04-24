@@ -22,6 +22,7 @@ export const SET_USER_PRODUCTKEY = 'SET_USER_PRODUCTKEY'
 export const SET_USER_PRODUCT = 'SET_USER_PRODUCT'
 export const SET_PUBLIC_CHARGER_TIME = 'SET_PUBLIC_CHARGER_TIME'
 export const SET_MID_VALUE = 'SET_MID_VALUE'
+export const SET_MODAL_OPEN = 'SET_MODAL_OPEN'
 import { Client, Message } from 'react-native-paho-mqtt'
 import Toast from 'react-native-toast-message'
 import { Alert } from 'react-native'
@@ -181,6 +182,12 @@ export const setEmail = (email) => (dispatch) => {
   dispatch({
     type: SET_USER_EMAIL,
     payload: email,
+  })
+}
+export const setModal= (value) => (dispatch) => {
+  dispatch({
+    type: SET_MODAL_OPEN,
+    payload: value,
   })
 }
 

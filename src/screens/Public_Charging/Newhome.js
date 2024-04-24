@@ -12,7 +12,7 @@ import React, { useEffect, useState } from 'react'
 import SetCost from './SetCost'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserData, publicstopCharging } from '../../Redux/Action'
+import { getUserData, publicstopCharging, setModal } from '../../Redux/Action'
 import HomeScreenCircles from '../HomeScreenCircle'
 import Wave from '../../components/wave'
 import App_top_Header from '../App_top_Header'
@@ -25,9 +25,12 @@ const Newhome = ({ navigation }) => {
   const [ShowChargingCostPerSecond,SetShowChargingCostPerSecond]=useState("")
   console.log("inputcostfromsetcostradhekinagkjamer",inputcostfromsetcost);
   const [isLoading, setIsLoading] = useState(false)
+
   const [isModalOpen, setIsModalOpen] = useState(false)
+
   const [colorChange, setColorChange] = useState('#DBDBDB')
   const [data, setData] = useState()
+  const [IsChargingStartedValue, setIsChargingStartedValue] = useState(false)
   // const [buttonText,setButtonText]=useState("Scan QR")
   const [buttonText, setButtonText] = useState('')
   const [ChargingEnergy, setChargingEnergy] = useState('')
@@ -40,6 +43,10 @@ const Newhome = ({ navigation }) => {
   const [checkStopbuttonClick, setStopButtonClick] = useState(true)
   const [sendDataToChart, setSendDataToChart] = useState([])
   const [name, setName] = useState('User')
+
+  let ModalOpenValue = useSelector((state) => state?.userReducers?.IsSetCostModalOpen)
+  console.log("ModalOpenValue",ModalOpenValue);
+
   let SampleDataaa = useSelector((state) => state?.userReducers?.SetEnergy)
   const SamplePowerData = useSelector((state) => state?.userReducers?.SetPower)
   const SampleOutputCurrent = useSelector(
@@ -256,7 +263,8 @@ if(timeInSec.length<=0 || !timeInSec){
     } else {
       if (data) {
         console.log('click start charging')
-        setIsModalOpen(true)
+        dispatch(setModal(true))
+        // setIsModalOpen(true)
         setGetSampledata(true)
         SetTimeinSec('')
         setChargingEnergy('')
@@ -275,8 +283,12 @@ if(timeInSec.length<=0 || !timeInSec){
     const unsubscribe = navigation.addListener('focus', () => {
       async function fetchData() {
         const storedData = await AsyncStorage.getItem('pid')
+        const ChargingStartedValue = await AsyncStorage.getItem('ChargingStarted')
         console.log('storedData', storedData)
         setData(storedData)
+        if(ChargingStartedValue){
+          setIsChargingStartedValue(ChargingStartedValue)
+        }
         if (storedData) {
           setButtonText('Start Charging')
         }
@@ -299,6 +311,7 @@ if(timeInSec.length<=0 || !timeInSec){
     try {
       // Use AsyncStorage.removeItem to remove the "pid" item
       await AsyncStorage.removeItem('pid')
+      await AsyncStorage.removeItem('ChargingStarted')
       console.log('Item removed from AsyncStorage')
       setData(null) // Reset the data state
       setColorChange('#DBDBDB')
@@ -310,7 +323,8 @@ if(timeInSec.length<=0 || !timeInSec){
   }
 
   const handleCostAndTimeClose = () => {
-    setIsModalOpen(false)
+    dispatch(setModal(false))
+    // setIsModalOpen(false)
     // SetTimeinSec("")
   }
 
@@ -386,11 +400,38 @@ if(timeInSec.length<=0 || !timeInSec){
     clearAsyncStorage()
   }, [timerExpired])
 
+
   useEffect(() => {
     if (checkChargingStarted && data) {
-      setButtonPressed(true)
+      saveDataToAsyncStorage();
     }
-  }, [checkChargingStarted])
+  }, [checkChargingStarted, data]);
+
+  useEffect(()=>{
+    if(IsChargingStartedValue){
+      setButtonText("Stop Charging")
+    }
+  },[IsChargingStartedValue])
+
+  const saveDataToAsyncStorage = async () => {
+    if (checkChargingStarted && data) {
+      try {
+        // Save data to AsyncStorage
+        await AsyncStorage.setItem('ChargingStarted', "true");
+        setButtonPressed(true);
+      } catch (error) {
+        console.error('Error saving data to AsyncStorage:', error);
+      }
+    }
+  };
+  // useEffect(() => {
+  //   if (checkChargingStarted && data) {
+
+  //     setButtonPressed(true)
+
+  //   }
+  // }, [checkChargingStarted])
+
   // const handleButtonClick = () => {
   //   setButtonPressed(true);
   //   // Yahaan par aap kuch aur kaam kar sakte hain agar button press ho gaya hai.
@@ -422,7 +463,7 @@ if(timeInSec.length<=0 || !timeInSec){
           ></View>
           <Text style={{ color: '#717171' }}>Status:</Text>
           <Text style={{ paddingLeft: 10, color: colorChange }}>
-            {data && checkChargingStarted
+            {IsChargingStartedValue || data && checkChargingStarted
               ? // Condition: Both AsyncStorage data and charging started
                 'Charging'
               : data
@@ -479,7 +520,7 @@ if(timeInSec.length<=0 || !timeInSec){
             </View>
           </View>
           <View style={{ alignSelf: 'center', paddingVertical: 5 }}>
-            {data && checkChargingStarted ? (
+            {IsChargingStartedValue || data && checkChargingStarted ? (
               // Condition: Both AsyncStorage data and charging started
               // <Text>{ShowChargingCostPerSecond}</Text>
               // {ShowChargingCostPerSecond}
@@ -561,7 +602,8 @@ if(timeInSec.length<=0 || !timeInSec){
         </Text>
       </View>
       <SetCost
-        open={isModalOpen}
+        // open={isModalOpen}
+        open={ModalOpenValue}
         onClose={handleCostAndTimeClose}
         startTimer={handleStartClick}
         inputvalue={''}

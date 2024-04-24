@@ -22,7 +22,7 @@ const App = () => {
     disconnectFromDevice,
   } = useBLE();
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-
+  
   const scanForDevices = () => {
     requestPermissions(isGranted => {
       if (isGranted) {
@@ -31,7 +31,7 @@ const App = () => {
     });
   };
   const handleSendData = () => {
-    sendToDevice("Your static data here\n"); // Call sendToDevice with your static data
+    sendToDevice("SSID=lajdkalsjdklasretrryttuyjd&PSK=dskjjfadkfdlsjertyukfadskfh&"); // Call sendToDevice with your static data
   };
   const hideModal = () => {
     setIsModalVisible(false);
