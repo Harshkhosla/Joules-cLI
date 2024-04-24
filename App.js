@@ -69,15 +69,15 @@ export default function App() {
               headerShown: false,
             }}
           >
+            
             <Stack.Screen
               name="Authloading"
               component={AuthLoadingScreen}
             />
-            <Stack.Screen
+           <Stack.Screen
               name="Timer_with_package"
               component={ble}
             />
-
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen
               name="chargerSelection"
