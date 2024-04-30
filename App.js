@@ -51,6 +51,7 @@ import AuthLoadingScreen from './src/components/OpenSplash'
 import Editprofile from './src/screens/Edit_profile/Editprofile'
 import Timer_with_package from './src/screens/Timer_with_package'
 import ble from './src/screens/SomeComponent'
+import Connect_to_WiFi from './src/screens/Connect_to_WiFi'
 
 const Stack = createStackNavigator()
 
@@ -69,15 +70,11 @@ export default function App() {
               headerShown: false,
             }}
           >
-            
-            <Stack.Screen
-              name="Authloading"
-              component={AuthLoadingScreen}
-            />
-           <Stack.Screen
-              name="Timer_with_package"
-              component={ble}
-            />
+            <Stack.Screen name="Authloading" component={AuthLoadingScreen} />
+
+            <Stack.Screen name="Timer_with_package" component={ble} />
+            <Stack.Screen name="Connect_to_WiFi" component={Connect_to_WiFi} />
+
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen
               name="chargerSelection"

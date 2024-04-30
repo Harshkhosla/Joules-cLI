@@ -6,8 +6,11 @@ import {
   responsiveFontSize as fp,
 } from 'react-native-responsive-dimensions'
 import Navmodal from './Public_Navmodal'
+import { useNavigation } from '@react-navigation/native'
 
 const App_top_Header = ({ navigation, title, color, isHome, name }) => {
+  const navigatetotop = useNavigation()
+
   const [isNavOpen, setNavOpen] = useState(false)
 
   const naveClose = () => {
@@ -31,7 +34,11 @@ const App_top_Header = ({ navigation, title, color, isHome, name }) => {
             />
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.goBack() || navigatetotop.navigate('Newhome')
+            }
+          >
             <Icon name="arrowleft" size={25} color="#118615" />
           </TouchableOpacity>
         )}

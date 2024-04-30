@@ -32,17 +32,22 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
       Nav_name: 'Support',
       navigat: 'support',
     },
+    {
+      Nav_icon: require('../assets/wifiicon.png'),
+      Nav_name: 'Change Wifi',
+      navigat: 'Timer_with_package',
+    },
   ]
 
   const removeItemFromAsyncStorage = async () => {
     try {
       // AsyncStorage se sabhi data ko hatao
-      await AsyncStorage.clear();
-      console.log('All data removed from AsyncStorage');
+      await AsyncStorage.clear()
+      console.log('All data removed from AsyncStorage')
       closeNave()
       navigation.navigate('SignIn')
     } catch (error) {
-      console.error('Error clearing data from AsyncStorage:', error);
+      console.error('Error clearing data from AsyncStorage:', error)
     }
   }
 

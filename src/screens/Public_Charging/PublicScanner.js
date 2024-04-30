@@ -19,7 +19,16 @@ import { RNCamera } from 'react-native-camera'
 import WifiManager from 'react-native-wifi-reborn'
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler'
 import { ToastAndroid } from 'react-native'
-import { ChargerHistory, DoorOpening, NameAndPid, SendUsername, UpdatName, findChargingCost, setModal, setProductKey } from '../../Redux/Action'
+import {
+  ChargerHistory,
+  DoorOpening,
+  NameAndPid,
+  SendUsername,
+  UpdatName,
+  findChargingCost,
+  setModal,
+  setProductKey,
+} from '../../Redux/Action'
 import { useDispatch, useSelector } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import EvCharging from '../../components/EvCharging'
@@ -30,10 +39,11 @@ import {
 } from 'react-native-responsive-dimensions'
 import App_top_Header from '../App_top_Header'
 import LoaderComponent from '../../components/loader'
+import { launchImageLibrary } from 'react-native-image-picker'
 
-export default function Dashboard({ navigation,route }) {
+export default function Dashboard({ navigation, route }) {
   const dispatch = useDispatch()
-  const [loading,setloading]=useState(false)
+  const [loading, setloading] = useState(false)
   const [hasPermission, setHasPermission] = useState(null)
   const [scanned, setScanned] = useState(false)
   const [text, setText] = useState('Not yet scanned')
@@ -41,9 +51,29 @@ export default function Dashboard({ navigation,route }) {
   const [flashOn, setFlashOn] = useState(false)
   console.log(Data)
 
-  const receivedData = route.params?.name || 'User';
+  const [qrScannerImg, setqrScannerImg] = useState(null)
+  // require('../../assets/defaultuser.png')
+
+  const selectImage = () => {
+    launchImageLibrary({ mediaType: 'photo' }, (response) => {
+      console.log('Image library response:', response)
+      if (
+        !response.didCancel &&
+        response.assets &&
+        response.assets.length > 0
+      ) {
+        const selectedImage = response.assets[0] // Get the first asset
+        const source = { uri: selectedImage.uri }
+        setqrScannerImg(source)
+      }
+    })
+  }
+  console.log(qrScannerImg)
+
+  const receivedData = route.params?.name || 'User'
 
   const id = useSelector((state) => state?.userReducers?.Product?._id)
+
   const onSuccess = async (e) => {
     // console.log("sdfasdfasdf");
     console.log(e.data, 'product key in onsucces publicScanner')
@@ -162,133 +192,137 @@ export default function Dashboard({ navigation,route }) {
     // navigation.navigate('Newhome');
   }
 
-const apicall=async(pid)=>{
-let SendData={}
-if(!pid || !receivedData){
-  return 
-}
-  if(pid){  
-    SendData.Porduct_Key=pid
+  const apicall = async (pid) => {
+    let SendData = {}
+    if (!pid || !receivedData) {
+      return
+    }
+    if (pid) {
+      SendData.Porduct_Key = pid
+    }
+    if (receivedData) {
+      SendData.name = receivedData
+    }
+    try {
+      console.log('in try api calll')
+      const findChargingCost1 = await dispatch(findChargingCost(pid))
+      // const response=await dispatch(NameAndPid(SendData,navigation,setloading))
+      const response = await dispatch(SendUsername(SendData))
+      console.log('response', response)
+    } catch (error) {
+      console.log('Error', error)
+    }
   }
-  if(receivedData){
-    SendData.name=receivedData
-  }
-  try {
-    console.log("in try api calll");
-    const findChargingCost1=await dispatch(findChargingCost(pid))
-    // const response=await dispatch(NameAndPid(SendData,navigation,setloading))
-    const response=await dispatch(SendUsername(SendData))
-    console.log("response",response);
 
-  } catch (error) {
-    console.log("Error",error)
+  const delfn = () => {
+    console.log('delfun')
+    const sendData = {
+      Porduct_Key: 'radhe',
+      inputCost: '200',
+      findchargername: 'ajmer',
+    }
+    dispatch(ChargerHistory(sendData))
   }
-}
-
-
-const delfn=()=>{
-  console.log("delfun");
-  const sendData={
-    Porduct_Key:"radhe",
-    inputCost:"200",
-    findchargername:"ajmer"
-  }
-  dispatch(ChargerHistory(sendData))
-}
-  return (<>
-    {!loading ? <View style={styles.container}>
-      <App_top_Header
-        title={`Hello ${receivedData}`}
-        navigation={navigation}
-        color={'#C1E0C2'}
-        isHome={true}
-      />
-      {/* <TouchableOpacity onPress={delfn}>
+  return (
+    <>
+      {!loading ? (
+        <View style={styles.container}>
+          <App_top_Header
+            title={`Hello ${receivedData}`}
+            navigation={navigation}
+            color={'#C1E0C2'}
+            isHome={true}
+          />
+          {/* <TouchableOpacity onPress={delfn}>
         <Text style={{color:"red",fontSize:20}}>api call</Text> 
       </TouchableOpacity> */}
-      <View style={styles.containerContentBox}>
-        <Text style={{ fontSize: 18, fontWeight: '400',color:"#707070" }}>
-          To start charging, please scan the
-          <Text style={{ color: 'green' }}> QR Code </Text>
-        </Text>
-        <View style={styles.barcodebox}>
-          <QRCodeScanner
-            onRead={onSuccess}
-            topContent={
-              <Text style={styles.centerText}>
-                Go to
-                <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text>
-                on your computer and scan the QR code.
+          <View style={styles.containerContentBox}>
+            <Text style={{ fontSize: 18, fontWeight: '400', color: '#707070' }}>
+              To start charging, please scan the
+              <Text style={{ color: 'green' }}> QR Code </Text>
+            </Text>
+            <View style={styles.barcodebox}>
+              <QRCodeScanner
+                onRead={onSuccess}
+                // topContent={
+                //   <Text style={styles.centerText}>
+                //     Go to
+                //     <Text style={styles.textBold}>
+                //       wikipedia.org/wiki/QR_code
+                //     </Text>
+                //     on your computer and scan the QR code.
+                //   </Text>
+                // }
+                flashMode={
+                  flashOn
+                    ? RNCamera.Constants.FlashMode.torch
+                    : RNCamera.Constants.FlashMode.off
+                }
+                // bottomContent={
+                //   <TouchableOpacity style={styles.buttonTouchable}>
+                //     {/* <Text style={styles.buttonText}>OK. Got it!</Text> */}
+                //   </TouchableOpacity>
+                // }
+              />
+              <Text
+                style={{
+                  fontSize: 15,
+                  color: '#FFFFFF',
+                  position: 'absolute',
+                  bottom: 20,
+                }}
+              >
+                Scan any Qr Code
               </Text>
-            }
-            flashMode={
-              flashOn
-                ? RNCamera.Constants.FlashMode.torch
-                : RNCamera.Constants.FlashMode.off
-            }
-            bottomContent={
-              <TouchableOpacity style={styles.buttonTouchable}>
-                {/* <Text style={styles.buttonText}>OK. Got it!</Text> */}
+            </View>
+            <View
+              style={{
+                gap: 10,
+                justifyContent: 'center',
+                flexDirection: 'row',
+              }}
+            >
+              <TouchableOpacity onPress={() => selectImage()}>
+                <Image
+                  style={styles.actionimgicon}
+                  source={require('../../assets/picimg.png')}
+                />
               </TouchableOpacity>
-            }
-          />
-          <Text
-            style={{
-              fontSize: 15,
-              color: '#FFFFFF',
-              position: 'absolute',
-              bottom: 20,
-            }}
-          >
-            Scan any Qr Code
-          </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  setFlashOn(!flashOn)
+                }}
+              >
+                <Image
+                  style={styles.actionimgicon}
+                  source={require('../../assets/torch.png')}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.statusBox}>
+              <View
+                style={{
+                  height: 10,
+                  backgroundColor: 'green',
+                  width: 10,
+                  borderRadius: 10 / 2,
+                  marginRight: 10,
+                }}
+              ></View>
+              <Text style={{ color: '#848484' }}>Status:</Text>
+              <Text style={{ paddingLeft: 10, color: '#606060' }}>
+                Scanning QR Code
+              </Text>
+            </View>
+            {/* <EvCharging /> */}
+          </View>
+          <View style={styles.bottomColorBox}></View>
         </View>
-        <View
-          style={{
-            gap: 10,
-            justifyContent: 'center',
-            flexDirection: 'row',
-          }}
-        >
-          <TouchableOpacity>
-            <Image
-              style={styles.actionimgicon}
-              source={require('../../assets/picimg.png')}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              setFlashOn(!flashOn)
-            }}
-          >
-            <Image
-              style={styles.actionimgicon}
-              source={require('../../assets/torch.png')}
-            />
-          </TouchableOpacity>
+      ) : (
+        <View>
+          <LoaderComponent loading={loading} />
         </View>
-        <View style={styles.statusBox}>
-          <View
-            style={{
-              height: 10,
-              backgroundColor: 'green',
-              width: 10,
-              borderRadius: 10 / 2,
-              marginRight: 10,
-            }}
-          ></View>
-          <Text style={{ color: '#848484' }}>Status:</Text>
-          <Text style={{ paddingLeft: 10, color: '#606060' }}>
-            Scanning QR Code
-          </Text>
-        </View>
-        {/* <EvCharging /> */}
-      </View>
-      <View style={styles.bottomColorBox}></View>
-    </View>
-    :<View>
-      <LoaderComponent loading={loading}/>
-      </View>}
+      )}
     </>
   )
 }
