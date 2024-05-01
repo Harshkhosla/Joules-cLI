@@ -102,7 +102,7 @@ const DeviceModal: FC<DeviceModalProps> = (props) => {
               placeholder="Chagrer 3"
               secureTextEntry={true}
             />
-            <View style={styles.progressWindow}></View>
+            <View style={styles.progressWindow} />
           </View>
           <View style={styles.tagNote}>
             <Image
