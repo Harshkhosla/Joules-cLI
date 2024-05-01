@@ -31,7 +31,7 @@ const App = ({ navigation }) => {
     sendToDevice,
     disconnectFromDevice,
   } = useBLE()
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [progress, setProgress] = useState(0)
   const [timer, setTimer] = useState(null)
 
@@ -57,10 +57,16 @@ const App = ({ navigation }) => {
   }, [timer, progress])
 
   const handleScanAgain = () => {
+
+    requestPermissions(isGranted => {
+      if (isGranted) {
+        scanForPeripherals();
+      }
+    });
     setProgress(0)
     setTimer(
       setTimeout(() => {
-        setIsModalVisible(true)
+        setIsModalVisible(true);
       }, 15000)
     )
   }
