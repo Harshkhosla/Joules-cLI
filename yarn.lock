@@ -1091,6 +1091,11 @@
   resolved "https://registry.npmjs.org/@colors/colors/-/colors-1.5.0.tgz"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
+"@cs125/wait-until@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.npmjs.org/@cs125/wait-until/-/wait-until-0.0.3.tgz"
+  integrity sha512-Z3+GXZbAjiiI0cJi1si+WfBBPfmLwZ9Tk4wqyFJGeZHJilyveBCpSktHdJlmqjHBBvrMi8ymXefYi2S833LhRA==
+
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
   resolved "https://registry.npmjs.org/@egjs/hammerjs/-/hammerjs-2.0.17.tgz"
@@ -8389,6 +8394,13 @@ react-native-ble-plx@^3.1.2:
   integrity sha512-QgukxgjrZYMUxyZ9w4XEiR9QdbdKLibhggE+sPRxp6q11rZG9upU5aricnVB2CiSbn164nlYx3j+GNlJKSlaLg==
   dependencies:
     "@expo/config-plugins" "^7.2.5"
+
+react-native-bluetooth-status@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.npmjs.org/react-native-bluetooth-status/-/react-native-bluetooth-status-1.5.1.tgz"
+  integrity sha512-d+7NvFhLh3FRJOWWrJQjDwg/X9KILViEwLW2BBocIBsWGdFoZR51oXUKkR/FpMZ03AQiedKMDOTbP9nKBIVIEg==
+  dependencies:
+    "@cs125/wait-until" "^0.0.3"
 
 react-native-camera@^4.2.1:
   version "4.2.1"

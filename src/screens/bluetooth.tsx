@@ -9,7 +9,7 @@ import {
 } from 'react-native-ble-plx';
 import {PERMISSIONS, requestMultiple} from 'react-native-permissions';
 import DeviceInfo from 'react-native-device-info';
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import {atob, btoa} from 'react-native-quick-base64';
 
 const HEART_RATE_UUID = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
@@ -32,6 +32,7 @@ interface BluetoothLowEnergyApi {
 }
 
 function useBLE(): BluetoothLowEnergyApi {
+  const [isModalVisible1, setIsModalVisible1] = useState(false);
   const [allDevices, setAllDevices] = useState<Device[]>([]);
   const [connectedDevice, setConnectedDevice] = useState<Device | null>(null);
   const [heartRate, setHeartRate] = useState<number>(0);
@@ -40,6 +41,7 @@ function useBLE(): BluetoothLowEnergyApi {
   const requestPermissions = async (cb: VoidCallback) => {
     if (Platform.OS === 'android') {
       const apiLevel = await DeviceInfo.getApiLevel();
+// console.log(apiLevel);
 
       if (apiLevel < 31) {
         const granted = await PermissionsAndroid.request(
@@ -79,11 +81,27 @@ function useBLE(): BluetoothLowEnergyApi {
     devices.findIndex(device => nextDevice.id === device.id) > -1;
 
   const scanForPeripherals = () =>
-    bleManager.startDeviceScan(null, null, (error, device) => {
+    bleManager.startDeviceScan(null, null, async(error, device) => {
       if (error) {
-        console.log(error);
+        console.log(error,"dsjnvn");
+        setIsModalVisible1(true);
       }
-      if (device) {
+      // if (device) {
+      if (device && device.name?.includes('PEL00001')) {
+        try {
+          const connectedDevice = await bleManager.connectToDevice(device.id);
+          setConnectedDevice(connectedDevice);
+          const authtoken = JSON.stringify(connectedDevice)
+          console.log(authtoken,"harsh");
+        await AsyncStorage.setItem('DevicesConnected', authtoken)
+          await connectedDevice.discoverAllServicesAndCharacteristics();
+          bleManager.stopDeviceScan();
+          startStreamingData(connectedDevice);
+          console.log('Connected to device:', connectedDevice.name);
+        
+        } catch (e) {
+          console.log('Failed to connect to device:', e);
+        }
         setAllDevices((prevState: Device[]) => {
           if (!isDuplicteDevice(prevState, device)) {
             return [...prevState, device];
@@ -91,6 +109,7 @@ function useBLE(): BluetoothLowEnergyApi {
           return prevState;
         });
       }
+     
     });
 
   const connectToDevice = async (device: Device) => {
@@ -105,10 +124,11 @@ function useBLE(): BluetoothLowEnergyApi {
     }
   };
 
-  const disconnectFromDevice = () => {
+  const disconnectFromDevice = async() => {
     if (connectedDevice) {
       bleManager.cancelDeviceConnection(connectedDevice.id);
       setConnectedDevice(null);
+      await AsyncStorage.removeItem('DevicesConnected')
       setHeartRate(0);
     }
   };
@@ -118,7 +138,7 @@ function useBLE(): BluetoothLowEnergyApi {
     characteristic: Characteristic | null,
   ) => {
     if (error) {
-      console.log(error);
+      console.log(error,"dskjdsnvj");
       return -1;
     } else if (!characteristic?.value) {
       console.log('No Data was recieved');
@@ -158,6 +178,8 @@ function useBLE(): BluetoothLowEnergyApi {
 
   const sendToDevice = async (jsonData: any) => {
     try {
+      console.log(jsonData);
+      
       if (connectedDevice) {
         const serviceUUID = HEART_RATE_UUID; // Replace with your service UUID
         const characteristicUUID = HEART_RATE_CHARACTERISTIC1; // Replace with your characteristic UUID
@@ -171,6 +193,9 @@ function useBLE(): BluetoothLowEnergyApi {
           jsonString,
         );
         console.log('Data sent successfully:', jsonString);
+        bleManager.cancelDeviceConnection(connectedDevice.id);
+        setConnectedDevice(null);
+        await AsyncStorage.removeItem('DevicesConnected')
       } else {
         console.log('No device connected.');
       }
@@ -187,7 +212,9 @@ function useBLE(): BluetoothLowEnergyApi {
     allDevices,
     connectedDevice,
     disconnectFromDevice,
-    heartRate,
+    heartRate,   
+     isModalVisible1,
+    setIsModalVisible1,
   };
 }
 
