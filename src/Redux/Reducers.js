@@ -1,4 +1,4 @@
-import { SET_USER_EMAIL, SET_USER_NAME, SET_AUTH_TOKEN, SET_USER_CAR,SET_USER_FLAT,SET_MODE_VALUE,SET_STATE_VALUE,SET_USER_ENERGY,SET_USER_PRODUCTKEY,SET_USER_PRODUCT, SET_USER_POWER, SET_PUBLIC_CHARGER_TIME,SET_USER_CURRENT,SET_CHARGING_COST,SET_CHARGING_COST_PER_HOUR,SET_CHARGER_NAME,SET_MODAL_OPEN} from './Action';
+import { SET_USER_EMAIL, SET_USER_NAME, SET_AUTH_TOKEN, SET_USER_CAR,SET_USER_FLAT,SET_MODE_VALUE,SET_STATE_VALUE,SET_USER_ENERGY,SET_USER_PRODUCTKEY,SET_USER_PRODUCT, SET_USER_POWER, SET_PUBLIC_CHARGER_TIME,SET_USER_CURRENT,SET_CHARGING_COST,SET_CHARGING_COST_PER_HOUR,SET_CHARGER_NAME,SET_MODAL_OPEN, SET_CHARGER_HISTORY,SET_CHECK_CHARGING_STARTED,SET_CHARGING_HISTORY_PID} from './Action';
 
 const initialState = {
     Total_Current: "",
@@ -19,7 +19,10 @@ const initialState = {
     setchargername:"",
     Product:[],
     CurrentPower:[],
-    IsSetCostModalOpen:false
+    IsSetCostModalOpen:false,
+    ChargerHistoryData:[],
+    checkChargingStarted:false,
+    chagerPid:""
 }
 
 function userReducers(state = initialState, action) {
@@ -75,6 +78,15 @@ function userReducers(state = initialState, action) {
       case SET_MODAL_OPEN:
           // console.log("harshsample",action);
         return { ...state, IsSetCostModalOpen: action.payload };
+      case SET_CHARGER_HISTORY:
+          console.log("harshsampleharshsample",action);
+        return { ...state, ChargerHistoryData: action.payload };
+      case SET_CHECK_CHARGING_STARTED:
+          // console.log("harshsample",action);
+        return { ...state, checkChargingStarted: action.payload };
+      case SET_CHARGING_HISTORY_PID:
+          // console.log("harshsample",action);
+        return { ...state, chagerPid: action.payload };
       default:
         return state;
     }

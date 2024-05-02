@@ -23,6 +23,10 @@ export const SET_USER_PRODUCT = 'SET_USER_PRODUCT'
 export const SET_PUBLIC_CHARGER_TIME = 'SET_PUBLIC_CHARGER_TIME'
 export const SET_MID_VALUE = 'SET_MID_VALUE'
 export const SET_MODAL_OPEN = 'SET_MODAL_OPEN'
+export const SET_CHARGING_UNITS = 'SET_CHARGING_UNITS'
+export const SET_CHARGER_HISTORY = 'SET_CHARGER_HISTORY'
+export const SET_CHECK_CHARGING_STARTED = 'SET_CHECK_CHARGING_STARTED'
+export const SET_CHARGING_HISTORY_PID = 'SET_CHARGING_HISTORY_PID'
 import { Client, Message } from 'react-native-paho-mqtt'
 import Toast from 'react-native-toast-message'
 import { Alert } from 'react-native'
@@ -50,7 +54,8 @@ const getCurrentDateTime = () => {
   // Time ko desired format mein convert karna
   const hours = String(currentDate.getHours()).padStart(2, '0')
   const minutes = String(currentDate.getMinutes()).padStart(2, '0')
-  const formattedTime = `${hours}:${minutes}`
+  const seconds = String(currentDate.getSeconds()).padStart(2, '0')
+  const formattedTime = `${hours}:${minutes}:${seconds}`
 
   // Output ko return karna
   return { formattedDate, formattedTime }
@@ -155,6 +160,14 @@ export const setChargingCost = (user_Energy) => {
   }
 }
 
+export const setChargerHistory = (user_Energy) => {
+  console.log("house_voltage",user_Energy);
+  return {
+    type: SET_CHARGER_HISTORY,
+    payload: user_Energy,
+  }
+}
+
 export const setChargingCostPerHour = (user_Energy) => {
   // console.log(house_voltage);
   return {
@@ -184,11 +197,23 @@ export const setEmail = (email) => (dispatch) => {
     payload: email,
   })
 }
-export const setModal= (value) => (dispatch) => {
-  dispatch({
+export const setModal= (value) => {
+  return {
     type: SET_MODAL_OPEN,
     payload: value,
-  })
+  }
+}
+export const setChargingStarted= (value) => {
+  return {
+    type: SET_CHECK_CHARGING_STARTED,
+    payload: value,
+  }
+}
+export const setChargerHistoryPid= (value) => {
+  return {
+    type: SET_CHARGING_HISTORY_PID,
+    payload: value,
+  }
 }
 
 export const SetDate = (user) => {
@@ -492,7 +517,7 @@ export const AddTrasationDetail = (input, navigation, setLoading) => {
 // chargerhistory add to db
 export const ChargerHistory = (SendData, setLoading) => {
   return async (dispatch) => {
-    const { inputCost, Porduct_Key ,paymentId} = SendData
+    const { inputCost, Porduct_Key ,paymentId,findchargingCost} = SendData
     const { formattedDate, formattedTime } = getCurrentDateTime()
     let name, mid
    
@@ -508,11 +533,12 @@ export const ChargerHistory = (SendData, setLoading) => {
       // ChargerName:findchargername,
       UsedBy: name,
       Appmid: mid,
-      paymentId:paymentId
+      paymentId:paymentId,
+      userPanelCost:findchargingCost
     }
     try {
       const response = await fetch(`${ApiURL}/user/chargerhistory/create`, {
-      // const response = await fetch(`http://192.168.17.3:5000/user/chargerhistory/create`, {
+      // const response = await fetch(`http://192.168.91.3:5000/user/chargerhistory/create`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -571,6 +597,38 @@ export const ChargerHistoryEndTime = (SendData, setLoading) => {
       return data
     } catch (err) {
       console.log(err, 'catch in err chargerhistoryendtime action.js')
+    }
+  }
+}
+
+export const GetChargerHistory = (navigation,mid, populateChargerHistoryData,lastchargerhistory) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(`${ApiURL}/admin/user/${mid}?populateChargerHistoryData=${populateChargerHistoryData}`)
+      const data = await response.json()
+      console.log("dataingetchargerhistory",data);
+      if(data?.message=="User not found"){
+        // navigation.navigate("SignIn")
+        console.log("navia rerun");
+        return
+      }
+      if(lastchargerhistory && Array.isArray(data?.chargingHistory)){
+        const ChargerHistoryData=data?.chargingHistory
+        if(ChargerHistoryData.length==0){
+          dispatch(setChargerHistory([]))
+          return 
+        }
+        else{
+          let ReturnData=ChargerHistoryData[ChargerHistoryData.length-1]
+          console.log("returndatareturndata",[ReturnData]);
+          dispatch(setChargerHistory([ReturnData]))
+          //  return 
+        }
+      }
+      // dispatch(setChargerHistory([data]))
+      return 
+    } catch (err) {
+      console.log(err, 'catch ke chargerhistory action.js')
     }
   }
 }
@@ -1493,7 +1551,8 @@ export const publicstartCharging = (
   handleStopCharging,
   inputCost,
   paymentId,
-  findChargingEnergy
+  findChargingEnergy,
+  findchargingCost
 ) => {
   // Porduct_Key=publicProductKey
   console.log('Porduct_Key in publick start charging', Porduct_Key)
@@ -1557,7 +1616,8 @@ export const publicstartCharging = (
             const sendData = {
               Porduct_Key,
               inputCost,
-              paymentId
+              paymentId:"120",
+              findchargingCost
             }
             dispatch(ChargerHistory(sendData))
           }
@@ -1681,6 +1741,64 @@ export const SendUsername = (SendData) => {
   }
 }
 
+export const SendChargingCost = (SendData) => {
+  return (dispatch) => {
+    const client = new Client({
+      uri: MqqtUrl,
+      clientId: 'client' + Math.random().toString(36).substring(7),
+      storage: myStorage,
+    })
+    const { chargingCost, Porduct_Key } = SendData
+    // console.log('Porduct_Key door ', Porduct_Key, chargingCost)
+    // client.on('connectionLost', (responseObject) => {
+    //   if (responseObject.errorCode !== 0) {
+    //     console.log(responseObject.errorMessage, 'sendusername in  try')
+    //     // DoorOpening(Porduct_Key)
+    //     client.connect().then(() => {
+    //       console.log('mqtt reconnect in sendusername')
+    //       const sample = new Message(`${name}`)
+    //       sample.destinationName = `${Porduct_Key}_Username`
+    //       client.send(sample)
+    //     })
+    //   }
+    // })
+    // client.on('messageReceived', (message) => {
+    //   console.log('message in on client', message.payloadString)
+    // })
+    client
+      .connect()
+      .then(() => {
+        // allClients.push(client);
+        console.log('mqtt connect in send charging cost')
+        // Assuming you have an object named 'dataObject' that you want to send
+        // const sample = new Message("name")
+        // sample.destinationName = `${Porduct_Key}_Username`
+        // client.send(sample)
+        // const dataObject = {
+        //   chargingCost,
+        //   address: 'ajmer',
+        // }
+        // // onvert the object to JSON format
+        // const jsonString = JSON.stringify(dataObject)
+        // Create a new message object
+        const sample = new Message(chargingCost)
+        // Set the destination name
+        sample.destinationName = `${Porduct_Key}_Charging_Cost`
+        // Send the message
+        client.send(sample)
+
+        client.disconnect()
+        console.log('client disconnect from charging cost')
+      })
+      .catch((responseObject) => {
+        if (responseObject.errorCode !== 0) {
+          console.log('onConnectionLost: charging cost ' + responseObject)
+          // SendUsername(SendData)
+        }
+      })
+  }
+}
+
 // mqtt code for door opening after scan Qr in public charging
 
 export const DoorOpening = (Porduct_Key) => {
@@ -1750,7 +1868,7 @@ export const publicstopCharging = (
           'public in stop chargin stop button',
           responseObject
         )
-        publicstopCharging(Porduct_Key)
+        // publicstopCharging(Porduct_Key)
       }
     })
     client.on('messageReceived', (message) => {
@@ -1800,7 +1918,77 @@ export const publicstopCharging = (
       .catch((responseObject) => {
         if (responseObject.errorCode !== 0) {
           console.log('onConnectionLost:' + responseObject)
-          publicstopCharging(Porduct_Key)
+          // publicstopCharging(Porduct_Key)
+        }
+      })
+  }
+}
+
+export const publicAlreadyChargingStarted = (
+  Porduct_Key,
+  handleStopCharging,
+) => {
+  // Porduct_Key=publicProductKey
+  console.log('Porduct_Key in publick start already charging', Porduct_Key)
+
+  return (dispatch) => {
+    const client = new Client({
+      uri: MqqtUrl,
+      clientId: 'client' + Math.random().toString(36).substring(7),
+      storage: myStorage,
+    })
+    
+    
+    const onConnect = () => {
+      client.on('messageReceived', (message) => {
+        if (message.destinationName === `${Porduct_Key}_Updates`) {
+         
+          if (message.payloadString == 'Charging Completed') {
+            Alert.alert('Automatic Already Disconnect by Device')
+            handleStopCharging('Stop Charging', 'StoppedByDevice')
+            disconnectAllClients()
+            // dispatch(ChargerHistoryEndTime(findChargingEnergy))
+            // dispatch(ChargerHistoryEndTime("120"))
+          }
+        } else if (message.destinationName === `${Porduct_Key}_Charging_Data`) {
+      ;
+          const dataObject = JSON.parse(message.payloadString)
+
+          dispatch(setEnergy(dataObject.Output_Energy))
+          dispatch(setPower(dataObject.Output_Power))
+          dispatch(setCurrent(dataObject.Output_Current))
+          console.log(`${Porduct_Key}_Charging_Data:`, message.payloadString)
+          console.log(
+            'message?.payloadString?.Output_Energy',
+            dataObject.Output_Energy
+          )
+          console.log(
+            'message?.payloadString?.Output_Power',
+            dataObject.Output_Power
+          )
+        }
+      })
+    }
+
+    client
+      .connect()
+      .then(() => {
+        allClients.push(client)
+        console.log('onConnect in already start  charging')
+        return Promise.all([
+          client.subscribe(`${Porduct_Key}_Updates`), // Topic 1
+          client.subscribe(`${Porduct_Key}_Charging_Data`), // Topic 2
+        ])
+      })
+      .then(() => {
+        onConnect()
+      })
+      .catch((responseObject) => {
+        if (responseObject.errorCode !== 0) {
+          console.log(
+            'onConnectionLost: in public start Charging already' + responseObject
+          )
+         
         }
       })
   }
@@ -1823,6 +2011,9 @@ const getuserData = async () => {
 
   return { name, mid } // Ek object mein name aur mid dono values ko store kiya gaya hai
 }
+
+
+
 
 /// send data to userpanel and save to charging history
 // export const ChargerHistory = (SendData) => {

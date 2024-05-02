@@ -16,13 +16,15 @@ import {
 import React, { useEffect, useState } from 'react'
 import Toast from 'react-native-toast-message'
 import { useDispatch, useSelector } from 'react-redux'
-import { AddTrasationDetail, StopChargingMode, publicstartCharging} from '../../Redux/Action'
+import { AddTrasationDetail, SendChargingCost, StopChargingMode, publicstartCharging} from '../../Redux/Action'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import TimerSlider from '../TimerSlider'
 import ModalRadhe from './radheModal'
 // import stripe from '@stripe/stripe-react-native';
 import RazorpayCheckout from 'react-native-razorpay'
 import Modal from 'react-native-modal'
+import CustomModal from '../../components/CustomModal'
+import { fetchDataAsyncStorageData } from '../../utility/asyncStorage'
 
 const SetCost = ({
   open,
@@ -35,12 +37,16 @@ const SetCost = ({
   SetstartTime,
   setcheckChargingStarted,
   handleStopCharging,
-  setinputcostfromsetcost
+  setinputcostfromsetcost,
+  chargingUnitsfromsetCost,
+  setchargingUnitsfromsetCost,
+  setGetSampledata
 }) => {
   const dispatch = useDispatch()
   const [ShowSetCost, SetShowSetCost] = useState(true)
   const [inputCost, setInputCost] = useState('')
   const [Time, settime] = useState('')
+  const [isModalVisible, setisModalVisible] = useState(false)
   let findchargingCost=useSelector((state)=>state.userReducers.setchargingcost)
   let findchargingCostPerHour=useSelector((state)=>state.userReducers.setchargingcostperhour)
   let findChargingEnergy=useSelector((state)=>state.userReducers.SetEnergy)
@@ -55,35 +61,40 @@ const SetCost = ({
     findChargingEnergy="0"
   }
   useEffect(() => {
-    setInputCost(inputvalue)
+    // console.log("openopen",open);
+    if(open){
+      setInputCost("")
+    }
   }, [open])
 
   useEffect(() => {
-    setinputcostfromsetcost(inputCost)
-  }, [inputCost])
-  const retrieveData = async () => {
-    const AppUserName = await AsyncStorage.getItem('name')
-    const AppUid = await AsyncStorage.getItem('mid')
-    const pid = await AsyncStorage.getItem('pid')
-    const amount = inputCost // Assuming inputCost is defined somewhere
+    
+    setDataToParent()
+    
+  }, [inputCost,findchargingCost])
 
-    return { AppUserName, pid, AppUid, amount }
-  }
 
-  const sendData = async (paymentId) => {
-    const data = await retrieveData()
-    data.paymentId = paymentId
-    console.log(data, 'sendData')
-    dispatch(AddTrasationDetail(data))
-    // return data;
-  }
+const setDataToParent=()=>{
+  setinputcostfromsetcost(inputCost)
+  const data= Math.ceil((inputCost / findchargingCost) * 100) / 100
+  setchargingUnitsfromsetCost(data)
+  setGetSampledata(true)
+}
+
+
 
   const handlePayment = async() => {
-    const AsyncStoragepid = await AsyncStorage.getItem('pid')
-    if(!AsyncStoragepid){
+    const {storedData}=await fetchDataAsyncStorageData()
+    if(!storedData){
       Alert.alert("scan please")
       return
     }
+    const sendData={
+      chargingCost:inputCost,
+      Porduct_Key:storedData
+    }
+    
+    dispatch(SendChargingCost(sendData))
     const options = {
       description: 'Payment for your order',
       image: 'https://yourwebsite.com/logo.png',
@@ -101,7 +112,7 @@ const SetCost = ({
 
     RazorpayCheckout.open(options)
       .then((data) => {
-        console.log('Payment success:', data)
+        // console.log('Payment success:', data)
         Alert.alert('Payment Success', 'Payment was successful.')
         if (data && data.razorpay_payment_id) {
           console.log('navigate to start charging')
@@ -116,21 +127,23 @@ const SetCost = ({
   }
 
   const startCharging = async (paymentId) => {
-    // const a = (Math.ceil((inputCost / 15) * 100) / 100) * 1000
-    if(ShowSetCost){
-    const a = (Math.ceil((inputCost / findchargingCost) * 100) / 100) * 1000
-    if (inputCost) {
-      setOnStopChargingCost(a)
+  const {storedData}=await fetchDataAsyncStorageData()
+    if(!storedData){
+      Alert.alert("scan please")
+      return
     }
-  }
+    const sendData={
+      chargingCost:inputCost,
+      Porduct_Key:storedData
+    }
+    
+    dispatch(SendChargingCost(sendData))
     console.log('heklo')
     if (inputCost > 0 || Time) {
       console.log('click hus')
-      const publicProductKey = await AsyncStorage.getItem('pid')
-      console.log('publicProductKey', publicProductKey)
       dispatch(
         publicstartCharging(
-          publicProductKey,
+          storedData,
           onClose,
           startTimer,
           setButtonText,
@@ -139,7 +152,8 @@ const SetCost = ({
           handleStopCharging,
           inputCost,
           paymentId,
-          findChargingEnergy
+          findChargingEnergy,
+          findchargingCost
         )
       )
     } else {
@@ -155,8 +169,9 @@ const SetCost = ({
       SetTimeinSec("")
     }
     if (text == 'setTime') {
-      SetShowSetCost(false)
-      setInputCost('')
+      setisModalVisible(true)
+      // SetShowSetCost(false)
+      // setInputCost('')
     }
   }
   return (
@@ -223,6 +238,7 @@ const SetCost = ({
                     inputCost={inputCost}
                     findchargingCost={findchargingCost}
                     setinputcostfromsetcost={setinputcostfromsetcost}
+                    chargingUnitsfromsetCost={chargingUnitsfromsetCost}
                   />
                 ) : (
                   <ChargingSetTime
@@ -268,8 +284,8 @@ const SetCost = ({
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.payButton}
-                onPress={handlePayment}
-                // onPress={startCharging}
+                // onPress={handlePayment}
+                onPress={startCharging}
               >
                 <View>
                   <Text style={styles.payButtonText}>₹{inputCost}</Text>
@@ -288,12 +304,21 @@ const SetCost = ({
           </View>
           <View style={styles.bottomColorBox}></View>
         </View>
+        <CustomModal
+        visible={isModalVisible}
+        onClose={() => setisModalVisible(false)}
+      >
+        <Text>Currently Not Available</Text>
+      </CustomModal>
       </View>
     </Modal>
   )
 }
 
-const ChargingCost = ({ setInputCost, inputCost ,findchargingCost,setinputcostfromsetcost}) => {
+const ChargingCost = ({ setInputCost, inputCost
+   ,findchargingCost,setinputcostfromsetcost,
+   chargingUnitsfromsetCost
+  }) => {
   console.log(findchargingCost,"chargincost in chargingcost")
   const handleinputchangecost=(text)=>{
     setInputCost(text)
@@ -358,7 +383,9 @@ const ChargingCost = ({ setInputCost, inputCost ,findchargingCost,setinputcostfr
           marginTop: 15,
         }}
       >
-        Charging Units - {Math.ceil((inputCost / findchargingCost) * 100) / 100} kwh
+        {/* {Math.ceil((inputCost / findchargingCost) * 100) / 100} */}
+        Charging Units - {chargingUnitsfromsetCost} kwh
+        
       </Text>
     </View>
   )
@@ -369,20 +396,24 @@ const ChargingSetTime = ({ SetTimeinSec, settime, setInputCost ,findchargingCost
   const [chargingCost, setChargingCost] = useState()
   const buttonClick = (buttonName) => {
     settime(buttonName)
-    SetTimeinSec(buttonName)
+    // SetTimeinSec(buttonName)
     setActiveButton(buttonName)
     console.log('buttonName')
     if (buttonName == '30min') {
       setChargingCost(findchargingCostPerHour/2)
       setInputCost(findchargingCostPerHour/2)
+      SetTimeinSec(1800)
     }
-    if (buttonName == '1hr') {
+  else  if (buttonName == '1hr') {
       setChargingCost(findchargingCostPerHour)
       setInputCost(findchargingCostPerHour)
+      SetTimeinSec(3600)
     }
-    if (buttonName == '2hrs') {
+   else if (buttonName == '2hrs') {
       setChargingCost(findchargingCostPerHour*2)
       setInputCost(findchargingCostPerHour*2)
+      SetTimeinSec(7200)
+
     }
     // Add your additional functionality here
   }

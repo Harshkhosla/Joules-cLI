@@ -9,10 +9,11 @@ import {
   View,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
+import { fetchDataAsyncStorageData } from '../../utility/asyncStorage'
 import SetCost from './SetCost'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserData, publicstopCharging, setModal } from '../../Redux/Action'
+import { getUserData, publicAlreadyChargingStarted, publicstopCharging, setChargerHistoryPid, setChargingStarted, setModal } from '../../Redux/Action'
 import HomeScreenCircles from '../HomeScreenCircle'
 import Wave from '../../components/wave'
 import App_top_Header from '../App_top_Header'
@@ -22,129 +23,210 @@ const Newhome = ({ navigation }) => {
   const [buttonPressed, setButtonPressed] = useState(false)
   const [timerExpired, setTimerExpired] = useState(false)
   const [inputcostfromsetcost,setinputcostfromsetcost]=useState("")
+  const [chargingUnitsfromsetCost,setchargingUnitsfromsetCost]=useState("")
   const [ShowChargingCostPerSecond,SetShowChargingCostPerSecond]=useState("")
-  console.log("inputcostfromsetcostradhekinagkjamer",inputcostfromsetcost);
+  const [buttonText, setButtonText] = useState('')
+  const [AsyncStoragePiddata, setAsyncStoragePiddata] = useState()
+  const [colorChange, setColorChange] = useState('#DBDBDB')
+  const [IsChargingStartedValue, setIsChargingStartedValue] = useState(false)
+  const [ChargingEnergy, setChargingEnergy] = useState('')
+  const [ChargingCost, setChargingCost] = useState('')
+  const [checkChargingStarted, setcheckChargingStarted] = useState(false)
+  const [name, setName] = useState('User')
+  const [isTimerRunning, setIsTimerRunning] = useState(false)
+  const [totalSeconds, setTotalSeconds] = useState(0)
+  
+  const [timeInSec, SetTimeinSec] = useState('')
+  const [showChargingEnergy,setShowChargingEnergy]=useState(false)
+  
+  //
+  const [getsample, setGetSampledata] = useState(true)
+  const [totalTime, setTotalTime] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
 
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const [colorChange, setColorChange] = useState('#DBDBDB')
-  const [data, setData] = useState()
-  const [IsChargingStartedValue, setIsChargingStartedValue] = useState(false)
   // const [buttonText,setButtonText]=useState("Scan QR")
-  const [buttonText, setButtonText] = useState('')
-  const [ChargingEnergy, setChargingEnergy] = useState('')
-  const [getsample, setGetSampledata] = useState(true)
   const [onstoChargingCost, setOnStopChargingCost] = useState('')
-  const [checkChargingStarted, setcheckChargingStarted] = useState(false)
-  const [ChargingCost, setChargingCost] = useState('')
   const [startTime, SetstartTime] = useState(1)
   const [EndTime, SetEndTime] = useState(4)
   const [checkStopbuttonClick, setStopButtonClick] = useState(true)
   const [sendDataToChart, setSendDataToChart] = useState([])
-  const [name, setName] = useState('User')
 
   let ModalOpenValue = useSelector((state) => state?.userReducers?.IsSetCostModalOpen)
-  console.log("ModalOpenValue",ModalOpenValue);
+
+  let chargerhistoryData = useSelector((state) => state?.userReducers?.ChargerHistoryData)
+  let checkChargingStartedBool = useSelector((state) => state?.userReducers?.checkChargingStarted)
+  let chargingHistoryPId = useSelector((state) => state?.userReducers?.chagerPid)
 
   let SampleDataaa = useSelector((state) => state?.userReducers?.SetEnergy)
   const SamplePowerData = useSelector((state) => state?.userReducers?.SetPower)
   const SampleOutputCurrent = useSelector(
     (state) => state?.userReducers?.SetCurrent
   )
-  const publicChargerTime = useSelector(
-    (state) => state.userReducers.setTimePubCharger
-  )
-  const [isTimerRunning, setIsTimerRunning] = useState(false)
-  const [totalSeconds, setTotalSeconds] = useState(0)
-  const [totalTime, setTotalTime] = useState(0)
+
   
-  const [timeInSec, SetTimeinSec] = useState('')
-  console.log("timeInSectimeInSectimeInSec.length",timeInSec.length);
-  console.log("timeInSectimeInSectimeInSec.length",!timeInSec);
-  console.log(
-    'EndTime,startTime,sendDataToChart',
-    EndTime,
-    startTime,
-    sendDataToChart
-  )
-  console.log(ChargingCost, 'ChargingCost')
+  console.log("timeinsec",inputcostfromsetcost,ChargingCost,ChargingEnergy,SampleDataaa);
 
-  const timeToSeconds = (timeValue) => {
-    // Extract numeric value from the time string
-    const numericValue = parseInt(timeValue)
-    // Check if the time string contains "hr"
-    if (timeValue?.includes('hr')) {
-      // Convert hours to seconds (1 hour = 3600 seconds)
-      return numericValue * 3600
-    } else if (timeValue?.includes('min')) {
-      // Convert minutes to seconds (1 minute = 60 seconds)
-      return numericValue * 60
-    } else {
-      // If no time unit is specified, assume seconds
-      return numericValue
+  useEffect(()=>{
+    if(checkChargingStartedBool && chargingHistoryPId){
+      dispatch(publicAlreadyChargingStarted(chargingHistoryPId,handleCostAndTimeOpen))
+      console.log("chargerhistoryData",chargerhistoryData);
+      if(chargerhistoryData.length>0){
+        setinputcostfromsetcost(chargerhistoryData[0].payment || "0")
+        setchargingUnitsfromsetCost(chargerhistoryData[0].totalChargingUnits || "0")
+        const seconds= ChargingHistoryTime(chargerhistoryData)
+        console.log("seconds",seconds);
+        setTotalSeconds(seconds)
+        setIsTimerRunning(true)
+      }
+      // setcheckChargingStarted(true)
+      setColorChange('#118615');
+      setShowChargingEnergy(true)
+      setButtonPressed(true);
+      setButtonText("Stop Charging")
     }
-  }
-  const timeInSe = timeToSeconds(timeInSec)
-  const prevdata = parseInt(ShowChargingCostPerSecond) + (inputcostfromsetcost / timeInSe);
-  // console.log("prevdata",prevdata)
-
-  console.log("timeInSetimeInSe",timeInSe);
-  // const timeInSe = "59";
+  },[checkChargingStartedBool,chargingHistoryPId])
+  
+ 
   useEffect(() => {
     let interval
     if (isTimerRunning) {
       interval = setInterval(() => {
         setTotalSeconds((prevTotalSeconds) => prevTotalSeconds + 1)
-        setTotalTime((prevTotalSeconds) => prevTotalSeconds + 1)
-        if(timeInSec && inputcostfromsetcost){
-          const timeinseconds = timeToSeconds(timeInSec);
-          // const prevdata = parseInt(ShowChargingCostPerSecond) + (inputcostfromsetcost / timeinseconds);
-          const prevdata = parseInt(ShowChargingCostPerSecond) || 0 + 1;
-          console.log("prevdataprevdataprevdataprevdata",prevdata)
-          SetShowChargingCostPerSecond(prevdata.toString());
-          console.log("ShowChargingCostPerSecondShowChargingCostPerSecond",ShowChargingCostPerSecond);
-        }
+        // if(timeInSec && inputcostfromsetcost){  
+        //   const prev=inputcostfromsetcost*totalSeconds/timeInSec
+        //   const parsedA = parseFloat(prev);
+        //   const roundedA = parsedA.toFixed(3);
+        //   SetShowChargingCostPerSecond(roundedA.toString());
+        // }
       }, 1000)
     } else {
       clearInterval(interval)
     }
     return () => clearInterval(interval) // Cleanup interval on component unmount
-  }, [isTimerRunning])
-  // const [product,setProduct ]=useState("")
-  //   useEffect(()=>{
-  //     const pid = async()=>{
-  //       const Product_Key=await AsyncStorage.getItem("pid")
-  //       setProduct(Product_Key);
-  //     }
 
-  //   },[])
+  }, [isTimerRunning,inputcostfromsetcost])
+
+  useEffect(() => {
+    if(!inputcostfromsetcost || !ChargingCost){
+      if (inputcostfromsetcost && ChargingCost && (timeInSec.length <= 0 || !timeInSec) && inputcostfromsetcost <= ChargingCost) {
+        handleClickStopCharging();
+        console.log("charging cost stop charing");
+      }
+    }
+    
+  
+    if (timeInSec.length > 0 && timeInSec && inputcostfromsetcost && ShowChargingCostPerSecond && inputcostfromsetcost <= ShowChargingCostPerSecond) {
+      handleClickStopCharging();
+    }
+  }, [ChargingCost, ShowChargingCostPerSecond]);
+
+
+  useEffect(() => {
+    if (showChargingEnergy) {
+      // setChargingEnergy(SampleDataaa)
+      // if (SampleDataaa.toString().length > 0 && timeInSec.length<=0) {
+      if (SampleDataaa.length > 0) {
+        // let a = (parseInt(SampleDataaa) * setcost from app ) / enery input pr automatic calucaltue ho ke jo rhi hai 0.84*1000 
+        //10*1000/15  15- set cost from app
+        // 10 --- user 
+        let a = (parseInt(SampleDataaa) * inputcostfromsetcost) / (chargingUnitsfromsetCost*1000)
+        a = Math.floor(a * 100) / 100
+        console.log('abcdefghiradhe', a)
+        setChargingCost(a)
+      }
+    }
+   
+
+   // if (SampleOutputCurrent < 0.1) {
+    //   const totalEnergyTime = formatTime(totalSeconds)
+    //   dispatch(publicstopCharging(data, totalEnergyTime, SetEndTime,SampleDataaa))
+    //   setcheckChargingStarted(false)
+    //   setGetSampledata(false)
+    //   handleResetClick()
+    //   setButtonText('Scan QR')
+    //   setChargingEnergy('')
+    //   setChargingCost('')
+    //      setinputcostfromsetcost("")
+    //   handleRemoveItem()
+    //   setData('')
+    // }
+
+  }, [SampleDataaa, SampleOutputCurrent,inputcostfromsetcost,chargingUnitsfromsetCost,showChargingEnergy])
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', async () => { // Adding async here
+      const {storedData,ChargingStartedValue} = await fetchDataAsyncStorageData(); // Wait for the Promise to resolve
+    
+      // if(ChargingStartedValue){
+      //   setIsChargingStartedValue(ChargingStartedValue)
+      //   setButtonText("Stop Charging")
+      //   // return
+      // }
+      if(!checkChargingStartedBool){
+        if (storedData ) {
+          setColorChange('#118615');
+          setButtonText('Start Charging');
+          setAsyncStoragePiddata(storedData)
+        } else {
+          setColorChange('#DBDBDB');
+          setButtonText('Scan QR');
+        }
+      }
+     
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [navigation,checkChargingStartedBool]);
+
+
+  useEffect(() => {
+   
+    fetchData();
+  }, []);
+
+  // for not click startcharing 10 min
+  useEffect(() => {
+    let timer
+    if (!buttonPressed && AsyncStoragePiddata) {
+      timer = setTimeout(() => {
+        setTimerExpired(true)
+      }, 120000)
+    }
+    // console.log(timer, 'timer')
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [buttonPressed, AsyncStoragePiddata, buttonText])
+
+  useEffect(() => {
+    clearAsyncStorage()
+  }, [timerExpired])
+
+
+  useEffect(() => {
+    if (checkChargingStarted && AsyncStoragePiddata) {
+      saveDataToAsyncStorage();
+    }
+  }, [checkChargingStarted, AsyncStoragePiddata]);
+
+  // useEffect(()=>{
+  //   if(IsChargingStartedValue){
+  //     setButtonText("Stop Charging")
+  //   }
+  // },[IsChargingStartedValue])
+
 
   const formatTime = (timeInSeconds) => {
-    console.log(timeInSeconds, 'timeinSeconds')
-    console.log('timeinsec76', timeInSec)
-    console.log(timeInSe, 'timein sec')
+    
     const hours = Math.floor(timeInSeconds / 3600)
     const minutes = Math.floor((timeInSeconds % 3600) / 60)
     const seconds = timeInSeconds % 60
     const time = `${hours}:${String(minutes).padStart(2, '0')}:${String(
       seconds
     ).padStart(2, '0')}`
-    if (timeInSeconds == timeInSe) {
-      // const Product_Key=await AsyncStorage.getItem("pid")
-      console.log('productkye in newhome stop', time)
-      console.log('Total Time Charge', data)
-      dispatch(publicstopCharging(data, time, SetEndTime,SampleDataaa))
-      handleResetClick()
-      setcheckChargingStarted(false)
-      setButtonText('Scan QR')
-      setGetSampledata(false)
-      setChargingEnergy('')
-      setChargingCost('')
-      handleRemoveItem()
-      setData('')
-      return `0`
-    }
     return `${hours}:${String(minutes).padStart(2, '0')}:${String(
       seconds
     ).padStart(2, '0')}`
@@ -163,160 +245,47 @@ const Newhome = ({ navigation }) => {
     setTotalSeconds(0)
   }
 
-useEffect(()=>{
-if(timeInSec.length<=0 || !timeInSec){
-  if(parseInt(inputcostfromsetcost)<=parseInt(ChargingCost)){
-    console.log("stop charging onn set cost in newhome.js");
-    const totalEnergyTime = formatTime(totalSeconds)
-      dispatch(publicstopCharging(data, totalEnergyTime,SetEndTime,SampleDataaa))
-      setGetSampledata(false)
-      setcheckChargingStarted(false)
-      handleResetClick()
-      setButtonText('Scan QR')
-      setChargingEnergy('')
-      setChargingCost('')
-      handleRemoveItem()
-      setData('')
-  }
-}
-  if(timeInSec.length>0 && timeInSec){
-  if(parseInt(inputcostfromsetcost)<=parseInt(ShowChargingCostPerSecond)){
-    console.log("stop charging onn set time in newhome.js");
-    const totalEnergyTime = formatTime(totalSeconds)
-      dispatch(publicstopCharging(data, totalEnergyTime,SetEndTime,SampleDataaa))
-      setGetSampledata(false)
-      setcheckChargingStarted(false)  
-      handleResetClick()
-      setButtonText('Scan QR')
-      setChargingEnergy('')
-      setChargingCost('')
-      handleRemoveItem()
-      setData('')
-  }
-}
-},[ChargingCost,ShowChargingCostPerSecond])
-
-
-  useEffect(() => {
-    if (getsample) {
-      setChargingEnergy(SampleDataaa)
-      if (SampleDataaa.toString().length > 0 && timeInSec.length<=0) {
-        let a = (parseInt(SampleDataaa) * 15) / 1000
-        a = Math.floor(a * 100) / 100
-        console.log('abcdefghi', a)
-        setChargingCost(a)
-      }
-    }
-    if (parseInt(onstoChargingCost) <= parseInt(SampleDataaa)) {
-      console.log(
-        'onstopchargincost in useeffect',
-        onstoChargingCost,
-        SampleDataaa
-      )
-      const totalEnergyTime = formatTime(totalSeconds)
-      dispatch(publicstopCharging(data, totalEnergyTime,SetEndTime,SampleDataaa))
-      setGetSampledata(false)
-      setcheckChargingStarted(false)
-      handleResetClick()
-      setButtonText('Scan QR')
-      setChargingEnergy('')
-      setChargingCost('')
-      handleRemoveItem()
-      setData('')
-    }
-
-    // if (SampleOutputCurrent < 0.1) {
-    //   const totalEnergyTime = formatTime(totalSeconds)
-    //   dispatch(publicstopCharging(data, totalEnergyTime, SetEndTime,SampleDataaa))
-    //   setcheckChargingStarted(false)
-    //   setGetSampledata(false)
-    //   handleResetClick()
-    //   setButtonText('Scan QR')
-    //   setChargingEnergy('')
-    //   setChargingCost('')
-    //   handleRemoveItem()
-    //   setData('')
-    // }
-
-  }, [SampleDataaa, SampleOutputCurrent])
+ 
 
   const handleCostAndTimeOpen = async (text, unique) => {
-    console.log('text', text, unique)
+    // console.log('text', text, unique)
     if (text == 'Stop Charging') {
-      console.log('you are in stop in')
-      const Product_Key = await AsyncStorage.getItem('pid')
-      console.log('productkye in newhome stop', Product_Key)
-      const TotalTimeCharge = formatTime(totalTime)
-      console.log('Total Time Charge', TotalTimeCharge)
-      if (!unique) {
-        console.log('in unique condition pulicstopchargin call')
-        dispatch(publicstopCharging(Product_Key, TotalTimeCharge, SetEndTime,SampleDataaa))
-      }
-      setcheckChargingStarted(false)
-      handleResetClick()
-      setButtonText('Scan QR')
-      setGetSampledata(false)
-      setChargingEnergy('')
+      console.log("radhe");
+          handleClickStopCharging(unique)
+    }
+    else if(text=="Start Charging" && AsyncStoragePiddata){
+      dispatch(setModal(true))
+      // setIsModalOpen(true)
+      // setGetSampledata(true)
+      SetTimeinSec('')
+      // setChargingEnergy('')
       setChargingCost('')
-      handleRemoveItem()
-      setData('')
-    } else {
-      if (data) {
-        console.log('click start charging')
-        dispatch(setModal(true))
-        // setIsModalOpen(true)
-        setGetSampledata(true)
-        SetTimeinSec('')
-        setChargingEnergy('')
-        setChargingCost('')
-        // for click start charging
-        // setButtonPressed(true)
-      } else {
-        navigation.navigate('PublicScanner', { name: name })
-        // setData(true);
-        setTotalTime(0)
-      }
-    }
-  }
-  // console.log(AsyncStorage.getItem("pid"));
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      async function fetchData() {
-        const storedData = await AsyncStorage.getItem('pid')
-        const ChargingStartedValue = await AsyncStorage.getItem('ChargingStarted')
-        console.log('storedData', storedData)
-        setData(storedData)
-        if(ChargingStartedValue){
-          setIsChargingStartedValue(ChargingStartedValue)
-        }
-        if (storedData) {
-          setButtonText('Start Charging')
-        }
-      }
-      fetchData()
-    })
-  }, [])
+      SetShowChargingCostPerSecond("")
+      setchargingUnitsfromsetCost("")
 
-  useEffect(() => {
-    if (data) {
-      setColorChange('#118615')
-      setButtonText('Start Charging')
-    } else {
-      setColorChange('#DBDBDB')
-      setButtonText('Scan QR')
     }
-  }, [data])
+    else {
+        navigation.navigate('PublicScanner', { name: name })
+        setchargingUnitsfromsetCost("")
+    }
+    
+  }
+ 
 
   const handleRemoveItem = async () => {
     try {
       // Use AsyncStorage.removeItem to remove the "pid" item
       await AsyncStorage.removeItem('pid')
       await AsyncStorage.removeItem('ChargingStarted')
-      console.log('Item removed from AsyncStorage')
-      setData(null) // Reset the data state
+    
+      // console.log('Item removed from AsyncStorage')
+      setAsyncStoragePiddata(null) // Reset the data state
       setColorChange('#DBDBDB')
       setButtonText('Scan QR')
       setButtonPressed(false)
+      handleCostAndTimeClose()
+      dispatch(setChargingStarted(false))
+      dispatch(setChargerHistoryPid(""))
     } catch (error) {
       console.error('Error removing item from AsyncStorage:', error)
     }
@@ -324,119 +293,134 @@ if(timeInSec.length<=0 || !timeInSec){
 
   const handleCostAndTimeClose = () => {
     dispatch(setModal(false))
+  
     // setIsModalOpen(false)
     // SetTimeinSec("")
   }
 
-  const generateHoursArray = () => {
-    if (EndTime < 0 || EndTime > 23) {
-      console.error('Invalid end time')
-      return
+ 
+
+  const clearAsyncStorage = async () => {
+    if (timerExpired) {
+      // await AsyncStorage.removeItem('pid');
+      handleRemoveItem()
+      // console.log('AsyncStorage remove!')
+      Alert.alert('automatic remove')
     }
-
-    const newGeneratedHours = []
-
-    for (let hour = startTime; true; hour = (hour % 24) + 1) {
-      const ampm = hour < 12 ? 'AM' : 'PM'
-      const formattedHour = hour % 12 === 0 ? 12 : hour % 12 // Convert to 12-hour format
-      const timeString = `${formattedHour} ${ampm}`
-      newGeneratedHours.push(timeString)
-
-      if (hour === EndTime) {
-        break
-      }
-    }
-    navigation.navigate('Charging_History', {
-      newGeneratedHours: newGeneratedHours,
-    })
-    // Update the state with the new array
-    console.log('newGeneratedHours', newGeneratedHours)
-    setSendDataToChart(newGeneratedHours)
+    setTimerExpired(false)
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Get the stored MID from AsyncStorage
-        const storedMid = await AsyncStorage.getItem('mid');
-        
-        // Dispatch action to get user data using the retrieved MID
-        const data = await dispatch(getUserData(storedMid));
-        // Set the retrieved MID and user data in state
-        const userdata = await data;
-        setName(userdata.name);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  // for not click startcharing 10 min
-  useEffect(() => {
-    let timer
-    if (!buttonPressed && data) {
-      timer = setTimeout(() => {
-        setTimerExpired(true)
-      }, 120000)
-    }
-    console.log(timer, 'timer')
-    return () => {
-      clearTimeout(timer)
-    }
-  }, [buttonPressed, data, buttonText])
-
-  useEffect(() => {
-    const clearAsyncStorage = async () => {
-      if (timerExpired) {
-        // await AsyncStorage.removeItem('pid');
-        handleRemoveItem()
-        console.log('AsyncStorage remove!')
-        Alert.alert('automatic remove')
-      }
-      setTimerExpired(false)
-    }
-    clearAsyncStorage()
-  }, [timerExpired])
-
-
-  useEffect(() => {
-    if (checkChargingStarted && data) {
-      saveDataToAsyncStorage();
-    }
-  }, [checkChargingStarted, data]);
-
-  useEffect(()=>{
-    if(IsChargingStartedValue){
-      setButtonText("Stop Charging")
-    }
-  },[IsChargingStartedValue])
-
   const saveDataToAsyncStorage = async () => {
-    if (checkChargingStarted && data) {
+    if (checkChargingStarted && AsyncStoragePiddata) {
       try {
         // Save data to AsyncStorage
-        await AsyncStorage.setItem('ChargingStarted', "true");
+        // await AsyncStorage.setItem('ChargingStarted', "true");
+        setShowChargingEnergy(true)
         setButtonPressed(true);
       } catch (error) {
         console.error('Error saving data to AsyncStorage:', error);
       }
     }
   };
-  // useEffect(() => {
-  //   if (checkChargingStarted && data) {
 
-  //     setButtonPressed(true)
+  const fetchData = async () => {
+    try {
+      // Get the stored MID from AsyncStorage
+      const storedMid = await AsyncStorage.getItem('mid');
+      
+      // Dispatch action to get user data using the retrieved MID
+      const data = await dispatch(getUserData(storedMid));
+      // Set the retrieved MID and user data in state
+      const userdata = await data;
+      console.log('userdataradhe',data);
+      setName(userdata.name);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  
+const handleClickStopCharging=(unique)=>{
+  console.log("AsyncStoragePiddata",AsyncStoragePiddata);
+ 
+  // setGetSampledata(false)
+  setcheckChargingStarted(false)
+  handleResetClick()
+  setButtonText('Scan QR')
+  // setChargingEnergy('')
+  setChargingCost('')
+  setinputcostfromsetcost("")
+  SetShowChargingCostPerSecond("")
+  handleRemoveItem()
+  setchargingUnitsfromsetCost("")
+  setShowChargingEnergy(false)
 
-  //   }
-  // }, [checkChargingStarted])
+  if(!AsyncStoragePiddata && !chargingHistoryPId){
+    return
+  }
+  const pid=AsyncStoragePiddata || chargingHistoryPId
+  const totalEnergyTime = formatTime(totalSeconds)
+  if(!unique){
+    dispatch(publicstopCharging(pid, totalEnergyTime,SetEndTime,SampleDataaa))
+    console.log("aumatic discornnectby");
+  }
 
-  // const handleButtonClick = () => {
-  //   setButtonPressed(true);
-  //   // Yahaan par aap kuch aur kaam kar sakte hain agar button press ho gaya hai.
-  //   console.log('Button clicked!');
-  // };
+}
+
+const ChargingHistoryTime = (chargerdata) => {
+  if (!Array.isArray(chargerdata) || chargerdata.length === 0) {
+    return 0; // Changed to return 0 as a number
+  }
+  
+  // Pehle item ki StartTime ko mila lena
+  const startTimeParts = chargerdata[0].StartTime.split(':');
+  const startHour = parseInt(startTimeParts[0], 10);
+  const startMinute = parseInt(startTimeParts[1], 10);
+  const startSecond = parseInt(startTimeParts[2], 10);
+  
+  // Ab current time ko le lena
+  const currentTime = new Date();
+  
+  // Difference nikalna
+  const currentHour = currentTime.getHours();
+  const currentMinute = currentTime.getMinutes();
+  const currentSecond = currentTime.getSeconds();
+
+  // Calculate total seconds
+  const differenceInSeconds = (currentHour - startHour) * 3600 + (currentMinute - startMinute) * 60 + (currentSecond - startSecond);
+
+  return differenceInSeconds;
+}
+
+const generateHoursArray = () => {
+  if (EndTime < 0 || EndTime > 23) {
+    console.error('Invalid end time')
+    return
+  }
+
+  const newGeneratedHours = []
+
+  for (let hour = startTime; true; hour = (hour % 24) + 1) {
+    const ampm = hour < 12 ? 'AM' : 'PM'
+    const formattedHour = hour % 12 === 0 ? 12 : hour % 12 // Convert to 12-hour format
+    const timeString = `${formattedHour} ${ampm}`
+    newGeneratedHours.push(timeString)
+
+    if (hour === EndTime) {
+      break
+    }
+  }
+  navigation.navigate('Charging_History', {
+    newGeneratedHours: newGeneratedHours,
+  })
+  // Update the state with the new array
+  // console.log('newGeneratedHours', newGeneratedHours)
+  setSendDataToChart(newGeneratedHours)
+
+  // {ChargingEnergy != ''
+  //                 ? Math.round(ChargingEnergy * 100) / 100
+  //                 : '0'}{' '}
+  //               Wh
+}
   return (
     <View style={styles.container}>
       {/* <Button title="stopChargig" onPress={getSampleData} disabled={isTimerRunning} /> */}
@@ -463,10 +447,10 @@ if(timeInSec.length<=0 || !timeInSec){
           ></View>
           <Text style={{ color: '#717171' }}>Status:</Text>
           <Text style={{ paddingLeft: 10, color: colorChange }}>
-            {IsChargingStartedValue || data && checkChargingStarted
+            {checkChargingStartedBool || AsyncStoragePiddata && checkChargingStarted
               ? // Condition: Both AsyncStorage data and charging started
                 'Charging'
-              : data
+              : AsyncStoragePiddata
               ? // Condition 1: Only AsyncStorage data is available
                 'Your charger is connected'
               : // Default case: No data available
@@ -487,7 +471,7 @@ if(timeInSec.length<=0 || !timeInSec){
                 source={require('../../assets/power.png')}
               />
               <Text style={{ color: '#9A9A9A' }}>
-                Charger- {SamplePowerData ? SamplePowerData : '0'} w
+                Charger- {showChargingEnergy ? SamplePowerData : '0'} w
               </Text>
             </View>
           </View>
@@ -504,6 +488,7 @@ if(timeInSec.length<=0 || !timeInSec){
               </View>
               <Text style={{ color: '#717171' }}>
               ₹{timeInSec && timeInSec.length > 0 ? ShowChargingCostPerSecond || "0" : ChargingCost || "0"}
+              {/* ₹{ChargingCost || "0"} */}
               </Text>
               <View
                 style={{
@@ -520,12 +505,12 @@ if(timeInSec.length<=0 || !timeInSec){
             </View>
           </View>
           <View style={{ alignSelf: 'center', paddingVertical: 5 }}>
-            {IsChargingStartedValue || data && checkChargingStarted ? (
+            {checkChargingStartedBool || AsyncStoragePiddata && checkChargingStarted ? (
               // Condition: Both AsyncStorage data and charging started
               // <Text>{ShowChargingCostPerSecond}</Text>
               // {ShowChargingCostPerSecond}
               <Wave size={150} progress={40} />
-            ) : data ? (
+            ) : AsyncStoragePiddata ? (
               // Condition 1: Only AsyncStorage data is available
               <Image
                 source={require('../../assets/GreenWavesPhoto.png')}
@@ -570,8 +555,9 @@ if(timeInSec.length<=0 || !timeInSec){
                 <Text style={{ color: '#717171' }}>Charging Energy</Text>
               </View>
               <Text style={{ color: '#717171' }}>
-                {ChargingEnergy != ''
-                  ? Math.round(ChargingEnergy * 100) / 100
+                
+                {showChargingEnergy
+                  ? Math.round(SampleDataaa * 100) / 100
                   : '0'}{' '}
                 Wh
               </Text>
@@ -587,6 +573,7 @@ if(timeInSec.length<=0 || !timeInSec){
             style={styles.ButtonBox}
           >
             {/* <Text style={styles.ButtonText}>{data?"Start Charging":"Scan QR"}</Text> */}
+            {/* <Text style={styles.ButtonText}>{IsChargingStartedValue?"Stop Charging":buttonText}</Text> */}
             <Text style={styles.ButtonText}>{buttonText}</Text>
           </TouchableOpacity>
         </View>
@@ -603,6 +590,7 @@ if(timeInSec.length<=0 || !timeInSec){
       </View>
       <SetCost
         // open={isModalOpen}
+        setGetSampledata={setGetSampledata}
         open={ModalOpenValue}
         onClose={handleCostAndTimeClose}
         startTimer={handleStartClick}
@@ -615,6 +603,8 @@ if(timeInSec.length<=0 || !timeInSec){
         handleStopCharging={handleCostAndTimeOpen}
         setButtonPressed={setButtonPressed}
         setinputcostfromsetcost={setinputcostfromsetcost}
+        chargingUnitsfromsetCost={chargingUnitsfromsetCost}
+        setchargingUnitsfromsetCost={setchargingUnitsfromsetCost}
       />
     </View>
   )
