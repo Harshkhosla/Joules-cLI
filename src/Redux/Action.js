@@ -606,7 +606,7 @@ export const GetChargerHistory = (navigation,mid, populateChargerHistoryData,las
     try {
       const response = await fetch(`${ApiURL}/admin/user/${mid}?populateChargerHistoryData=${populateChargerHistoryData}`)
       const data = await response.json()
-      console.log("dataingetchargerhistory",data);
+      // console.log("dataingetchargerhistory",data);
       if(data?.message=="User not found"){
         // navigation.navigate("SignIn")
         console.log("navia rerun");
@@ -616,13 +616,13 @@ export const GetChargerHistory = (navigation,mid, populateChargerHistoryData,las
         const ChargerHistoryData=data?.chargingHistory
         if(ChargerHistoryData.length==0){
           dispatch(setChargerHistory([]))
-          return 
+          return []
         }
         else{
           let ReturnData=ChargerHistoryData[ChargerHistoryData.length-1]
           console.log("returndatareturndata",[ReturnData]);
           dispatch(setChargerHistory([ReturnData]))
-          //  return 
+           return [ReturnData]
         }
       }
       // dispatch(setChargerHistory([data]))
@@ -1616,7 +1616,7 @@ export const publicstartCharging = (
             const sendData = {
               Porduct_Key,
               inputCost,
-              paymentId:"120",
+              paymentId,
               findchargingCost
             }
             dispatch(ChargerHistory(sendData))
