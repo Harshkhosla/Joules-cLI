@@ -124,7 +124,7 @@ const Newhome = ({ navigation }) => {
 
 
   useEffect(() => {
-    if (showChargingEnergy) {
+    if (showChargingEnergy ) {
       // setChargingEnergy(SampleDataaa)
       // if (SampleDataaa.toString().length > 0 && timeInSec.length<=0) {
       if (SampleDataaa.length > 0) {
@@ -278,7 +278,7 @@ const Newhome = ({ navigation }) => {
       await AsyncStorage.removeItem('pid')
       await AsyncStorage.removeItem('ChargingStarted')
     
-      // console.log('Item removed from AsyncStorage')
+      console.log('Item removed from AsyncStorage')
       setAsyncStoragePiddata(null) // Reset the data state
       setColorChange('#DBDBDB')
       setButtonText('Scan QR')
@@ -343,6 +343,7 @@ const handleClickStopCharging=(unique)=>{
   console.log("AsyncStoragePiddata",AsyncStoragePiddata);
  
   // setGetSampledata(false)
+  handleRemoveItem()
   setcheckChargingStarted(false)
   handleResetClick()
   setButtonText('Scan QR')
@@ -350,7 +351,6 @@ const handleClickStopCharging=(unique)=>{
   setChargingCost('')
   setinputcostfromsetcost("")
   SetShowChargingCostPerSecond("")
-  handleRemoveItem()
   setchargingUnitsfromsetCost("")
   setShowChargingEnergy(false)
 
