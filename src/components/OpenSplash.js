@@ -6,25 +6,25 @@ import { GetChargerHistory, setChargerHistoryPid, setChargingStarted } from '../
 import { fetchDataAsyncStorageData } from '../utility/asyncStorage'
 
 const AuthLoadingScreen = ({ navigation }) => {
-  let chargerhistoryData = useSelector((state) => state?.userReducers?.ChargerHistoryData)
+  // let chargerhistoryData = useSelector((state) => state?.userReducers?.ChargerHistoryData)
   const [mid,setMid]=useState("")
   console.log("midmid",mid);
   const [token,setToken]=useState("")
   const [loading,setLoading]=useState(true)
   const [IsapiCall,setIsapiCall]=useState(false)
-  console.log("chargerhistoryDatachargerhistoryData",chargerhistoryData);
+  // console.log("chargerhistoryDatachargerhistoryData",chargerhistoryData);
   // const mid="MID1714586025767578"
   const populateChargerHistoryData=true
   const lastchargerhistory=true
 const dispatch=useDispatch()
-useEffect(()=>{
-  if(IsapiCall && mid)
-  setLoading(true)
-  if(mid){
-    dispatch(GetChargerHistory(navigation,mid,populateChargerHistoryData,lastchargerhistory))
-  }
-  setLoading(false)
-},[dispatch,mid,IsapiCall])
+// useEffect(()=>{
+//   if(IsapiCall && mid)
+//   setLoading(true)
+//   if(mid){
+//     dispatch(GetChargerHistory(navigation,mid,populateChargerHistoryData,lastchargerhistory))
+//   }
+//   setLoading(false)
+// },[dispatch,mid,IsapiCall])
  
 
 useEffect(() => {
@@ -41,8 +41,10 @@ useEffect(() => {
       }
       if(!Authtoken || !Appmid){
         navigation.replace('SignIn')
+        return
       }
-      setIsapiCall(true)
+    
+      fetchChargerHistory(Appmid)
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -52,25 +54,52 @@ useEffect(() => {
 }, []);
 
 
-useEffect(()=>{
-  setTimeout(() => {
-    if(!loading && IsapiCall){
-      console.log("chargerhistoryDatachargerhistoryDatachargerhistoryData",chargerhistoryData);
-    if(chargerhistoryData.length==0 || chargerhistoryData[0]?.chargerStatus=="Charging Completed" && token){
-      dispatch(setChargingStarted(false))
-      dispatch(setChargerHistoryPid(""))
-      navigation.replace('chargerSelection')
-      console.log("navigate to chatger slec");
-    }
-    else if(chargerhistoryData[0]?.chargerStatus=="Charging Started" && token){
-      dispatch(setChargingStarted(true))
-      dispatch(setChargerHistoryPid(chargerhistoryData[0]?.pid))
-      navigation.replace('Newhome')
-    }
-  }
-  }, 2000);
+// useEffect(()=>{
+//   setTimeout(() => {
+//     if(!loading && IsapiCall){
+//       console.log("chargerhistoryDatachargerhistoryDatachargerhistoryData",chargerhistoryData);
+//     if(chargerhistoryData.length==0 || chargerhistoryData[0]?.chargerStatus=="Charging Completed" && token){
+//       dispatch(setChargingStarted(false))
+//       dispatch(setChargerHistoryPid(""))
+//       navigation.replace('chargerSelection')
+//       console.log("navigate to chatger slec");
+//     }
+//     else if(chargerhistoryData[0]?.chargerStatus=="Charging Started" && token){
+//       dispatch(setChargingStarted(true))
+//       dispatch(setChargerHistoryPid(chargerhistoryData[0]?.pid))
+//       navigation.replace('Newhome')
+//     }
+//   }
+//   }, 2000);
   
-},[chargerhistoryData,navigation,token,loading,IsapiCall])
+// },[chargerhistoryData,navigation,token,loading,IsapiCall])
+
+
+const fetchChargerHistory= async(Appmid)=>{
+
+  const response=await dispatch(GetChargerHistory(navigation,Appmid,populateChargerHistoryData,lastchargerhistory))
+  console.log("response",response);
+  if(response){
+    navigateto(response)
+  }
+}
+
+const navigateto=(chargerhistoryData)=>{
+  // if(!loadi){
+          console.log("chargerhistoryDatachargerhistoryDatachargerhistoryData",chargerhistoryData ,chargerhistoryData[0]?.chargerStatus);
+        if(chargerhistoryData.length==0 || chargerhistoryData[0]?.chargerStatus=="Charging Completed"){
+          dispatch(setChargingStarted(false))
+          dispatch(setChargerHistoryPid(""))
+          navigation.replace('chargerSelection')
+          console.log("navigate to chatger slec");
+        }
+        else if(chargerhistoryData[0]?.chargerStatus=="Charging Started"){
+          dispatch(setChargingStarted(true))
+          dispatch(setChargerHistoryPid(chargerhistoryData[0]?.pid))
+          navigation.replace('Newhome')
+        }
+      // }
+}
 
   // useEffect(() => {
   //   const checkSignInStatus = async () => {
