@@ -192,27 +192,28 @@ export default function Dashboard({ navigation, route }) {
     // navigation.navigate('Newhome');
   }
 
-  const apicall = async (pid) => {
-    let SendData = {}
-    if (!pid || !receivedData) {
-      return
-    }
-    if (pid) {
-      SendData.Porduct_Key = pid
-    }
-    if (receivedData) {
-      SendData.name = receivedData
-    }
-    try {
-      console.log('in try api calll')
-      const findChargingCost1 = await dispatch(findChargingCost(pid))
-      // const response=await dispatch(NameAndPid(SendData,navigation,setloading))
-      const response = await dispatch(SendUsername(SendData))
-      console.log('response', response)
-    } catch (error) {
-      console.log('Error', error)
-    }
+const apicall=async(pid)=>{
+let SendData={}
+if(!pid || !receivedData){
+  return 
+}
+  if(pid){  
+    SendData.Porduct_Key=pid
   }
+  if(receivedData){
+    SendData.name=receivedData
+  }
+  try {
+    console.log("in try api calll");
+    const findChargingCost1=await dispatch(findChargingCost(pid))
+    // const response=await dispatch(NameAndPid(SendData,navigation,setloading))
+    // const response=await dispatch(SendUsername(SendData))
+    // console.log("response",response);
+
+  } catch (error) {
+    console.log("Error",error)
+  }
+}
 
   const delfn = () => {
     console.log('delfun')

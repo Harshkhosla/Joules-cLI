@@ -40,20 +40,21 @@ const ModalRadhe = ({
     setInputCost(a)
     if (userTimeHours == 0 && userTimeMinutes > 0) {
       setShowhrText(userTimeMinutes + 'min')
-      SetTimeinSec(userTimeMinutes + 'min')
+      SetTimeinSec(userTimeMinutes*60)
       settime(userTimeMinutes)
     }
-    if (userTimeMinutes == 0 && userTimeHours > 0) {
+    else  if (userTimeMinutes == 0 && userTimeHours == 1) {
       setShowhrText(userTimeHours + 'hr')
-      SetTimeinSec(userTimeHours + 'hr')
+      SetTimeinSec(userTimeHours*3600)
       settime(userTimeHours)
     }
-    if (userTimeMinutes == 0 && userTimeHours == 1) {
+   else if (userTimeMinutes == 0 && userTimeHours > 0) {
       setShowhrText(userTimeHours + 'hr')
-      SetTimeinSec(userTimeHours + 'hr')
+      SetTimeinSec(userTimeHours*3600)
       settime(userTimeHours)
     }
-    if (userTimeHours > 0 && userTimeMinutes > 0) {
+  
+   else if (userTimeHours > 0 && userTimeMinutes > 0) {
       setShowhrText(`${userTimeHours} hr ${userTimeMinutes} min`)
       const data = userTimeHours * 3600 + userTimeMinutes * 60
       SetTimeinSec(data.toString())
