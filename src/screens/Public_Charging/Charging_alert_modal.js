@@ -33,12 +33,13 @@ const ChargingAlertModal = ({
             <View style={styles.fieldContainer}>
               <Text style={styles.fieldLabel}>Energy Consumed</Text>
               <Text style={[styles.fieldColon, { marginLeft: 0 }]}>:</Text>
-              <Text style={styles.fieldValue}>{energyConsumed}</Text>
+              {/* <Text style={styles.fieldValue}>{energyConsumed}</Text> */}
+              <Text style={styles.fieldValue}>{Math.round(energyConsumed * 100) / 100}</Text>
             </View>
             <View style={styles.fieldContainer}>
               <Text style={styles.fieldLabel}>Cost of charging</Text>
               <Text style={[styles.fieldColon, { marginLeft: 11 }]}>:</Text>
-              <Text style={styles.fieldValue}>{cost}</Text>
+              <Text style={styles.fieldValue}>{Math.round(cost * 100) / 100}</Text>
             </View>
             <View style={styles.fieldContainer}>
               <Text style={styles.fieldLabel}>Time taken</Text>

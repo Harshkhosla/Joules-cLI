@@ -6,10 +6,12 @@ import {
   BackHandler,
   Text,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from 'react-native'
 import Modal from 'react-native-modal'
 
-const CustomModal = ({ visible, onClose, children }) => {
+const CustomModal = ({ visible, onClose, children ,isModal,onRescanClick}) => {
+  console.log("ismodal",isModal);
   // React.useEffect(() => {
   //   const handleBackPress = () => {
   //     if (visible) {
@@ -39,19 +41,27 @@ const CustomModal = ({ visible, onClose, children }) => {
       animationIn="slideInUp"
       animationOut="slideOutDown"
     >
-      <TouchableWithoutFeedback onPress={onClose}>
+     <TouchableWithoutFeedback onPress={onClose}>
         <View style={styles.modalContainer}>
           <View style={styles.contentContainer}>
-            <Text style={{ color: '#717171', fontWeight: '800', fontSize: 30 }}>
+            {!isModal?<><Text style={{ color: '#717171', fontWeight: '800', fontSize: 30 }}>
               {children}
             </Text>
             <Image
               source={require('../assets/Union.png')}
               style={styles.imageStyle}
-            />
+            /></>:<View>
+            <Text style={{ color: '#717171', fontSize: 25 }}>
+              {children}
+            </Text>
+            <TouchableOpacity onPress={onClose} >
+              <Text style={{ color: '#717171', fontSize: 25,marginTop:70, marginLeft:28 }}>Rescan</Text>
+            </TouchableOpacity>
+           </View>}
           </View>
         </View>
       </TouchableWithoutFeedback>
+     
     </Modal>
   )
 }

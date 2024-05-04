@@ -1552,7 +1552,8 @@ export const publicstartCharging = (
   inputCost,
   paymentId,
   findChargingEnergy,
-  findchargingCost
+  findchargingCost,
+  setisChargingAlertVisible
 ) => {
   // Porduct_Key=publicProductKey
   console.log('Porduct_Key in publick start charging', Porduct_Key)
@@ -1622,9 +1623,11 @@ export const publicstartCharging = (
             dispatch(ChargerHistory(sendData))
           }
           if (message.payloadString == 'Charging Completed') {
-            Alert.alert('Automatic Disconnect by Device')
+            setisChargingAlertVisible(true)
+            // Alert.alert(`Automatic Disconnect by Device Energy ${findChargingEnergy} Cost ${inputCost}`)
             handleStopCharging('Stop Charging', 'StoppedByDevice')
             disconnectAllClients()
+            console.log("findChargingEnergyfindChargingEnergy",findChargingEnergy);
             dispatch(ChargerHistoryEndTime(findChargingEnergy))
             // dispatch(ChargerHistoryEndTime("120"))
           }
@@ -1849,12 +1852,12 @@ export const DoorOpening = (Porduct_Key) => {
 
 export const publicstopCharging = (
   Porduct_Key,
-  totalTime,
+  SampleDataaa,
   SetEndTime,
-  SampleDataaa
+  setisChargingAlertVisible
 ) => {
   // Porduct_Key=publicProductKey
-  console.log('Porduct_Key in publickstop charging', Porduct_Key, totalTime)
+  console.log('Porduct_Key in publickstop charging', Porduct_Key )
   return (dispatch) => {
     const client = new Client({
       uri: MqqtUrl,
@@ -1887,10 +1890,12 @@ export const publicstopCharging = (
           dispatch(setStateValue(message.payloadString))
           console.log(`${Porduct_Key}_Updates:`, message.payloadString)
           if (message.payloadString == 'Charging Completed') {
+            setisChargingAlertVisible(true)
             const response = getCurrenttime()
-            Alert.alert(`Charging Completed ${totalTime}`)
+            // Alert.alert(`Charging Completed `)
             SetEndTime(response)
             disconnectAllClients()
+            console.log("SampleDataaaSampleDataaa",SampleDataaa);
             dispatch(ChargerHistoryEndTime(SampleDataaa))
             // dispatch(ChargerHistoryEndTime("120"))
           }
@@ -1927,6 +1932,8 @@ export const publicstopCharging = (
 export const publicAlreadyChargingStarted = (
   Porduct_Key,
   handleStopCharging,
+  setisChargingAlertVisible
+  
 ) => {
   // Porduct_Key=publicProductKey
   console.log('Porduct_Key in publick start already charging', Porduct_Key)
@@ -1944,7 +1951,8 @@ export const publicAlreadyChargingStarted = (
         if (message.destinationName === `${Porduct_Key}_Updates`) {
          
           if (message.payloadString == 'Charging Completed') {
-            Alert.alert('Automatic Already Disconnect by Device')
+            setisChargingAlertVisible(true)
+            // Alert.alert(`Automatic Already Disconnect by Device Energy `)
             handleStopCharging('Stop Charging', 'StoppedByDevice')
             disconnectAllClients()
             // dispatch(ChargerHistoryEndTime(findChargingEnergy))
@@ -2012,7 +2020,18 @@ const getuserData = async () => {
   return { name, mid } // Ek object mein name aur mid dono values ko store kiya gaya hai
 }
 
-
+const formatTime = (timeInSeconds) => {
+    
+  const hours = Math.floor(timeInSeconds / 3600)
+  const minutes = Math.floor((timeInSeconds % 3600) / 60)
+  const seconds = timeInSeconds % 60
+  const time = `${hours}:${String(minutes).padStart(2, '0')}:${String(
+    seconds
+  ).padStart(2, '0')}`
+  return `${hours}:${String(minutes).padStart(2, '0')}:${String(
+    seconds
+  ).padStart(2, '0')}`
+}
 
 
 /// send data to userpanel and save to charging history
