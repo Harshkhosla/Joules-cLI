@@ -85,8 +85,10 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   imageStyle: {
-    width: 70,
-    height: 70,
+    width: 40,
+    height: 40,
+    padding: 10,
+    resizeMode: 'contain',
     position: 'absolute',
     bottom: 10,
     right: 16,

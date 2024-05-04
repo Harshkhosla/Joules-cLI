@@ -64,12 +64,12 @@ const Charger_Selection = ({ navigation }) => {
     // AsyncStorage se data delete karna
     AsyncStorage.removeItem('pid') // 'key' ki jagah aap apne data ke key ko daal sakte hain
       .then(() => {
-        console.log('pid successfully deleted from AsyncStorage');
+        console.log('pid successfully deleted from AsyncStorage')
       })
       .catch((error) => {
-        console.log('Error deleting data from AsyncStorage:', error);
-      });
-  }, []);
+        console.log('Error deleting data from AsyncStorage:', error)
+      })
+  }, [])
   // useEffect(() => {
   //   const backAction = () => {
   //     if (!exitApp.current) {
@@ -201,12 +201,13 @@ const styles = StyleSheet.create({
   },
   Charger_Selection_UpBox: {
     flex: 1,
-    marginHorizontal: 16,
+    // marginHorizontal: 16,
     margin: 20,
+    marginBottom: 5,
     padding: 20,
     paddingTop: 30,
     borderRadius: 20,
-    elevation: 3,
+    elevation: 2,
     backgroundColor: 'white',
   },
   AskToStart: {
@@ -223,8 +224,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 90,
     elevation: 2,
-
-    marginVertical: 5,
+    marginVertical: 8,
     borderRadius: 8,
   },
   link: {
