@@ -40,7 +40,8 @@ const SetCost = ({
   setinputcostfromsetcost,
   chargingUnitsfromsetCost,
   setchargingUnitsfromsetCost,
-  setGetSampledata
+  setGetSampledata,
+  setisChargingAlertVisible
 }) => {
   const dispatch = useDispatch()
   const [ShowSetCost, SetShowSetCost] = useState(true)
@@ -76,7 +77,10 @@ const SetCost = ({
 
 const setDataToParent=()=>{
   setinputcostfromsetcost(inputCost)
-  const data= Math.ceil((inputCost / findchargingCost) * 100) / 100
+  // const data= Math.ceil((inputCost / findchargingCost) * 100) / 100
+  const data= (inputCost / findchargingCost)
+
+  console.log("datadatadata",data);
   setchargingUnitsfromsetCost(data)
   setGetSampledata(true)
 }
@@ -153,7 +157,8 @@ const setDataToParent=()=>{
           inputCost,
           paymentId,
           findChargingEnergy,
-          findchargingCost
+          findchargingCost,
+          setisChargingAlertVisible
         )
       )
     } else {
@@ -384,7 +389,8 @@ const ChargingCost = ({ setInputCost, inputCost
         }}
       >
         {/* {Math.ceil((inputCost / findchargingCost) * 100) / 100} */}
-        Charging Units - {chargingUnitsfromsetCost} kwh
+        {/* Charging Units - {chargingUnitsfromsetCost} kwh */}
+        Charging Units - {Math.round(chargingUnitsfromsetCost * 1000) / 1000} kwh
         
       </Text>
     </View>

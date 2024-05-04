@@ -1,12 +1,13 @@
 // LoaderComponent.js
 
 import React from 'react';
-import { View, ActivityIndicator, Modal, StyleSheet } from 'react-native';
+import { View, ActivityIndicator, Modal, StyleSheet, Text } from 'react-native';
 
 const LoaderComponent = ({ loading }) => {
   return (
     <Modal transparent={true} animationType='fade' visible={loading}>
       <View style={styles.container}>
+        <Text style={{color:"#118615",fontWeight:"500",fontSize:20}}>Connecting...</Text>
         <ActivityIndicator animating={loading} size="large" color="#0000ff" />
       </View>
     </Modal>
