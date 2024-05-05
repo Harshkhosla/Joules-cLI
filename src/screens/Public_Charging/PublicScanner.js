@@ -56,10 +56,10 @@ export default function Dashboard({ navigation, route }) {
   console.log(Data)
 
   const [qrScannerImg, setqrScannerImg] = useState(null)
-  const [isScannerActive,setIsScannerActive]=useState(true)
-  const [scannerMessage,setScannerMessage]=useState(false)
+  const [isScannerActive, setIsScannerActive] = useState(true)
+  const [scannerMessage, setScannerMessage] = useState(false)
   // require('../../assets/defaultuser.png')
-  console.log("isScannerActive",isScannerActive);
+  console.log('isScannerActive', isScannerActive)
   const myStorage = {
     setItem: (key, item) => {
       myStorage[key] = item
@@ -69,9 +69,6 @@ export default function Dashboard({ navigation, route }) {
       delete myStorage[key]
     },
   }
-
-
-
 
   const selectImage = () => {
     launchImageLibrary({ mediaType: 'photo' }, (response) => {
@@ -96,137 +93,124 @@ export default function Dashboard({ navigation, route }) {
   const onSuccess = async (e) => {
     const cleanedWifiString = e.data
     const isCharger = checkIsCharger(cleanedWifiString)
-    if(!isCharger){
+    if (!isCharger) {
       setisModalVisible(true)
-      console.log("Is not Charger");
+      console.log('Is not Charger')
       return
     }
     setloading(true)
     dispatch(DoorOpening(cleanedWifiString))
-   
-      let mqttResult = false; // Variable to hold the result
-      checkMQTTMessages(cleanedWifiString, (result) => {
-        console.log("resultresultradhe",result);
-        if(result){
-          dispatch(setModal(true))
+
+    let mqttResult = false // Variable to hold the result
+    checkMQTTMessages(cleanedWifiString, (result) => {
+      console.log('resultresultradhe', result)
+      if (result) {
+        dispatch(setModal(true))
         apicall(cleanedWifiString)
-        console.log("navigate to newhome");
+        console.log('navigate to newhome')
         navigation.navigate('Newhome')
-        }
-       else if(!result){
+      } else if (!result) {
         setloading(false)
-            setScannerMessage(true)
-            setisModalVisible(true)
-            return
-          }
-      });
-      await AsyncStorage.setItem('pid', cleanedWifiString)
-      console.log("resultresultresult",mqttResult);
-    
-  }
-
-const apicall=async(pid)=>{
-let SendData={}
-if(!pid || !receivedData){
-  return 
-}
-  if(pid){  
-    SendData.Porduct_Key=pid
-  }
-  if(receivedData){
-    SendData.name=receivedData
-  }
-  try {
-    console.log("in try api calll");
-    const findChargingCost1=await dispatch(findChargingCost(pid))
-    // const response=await dispatch(NameAndPid(SendData,navigation,setloading))
-    // const response=await dispatch(SendUsername(SendData))
-    // console.log("response",response);
-
-  } catch (error) {
-    console.log("Error",error)
-  }
-}
-
-
-// Function to check MQTT messages for a given topic
-const checkMQTTMessages = (topic, callback) => {
-  // MQTT connection setup
-  // const client = mqtt.connect(MqqtUrl);
-  const client = new Client({
-    uri: MqqtUrl,
-    clientId: 'client' + Math.random().toString(36).substring(7),
-    storage: myStorage,
-  })
-
-  // Variable to track whether message received or not
-  let messageReceived = false;
-
-  // MQTT connect event listener
-  client
-      .connect()
-      .then(() => {
-        client.subscribe(`${topic}_Updates`);
-        // allClients.push(client)
-        console.log('mqtt connect in chekmeqqt message')
-      
-      })
-
-  // MQTT error event listener
-  
-
-  
-
-  client.on('messageReceived', (message) => {
-    console.log('message in on client chekmeqqt', message.payloadString)
-    if (message.destinationName === `${topic}_Updates`) {
-      
-      if (message.payloadString == 'Door is open') {
-          messageReceived = true;
-          callback(true);
-          client.disconnect()
+        setScannerMessage(true)
+        setisModalVisible(true)
+        return
       }
-      
+    })
+    await AsyncStorage.setItem('pid', cleanedWifiString)
+    console.log('resultresultresult', mqttResult)
+  }
+
+  const apicall = async (pid) => {
+    let SendData = {}
+    if (!pid || !receivedData) {
+      return
     }
-  })
-  
-  setTimeout(() => {
-      if (!messageReceived) {
-          callback(false);
+    if (pid) {
+      SendData.Porduct_Key = pid
+    }
+    if (receivedData) {
+      SendData.name = receivedData
+    }
+    try {
+      console.log('in try api calll')
+      const findChargingCost1 = await dispatch(findChargingCost(pid))
+      // const response=await dispatch(NameAndPid(SendData,navigation,setloading))
+      // const response=await dispatch(SendUsername(SendData))
+      // console.log("response",response);
+    } catch (error) {
+      console.log('Error', error)
+    }
+  }
+
+  // Function to check MQTT messages for a given topic
+  const checkMQTTMessages = (topic, callback) => {
+    // MQTT connection setup
+    // const client = mqtt.connect(MqqtUrl);
+    const client = new Client({
+      uri: MqqtUrl,
+      clientId: 'client' + Math.random().toString(36).substring(7),
+      storage: myStorage,
+    })
+
+    // Variable to track whether message received or not
+    let messageReceived = false
+
+    // MQTT connect event listener
+    client.connect().then(() => {
+      client.subscribe(`${topic}_Updates`)
+      // allClients.push(client)
+      console.log('mqtt connect in chekmeqqt message')
+    })
+
+    // MQTT error event listener
+
+    client.on('messageReceived', (message) => {
+      console.log('message in on client chekmeqqt', message.payloadString)
+      if (message.destinationName === `${topic}_Updates`) {
+        if (message.payloadString == 'Door is open') {
+          messageReceived = true
+          callback(true)
           client.disconnect()
+        }
+      }
+    })
+
+    setTimeout(() => {
+      if (!messageReceived) {
+        callback(false)
+        client.disconnect()
         console.log('Disconnected from MQTT broker')
       }
-  }, 5000); 
-};
+    }, 5000)
+  }
 
-// Example usage:
+  // Example usage:
 
-const checkIsCharger = (pid) => {
-  // PID ko lowercase mein convert karein
-  const lowercasePID = pid.toLowerCase();
-  if (pid.length <= 20) {
-    return true;
-}
-  // "pes" ya "pel" ka presence check karein
-  if (lowercasePID.includes("pes") || lowercasePID.includes("pel")) {
-    console.log("pid.lengthpid.length",pid.length);
+  const checkIsCharger = (pid) => {
+    // PID ko lowercase mein convert karein
+    const lowercasePID = pid.toLowerCase()
+    if (pid.length <= 20) {
+      return true
+    }
+    // "pes" ya "pel" ka presence check karein
+    if (lowercasePID.includes('pes') || lowercasePID.includes('pel')) {
+      console.log('pid.lengthpid.length', pid.length)
       // PID ki length 20 se zyada nahi honi chahiye
       if (pid.length <= 20) {
-          return true;
+        return true
       } else {
-          return false;
+        return false
       }
-  } else {
-      return false;
+    } else {
+      return false
+    }
   }
-};
 
-
-const ReScanClick=()=>{
-  console.log("rescanclick",isModalVisible);
-  // setIsScannerActive(true)
-  setisModalVisible(false)
-}
+  const ReScanClick = () => {
+    console.log('rescanclick', isModalVisible)
+    // setIsScannerActive(true)
+    setisModalVisible(false)
+  }
 
   const delfn = () => {
     console.log('delfun')
@@ -260,7 +244,7 @@ const ReScanClick=()=>{
               <QRCodeScanner
                 onRead={onSuccess}
                 // reactivate={isScannerActive}
-                reactivate={isModalVisible?false:true}
+                reactivate={isModalVisible ? false : true}
                 reactivateTimeout={2000}
                 // topContent={
                 //   <Text style={styles.centerText}>
@@ -336,14 +320,17 @@ const ReScanClick=()=>{
           </View>
           <View style={styles.bottomColorBox}></View>
           <CustomModal
-          // onRescanClick={ReScanClick}
-          isModal={"publicScanner"}
-          visible={isModalVisible}
-          onClose={() => setisModalVisible(false)}
-          // onClose={ReScanClick}
-
+            // onRescanClick={ReScanClick}
+            isModal={'publicScanner'}
+            visible={isModalVisible}
+            onClose={() => setisModalVisible(false)}
+            // onClose={ReScanClick}
           >
-          <Text>{!scannerMessage? "It's Not Charger":"Charger Already Use"}</Text>
+            <Text>
+              {!scannerMessage
+                ? 'Sorry, this rarely happens\nPleasr try again'
+                : 'Charger Already in Use'}
+            </Text>
           </CustomModal>
         </View>
       ) : (

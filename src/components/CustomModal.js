@@ -10,8 +10,14 @@ import {
 } from 'react-native'
 import Modal from 'react-native-modal'
 
-const CustomModal = ({ visible, onClose, children ,isModal,onRescanClick}) => {
-  console.log("ismodal",isModal);
+const CustomModal = ({
+  visible,
+  onClose,
+  children,
+  isModal,
+  onRescanClick,
+}) => {
+  console.log('ismodal', isModal)
   // React.useEffect(() => {
   //   const handleBackPress = () => {
   //     if (visible) {
@@ -34,34 +40,64 @@ const CustomModal = ({ visible, onClose, children ,isModal,onRescanClick}) => {
     <Modal
       isVisible={visible}
       onSwipeComplete={onClose}
-      swipeDirection={['down']}
+      //   swipeDirection={['down']}
       onBackdropPress={onClose}
-      onBackButtonPress={onClose} // This will close the modal on back button press
+      onBackButtonPress={onClose}
       style={styles.modal}
-      animationIn="slideInUp"
-      animationOut="slideOutDown"
+      animationIn="fadeIn"
+      animationOut="fadeOut"
+      animationOutTiming={300}
+      // animationIn="slideInUp"
+      // animationOut="slideOutDown"
     >
-     <TouchableWithoutFeedback onPress={onClose}>
+      <TouchableWithoutFeedback onPress={onClose}>
         <View style={styles.modalContainer}>
           <View style={styles.contentContainer}>
-            {!isModal?<><Text style={{ color: '#717171', fontWeight: '800', fontSize: 30 }}>
-              {children}
-            </Text>
-            <Image
-              source={require('../assets/Union.png')}
-              style={styles.imageStyle}
-            /></>:<View>
-            <Text style={{ color: '#717171', fontSize: 25 }}>
-              {children}
-            </Text>
-            <TouchableOpacity onPress={onClose} >
-              <Text style={{ color: '#717171', fontSize: 25,marginTop:70, marginLeft:28 }}>Rescan</Text>
-            </TouchableOpacity>
-           </View>}
+            {!isModal ? (
+              <>
+                <Text
+                  style={{ color: '#717171', fontWeight: '800', fontSize: 30 }}
+                >
+                  {children}
+                </Text>
+                <Image
+                  source={require('../assets/Union.png')}
+                  style={styles.imageStyle}
+                />
+              </>
+            ) : (
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: '#717171',
+                      fontSize: 18,
+                      textAlign: 'center',
+                    }}
+                  >
+                    {children}
+                  </Text>
+                </View>
+                <TouchableOpacity onPress={onClose} style={styles.ScanButton}>
+                  <Text style={styles.ScanButtonText}>Scan again</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         </View>
       </TouchableWithoutFeedback>
-     
     </Modal>
   )
 }
@@ -78,21 +114,21 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     height: 200,
-    width: '70%',
+    width: '75%',
     backgroundColor: 'white',
     borderRadius: 15,
     padding: 20,
     borderColor: 'green',
-    borderWidth: 3,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 19,
-    elevation: 5,
-    position: 'relative',
+    borderWidth: 2,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 4,
+    // },
+    // shadowOpacity: 0.5,
+    // shadowRadius: 19,
+    // elevation: 5,
+    // position: 'relative',
   },
   imageStyle: {
     width: 40,
@@ -102,6 +138,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     right: 16,
+  },
+  ScanButton: {
+    backgroundColor: 'green',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  ScanButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 })
 
