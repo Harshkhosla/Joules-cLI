@@ -634,6 +634,7 @@ const Newhome = ({ navigation }) => {
         </Text>
       </View>
       <SetCost
+        // open={true}
         // open={isModalOpen}
         setGetSampledata={setGetSampledata}
         open={ModalOpenValue}
