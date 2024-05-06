@@ -16,12 +16,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import Toast from 'react-native-toast-message'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  AddTrasationDetail,
-  SendChargingCost,
-  StopChargingMode,
-  publicstartCharging,
-} from '../../Redux/Action'
+import { AddTrasationDetail, ChargerHistory, SendChargingCost, StopChargingMode, publicstartCharging} from '../../Redux/Action'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import TimerSlider from '../TimerSlider'
 import ModalRadhe from './radheModal'
@@ -48,6 +43,9 @@ const SetCost = ({
   setchargingUnitsfromsetCost,
   setGetSampledata,
   setisChargingAlertVisible,
+  ChargingEnergy,
+  setShowPaymentCompleteModal,
+  animateNextWord
 }) => {
   const dispatch = useDispatch()
   const [ShowSetCost, SetShowSetCost] = useState(true)
@@ -68,9 +66,11 @@ const SetCost = ({
   if (!findchargingCostPerHour || findchargingCostPerHour == '0') {
     findchargingCostPerHour = 12
   }
-  if (!findChargingEnergy) {
-    findChargingEnergy = '0'
-  }
+  console.log("findcharingfindcharing",findChargingEnergy);
+  // if(!findChargingEnergy){
+  //   console.log("findChargingEnergy",findChargingEnergy);
+  //   findChargingEnergy="0"
+  // }
   useEffect(() => {
     // console.log("openopen",open);
     if (open) {
@@ -92,48 +92,56 @@ const SetCost = ({
     setGetSampledata(true)
   }
 
-  const handlePayment = async () => {
-    const { storedData } = await fetchDataAsyncStorageData()
-    if (!storedData) {
-      Alert.alert('scan please')
-      return
-    }
-    const sendData = {
-      chargingCost: inputCost,
-      Porduct_Key: storedData,
-    }
 
-    dispatch(SendChargingCost(sendData))
-    const options = {
-      description: 'Payment for your order',
-      image: 'https://yourwebsite.com/logo.png',
-      currency: 'INR',
-      key: 'rzp_live_V4Palfsx7GsPm3',
-      amount: inputCost * 100, // amount in paisa
-      name: 'Your Company Name',
-      prefill: {
-        email: 'customer@example.com',
-        contact: '9999999999',
-        name: 'Customer Name',
-      },
-      theme: { color: '#F37254' },
-    }
 
-    RazorpayCheckout.open(options)
-      .then((data) => {
-        // console.log('Payment success:', data)
-        Alert.alert('Payment Success', 'Payment was successful.')
-        if (data && data.razorpay_payment_id) {
-          console.log('navigate to start charging')
-          // sendData(data.razorpay_payment_id)
-          startCharging(data.razorpay_payment_id)
-        }
-      })
-      .catch((error) => {
-        console.error('Payment Error:', error)
-        Alert.alert('Payment Failed', 'Payment failed. Please try again.')
-      })
+const handlePayment = async () => {
+  const { storedData } = await fetchDataAsyncStorageData();
+  if (!storedData) {
+    Alert.alert("Scan please");
+    return;
   }
+
+  const options = {
+    description: "Payment for your order",
+    image: "https://yourwebsite.com/logo.png",
+    currency: "INR",
+    key: "rzp_live_V4Palfsx7GsPm3",
+    amount: inputCost * 100, // amount in paisa
+    name: "Your Company Name",
+    prefill: {
+      email: "customer@example.com",
+      contact: "9999999999",
+      name: "Customer Name",
+    },
+    theme: { color: "#F37254" },
+  };
+
+  try {
+    const data = await RazorpayCheckout.open(options);
+    if (data && data.razorpay_payment_id) {
+      console.log("navigate to start charging");
+      const sendData = {
+        inputCost,
+        Porduct_Key: storedData,
+        paymentId: data.razorpay_payment_id,
+        findchargingCost,
+      };
+      setShowPaymentCompleteModal(false);
+      setisChargingAlertVisible(true);
+
+      const response = await dispatch(ChargerHistory(sendData));
+      console.log("response", response);
+      if (response?.message === "ChargerHistory added successfully") {
+        animateNextWord();
+        startCharging();
+      }
+    }
+  } catch (error) {
+    console.error("Payment Error:", error);
+    Alert.alert("Payment Failed", "Payment failed. Please try again.");
+  }
+};
+
 
   const startCharging = async (paymentId) => {
     const { storedData } = await fetchDataAsyncStorageData()
@@ -141,12 +149,13 @@ const SetCost = ({
       Alert.alert('scan please')
       return
     }
-    const sendData = {
-      chargingCost: inputCost,
-      Porduct_Key: storedData,
-    }
-
-    dispatch(SendChargingCost(sendData))
+    // const sendData={
+    //   chargingCost:inputCost,
+    //   Porduct_Key:storedData,
+    //   costofcharging:findchargingCost
+    // }
+    
+    // dispatch(SendChargingCost(sendData))
     console.log('heklo')
     if (inputCost > 0 || Time) {
       console.log('click hus')
@@ -161,9 +170,11 @@ const SetCost = ({
           handleStopCharging,
           inputCost,
           paymentId,
-          findChargingEnergy,
+          ChargingEnergy,
           findchargingCost,
-          setisChargingAlertVisible
+          setisChargingAlertVisible,
+          setShowPaymentCompleteModal,
+          animateNextWord
         )
       )
     } else {

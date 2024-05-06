@@ -16,7 +16,7 @@ const LoaderComponent = ({ loading }) => {
         <Image source={require('../assets/jouls.png')} style={styles.image} />
         <View style={styles.modalContainer}>
           <View style={styles.contentContainer}>
-            <Text style={styles.text}>Connecting</Text>
+            <Text style={styles.text}>Connecting </Text>
             <LoaderKit
               style={{
                 width: 20,
@@ -24,6 +24,7 @@ const LoaderComponent = ({ loading }) => {
                 marginTop: 16,
               }}
               name={'BallPulse'}
+              // name={'LineSpinFadeLoader'}
               color={'#118615'}
             />
           </View>

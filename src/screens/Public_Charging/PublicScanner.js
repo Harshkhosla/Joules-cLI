@@ -92,8 +92,10 @@ export default function Dashboard({ navigation, route }) {
 
   const onSuccess = async (e) => {
     const cleanedWifiString = e.data
+    console.log("cleanedWifiString",cleanedWifiString);
     const isCharger = checkIsCharger(cleanedWifiString)
     if (!isCharger) {
+      setScannerMessage(false)
       setisModalVisible(true)
       console.log('Is not Charger')
       return
@@ -102,45 +104,48 @@ export default function Dashboard({ navigation, route }) {
     dispatch(DoorOpening(cleanedWifiString))
 
     let mqttResult = false // Variable to hold the result
-    checkMQTTMessages(cleanedWifiString, (result) => {
+    checkMQTTMessages(cleanedWifiString, async(result) => {
       console.log('resultresultradhe', result)
       if (result) {
         dispatch(setModal(true))
         apicall(cleanedWifiString)
         console.log('navigate to newhome')
+        await AsyncStorage.setItem('pid', cleanedWifiString)
         navigation.navigate('Newhome')
       } else if (!result) {
-        setloading(false)
-        setScannerMessage(true)
-        setisModalVisible(true)
-        return
-      }
-    })
-    await AsyncStorage.setItem('pid', cleanedWifiString)
-    console.log('resultresultresult', mqttResult)
+            setloading(false)
+            setScannerMessage(true)
+            setisModalVisible(true)
+            return
+          }
+      });
+      
+      console.log("resultresultresultvidhal",mqttResult);
   }
 
-  const apicall = async (pid) => {
-    let SendData = {}
-    if (!pid || !receivedData) {
-      return
-    }
-    if (pid) {
-      SendData.Porduct_Key = pid
-    }
-    if (receivedData) {
-      SendData.name = receivedData
-    }
-    try {
-      console.log('in try api calll')
-      const findChargingCost1 = await dispatch(findChargingCost(pid))
-      // const response=await dispatch(NameAndPid(SendData,navigation,setloading))
-      // const response=await dispatch(SendUsername(SendData))
-      // console.log("response",response);
-    } catch (error) {
-      console.log('Error', error)
-    }
+const apicall=async(pid)=>{
+let SendData={}
+if(!pid || !receivedData){
+  return 
+}
+  if(pid){  
+    SendData.Porduct_Key=pid
   }
+  if(receivedData){
+    SendData.name=receivedData
+  }
+  try {
+    console.log("in try api calll");
+    const findChargingCost1=await dispatch(findChargingCost(pid))
+    // const response=await dispatch(NameAndPid(SendData,navigation,setloading))
+    // const response=await dispatch(SendUsername(SendData))
+    // console.log("response",response);
+
+  } catch (error) {
+    console.log("Error",error)
+  }
+}
+
 
   // Function to check MQTT messages for a given topic
   const checkMQTTMessages = (topic, callback) => {
@@ -189,7 +194,7 @@ export default function Dashboard({ navigation, route }) {
   const checkIsCharger = (pid) => {
     // PID ko lowercase mein convert karein
     const lowercasePID = pid.toLowerCase()
-    if (pid.length <= 20) {
+    if (pid.length <= 20 && pid.length>19) {
       return true
     }
     // "pes" ya "pel" ka presence check karein
@@ -323,7 +328,9 @@ export default function Dashboard({ navigation, route }) {
             // onRescanClick={ReScanClick}
             isModal={'publicScanner'}
             visible={isModalVisible}
-            onClose={() => setisModalVisible(false)}
+            onClose={() => {
+              setisModalVisible(false)
+            }}
             // onClose={ReScanClick}
           >
             <Text>

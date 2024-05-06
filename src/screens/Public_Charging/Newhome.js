@@ -47,6 +47,12 @@ const Newhome = ({ navigation }) => {
 
   const [timeInSec, SetTimeinSec] = useState('')
   const [showChargingEnergy, setShowChargingEnergy] = useState(false)
+  const [showPaymentCompleteModal,setShowPaymentCompleteModal]=useState(false)
+  // charingalert modal
+  const [shouldAnimate, setShouldAnimate] = useState(true)
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const words = ['Payment Successful', 'Starting..', 'Charging Started'];
+
 
   //
   const [getsample, setGetSampledata] = useState(true)
@@ -91,7 +97,8 @@ const Newhome = ({ navigation }) => {
         publicAlreadyChargingStarted(
           chargingHistoryPId,
           handleCostAndTimeOpen,
-          setisChargingAlertVisible
+          setisChargingAlertVisible,
+          setShowPaymentCompleteModal
         )
       )
       console.log('chargerhistoryData', chargerhistoryData)
@@ -139,7 +146,7 @@ const Newhome = ({ navigation }) => {
         (timeInSec.length <= 0 || !timeInSec) &&
         inputcostfromsetcost <= ChargingCost
       ) {
-        handleClickStopCharging()
+        // handleClickStopCharging()
         console.log('charging cost stop charing')
       }
     }
@@ -151,7 +158,7 @@ const Newhome = ({ navigation }) => {
       ShowChargingCostPerSecond &&
       inputcostfromsetcost <= ShowChargingCostPerSecond
     ) {
-      handleClickStopCharging()
+      // handleClickStopCharging()
     }
   }, [ChargingCost, ShowChargingCostPerSecond])
 
@@ -286,7 +293,7 @@ const Newhome = ({ navigation }) => {
   const handleCostAndTimeOpen = async (text, unique) => {
     // console.log('text', text, unique)
     if (text == 'Stop Charging') {
-      console.log('radhe')
+      console.log('StopChargingStopChargingStopCharging',unique)
       handleClickStopCharging(unique)
     } else if (text == 'Start Charging' && AsyncStoragePiddata) {
       dispatch(setModal(true))
@@ -301,6 +308,7 @@ const Newhome = ({ navigation }) => {
       navigation.navigate('PublicScanner', { name: name })
       setchargingUnitsfromsetCost('')
       setChargingCost('')
+      setTotalSeconds(0)
     }
   }
 
@@ -393,7 +401,8 @@ const Newhome = ({ navigation }) => {
           pid,
           SampleDataaa,
           SetEndTime,
-          setisChargingAlertVisible
+          setisChargingAlertVisible,
+          setShowPaymentCompleteModal
         )
       )
       console.log('aumatic discornnectby')
@@ -429,6 +438,11 @@ const Newhome = ({ navigation }) => {
     return differenceInSeconds
   }
 
+  const animateNextWord = () => {
+    setShouldAnimate(true);
+    setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length);
+  };
+
   const generateHoursArray = () => {
     if (EndTime < 0 || EndTime > 23) {
       console.error('Invalid end time')
@@ -461,7 +475,7 @@ const Newhome = ({ navigation }) => {
   }
   return (
     <View style={styles.container}>
-      {/* <Button title="stopChargig" onPress={getSampleData} disabled={isTimerRunning} /> */}
+      {/* <Button title="animateNextWord" onPress={animateNextWord}  /> */}
       {/* <Button title="del pid" onPress={handleRemoveItem} /> */}
       {/* <Button title="know length" onPress={generateHoursArray} />
       <Button title="navigate to chargerhistory" onPress={generateHoursArray} /> */}
@@ -636,8 +650,8 @@ const Newhome = ({ navigation }) => {
       <SetCost
         // open={true}
         // open={isModalOpen}
-        setGetSampledata={setGetSampledata}
         open={ModalOpenValue}
+        setGetSampledata={setGetSampledata}
         onClose={handleCostAndTimeClose}
         startTimer={handleStartClick}
         inputvalue={''}
@@ -652,9 +666,13 @@ const Newhome = ({ navigation }) => {
         chargingUnitsfromsetCost={chargingUnitsfromsetCost}
         setchargingUnitsfromsetCost={setchargingUnitsfromsetCost}
         setisChargingAlertVisible={setisChargingAlertVisible}
+        ChargingEnergy={SampleDataaa}
+        setShowPaymentCompleteModal={setShowPaymentCompleteModal}
+        animateNextWord={animateNextWord}
       />
       <View>
         <Charging_alert_modal
+          showChargingCompleted={showPaymentCompleteModal}
           visible={isCharginAlertVisible}
           onClose={() => {
             setisChargingAlertVisible(false)
@@ -663,6 +681,11 @@ const Newhome = ({ navigation }) => {
           energyConsumed={SampleDataaa}
           cost={ChargingCost}
           time={formatTime(totalSeconds)}
+          shouldAnimate={shouldAnimate}
+          setShouldAnimate={setShouldAnimate}
+          currentWordIndex={currentWordIndex}
+          setCurrentWordIndex={setCurrentWordIndex}
+          words={words}
         />
       </View>
     </View>
