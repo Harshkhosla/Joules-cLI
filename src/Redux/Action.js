@@ -1600,20 +1600,20 @@ export const publicstartCharging = (
     const onConnect = () => {
       client.on('messageReceived', (message) => {
         if (message.destinationName === `${Porduct_Key}_Updates`) {
-          const updatedMessages = [
-            ...topic1State.messages,
-            message.payloadString,
-          ]
-          topic1State.messages = updatedMessages
-          console.log('topic1State', topic1State)
-          // const sample=message.payloadString
-          dispatch(setStateValue(message.payloadString))
+          // const updatedMessages = [
+          //   ...topic1State.messages,
+          //   message.payloadString,
+          // ]
+          // topic1State.messages = updatedMessages
+          // console.log('topic1State', topic1State)
+          // // const sample=message.payloadString
+          // dispatch(setStateValue(message.payloadString))
           console.log(`${Porduct_Key}_Updates:`, message.payloadString)
           if (message.payloadString == 'Charging Started') {
             animateNextWord()
           setisChargingAlertVisible(false)
           setShowPaymentCompleteModal(true)
-            onClose()
+            // onClose()
             setButtonText('Stop Charging')
             startTimer()
             // const sendData = {
@@ -1662,15 +1662,15 @@ export const publicstartCharging = (
           dispatch(setEnergy(dataObject.Output_Energy))
           dispatch(setPower(dataObject.Output_Power))
           dispatch(setCurrent(dataObject.Output_Current))
-          console.log(`${Porduct_Key}_Charging_Data:`, message.payloadString)
-          console.log(
-            'message?.payloadString?.Output_Energy',
-            dataObject.Output_Energy
-          )
-          console.log(
-            'message?.payloadString?.Output_Power',
-            dataObject.Output_Power
-          )
+          // console.log(`${Porduct_Key}_Charging_Data:`, message.payloadString)
+          // console.log(
+          //   'message?.payloadString?.Output_Energy',
+          //   dataObject.Output_Energy
+          // )
+          // console.log(
+          //   'message?.payloadString?.Output_Power',
+          //   dataObject.Output_Power
+          // )
         }
       })
     }
@@ -1899,7 +1899,7 @@ export const publicstopCharging = (
             SetEndTime(response)
             disconnectAllClients()
             console.log("SampleDataaaSampleDataaaSampleDataaaSampleDataaa",SampleDataaa);
-            dispatch(ChargerHistoryEndTime(SampleDataaa))
+            // dispatch(ChargerHistoryEndTime(SampleDataaa))
             // dispatch(ChargerHistoryEndTime("120"))
           }
           client.disconnect()
@@ -1935,7 +1935,8 @@ export const publicstopCharging = (
 export const publicAlreadyChargingStarted = (
   Porduct_Key,
   handleStopCharging,
-  setisChargingAlertVisible
+  setisChargingAlertVisible,
+  setShowPaymentCompleteModal
   
 ) => {
   // Porduct_Key=publicProductKey
@@ -1969,15 +1970,15 @@ export const publicAlreadyChargingStarted = (
           dispatch(setEnergy(dataObject.Output_Energy))
           dispatch(setPower(dataObject.Output_Power))
           dispatch(setCurrent(dataObject.Output_Current))
-          console.log(`${Porduct_Key}_Charging_Data:`, message.payloadString)
-          console.log(
-            'message?.payloadString?.Output_Energy',
-            dataObject.Output_Energy
-          )
-          console.log(
-            'message?.payloadString?.Output_Power',
-            dataObject.Output_Power
-          )
+          // console.log(`${Porduct_Key}_Charging_Data:`, message.payloadString)
+          // console.log(
+          //   'message?.payloadString?.Output_Energy',
+          //   dataObject.Output_Energy
+          // )
+          // console.log(
+          //   'message?.payloadString?.Output_Power',
+          //   dataObject.Output_Power
+          // )
         }
       })
     }
