@@ -32,21 +32,101 @@ const SignupInputs = ({ navigation }) => {
   })
   const dispatch = useDispatch()
 
-  const [nameValuePresent, setNameValuePresent] = useState(false)
-  const [emailValuePresent, setEmailValuePresent] = useState(false)
-  const [passwordValuePresent, setPasswordValuePresent] = useState(false)
+  const [nameValuePresent, setNameValuePresent] = useState({
+    show: false,
+    message: '',
+  })
+  const [emailValuePresent, setEmailValuePresent] = useState({
+    show: false,
+    message: '',
+  })
+  const [passwordValuePresent, setPasswordValuePresent] = useState({
+    show: false,
+    message: '',
+  })
   const [confirmPasswordValuePresent, setConfirmPasswordValuePresent] =
-    useState(false)
+    useState({
+      show: false,
+      message: '',
+    })
 
   const signup = async () => {
     const allValuesEmpty = Object.keys(userData).every(
       (key) => userData[key] !== ''
     )
 
-    setNameValuePresent(!userData.Name)
-    setEmailValuePresent(!userData.Email)
-    setPasswordValuePresent(!userData.Password)
-    setConfirmPasswordValuePresent(!userData.ConfirmPassword)
+    if (!userData.Name) {
+      setNameValuePresent((prev) => ({
+        ...prev,
+        show: true,
+        message: 'Please enter a valid Name',
+      }))
+      return
+    } else {
+      setNameValuePresent((prev) => ({
+        ...prev,
+        show: false,
+        // message: 'Please enter a valid Name',
+      }))
+    }
+
+    if (!userData.Email) {
+      setEmailValuePresent((prev) => ({
+        ...prev,
+        show: true,
+        message: 'Please enter a valid email address',
+      }))
+      return
+    } else {
+      setEmailValuePresent((prev) => ({
+        ...prev,
+        show: false,
+        message: '',
+      }))
+    }
+
+    if (!userData.Password) {
+      setPasswordValuePresent((prev) => ({
+        ...prev,
+        show: true,
+        message: 'Please enter a password',
+      }))
+      return
+    } else {
+      if (userData.Password.length < 4) {
+        setPasswordValuePresent((prev) => ({
+          ...prev,
+          show: true,
+          message: 'Password must be at least 4 characters long',
+        }))
+        return
+      }
+      setPasswordValuePresent((prev) => ({
+        ...prev,
+        show: false,
+        message: '',
+      }))
+    }
+
+    if (!userData.ConfirmPassword) {
+      setConfirmPasswordValuePresent((prev) => ({
+        ...prev,
+        show: true,
+        message: 'Please enter a Confirm password',
+      }))
+      return
+    } else {
+      setConfirmPasswordValuePresent((prev) => ({
+        ...prev,
+        show: false,
+        message: '',
+      }))
+    }
+
+    // setNameValuePresent(!userData.Name)
+    // setEmailValuePresent(!userData.Email)
+    // setPasswordValuePresent(!userData.Password)
+    // setConfirmPasswordValuePresent(!userData.ConfirmPassword)
 
     // if (!allValuesEmpty) {
     //   return Toast.show({
@@ -66,7 +146,19 @@ const SignupInputs = ({ navigation }) => {
     const isValid =
       generalEmailRegex.test(userData.Email) &&
       userData.Email.toLowerCase().includes('@gmail.com')
-
+    if (!isValid) {
+      setEmailValuePresent((prev) => ({
+        ...prev,
+        show: true,
+        message: "Email must include characters '@' and '.'",
+      }))
+      setPasswordValuePresent((prev) => ({
+        ...prev,
+        show: false,
+        message: '',
+      }))
+      return
+    }
     // if (!isValid) {
     //   return Toast.show({
     //     type: 'error',
@@ -113,10 +205,10 @@ const SignupInputs = ({ navigation }) => {
             value={userData.Name}
             setValue={setuserData}
             objectData={userData}
-            CheckValuePresent={nameValuePresent}
+            CheckValuePresent={nameValuePresent.show}
           />
-          {nameValuePresent && (
-            <Text style={styles.errorText}>Please enter your name</Text>
+          {nameValuePresent.show && (
+            <Text style={styles.errorText}> {nameValuePresent.message}</Text>
           )}
         </View>
         <View>
@@ -126,10 +218,13 @@ const SignupInputs = ({ navigation }) => {
             value={userData.Email}
             setValue={setuserData}
             objectData={userData}
-            CheckValuePresent={emailValuePresent}
+            CheckValuePresent={emailValuePresent.show}
           />
-          {emailValuePresent && (
-            <Text style={styles.errorText}>Please enter your email</Text>
+
+          {emailValuePresent.show && (
+            <Text style={{ color: 'red', marginLeft: 10 }}>
+              {emailValuePresent.message}
+            </Text>
           )}
         </View>
       </View>
@@ -137,14 +232,16 @@ const SignupInputs = ({ navigation }) => {
         <View style={{ width: '48%' }}>
           <InputBoxTwo
             label="Password"
-            placeholder="Enter password"
+            placeholder="Enter your password"
             value={userData.Password}
             setValue={setuserData}
             objectData={userData}
-            CheckValuePresent={passwordValuePresent}
+            CheckValuePresent={passwordValuePresent.show}
           />
-          {passwordValuePresent && (
-            <Text style={styles.errorText}>Please enter your password</Text>
+          {passwordValuePresent.show && (
+            <Text style={{ color: 'red', marginLeft: 10 }}>
+              {passwordValuePresent.message}
+            </Text>
           )}
         </View>
 
@@ -155,10 +252,12 @@ const SignupInputs = ({ navigation }) => {
             value={userData.ConfirmPassword}
             setValue={setuserData}
             objectData={userData}
-            CheckValuePresent={confirmPasswordValuePresent}
+            CheckValuePresent={confirmPasswordValuePresent.show}
           />
-          {confirmPasswordValuePresent && (
-            <Text style={styles.errorText}>Please confirm your password</Text>
+          {confirmPasswordValuePresent.show && (
+            <Text style={styles.errorText}>
+              {confirmPasswordValuePresent.message}
+            </Text>
           )}
         </View>
       </View>

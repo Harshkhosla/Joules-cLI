@@ -33,8 +33,14 @@ const LoginInput = ({ navigation }) => {
   // const ApiURL = 'http://192.168.1.6:5200' // live url
   const [loading, setLoading] = useState(false)
   const [userData, setuserData] = useState({ email: '', password: '' })
-  const [emailValuePresent, setEmailValuePresent] = useState({show:false,message:""})
-  const [passwordValuePresent, setPasswordValuePresent] = useState({show:false,message:""})
+  const [emailValuePresent, setEmailValuePresent] = useState({
+    show: false,
+    message: '',
+  })
+  const [passwordValuePresent, setPasswordValuePresent] = useState({
+    show: false,
+    message: '',
+  })
   const [rememberMe, setRememberMe] = useState(true)
   const dispatch = useDispatch()
 
@@ -42,123 +48,121 @@ const LoginInput = ({ navigation }) => {
     const allValuesPresent = Object.keys(userData).every(
       (key) => userData[key] !== ''
     )
-    if(!userData.email){
+    if (!userData.email) {
       setEmailValuePresent((prev) => ({
         ...prev,
         show: true,
-        message:"Please enter a valid email address"
-      }));
+        message: 'Please enter a valid email address',
+      }))
       setPasswordValuePresent((prev) => ({
         ...prev,
         show: false,
-        message: ""
-      })); 
-     return
+        message: '',
+      }))
+      return
     }
     const generalEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     const isValid =
       generalEmailRegex.test(userData.email) &&
       userData.email.toLowerCase().includes('@gmail.com')
-      if(!isValid){
-        setEmailValuePresent((prev) => ({
-          ...prev,
-          show: true,
-          message: "Email must include characters '@' and '.'"
-        })); 
-        setPasswordValuePresent((prev) => ({
-          ...prev,
-          show: false,
-          message: ""
-        }));        
-        return
-      }
-
-    if(!userData.password){
+    if (!isValid) {
       setEmailValuePresent((prev) => ({
         ...prev,
-        show: false,
-        message: ""
-      })); 
+        show: true,
+        message: "Email must include characters '@' and '.'",
+      }))
       setPasswordValuePresent((prev) => ({
         ...prev,
-        show: true,
-        message: "Please enter a password"
-      })); 
+        show: false,
+        message: '',
+      }))
       return
     }
 
-    
-    const isValidpassword = isPasswordValid(userData.password);
-    console.log(isValid); // Output: true
-    if(!isValidpassword){
+    if (!userData.password) {
       setEmailValuePresent((prev) => ({
         ...prev,
         show: false,
-        message: ""
-      })); 
+        message: '',
+      }))
       setPasswordValuePresent((prev) => ({
         ...prev,
         show: true,
-        message: "Password must be at least 4 characters long"
-      })); 
+        message: 'Please enter a password',
+      }))
       return
     }
-   
 
-    
-   
+    const isValidpassword = isPasswordValid(userData.password)
+    console.log(isValid) // Output: true
+    if (!isValidpassword) {
+      setEmailValuePresent((prev) => ({
+        ...prev,
+        show: false,
+        message: '',
+      }))
+      setPasswordValuePresent((prev) => ({
+        ...prev,
+        show: true,
+        message: 'Password must be at least 4 characters long',
+      }))
+      return
+    }
+
     if (allValuesPresent) {
       try {
         setLoading(true)
-        const response =await dispatch(signItUp(userData, navigation, setLoading))
-        console.log('clickinoginbuttonresponse',response)
-        if(response){
+        const response = await dispatch(
+          signItUp(userData, navigation, setLoading)
+        )
+        console.log('clickinoginbuttonresponse', response)
+        if (response) {
           setuserData({ ...userData, email: '', password: '' })
         }
         setEmailValuePresent((prev) => ({
           ...prev,
           show: false,
-          message: ""
-        })); 
+          message: '',
+        }))
         setPasswordValuePresent((prev) => ({
           ...prev,
           show: false,
-          message: ""
-        })); 
+          message: '',
+        }))
         setTimeout(() => {
           setLoading(false)
         }, 5000)
       } catch (error) {
         console.error('error in login user', error)
       }
-    } 
+    }
   }
 
   const isPasswordValid = (password) => {
     // Password length should be at least 8 characters
     if (password.length < 4) {
-      return false;
+      return false
     }
-  
+
     // Password should contain at least one lowercase letter
     // if (!/[a-z]/.test(password)) {
     //   return false;
     // }
-  
+
     // // Password should contain at least one uppercase letter
     // if (!/[A-Z]/.test(password)) {
     //   return false;
     // }
-  
+
     // // Password should contain at least one digit
     // if (!/\d/.test(password)) {
     //   return false;
     // }
-  
+
     // Password meets all criteria
-    return true;
-  };
-  
+    return true
+  }
+
   GoogleSignin.configure({
     offlineAccess: true,
     webClientId:
