@@ -95,6 +95,10 @@ const SetCost = ({
 
 
 const handlePayment = async () => {
+  if(inputCost<=0 || !inputCost){
+    Alert.alert('Please set the cost of charging first')
+    return
+  }
   const { storedData } = await fetchDataAsyncStorageData();
   if (!storedData) {
     Alert.alert("Scan please");
@@ -120,6 +124,7 @@ const handlePayment = async () => {
     const data = await RazorpayCheckout.open(options);
     if (data && data.razorpay_payment_id) {
       console.log("navigate to start charging");
+      onClose()
       const sendData = {
         inputCost,
         Porduct_Key: storedData,
