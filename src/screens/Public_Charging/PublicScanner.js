@@ -194,14 +194,14 @@ if(!pid || !receivedData){
   const checkIsCharger = (pid) => {
     // PID ko lowercase mein convert karein
     const lowercasePID = pid.toLowerCase()
-    if (pid.length <= 20 && pid.length>19) {
+    if (pid.length <= 30 && pid.length>19) {
       return true
     }
     // "pes" ya "pel" ka presence check karein
     if (lowercasePID.includes('pes') || lowercasePID.includes('pel')) {
       console.log('pid.lengthpid.length', pid.length)
       // PID ki length 20 se zyada nahi honi chahiye
-      if (pid.length <= 20) {
+      if (pid.length <= 30) {
         return true
       } else {
         return false
