@@ -838,7 +838,7 @@ export const signItUp = (field, navigation, setLoading) => {
       const data = await response.json()
       console.log(data, 'login data ')
       if (data?.message == 'Invalid email or password') {
-        // setLoading(false)
+        setLoading(false)
         Toast.show({
           type: 'error',
           text1Style: { color: 'red', fontSize: 18 },
@@ -848,7 +848,7 @@ export const signItUp = (field, navigation, setLoading) => {
         return
       }
       if (data?.message == 'Email not verified') {
-        // setLoading(false)
+        setLoading(false)
         Toast.show({
           type: 'error',
           // text1: data,
@@ -859,7 +859,7 @@ export const signItUp = (field, navigation, setLoading) => {
         return
       }
       if (data?.success) {
-        // setLoading(false)
+        setLoading(false)
         Toast.show({
           type: 'success',
           text1: 'login Successfull',
@@ -895,6 +895,7 @@ export const signItUp = (field, navigation, setLoading) => {
       }
       // setLoading(false)
       navigation.navigate('chargerSelection')
+      return data
     } catch (err) {
       setLoading(false)
       Toast.show({

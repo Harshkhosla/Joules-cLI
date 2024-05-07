@@ -33,80 +33,132 @@ const LoginInput = ({ navigation }) => {
   // const ApiURL = 'http://192.168.1.6:5200' // live url
   const [loading, setLoading] = useState(false)
   const [userData, setuserData] = useState({ email: '', password: '' })
-  const [emailValuePresent, setEmailValuePresent] = useState(false)
-  const [passwordValuePresent, setPasswordValuePresent] = useState(false)
+  const [emailValuePresent, setEmailValuePresent] = useState({show:false,message:""})
+  const [passwordValuePresent, setPasswordValuePresent] = useState({show:false,message:""})
   const [rememberMe, setRememberMe] = useState(true)
   const dispatch = useDispatch()
 
   const login = async () => {
-    // await dispatch(signItUp(userData, navigation))
     const allValuesPresent = Object.keys(userData).every(
       (key) => userData[key] !== ''
     )
-
-    setEmailValuePresent(!userData.email)
-    setPasswordValuePresent(!userData.password)
-
-    // if (!allValuesPresent) {
-    //   return Toast.show({
-    //     type: 'error',
-    //     position: 'top',
-    //     text1: 'Login Error',
-    //     text2: 'please input all field',
-    //     visibilityTime: 4000,
-    //     text1Style: { color: 'red', fontSize: 14 },
-    //     autoHide: true,
-    //     bottomOffset: 40,
-    //     swipeable: true,
-    //   })
-    // }
-
+    if(!userData.email){
+      setEmailValuePresent((prev) => ({
+        ...prev,
+        show: true,
+        message:"Please enter a valid email address"
+      }));
+      setPasswordValuePresent((prev) => ({
+        ...prev,
+        show: false,
+        message: ""
+      })); 
+     return
+    }
     const generalEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    // const hasNumber = /\d/.test(userData.Email);
-    // const isValid = generalEmailRegex.test(userData.Email) && userData.Email.toLowerCase().includes('@gmail.com') && hasNumber;
     const isValid =
       generalEmailRegex.test(userData.email) &&
       userData.email.toLowerCase().includes('@gmail.com')
-    if (!isValid) {
-      return Toast.show({
-        type: 'error',
-        position: 'top',
-        text1: 'Login Error',
-        text2: 'email is invalid',
-        visibilityTime: 4000,
-        text1Style: { color: 'red', fontSize: 14 },
-        autoHide: true,
-        bottomOffset: 40,
-        swipeable: true,
-      })
+      if(!isValid){
+        setEmailValuePresent((prev) => ({
+          ...prev,
+          show: true,
+          message: "Email must include characters '@' and '.'"
+        })); 
+        setPasswordValuePresent((prev) => ({
+          ...prev,
+          show: false,
+          message: ""
+        }));        
+        return
+      }
+
+    if(!userData.password){
+      setEmailValuePresent((prev) => ({
+        ...prev,
+        show: false,
+        message: ""
+      })); 
+      setPasswordValuePresent((prev) => ({
+        ...prev,
+        show: true,
+        message: "Please enter a password"
+      })); 
+      return
     }
-    if (isValid && allValuesPresent) {
+
+    
+    const isValidpassword = isPasswordValid(userData.password);
+    console.log(isValid); // Output: true
+    if(!isValidpassword){
+      setEmailValuePresent((prev) => ({
+        ...prev,
+        show: false,
+        message: ""
+      })); 
+      setPasswordValuePresent((prev) => ({
+        ...prev,
+        show: true,
+        message: "Password must be at least 4 characters long"
+      })); 
+      return
+    }
+   
+
+    
+   
+    if (allValuesPresent) {
       try {
         setLoading(true)
-        const response = dispatch(signItUp(userData, navigation, setLoading))
-        setuserData({ ...userData, email: '', password: '' })
-        console.log('click in login button')
+        const response =await dispatch(signItUp(userData, navigation, setLoading))
+        console.log('clickinoginbuttonresponse',response)
+        if(response){
+          setuserData({ ...userData, email: '', password: '' })
+        }
+        setEmailValuePresent((prev) => ({
+          ...prev,
+          show: false,
+          message: ""
+        })); 
+        setPasswordValuePresent((prev) => ({
+          ...prev,
+          show: false,
+          message: ""
+        })); 
         setTimeout(() => {
           setLoading(false)
-        }, 10000)
+        }, 5000)
       } catch (error) {
         console.error('error in login user', error)
       }
-    } else {
-      Toast.show({
-        type: 'error',
-        position: 'top',
-        text1: 'Login Error',
-        text2: 'Please input all field',
-        visibilityTime: 4000,
-        text1Style: { color: 'red', fontSize: 14 },
-        autoHide: true,
-        bottomOffset: 40,
-        swipeable: true,
-      })
-    }
+    } 
   }
 
+  const isPasswordValid = (password) => {
+    // Password length should be at least 8 characters
+    if (password.length < 4) {
+      return false;
+    }
+  
+    // Password should contain at least one lowercase letter
+    // if (!/[a-z]/.test(password)) {
+    //   return false;
+    // }
+  
+    // // Password should contain at least one uppercase letter
+    // if (!/[A-Z]/.test(password)) {
+    //   return false;
+    // }
+  
+    // // Password should contain at least one digit
+    // if (!/\d/.test(password)) {
+    //   return false;
+    // }
+  
+    // Password meets all criteria
+    return true;
+  };
+  
   GoogleSignin.configure({
     offlineAccess: true,
     webClientId:
@@ -199,12 +251,12 @@ const LoginInput = ({ navigation }) => {
             value={userData.email}
             setValue={setuserData}
             objectData={userData}
-            CheckValuePresent={emailValuePresent}
+            CheckValuePresent={emailValuePresent.show}
           />
         </View>
-        {emailValuePresent && (
+        {emailValuePresent.show && (
           <Text style={{ color: 'red', marginLeft: 10 }}>
-            Please enter a valid email address
+            {emailValuePresent.message}
           </Text>
         )}
         <View>
@@ -214,11 +266,11 @@ const LoginInput = ({ navigation }) => {
             value={userData.password}
             setValue={setuserData}
             objectData={userData}
-            CheckValuePresent={passwordValuePresent}
+            CheckValuePresent={passwordValuePresent.show}
           />
-          {passwordValuePresent && (
+          {passwordValuePresent.show && (
             <Text style={{ color: 'red', marginLeft: 10 }}>
-              Please enter a password
+              {passwordValuePresent.message}
             </Text>
           )}
         </View>
