@@ -19,6 +19,7 @@ import { RNCamera } from 'react-native-camera'
 import WifiManager from 'react-native-wifi-reborn'
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler'
 import { ToastAndroid } from 'react-native'
+import { Client, Message } from 'react-native-paho-mqtt'
 import {
   ChargerHistory,
   DoorOpening,
@@ -40,9 +41,12 @@ import {
 import App_top_Header from '../App_top_Header'
 import LoaderComponent from '../../components/loader'
 import { launchImageLibrary } from 'react-native-image-picker'
+import CustomModal from '../../components/CustomModal'
 
 export default function Dashboard({ navigation, route }) {
+  const MqqtUrl = 'ws://34.100.251.160:9001/mqtt'
   const dispatch = useDispatch()
+  const [isModalVisible, setisModalVisible] = useState(false)
   const [loading, setloading] = useState(false)
   const [hasPermission, setHasPermission] = useState(null)
   const [scanned, setScanned] = useState(false)
@@ -52,7 +56,19 @@ export default function Dashboard({ navigation, route }) {
   console.log(Data)
 
   const [qrScannerImg, setqrScannerImg] = useState(null)
+  const [isScannerActive, setIsScannerActive] = useState(true)
+  const [scannerMessage, setScannerMessage] = useState(false)
   // require('../../assets/defaultuser.png')
+  console.log('isScannerActive', isScannerActive)
+  const myStorage = {
+    setItem: (key, item) => {
+      myStorage[key] = item
+    },
+    getItem: (key) => myStorage[key],
+    removeItem: (key) => {
+      delete myStorage[key]
+    },
+  }
 
   const selectImage = () => {
     launchImageLibrary({ mediaType: 'photo' }, (response) => {
@@ -75,121 +91,36 @@ export default function Dashboard({ navigation, route }) {
   const id = useSelector((state) => state?.userReducers?.Product?._id)
 
   const onSuccess = async (e) => {
-    // console.log("sdfasdfasdf");
-    console.log(e.data, 'product key in onsucces publicScanner')
-    const parsedWifiFields = {
-      s: '',
-      t: '',
-      p: '',
-      h: '',
-    }
-
     const cleanedWifiString = e.data
-    console.log('cleanedWifiString', cleanedWifiString)
-    // .replace(/(\r\n\t|\n|\r\t)/gm, "")
-    // .replace("WIFI:", "")
-    // .replace(";;", "");
-    // console.log("cleanedWifiString",cleanedWifiString)
-    //   dispatch(UpdatName(cleanedWifiString,id))
-    await AsyncStorage.setItem('pid', cleanedWifiString)
-    if (cleanedWifiString) {
-      dispatch(DoorOpening(cleanedWifiString))
-      apicall(cleanedWifiString)
-      dispatch(setModal(true))
-      navigation.navigate('Newhome')
+    console.log("cleanedWifiString",cleanedWifiString);
+    const isCharger = checkIsCharger(cleanedWifiString)
+    if (!isCharger) {
+      setScannerMessage(false)
+      setisModalVisible(true)
+      console.log('Is not Charger')
+      return
     }
-    // const scannedWifiValues = cleanedWifiString.split(";");
-    // scannedWifiValues.forEach((value) => {
-    //   const keyValue = value.split(":");
-    //   parsedWifiFields[keyValue[0].toLocaleLowerCase()] = keyValue[1] || "";
-    // });
+    setloading(true)
+    dispatch(DoorOpening(cleanedWifiString))
 
-    // // console.log(parsedWifiFields.h,"kimmo");
-    // // const ProductDetails = JSON.stringify(parsedWifiFields.h).replaceAll('"', '');
-    // // if(parsedWifiFields.h!=""){
-
-    // // }
-
-    // dispatch(UpdatName(parsedWifiFields.h,id))
-
-    // let fields = [
-    //   {
-    //     title: "SSID",
-    //     value: parsedWifiFields.s,
-    //   },
-    //   {
-    //     title: "encryption",
-    //     value: parsedWifiFields.t,
-    //   },
-    //   {
-    //     title: "password",
-    //     value: parsedWifiFields.p,
-    //   }
-    // ];
-    // console.log(fields);
-
-    // const granted = await PermissionsAndroid.request(
-    //   PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    //   {
-    //     title: 'Location permission is required for WiFi connections',
-    //     message:
-    //       'This app needs location permission as this is required ' +
-    //       'to scan for WiFi networks.',
-    //     buttonNegative: 'DENY',
-    //     buttonPositive: 'ALLOW',
-    //   }
-    // );
-
-    // if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-    //   WifiManager.setEnabled(true);
-    //   WifiManager.disconnect();
-
-    //   PermissionsAndroid.request(
-    //     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    //     {
-    //       title: "",
-    //       message: "",
-    //       buttonNegative: "",
-    //       buttonPositive: "",
-    //     },
-    //   ).then((granted) => {
-    //     console.log(granted);
-    //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-    //       RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
-    //         interval: 10000,
-    //         fastInterval: 5000,
-    //       })
-    //       .catch((err) => {
-    //         console.log("not permitted to enable location");
-    //       });
-    //     } else {
-    //       console.log("not granted");
-    //     }
-    //   });
-
-    //   WifiManager.connectToProtectedSSID(parsedWifiFields.s, parsedWifiFields.p,  false).then(
-    //     () => {
-    //       console.log(parsedWifiFields.s);
-    //       console.warn("Connected successfully!");
-    //       navigation.navigate('UserDetails');
-    //     },
-    //     () => {
-    //       console.warn("Connection failed!");
-    //     }
-    //   );
-
-    //   WifiManager.getCurrentWifiSSID().then(
-    //     (ssid) => {
-    //       console.warn("Your current connected WiFi SSID is " + ssid);
-    //     },
-    //     () => {
-    //       console.warn("Cannot get current SSID!");
-    //     }
-    //   );
-    // } else {
-    //   // Permission denied
-    // }
-    // navigation.navigate('Newhome');
+    let mqttResult = false // Variable to hold the result
+    checkMQTTMessages(cleanedWifiString, async(result) => {
+      console.log('resultresultradhe', result)
+      if (result) {
+        dispatch(setModal(true))
+        apicall(cleanedWifiString)
+        console.log('navigate to newhome')
+        await AsyncStorage.setItem('pid', cleanedWifiString)
+        navigation.navigate('Newhome')
+      } else if (!result) {
+            setloading(false)
+            setScannerMessage(true)
+            setisModalVisible(true)
+            return
+          }
+      });
+      
+      console.log("resultresultresultvidhal",mqttResult);
   }
 
 const apicall=async(pid)=>{
@@ -215,14 +146,86 @@ if(!pid || !receivedData){
   }
 }
 
+
+  // Function to check MQTT messages for a given topic
+  const checkMQTTMessages = (topic, callback) => {
+    // MQTT connection setup
+    // const client = mqtt.connect(MqqtUrl);
+    const client = new Client({
+      uri: MqqtUrl,
+      clientId: 'client' + Math.random().toString(36).substring(7),
+      storage: myStorage,
+    })
+
+    // Variable to track whether message received or not
+    let messageReceived = false
+
+    // MQTT connect event listener
+    client.connect().then(() => {
+      client.subscribe(`${topic}_Updates`)
+      // allClients.push(client)
+      console.log('mqtt connect in chekmeqqt message')
+    })
+
+    // MQTT error event listener
+
+    client.on('messageReceived', (message) => {
+      console.log('message in on client chekmeqqt', message.payloadString)
+      if (message.destinationName === `${topic}_Updates`) {
+        if (message.payloadString == 'Door is open') {
+          messageReceived = true
+          callback(true)
+          client.disconnect()
+        }
+      }
+    })
+
+    setTimeout(() => {
+      if (!messageReceived) {
+        callback(false)
+        client.disconnect()
+        console.log('Disconnected from MQTT broker')
+      }
+    }, 5000)
+  }
+
+  // Example usage:
+
+  const checkIsCharger = (pid) => {
+    // PID ko lowercase mein convert karein
+    const lowercasePID = pid.toLowerCase()
+    if (pid.length <= 20 && pid.length>19) {
+      return true
+    }
+    // "pes" ya "pel" ka presence check karein
+    if (lowercasePID.includes('pes') || lowercasePID.includes('pel')) {
+      console.log('pid.lengthpid.length', pid.length)
+      // PID ki length 20 se zyada nahi honi chahiye
+      if (pid.length <= 20) {
+        return true
+      } else {
+        return false
+      }
+    } else {
+      return false
+    }
+  }
+
+  const ReScanClick = () => {
+    console.log('rescanclick', isModalVisible)
+    // setIsScannerActive(true)
+    setisModalVisible(false)
+  }
+
   const delfn = () => {
     console.log('delfun')
-    const sendData = {
-      Porduct_Key: 'radhe',
-      inputCost: '200',
-      findchargername: 'ajmer',
-    }
-    dispatch(ChargerHistory(sendData))
+    // setIsScannerActive(!isScannerActive)
+    // const sendData = {
+    //   Porduct_Key: 'radhe',
+    //   inputCost: '200',
+    //   findchargername: 'ajmer',
+    // }
+    // dispatch(ChargerHistory(sendData))
   }
   return (
     <>
@@ -245,6 +248,9 @@ if(!pid || !receivedData){
             <View style={styles.barcodebox}>
               <QRCodeScanner
                 onRead={onSuccess}
+                // reactivate={isScannerActive}
+                reactivate={isModalVisible ? false : true}
+                reactivateTimeout={2000}
                 // topContent={
                 //   <Text style={styles.centerText}>
                 //     Go to
@@ -318,6 +324,21 @@ if(!pid || !receivedData){
             {/* <EvCharging /> */}
           </View>
           <View style={styles.bottomColorBox}></View>
+          <CustomModal
+            // onRescanClick={ReScanClick}
+            isModal={'publicScanner'}
+            visible={isModalVisible}
+            onClose={() => {
+              setisModalVisible(false)
+            }}
+            // onClose={ReScanClick}
+          >
+            <Text>
+              {!scannerMessage
+                ? 'Sorry, this rarely happens\nPleasr try again'
+                : 'Charger Already in Use'}
+            </Text>
+          </CustomModal>
         </View>
       ) : (
         <View>

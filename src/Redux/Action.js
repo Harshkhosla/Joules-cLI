@@ -571,6 +571,7 @@ export const ChargerHistoryEndTime = (SendData, setLoading) => {
       console.log('uniqueid nhi hai')
       return
     }
+    console.log("SendDataformattedTime",SendData);
     const { formattedDate, formattedTime } = getCurrentDateTime()
     const dataObject = {
       EndTime: formattedTime,
@@ -590,7 +591,7 @@ export const ChargerHistoryEndTime = (SendData, setLoading) => {
 
       const data = await response.json()
       console.log(data, 'data in charger history end time')
-      if (data.message == 'update successfully') {
+      if (data.message == 'Charger History Update successfully') {
         await AsyncStorage.removeItem('Uniqueid')
         console.log('successfull deleted unique id')
       }
@@ -1552,7 +1553,10 @@ export const publicstartCharging = (
   inputCost,
   paymentId,
   findChargingEnergy,
-  findchargingCost
+  findchargingCost,
+  setisChargingAlertVisible,
+  setShowPaymentCompleteModal,
+  animateNextWord
 ) => {
   // Porduct_Key=publicProductKey
   console.log('Porduct_Key in publick start charging', Porduct_Key)
@@ -1580,11 +1584,11 @@ export const publicstartCharging = (
               client.subscribe(`${Porduct_Key}_Charging_Data`), // Topic 2
             ])
           })
-          .then(() => {
-            const sample = new Message('Start Charging')
-            sample.destinationName = `${Porduct_Key}_Notifications`
-            client.send(sample)
-          })
+          // .then(() => {
+          //   const sample = new Message('Start Charging')
+          //   sample.destinationName = `${Porduct_Key}_Notifications`
+          //   client.send(sample)
+          // })
           .then(() => {
             onConnect()
           })
@@ -1606,29 +1610,47 @@ export const publicstartCharging = (
           dispatch(setStateValue(message.payloadString))
           console.log(`${Porduct_Key}_Updates:`, message.payloadString)
           if (message.payloadString == 'Charging Started') {
-            Alert.alert('charging started')
-            setcheckChargingStarted(true)
-            const response = getCurrenttime()
-            SetstartTime(response)
+            animateNextWord()
+          setisChargingAlertVisible(false)
+          setShowPaymentCompleteModal(true)
+            onClose()
             setButtonText('Stop Charging')
             startTimer()
-            onClose()
-            const sendData = {
-              Porduct_Key,
-              inputCost,
-              paymentId,
-              findchargingCost
-            }
-            dispatch(ChargerHistory(sendData))
+            // const sendData = {
+            //   Porduct_Key,
+            //   inputCost,
+            //   // paymentId,
+            //   paymentId:"120",
+            //   findchargingCost
+            // }
+            // dispatch(ChargerHistory(sendData))
+            // Alert.alert('charging started')
+            setcheckChargingStarted(true)
+            // const response = getCurrenttime()
+            // SetstartTime(response)
+            // setButtonText('Stop Charging')
+            // startTimer()
+            // onClose()
+            // const sendData = {
+            //   Porduct_Key,
+            //   inputCost,
+            //   // paymentId,
+            //   paymentId:"120",
+            //   findchargingCost
+            // }
+            // dispatch(ChargerHistory(sendData))
           }
           if (message.payloadString == 'Charging Completed') {
-            Alert.alert('Automatic Disconnect by Device')
+            setisChargingAlertVisible(true)
+            // Alert.alert(`Automatic Disconnect by Device Energy ${findChargingEnergy} Cost ${inputCost}`)
             handleStopCharging('Stop Charging', 'StoppedByDevice')
             disconnectAllClients()
-            dispatch(ChargerHistoryEndTime(findChargingEnergy))
+            console.log("findajmerkingjameer",findChargingEnergy);
+            // dispatch(ChargerHistoryEndTime(findChargingEnergy))
             // dispatch(ChargerHistoryEndTime("120"))
           }
         } else if (message.destinationName === `${Porduct_Key}_Charging_Data`) {
+          
           const updatedMessages = [
             ...topic2State.messages,
             message.payloadString,
@@ -1663,11 +1685,11 @@ export const publicstartCharging = (
           client.subscribe(`${Porduct_Key}_Charging_Data`), // Topic 2
         ])
       })
-      .then(() => {
-        const sample = new Message('Start Charging')
-        sample.destinationName = `${Porduct_Key}_Notifications`
-        client.send(sample)
-      })
+      // .then(() => {
+      //   const sample = new Message('Start Charging')
+      //   sample.destinationName = `${Porduct_Key}_Notifications`
+      //   client.send(sample)
+      // })
       .then(() => {
         onConnect()
       })
@@ -1748,43 +1770,25 @@ export const SendChargingCost = (SendData) => {
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
-    const { chargingCost, Porduct_Key } = SendData
-    // console.log('Porduct_Key door ', Porduct_Key, chargingCost)
-    // client.on('connectionLost', (responseObject) => {
-    //   if (responseObject.errorCode !== 0) {
-    //     console.log(responseObject.errorMessage, 'sendusername in  try')
-    //     // DoorOpening(Porduct_Key)
-    //     client.connect().then(() => {
-    //       console.log('mqtt reconnect in sendusername')
-    //       const sample = new Message(`${name}`)
-    //       sample.destinationName = `${Porduct_Key}_Username`
-    //       client.send(sample)
-    //     })
-    //   }
-    // })
-    // client.on('messageReceived', (message) => {
-    //   console.log('message in on client', message.payloadString)
-    // })
+    const { chargingCost, Porduct_Key ,costofcharging} = SendData
+
     client
       .connect()
       .then(() => {
         // allClients.push(client);
         console.log('mqtt connect in send charging cost')
-        // Assuming you have an object named 'dataObject' that you want to send
-        // const sample = new Message("name")
-        // sample.destinationName = `${Porduct_Key}_Username`
-        // client.send(sample)
-        // const dataObject = {
-        //   chargingCost,
-        //   address: 'ajmer',
-        // }
-        // // onvert the object to JSON format
-        // const jsonString = JSON.stringify(dataObject)
-        // Create a new message object
-        const sample = new Message(chargingCost)
+        const dataToSend = {
+          chargingCost: chargingCost,
+          costofcharging
+          // Add any other properties you need to send
+        };
+        const jsonData = JSON.stringify(dataToSend); // Serialize the object to JSON
+        
+        const sample = new Message(jsonData);
+        // const sample = new Message(chargingCost)
         // Set the destination name
         sample.destinationName = `${Porduct_Key}_Charging_Cost`
-        // Send the message
+     
         client.send(sample)
 
         client.disconnect()
@@ -1849,12 +1853,13 @@ export const DoorOpening = (Porduct_Key) => {
 
 export const publicstopCharging = (
   Porduct_Key,
-  totalTime,
+  SampleDataaa,
   SetEndTime,
-  SampleDataaa
+  setisChargingAlertVisible,
+  setShowPaymentCompleteModal
 ) => {
   // Porduct_Key=publicProductKey
-  console.log('Porduct_Key in publickstop charging', Porduct_Key, totalTime)
+  console.log('Porduct_Key in publickstop charging', Porduct_Key )
   return (dispatch) => {
     const client = new Client({
       uri: MqqtUrl,
@@ -1887,10 +1892,13 @@ export const publicstopCharging = (
           dispatch(setStateValue(message.payloadString))
           console.log(`${Porduct_Key}_Updates:`, message.payloadString)
           if (message.payloadString == 'Charging Completed') {
+            setisChargingAlertVisible(true)
+            setShowPaymentCompleteModal(true)
             const response = getCurrenttime()
-            Alert.alert(`Charging Completed ${totalTime}`)
+            // Alert.alert(`Charging Completed `)
             SetEndTime(response)
             disconnectAllClients()
+            console.log("SampleDataaaSampleDataaaSampleDataaaSampleDataaa",SampleDataaa);
             dispatch(ChargerHistoryEndTime(SampleDataaa))
             // dispatch(ChargerHistoryEndTime("120"))
           }
@@ -1927,6 +1935,8 @@ export const publicstopCharging = (
 export const publicAlreadyChargingStarted = (
   Porduct_Key,
   handleStopCharging,
+  setisChargingAlertVisible
+  
 ) => {
   // Porduct_Key=publicProductKey
   console.log('Porduct_Key in publick start already charging', Porduct_Key)
@@ -1944,7 +1954,9 @@ export const publicAlreadyChargingStarted = (
         if (message.destinationName === `${Porduct_Key}_Updates`) {
          
           if (message.payloadString == 'Charging Completed') {
-            Alert.alert('Automatic Already Disconnect by Device')
+            setisChargingAlertVisible(true)
+            setShowPaymentCompleteModal(true)
+            // Alert.alert(`Automatic Already Disconnect by Device Energy `)
             handleStopCharging('Stop Charging', 'StoppedByDevice')
             disconnectAllClients()
             // dispatch(ChargerHistoryEndTime(findChargingEnergy))
@@ -2012,7 +2024,18 @@ const getuserData = async () => {
   return { name, mid } // Ek object mein name aur mid dono values ko store kiya gaya hai
 }
 
-
+const formatTime = (timeInSeconds) => {
+    
+  const hours = Math.floor(timeInSeconds / 3600)
+  const minutes = Math.floor((timeInSeconds % 3600) / 60)
+  const seconds = timeInSeconds % 60
+  const time = `${hours}:${String(minutes).padStart(2, '0')}:${String(
+    seconds
+  ).padStart(2, '0')}`
+  return `${hours}:${String(minutes).padStart(2, '0')}:${String(
+    seconds
+  ).padStart(2, '0')}`
+}
 
 
 /// send data to userpanel and save to charging history
