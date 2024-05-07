@@ -15,6 +15,8 @@ import {
 } from 'react-native-responsive-dimensions'
 import React, { useEffect, useState } from 'react'
 import Toast from 'react-native-toast-message'
+// import razorpayLogo from "../../assets/mypic.jpg";
+
 import { useDispatch, useSelector } from 'react-redux'
 import { AddTrasationDetail, ChargerHistory, SendChargingCost, StopChargingMode, publicstartCharging} from '../../Redux/Action'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -26,6 +28,13 @@ import Modal from 'react-native-modal'
 import CustomModal from '../../components/CustomModal'
 import { fetchDataAsyncStorageData } from '../../utility/asyncStorage'
 import SetCostRecommend from './SetCostRecommend'
+
+// const razorpayLogo = require('../../assets/Union.png');
+const razorpayLogo = "https://res.cloudinary.com/ddvb5pl1p/image/upload/v1715073770/vks1ypuudvmxwqz7ub88.png"
+
+const resizeImage = (source, width, height) => {
+  return `${source}?width=${width}&height=${height}`;
+};
 
 const SetCost = ({
   open,
@@ -104,20 +113,22 @@ const handlePayment = async () => {
     Alert.alert("Scan please");
     return;
   }
-
+  // const resizedImage = resizeImage(razorpayLogo, -50, 50);
   const options = {
     description: "Payment for your order",
-    image: "https://yourwebsite.com/logo.png",
+    // image: "https://yourwebsite.com/logo.png",
+    // image: "https://res.cloudinary.com/ddvb5pl1p/image/upload/v1714063633/cij7inmzke3q8hz88orn.jpg",
+    image: razorpayLogo,
     currency: "INR",
     key: "rzp_live_V4Palfsx7GsPm3",
     amount: inputCost * 100, // amount in paisa
-    name: "Your Company Name",
+    name: "Jouls Ecotech Pvt Ltd",
     prefill: {
       email: "customer@example.com",
       contact: "9999999999",
       name: "Customer Name",
     },
-    theme: { color: "#F37254" },
+    theme: { color: "#118615" },
   };
 
   try {

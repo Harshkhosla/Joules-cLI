@@ -23,7 +23,7 @@ const InputBoxTwo = ({
       ]}
     >
       <View style={styles.lableContainer}>
-        <Text style={styles.lable}>{label}</Text>
+        <Text style={styles.lable}>{label.charAt(0).toUpperCase() + label.slice(1)}</Text>
       </View>
       <TextInput
         style={[styles.input]}
