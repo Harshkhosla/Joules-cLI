@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   BackHandler,
+  ScrollView,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import {
@@ -18,26 +19,28 @@ import {
 import LoginInput from './LoginInput'
 import SignupInputs from './SignupInputs'
 import Circle from '../Circle'
-import { ScrollView } from 'react-native-gesture-handler'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from '@react-navigation/native'
 
 const SignIn = ({ navigation }) => {
   const [login, setLogin] = useState(true)
- useEffect(() => {
-  const backHandler = BackHandler.addEventListener(
-    'hardwareBackPress',
-    () => {
-      BackHandler.exitApp(); // Back button press par app exit kare
-      return true;
-    }
-  );
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        BackHandler.exitApp() // Back button press par app exit kare
+        return true
+      }
+    )
 
-  return () => backHandler.remove();
-}, [navigation]);
+    return () => backHandler.remove()
+  }, [navigation])
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : '100'}>
-      <ScrollView>
+    <ScrollView style={styles.Container}>
+      <KeyboardAvoidingView
+        style={styles.Container}
+        behavior={Platform.OS === 'ios' ? 'padding' : '100'}
+      >
         <View style={styles.Container}>
           <View style={styles.LogoContainer}>
             <View style={styles.circles}>
@@ -83,24 +86,18 @@ const SignIn = ({ navigation }) => {
                       ? 'Don’t have an account?'
                       : 'Already have an account?'}{' '}
                   </Text>
-                  <TouchableOpacity>
-                    {login ? (
-                      <Text onPress={() => setLogin(false)} style={styles.link}>
-                        Sign up
-                      </Text>
-                    ) : (
-                      <Text onPress={() => setLogin(true)} style={styles.link}>
-                        Sign in
-                      </Text>
-                    )}
+                  <TouchableOpacity onPress={() => setLogin(!login)}>
+                    <Text style={styles.link}>
+                      {login ? 'Sign up' : 'Login'}
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </View>
             </View>
           </View>
         </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </ScrollView>
   )
 }
 
@@ -109,7 +106,7 @@ export default SignIn
 const styles = StyleSheet.create({
   Container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
   },
   LogoContainer: {
     backgroundColor: '#fff',
@@ -122,12 +119,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-end',
     position: 'absolute',
-    // backgroundColor: 'red',
     gap: 8,
     bottom: hp(-25),
   },
   LogoWrapper: {
-    // backgroundColor: 'pink',
     borderRadius: 14,
     elevation: 3,
   },
@@ -140,14 +135,16 @@ const styles = StyleSheet.create({
   },
   SignInBoxContainer: {
     flex: 1,
+    minHeight: hp(75),
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
+    // backgroundColor: 'red',
     backgroundColor: '#fff',
     marginTop: -18,
+    justifyContent: 'center',
   },
   SignIn_UpBox: {
-    // flex: 1,
-    // minHeight: hp(70),
+    flex: 1,
     margin: 20,
     borderRadius: 20,
     padding: 20,
@@ -175,8 +172,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Rubik',
   },
   Inputs: {
+    // flex: 1,
     // marginHorizontal: 20,
-    // alignItems: 'center',
+    // justifyContent: 'center',
   },
   row: {
     flexDirection: 'row',
@@ -188,7 +186,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   link: {
-    fontWeight: 600,
+    fontWeight: 'bold',
     color: 'green',
     textDecorationLine: 'underline',
   },

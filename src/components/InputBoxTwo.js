@@ -1,17 +1,39 @@
 import { StyleSheet, Text, View, TextInput } from 'react-native'
 import React from 'react'
 
-const InputBoxTwo = ({ label, placeholder ,value,setValue,objectData}) => {
-  console.log("props data",label,value)
-  const handleSetData=(e)=>{
-    setValue({...objectData,[label]:e})
+const InputBoxTwo = ({
+  label,
+  placeholder,
+  value,
+  setValue,
+  objectData,
+  CheckValuePresent,
+}) => {
+  // console.log('sdasd', CheckValuePresent)
+  // console.log('props data', label, value)
+  const handleSetData = (e) => {
+    setValue({ ...objectData, [label]: e })
   }
+
   return (
-    <View style={styles.InputContainer}>
+    <View
+      style={[
+        styles.InputContainer,
+        CheckValuePresent && { borderColor: 'red' },
+      ]}
+    >
       <View style={styles.lableContainer}>
         <Text style={styles.lable}>{label}</Text>
       </View>
-      <TextInput style={styles.input} placeholderTextColor={"#BEBEBE"} placeholder={placeholder} value={value} onChangeText={(e)=>{setValue({...objectData,[label]:e})}}/>
+      <TextInput
+        style={[styles.input]}
+        placeholderTextColor={'#BEBEBE'}
+        placeholder={placeholder}
+        value={value}
+        onChangeText={(e) => {
+          setValue({ ...objectData, [label]: e })
+        }}
+      />
       {/* <TextInput style={styles.input} placeholder={placeholder} value={value} onChangeText={(e)=>{handleSetData(e)}}/> */}
     </View>
   )
@@ -44,6 +66,6 @@ const styles = StyleSheet.create({
   },
   input: {
     paddingLeft: 14,
-    color:"black"
+    color: 'black',
   },
 })

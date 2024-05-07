@@ -26,34 +26,41 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin'
+import { color } from 'd3'
 
 const LoginInput = ({ navigation }) => {
-  
-const ApiURL = 'http://165.22.223.26:5000' // live url
-// const ApiURL = 'http://192.168.1.6:5200' // live url
-  const [loading, setLoading] = useState(false);
+  const ApiURL = 'http://165.22.223.26:5000' // live url
+  // const ApiURL = 'http://192.168.1.6:5200' // live url
+  const [loading, setLoading] = useState(false)
   const [userData, setuserData] = useState({ email: '', password: '' })
+  const [emailValuePresent, setEmailValuePresent] = useState(false)
+  const [passwordValuePresent, setPasswordValuePresent] = useState(false)
   const [rememberMe, setRememberMe] = useState(true)
   const dispatch = useDispatch()
 
-  const login = async() => {
+  const login = async () => {
     // await dispatch(signItUp(userData, navigation))
     const allValuesPresent = Object.keys(userData).every(
       (key) => userData[key] !== ''
     )
-    if (!allValuesPresent) {
-      return Toast.show({
-        type: 'error',
-        position: 'top',
-        text1: 'Login Error',
-        text2: 'please input all field',
-        visibilityTime: 4000,
-        text1Style: { color: 'red', fontSize: 14 },
-        autoHide: true,
-        bottomOffset: 40,
-        swipeable: true,
-      })
-    }
+
+    setEmailValuePresent(!userData.email)
+    setPasswordValuePresent(!userData.password)
+
+    // if (!allValuesPresent) {
+    //   return Toast.show({
+    //     type: 'error',
+    //     position: 'top',
+    //     text1: 'Login Error',
+    //     text2: 'please input all field',
+    //     visibilityTime: 4000,
+    //     text1Style: { color: 'red', fontSize: 14 },
+    //     autoHide: true,
+    //     bottomOffset: 40,
+    //     swipeable: true,
+    //   })
+    // }
+
     const generalEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     // const hasNumber = /\d/.test(userData.Email);
     // const isValid = generalEmailRegex.test(userData.Email) && userData.Email.toLowerCase().includes('@gmail.com') && hasNumber;
@@ -75,18 +82,17 @@ const ApiURL = 'http://165.22.223.26:5000' // live url
     }
     if (isValid && allValuesPresent) {
       try {
-        setLoading(true);
-        const response = dispatch(signItUp(userData, navigation,setLoading))
-        setuserData({...userData,email:"",password:""})
-        console.log("click in login button");
+        setLoading(true)
+        const response = dispatch(signItUp(userData, navigation, setLoading))
+        setuserData({ ...userData, email: '', password: '' })
+        console.log('click in login button')
         setTimeout(() => {
           setLoading(false)
-        }, 10000);
+        }, 10000)
       } catch (error) {
         console.error('error in login user', error)
       }
-    } 
-    else {
+    } else {
       Toast.show({
         type: 'error',
         position: 'top',
@@ -106,7 +112,7 @@ const ApiURL = 'http://165.22.223.26:5000' // live url
     webClientId:
       '156987578910-u2mg62hrg7dk6d2deunerts475sr59mb.apps.googleusercontent.com', // Replace with your web client ID from Google Cloud Console
     androidClientId:
-    "156987578910-mh16soc5k45kvf0heu87uaqtmnhm1h2p.apps.googleusercontent.com",
+      '156987578910-mh16soc5k45kvf0heu87uaqtmnhm1h2p.apps.googleusercontent.com',
     scopes: ['profile', 'email'],
   })
 
@@ -124,49 +130,49 @@ const ApiURL = 'http://165.22.223.26:5000' // live url
       const response = await fetch(`${ApiURL}/admin/user/signin`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            tokenId: userInfo.idToken,
-            email: userInfo.user.email,
-            // Add any other required user data here
+          tokenId: userInfo.idToken,
+          email: userInfo.user.email,
+          // Add any other required user data here
         }),
-    });
+      })
 
-    // Handle the response from your backend API
-    const data = await response.json();
-    console.log('Backend API response:', data);
-    
-    if (response.ok) {
+      // Handle the response from your backend API
+      const data = await response.json()
+      console.log('Backend API response:', data)
+
+      if (response.ok) {
         if (data?.mid) {
-            const mid = data.mid;
-            await AsyncStorage.setItem('mid', mid);
+          const mid = data.mid
+          await AsyncStorage.setItem('mid', mid)
         }
         if (data?.name) {
-            const name = data.name;
-            await AsyncStorage.setItem('name', name);
+          const name = data.name
+          await AsyncStorage.setItem('name', name)
         }
         if (data?.authToken) {
-            const authtoken = JSON.stringify(data.authToken);
-            console.log('authtoken', authtoken);
-            await AsyncStorage.setItem('Authtoken', authtoken);
-            dispatch(setAuthtoken(authtoken));
-            Toast.show({
-                type: 'success',
-                text1: 'login Successfull',
-                text2: data?.toast,
-                text1Style: { color: 'green' },
-                text2Style: { color: 'black' },
-                position: 'top',
-            });
-            navigation.navigate('chargerSelection');
+          const authtoken = JSON.stringify(data.authToken)
+          console.log('authtoken', authtoken)
+          await AsyncStorage.setItem('Authtoken', authtoken)
+          dispatch(setAuthtoken(authtoken))
+          Toast.show({
+            type: 'success',
+            text1: 'login Successfull',
+            text2: data?.toast,
+            text1Style: { color: 'green' },
+            text2Style: { color: 'black' },
+            position: 'top',
+          })
+          navigation.navigate('chargerSelection')
         }
-    } else {
+      } else {
         // Handle non-200 responses here
-        console.error('Non-200 response received:', response.status);
-    }
-    
-    // console.log('Backend API response:', response.data);
+        console.error('Non-200 response received:', response.status)
+      }
+
+      // console.log('Backend API response:', response.data);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // User cancelled the sign-in flow
@@ -193,8 +199,14 @@ const ApiURL = 'http://165.22.223.26:5000' // live url
             value={userData.email}
             setValue={setuserData}
             objectData={userData}
+            CheckValuePresent={emailValuePresent}
           />
         </View>
+        {emailValuePresent && (
+          <Text style={{ color: 'red', marginLeft: 10 }}>
+            Please enter a valid email address
+          </Text>
+        )}
         <View>
           <InputBoxTwo
             label="password"
@@ -202,7 +214,13 @@ const ApiURL = 'http://165.22.223.26:5000' // live url
             value={userData.password}
             setValue={setuserData}
             objectData={userData}
+            CheckValuePresent={passwordValuePresent}
           />
+          {passwordValuePresent && (
+            <Text style={{ color: 'red', marginLeft: 10 }}>
+              Please enter a password
+            </Text>
+          )}
         </View>
       </View>
       <View style={styles.forgotRememberContainer}>
@@ -222,33 +240,36 @@ const ApiURL = 'http://165.22.223.26:5000' // live url
           <Text style={styles.rememberMeText}>Remember me</Text>
         </View> */}
       </View>
-      <TouchableOpacity style={styles.SignupButton} onPress={login} disabled={loading}>
-      {loading ? (
-          <ActivityIndicator size="small" color="green"/>
-        ) :  
-        (<Text style={styles.SignupButtonText}>Login</Text>
+      <TouchableOpacity
+        style={styles.SignupButton}
+        onPress={login}
+        disabled={loading}
+      >
+        {loading ? (
+          <ActivityIndicator size="small" color="green" />
+        ) : (
+          <Text style={styles.SignupButtonText}>Login</Text>
         )}
       </TouchableOpacity>
 
-      <Text style={styles.ortext}>or</Text>
-
+      {/* <Text style={styles.ortext}>or</Text> */}
       <View style={styles.socialButtonsContainer}>
         {/* <TouchableOpacity style={styles.socialButton}> */}
-          {/* <View style={styles.socialIconWrapper}> */}
-            {/* <Image
+        {/* <View style={styles.socialIconWrapper}> */}
+        {/* <Image
                 source={require('../../assets/googlelogo.png')}
                 // style={styles.socialIconText}
               /> */}
-            <GoogleSigninButton
-              style={{ width: 192, height: 48 }}
-              size={GoogleSigninButton.Size.Wide}
-              color={GoogleSigninButton.Color.Dark}
-              onPress={handleGoogleLogin}
-              disabled={false}
-            />
-          {/* </View> */}
+        {/* <GoogleSigninButton
+          style={{ width: 192, height: 48 }}
+          size={GoogleSigninButton.Size.Wide}
+          color={GoogleSigninButton.Color.Dark}
+          onPress={handleGoogleLogin}
+          disabled={false}
+        /> */}
+        {/* </View> */}
         {/* </TouchableOpacity> */}
-        <TouchableOpacity style={styles.socialButton}>
+        {/* <TouchableOpacity style={styles.socialButton}>
           <View>
             <Image source={require('../../assets/facebookvector.png')} />
           </View>
@@ -257,7 +278,7 @@ const ApiURL = 'http://165.22.223.26:5000' // live url
           <View>
             <Image source={require('../../assets/apple.png')} />
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   )
@@ -266,7 +287,7 @@ const ApiURL = 'http://165.22.223.26:5000' // live url
 const styles = StyleSheet.create({
   container: {
     // backgroundColor: 'red',
-    flex: 1,
+    // flex: 1,
     // Adjust container styles if needed
   },
 
