@@ -976,6 +976,26 @@ export const getUserData = (mid) => {
   }
 }
 
+export const fetchQrCodeDetails = (formData) => {
+  return async () => {
+    try {
+      const response = await fetch(`${ApiURL}/app/scan`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      const data = await response.json();
+      return data
+      // console.log(data,"datadatadata");
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  }
+}
+
 // ====================================================  // ==========================================================
 
 export const setAuthtoken = (authtoken) => {

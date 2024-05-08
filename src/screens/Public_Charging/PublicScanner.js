@@ -26,6 +26,7 @@ import {
   NameAndPid,
   SendUsername,
   UpdatName,
+  fetchQrCodeDetails,
   findChargingCost,
   setModal,
   setProductKey,
@@ -57,7 +58,7 @@ export default function Dashboard({ navigation, route }) {
 
   const [qrScannerImg, setqrScannerImg] = useState(null)
   const [isScannerActive, setIsScannerActive] = useState(true)
-  const [scannerMessage, setScannerMessage] = useState(false)
+  const [scannerMessage, setScannerMessage] = useState("")
   // require('../../assets/defaultuser.png')
   console.log('isScannerActive', isScannerActive)
   const myStorage = {
@@ -70,21 +71,52 @@ export default function Dashboard({ navigation, route }) {
     },
   }
 
-  const selectImage = () => {
-    launchImageLibrary({ mediaType: 'photo' }, (response) => {
-      console.log('Image library response:', response)
-      if (
-        !response.didCancel &&
-        response.assets &&
-        response.assets.length > 0
-      ) {
-        const selectedImage = response.assets[0] // Get the first asset
-        const source = { uri: selectedImage.uri }
-        setqrScannerImg(source)
+  // const selectImage = () => {
+  //   launchImageLibrary({ mediaType: 'photo' }, (response) => {
+  //     console.log('Image library response:', response)
+  //     if (
+  //       !response.didCancel &&
+  //       response.assets &&
+  //       response.assets.length > 0
+  //     ) {
+  //       const selectedImage = response.assets[0] // Get the first asset
+  //       const source = { uri: selectedImage.uri }
+  //       setqrScannerImg(source)
+  //     }
+  //   })
+  // }
+
+  const selectImageFromGallery = async () => {
+    const options = {
+      mediaType: 'photo',
+    };
+  
+    launchImageLibrary(options, async (response) => {
+      console.log("response",response);
+      if (!response.didCancel && !response.error) {
+        const formData = new FormData();
+        formData.append('image', {
+          uri: response.assets[0].uri,
+          type: response.assets[0].type,
+          name: response.assets[0].fileName,
+        });
+        const response2=await dispatch(fetchQrCodeDetails(formData))
+        console.log(response2,"response");
+        if(!response2 || response2.error){
+          setScannerMessage("Seems to be an invalid QR Code.\n Try with a different QR Code.")
+          setisModalVisible(true)
+          return
+        }
+
+        if(response2?.qrCodeData){
+          const pid=response2.qrCodeData
+          handleSendMessage(pid)
+        }
       }
-    })
-  }
-  console.log(qrScannerImg)
+    });
+  };
+  
+
 
   const receivedData = route.params?.name || 'User'
 
@@ -95,47 +127,30 @@ export default function Dashboard({ navigation, route }) {
     console.log("cleanedWifiString",cleanedWifiString);
     const isCharger = checkIsCharger(cleanedWifiString)
     if (!isCharger) {
-      setScannerMessage(false)
+      setScannerMessage("Sorry, this rarely happens\nPleasr try again")
       setisModalVisible(true)
       console.log('Is not Charger')
       return
     }
-    setloading(true)
-    dispatch(DoorOpening(cleanedWifiString))
-
-    let mqttResult = false // Variable to hold the result
-    checkMQTTMessages(cleanedWifiString, async(result) => {
-      console.log('resultresultradhe', result)
-      if (result) {
-        dispatch(setModal(true))
-        apicall(cleanedWifiString)
-        console.log('navigate to newhome')
-        await AsyncStorage.setItem('pid', cleanedWifiString)
-        navigation.navigate('Newhome')
-      } else if (!result) {
-            setloading(false)
-            setScannerMessage(true)
-            setisModalVisible(true)
-            return
-          }
-      });
-      
-      console.log("resultresultresultvidhal",mqttResult);
+    
+    handleSendMessage(cleanedWifiString)
+    
+    console.log("resultresultresultvidhal");
   }
 
 const apicall=async(pid)=>{
-let SendData={}
-if(!pid || !receivedData){
+// let SendData={}
+if(!pid){
   return 
 }
-  if(pid){  
-    SendData.Porduct_Key=pid
-  }
-  if(receivedData){
-    SendData.name=receivedData
-  }
+  // if(pid){  
+  //   SendData.Porduct_Key=pid
+  // }
+  // if(receivedData){
+  //   SendData.name=receivedData
+  // }
   try {
-    console.log("in try api calll");
+    // console.log("in try api calll");
     const findChargingCost1=await dispatch(findChargingCost(pid))
     // const response=await dispatch(NameAndPid(SendData,navigation,setloading))
     // const response=await dispatch(SendUsername(SendData))
@@ -193,10 +208,14 @@ if(!pid || !receivedData){
 
   const checkIsCharger = (pid) => {
     // PID ko lowercase mein convert karein
+    console.log(pid.length,"length");
     const lowercasePID = pid.toLowerCase()
-    if (pid.length <= 30 && pid.length>19) {
+    if(pid=="2x7z6m8y9n1o0p3q4r5s"){
       return true
     }
+    // if (pid.length <= 30 && pid.length>19) {
+    //   return true
+    // }
     // "pes" ya "pel" ka presence check karein
     if (lowercasePID.includes('pes') || lowercasePID.includes('pel')) {
       console.log('pid.lengthpid.length', pid.length)
@@ -210,6 +229,28 @@ if(!pid || !receivedData){
       return false
     }
   }
+
+
+const handleSendMessage=async(pid)=>{
+  setloading(true)
+  dispatch(DoorOpening(pid))
+
+  checkMQTTMessages(pid, async(result) => {
+    console.log('resultresultradhe', result)
+    if (result) {
+      dispatch(setModal(true))
+      apicall(pid)
+      console.log('navigate to newhome')
+      await AsyncStorage.setItem('pid', pid)
+      navigation.navigate('Newhome')
+    } else if (!result) {
+          setloading(false)
+          setScannerMessage("Charger Already in Use")
+          setisModalVisible(true)
+          return
+        }
+    });
+}
 
   const ReScanClick = () => {
     console.log('rescanclick', isModalVisible)
@@ -289,7 +330,7 @@ if(!pid || !receivedData){
                 flexDirection: 'row',
               }}
             >
-              <TouchableOpacity onPress={() => selectImage()}>
+              <TouchableOpacity onPress={() => selectImageFromGallery()}>
                 <Image
                   style={styles.actionimgicon}
                   source={require('../../assets/picimg.png')}
@@ -334,10 +375,12 @@ if(!pid || !receivedData){
             // onClose={ReScanClick}
           >
             <Text>
-              {!scannerMessage
+              {/* {!scannerMessage
                 ? 'Sorry, this rarely happens\nPleasr try again'
-                : 'Charger Already in Use'}
+                : 'Charger Already in Use'} */}
+                {scannerMessage}
             </Text>
+            {/* "Seems to be an invalid QR Code. Try with a different QR Code." */}
           </CustomModal>
         </View>
       ) : (
