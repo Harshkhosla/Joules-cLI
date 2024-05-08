@@ -125,17 +125,16 @@ export default function Dashboard({ navigation, route }) {
   const onSuccess = async (e) => {
     const cleanedWifiString = e.data
     console.log("cleanedWifiString",cleanedWifiString);
-    const isCharger = checkIsCharger(cleanedWifiString)
-    if (!isCharger) {
-      setScannerMessage("Sorry, this rarely happens\nPleasr try again")
-      setisModalVisible(true)
-      console.log('Is not Charger')
-      return
-    }
-    
     handleSendMessage(cleanedWifiString)
-    
-    console.log("resultresultresultvidhal");
+  
+    // const isCharger = checkIsCharger(cleanedWifiString)
+    // if (!isCharger) {
+    //   setScannerMessage("Sorry, this rarely happens\nPleasr try again")
+    //   setisModalVisible(true)
+    //   console.log('Is not Charger')
+    //   return
+    // }
+    // console.log("resultresultresultvidhal");
   }
 
 const apicall=async(pid)=>{
@@ -232,6 +231,14 @@ if(!pid){
 
 
 const handleSendMessage=async(pid)=>{
+  const isCharger = checkIsCharger(pid)
+  if (!isCharger) {
+    setScannerMessage("Sorry, this rarely happens\nPleasr try again")
+    setisModalVisible(true)
+    console.log('Is not Charger')
+    return
+  }
+
   setloading(true)
   dispatch(DoorOpening(pid))
 
