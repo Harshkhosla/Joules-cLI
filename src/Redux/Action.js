@@ -1058,7 +1058,7 @@ export const Clicked = (storingTime, Porduct_Key) => {
 export const EcoMode = (Porduct_Key) => {
   return (dispatch) => {
     const client = new Client({
-      uri: 'ws://34.100.251.160:9001/mqtt',
+      uri: 'ws://34.100.251.160:9001/',
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })

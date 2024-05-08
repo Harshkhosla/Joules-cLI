@@ -28,7 +28,9 @@ interface BluetoothLowEnergyApi {
   connectedDevice: Device | null;
   allDevices: Device[];
   heartRate: number;
-  sendData: (data: string) => void;
+   sendToDevice: (jsonData: any) => Promise<void>; // Add this line
+   isModalVisible1: boolean; // Add the isModalVisible1 variable
+   setIsModalVisible1: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function useBLE(): BluetoothLowEnergyApi {

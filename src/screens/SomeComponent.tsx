@@ -6,9 +6,10 @@ import AppTopHeader from './App_top_Header'; // Renamed to follow naming convent
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import DeviceModal from './DeviceConnectionModal';
 import useBLE from './bluetooth';
+import { NavigationProp } from '@react-navigation/native';
 import App_top_Header from './App_top_Header';
 
-const App = ({ navigation }) => {
+const App = ({ navigation }: { navigation: any } ) => {
   const {
     requestPermissions,
     scanForPeripherals,
@@ -19,10 +20,11 @@ const App = ({ navigation }) => {
     sendToDevice,
     disconnectFromDevice,
   } = useBLE();
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [progress, setProgress] = useState(0);
-  const [timer, setTimer] = useState(null);
-  const [DevicesConnected, setDevicesConnected] = useState<string>("");
+  // const [timer, setTimer] = useState(null);
+  const [timer, setTimer] = useState<ReturnType<typeof setTimeout> | null>(null);
+  const [DevicesConnected, setDevicesConnected] = useState<string | null>("");
   useEffect(()=>{
     const data23 = async()=>{
     const data = await AsyncStorage.getItem('DevicesConnected')
@@ -94,6 +96,8 @@ const App = ({ navigation }) => {
             title={'Connect via Bluetooth'}
             navigation={navigation}
             color={'#C1E0C2'}
+            isHome={null}
+            name={null}
           />
           <View style={styles.formcontent}>
             <View style={{ flex: 1 }}>
@@ -151,9 +155,11 @@ const App = ({ navigation }) => {
         <>
      <View style={styles1.container}>
         <App_top_Header
-          title={'Nearby Chargers'}
-          navigation={navigation}
-          color={'#C1E0C2'}
+           title={'Nearby Chargers'}
+           navigation={navigation}
+           color={'#C1E0C2'}
+           isHome={null}
+           name={null}
         />
 
         <View style={styles1.formcontent}>

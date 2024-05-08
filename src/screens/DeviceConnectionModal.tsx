@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import {
   FlatList,
   ListRenderItemInfo,
@@ -17,6 +17,7 @@ import {
 } from 'react-native-responsive-dimensions'
 import { Device } from 'react-native-ble-plx'
 import App_top_Header from './App_top_Header'
+import useBLE from './bluetooth'
 
 type DeviceModalListItemProps = {
   item: ListRenderItemInfo<Device>
@@ -50,9 +51,12 @@ const DeviceModalListItem: FC<DeviceModalListItemProps> = (props) => {
 }
 
 const DeviceModal: FC<DeviceModalProps> = (props) => {
-  const { devices, visible, connectToPeripheral, closeModal, navigation } =
+  const { devices, visible, connectToPeripheral, connectedDevice,closeModal,navigation } =
     props
-  console.log(devices)
+  console.log(connectedDevice,"IS IT COMMING");
+  const {
+    sendToDevice,
+  } = useBLE()
 
   const renderDeviceModalListItem = useCallback(
     (item: ListRenderItemInfo<Device>) => {
@@ -67,6 +71,15 @@ const DeviceModal: FC<DeviceModalProps> = (props) => {
     [closeModal, connectToPeripheral]
   )
 
+  const [charger1, setCharger1] = useState('');
+  const [charger2, setCharger2] = useState('');
+  const [charger3, setCharger3] = useState('');
+
+  const handleSendData = () => {
+    sendToDevice(
+     `SSID=${charger1}&PSK=${charger2}&`
+    ) // Call sendToDevice with your static data
+  }
   return (
     <Modal
       style={modalStyle.modalContainer}
@@ -89,19 +102,37 @@ const DeviceModal: FC<DeviceModalProps> = (props) => {
             </Text>
             <TextInput
               style={styles.input}
-              secureTextEntry={true}
+              // secureTextEntry={true}
               placeholder="Chagrer 1"
+              value={charger1}
+              onChangeText={setCharger1}
             />
             <TextInput
               style={styles.input}
               placeholder="Chagrer 2"
-              secureTextEntry={true}
+              // secureTextEntry={true}
+              value={charger2}
+              onChangeText={setCharger2}
             />
             <TextInput
               style={styles.input}
               placeholder="Chagrer 3"
-              secureTextEntry={true}
+              // secureTextEntry={true}
+              value={charger3}
+              onChangeText={setCharger3}
             />
+             <TouchableOpacity
+          style={styles.ConnectButton}
+          onPress={handleSendData}
+        >
+          <Text style={styles.ConnectText}>Scan Again</Text>
+        </TouchableOpacity>
+
+          <FlatList
+          contentContainerStyle={modalStyle.modalFlatlistContiner}
+          data={devices}
+          renderItem={renderDeviceModalListItem}
+        />
             <View style={styles.progressWindow} />
           </View>
           <View style={styles.tagNote}>
