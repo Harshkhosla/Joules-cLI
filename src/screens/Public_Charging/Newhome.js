@@ -524,7 +524,8 @@ const Newhome = ({ navigation }) => {
                 source={require('../../assets/power.png')}
               />
               <Text style={{ color: '#9A9A9A' }}>
-                Charger- {showChargingEnergy ? SamplePowerData : '0'} w
+                {/* Charger- {showChargingEnergy ? SamplePowerData : '0'} w */}
+                Charger- {showChargingEnergy ? Math.round(SamplePowerData * 100) / 100 : '0'} w
               </Text>
             </View>
           </View>
@@ -546,7 +547,7 @@ const Newhome = ({ navigation }) => {
                   : ChargingCost || '0'} */}
                 ₹{' '}
                 {showChargingEnergy
-                  ? Math.round(ChargingCost * 100) / 100
+                  ? Math.round(ChargingCost * 1000) / 1000
                   : '0'}
               </Text>
               <View
