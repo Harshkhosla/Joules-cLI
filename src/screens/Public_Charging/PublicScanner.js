@@ -43,11 +43,13 @@ import App_top_Header from '../App_top_Header'
 import LoaderComponent from '../../components/loader'
 import { launchImageLibrary } from 'react-native-image-picker'
 import CustomModal from '../../components/CustomModal'
+import BlurredModalWithLoader from './loader'
 
 export default function Dashboard({ navigation, route }) {
   const MqqtUrl = 'ws://34.100.251.160:9001/mqtt'
   const dispatch = useDispatch()
   const [isModalVisible, setisModalVisible] = useState(false)
+  const [isloaderModalVisible,setIsloaderModalVisible]=useState(false)
   const [loading, setloading] = useState(false)
   const [hasPermission, setHasPermission] = useState(null)
   const [scanned, setScanned] = useState(false)
@@ -94,6 +96,8 @@ export default function Dashboard({ navigation, route }) {
     launchImageLibrary(options, async (response) => {
       console.log("response",response);
       if (!response.didCancel && !response.error) {
+        setIsloaderModalVisible(true)
+      
         const formData = new FormData();
         formData.append('image', {
           uri: response.assets[0].uri,
@@ -103,12 +107,14 @@ export default function Dashboard({ navigation, route }) {
         const response2=await dispatch(fetchQrCodeDetails(formData))
         console.log(response2,"response");
         if(!response2 || response2.error){
+          setIsloaderModalVisible(false)
           setScannerMessage("Seems to be an invalid QR Code.\n Try with a different QR Code.")
           setisModalVisible(true)
           return
         }
 
         if(response2?.qrCodeData){
+          setIsloaderModalVisible(false)
           const pid=response2.qrCodeData
           handleSendMessage(pid)
         }
@@ -389,6 +395,7 @@ const handleSendMessage=async(pid)=>{
             </Text>
             {/* "Seems to be an invalid QR Code. Try with a different QR Code." */}
           </CustomModal>
+          <BlurredModalWithLoader visible={isloaderModalVisible} isLoading={true}/>
         </View>
       ) : (
         <View>
