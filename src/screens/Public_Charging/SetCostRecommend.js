@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   StyleSheet,
   Text,
@@ -14,8 +14,40 @@ import {
 import Modal from 'react-native-modal'
 import { Picker } from '@react-native-picker/picker'
 
-const SetCostRecommend = ({ open, onClose }) => {
+const SetCostRecommend = ({ open, onClose ,CostofCharging}) => {
   const [selectedCar, setSelectedCar] = useState('')
+  const [paycost,setPaycost]=useState("")
+  const [batteryPercentage,setBatteryPercentage]=useState("")
+
+  const handleBatteryPercentage = (percentage) => {
+
+    if (percentage > 100) {
+        console.log("Percentage value cannot exceed 100.");
+        return;
+    }
+
+    setBatteryPercentage(`${percentage}`);
+}
+
+useEffect(()=>{
+  if (!batteryPercentage || !selectedCar) {
+    setPaycost(0);
+    return;
+}
+
+if (batteryPercentage > 100) {
+    console.error("Percentage value cannot exceed 100.");
+    return;
+}
+
+const payCostInWh = (selectedCar * 1000 * (100 - batteryPercentage)) / 100;
+const payCostInRupees = Math.ceil((CostofCharging / 1000) * payCostInWh);
+console.log("payCostInWh", payCostInWh,payCostInRupees,CostofCharging,selectedCar);
+setPaycost(payCostInRupees);
+},[batteryPercentage,selectedCar])
+
+
+  
 
   return (
     <Modal
@@ -47,10 +79,12 @@ const SetCostRecommend = ({ open, onClose }) => {
                 style={styles.picker}
                 prompt="Select Your Vehicle"
               >
-                <Picker.Item label="Select Your Vehicle" value="" />
-                <Picker.Item label="Nexon EV" value="Nexon EV" />
-                <Picker.Item label="Mahindra" value="Mahindra" />
-                <Picker.Item label="KIA" value="KIA" />
+                <Picker.Item label="OLA S1X +" value="3" />
+                <Picker.Item label="Ather" value="2.97" />
+                <Picker.Item label="Tvs" value="3.4" />
+                <Picker.Item label="Jetter" value="5.1" />
+                <Picker.Item label="Bajaj Chetak" value="3.2" />
+                <Picker.Item label="Jetter" value="2.08" />
               </Picker>
             </View>
 
@@ -58,9 +92,15 @@ const SetCostRecommend = ({ open, onClose }) => {
               <TextInput
                 style={styles.inputbox}
                 placeholder="Enter Your Battery Percentage (%)"
+                placeholderTextColor={"#7D7B7B"}
+                keyboardType='numeric'
+                value={batteryPercentage}
+                onChangeText={handleBatteryPercentage}
               />
             </View>
-            <Text style={styles.text}>Amount to Full Charge -</Text>
+            {/* <Text style={styles.text}>Cost of Charging - </Text> */}
+            <Text style={styles.text}>Amount of Full Charge - </Text>
+            {/* <Text style={styles.text}>Amount of charing units - </Text> */}
             <TouchableOpacity
               style={{
                 flex: 1,
@@ -68,7 +108,7 @@ const SetCostRecommend = ({ open, onClose }) => {
                 justifyContent: 'flex-end',
               }}
             >
-              <Text style={styles.payButton}>Pay ₹10</Text>
+              <Text style={styles.payButton}>Pay ₹ {paycost}</Text>
             </TouchableOpacity>
           </View>
 
@@ -114,6 +154,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   text: {
+    color:"#6C6C6C",
     fontSize: 16,
     marginBottom: 10,
   },
@@ -146,6 +187,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     height: 45,
     marginBottom: hp(3),
+    color:"#000000"
   },
   bottomColorBox: {
     position: 'absolute',

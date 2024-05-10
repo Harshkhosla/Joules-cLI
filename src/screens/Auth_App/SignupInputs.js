@@ -50,150 +50,86 @@ const SignupInputs = ({ navigation }) => {
       message: '',
     })
 
-  const signup = async () => {
-    const allValuesEmpty = Object.keys(userData).every(
-      (key) => userData[key] !== ''
-    )
-
-    if (!userData.Name) {
-      setNameValuePresent((prev) => ({
-        ...prev,
-        show: true,
-        message: 'Please enter a valid Name',
-      }))
-      return
-    } else {
-      setNameValuePresent((prev) => ({
-        ...prev,
-        show: false,
-        // message: 'Please enter a valid Name',
-      }))
+    const validateName = () => {
+      if (!userData.Name) {
+        setNameValuePresent({ show: true, message: 'Please enter a valid Name' })
+        return false
+      } else if (userData.Name.length <= 3) {
+        setNameValuePresent({ show: true, message: 'Name must be at least 3 characters' })
+        return false
+      } else {
+        setNameValuePresent({ show: false, message: '' })
+        return true
+      }
     }
-
-    if (!userData.Email) {
-      setEmailValuePresent((prev) => ({
-        ...prev,
-        show: true,
-        message: 'Please enter a valid email address',
-      }))
-      return
-    } else {
-      setEmailValuePresent((prev) => ({
-        ...prev,
-        show: false,
-        message: '',
-      }))
+    
+    const validateEmail = () => {
+      if (!userData.Email) {
+        setEmailValuePresent({ show: true, message: 'Please enter a valid email address' })
+        return false
+      } else {
+        const generalEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        const isValidEmail =
+          generalEmailRegex.test(userData.Email) &&
+          userData.Email.toLowerCase().includes('@gmail.com')
+        if (!isValidEmail) {
+          setEmailValuePresent({ show: true, message: "Email must include characters '@' and '.'" })
+          return false
+        } else {
+          setEmailValuePresent({ show: false, message: '' })
+          return true
+        }
+      }
     }
-
-    if (!userData.Password) {
-      setPasswordValuePresent((prev) => ({
-        ...prev,
-        show: true,
-        message: 'Please enter a password',
-      }))
-      return
-    } else {
-      if (userData.Password.length < 4) {
-        setPasswordValuePresent((prev) => ({
-          ...prev,
-          show: true,
-          message: 'Password must be at least 4 characters long',
-        }))
+    
+    const validatePassword = () => {
+      if (!userData.Password) {
+        setPasswordValuePresent({ show: true, message: 'Please enter a password' })
+        return false
+      } else if (userData.Password.length < 4) {
+        setPasswordValuePresent({ show: true, message: 'Password must be at least 4 characters long' })
+        return false
+      } else {
+        setPasswordValuePresent({ show: false, message: '' })
+        return true
+      }
+    }
+    
+    const validateConfirmPassword = () => {
+      if (!userData.ConfirmPassword) {
+        setConfirmPasswordValuePresent({ show: true, message: 'Please enter a Confirm password' })
+        return false
+      } else if (userData.Password !== userData.ConfirmPassword) {
+        setConfirmPasswordValuePresent({ show: true, message: 'Password and Confirm password do not match' })
+        return false
+      } else {
+        setConfirmPasswordValuePresent({ show: false, message: '' })
+        return true
+      }
+    }
+    
+    
+    const signup = async () => {
+      if (!validateName() || !validateEmail() || !validatePassword() || !validateConfirmPassword()) {
         return
       }
-      setPasswordValuePresent((prev) => ({
-        ...prev,
-        show: false,
-        message: '',
-      }))
-    }
-
-    if (!userData.ConfirmPassword) {
-      setConfirmPasswordValuePresent((prev) => ({
-        ...prev,
-        show: true,
-        message: 'Please enter a Confirm password',
-      }))
-      return
-    } else {
-      setConfirmPasswordValuePresent((prev) => ({
-        ...prev,
-        show: false,
-        message: '',
-      }))
-    }
-
-    // setNameValuePresent(!userData.Name)
-    // setEmailValuePresent(!userData.Email)
-    // setPasswordValuePresent(!userData.Password)
-    // setConfirmPasswordValuePresent(!userData.ConfirmPassword)
-
-    // if (!allValuesEmpty) {
-    //   return Toast.show({
-    //     type: 'error',
-    //     position: 'top',
-    //     text1: 'Sign up Error',
-    //     text2: 'please input all fields',
-    //     visibilityTime: 4000,
-    //     text1Style: { color: 'red', fontSize: 14 },
-    //     autoHide: true,
-    //     bottomOffset: 40,
-    //     swipeable: true,
-    //   })
-    // }
-
-    const generalEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    const isValid =
-      generalEmailRegex.test(userData.Email) &&
-      userData.Email.toLowerCase().includes('@gmail.com')
-    if (!isValid) {
-      setEmailValuePresent((prev) => ({
-        ...prev,
-        show: true,
-        message: "Email must include characters '@' and '.'",
-      }))
-      setPasswordValuePresent((prev) => ({
-        ...prev,
-        show: false,
-        message: '',
-      }))
-      return
-    }
-    // if (!isValid) {
-    //   return Toast.show({
-    //     type: 'error',
-    //     position: 'top',
-    //     text1: 'Login Error',
-    //     text2: 'email is invalid',
-    //     visibilityTime: 4000,
-    //     text1Style: { color: 'red', fontSize: 14 },
-    //     autoHide: true,
-    //     bottomOffset: 40,
-    //     swipeable: true,
-    //   })
-    // }
-
-    if (isValid && allValuesEmpty) {
-      if (userData.Password !== userData.ConfirmPassword) {
-        return Toast.show({
-          type: 'error',
-          text2: 'password and confirm password are different',
-          text1: 'validation error',
-          text1Style: { color: 'red', fontSize: 14 },
-          text2Style: { color: 'black' },
-          swipeable: true,
-        })
-      }
-
-      try {
-        setLoading(true)
-        const response = dispatch(loginuser(userData, navigation, setLoading))
-        setuserData({ Name: '', Email: '', Password: '', ConfirmPassword: '' })
-      } catch (error) {
-        console.log('error in singup in signupinputs component', error)
+    
+      const allValuesEmpty = Object.values(userData).every(value => value !== '')
+    
+      if (allValuesEmpty) {
+        try {
+          setLoading(true)
+          const response =await dispatch(loginuser(userData, navigation, setLoading))
+          if(response){
+            setuserData({ Name: '', Email: '', Password: '', ConfirmPassword: '' })
+          }
+          console.log("response",response);
+        } catch (error) {
+          console.log('Error in signup in signupinputs component', error)
+        }
       }
     }
-  }
+    
 
   return (
     <View style={styles.container}>

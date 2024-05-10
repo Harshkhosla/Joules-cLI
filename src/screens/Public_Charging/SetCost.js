@@ -113,6 +113,7 @@ const handlePayment = async () => {
     Alert.alert("Scan please");
     return;
   }
+ 
   // const resizedImage = resizeImage(razorpayLogo, -50, 50);
   const options = {
     description: "Payment for your order",
@@ -452,7 +453,7 @@ const ChargingCost = ({
       </TouchableOpacity>
 
       <View>
-        <SetCostRecommend open={isModalVisible} onClose={toggleModal} />
+        <SetCostRecommend open={isModalVisible} onClose={toggleModal} CostofCharging={findchargingCost}/>
       </View>
     </View>
   )

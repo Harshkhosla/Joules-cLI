@@ -724,8 +724,6 @@ export const NameAndPid = (input, navigation, setLoading) => {
 // ----------------------------------------CREATING ACCOUNT DATA--------------------------------------------------------------------------------//
 
 export const loginuser = (input, navigation, setLoading) => {
-  // debugger;
-  // console.log("harsh", input);
   return async (dispatch) => {
     const lowercaseKeysObject = Object.fromEntries(
       Object.entries(input).map(([key, value]) => [key.toLowerCase(), value])
@@ -757,9 +755,12 @@ export const loginuser = (input, navigation, setLoading) => {
         setLoading(false)
         console.log('email already exist')
         Toast.show({
-          text2: data.message,
-          position: 'top',
+          type: 'error',
+          // text2: 'Password and Confirm password are different',
+          text1: 'Email already exists',
           text1Style: { color: 'red', fontSize: 14 },
+          // text2Style: { color: 'black' },
+          swipeable: true,
         })
         return
       }
@@ -771,13 +772,13 @@ export const loginuser = (input, navigation, setLoading) => {
         const name = data.name
         await AsyncStorage.setItem('name', name)
       }
-      if (data?.message) {
-        Toast.show({
-          text2: data.message,
-          position: 'top',
-          text1Style: { color: 'green', fontSize: 14 },
-        })
-      }
+      // if (data?.message) {
+      //   Toast.show({
+      //     text2: data.message,
+      //     position: 'top',
+      //     text1Style: { color: 'green', fontSize: 14 },
+      //   })
+      // }
       if (data?.error) {
         Toast.show({
           type: 'error',
@@ -795,6 +796,7 @@ export const loginuser = (input, navigation, setLoading) => {
       }
       setLoading(false)
       navigation.navigate('chargerSelection')
+      return data
     } catch (err) {
       Toast.show({
         type: 'error',
