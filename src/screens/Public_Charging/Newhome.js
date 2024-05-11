@@ -47,12 +47,12 @@ const Newhome = ({ navigation }) => {
 
   const [timeInSec, SetTimeinSec] = useState('')
   const [showChargingEnergy, setShowChargingEnergy] = useState(false)
-  const [showPaymentCompleteModal,setShowPaymentCompleteModal]=useState(false)
+  const [showPaymentCompleteModal, setShowPaymentCompleteModal] =
+    useState(false)
   // charingalert modal
   const [shouldAnimate, setShouldAnimate] = useState(true)
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const words = ['Payment Successful', 'Starting..', 'Charging Started'];
-
+  const [currentWordIndex, setCurrentWordIndex] = useState(0)
+  const words = ['Payment Successful', 'Starting..', 'Charging Started']
 
   //
   const [getsample, setGetSampledata] = useState(true)
@@ -293,7 +293,7 @@ const Newhome = ({ navigation }) => {
   const handleCostAndTimeOpen = async (text, unique) => {
     // console.log('text', text, unique)
     if (text == 'Stop Charging') {
-      console.log('StopChargingStopChargingStopCharging',unique)
+      console.log('StopChargingStopChargingStopCharging', unique)
       handleClickStopCharging(unique)
     } else if (text == 'Start Charging' && AsyncStoragePiddata) {
       dispatch(setModal(true))
@@ -439,9 +439,9 @@ const Newhome = ({ navigation }) => {
   }
 
   const animateNextWord = () => {
-    setShouldAnimate(true);
-    setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length);
-  };
+    setShouldAnimate(true)
+    setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length)
+  }
 
   const generateHoursArray = () => {
     if (EndTime < 0 || EndTime > 23) {
@@ -525,7 +525,11 @@ const Newhome = ({ navigation }) => {
               />
               <Text style={{ color: '#9A9A9A' }}>
                 {/* Charger- {showChargingEnergy ? SamplePowerData : '0'} w */}
-                Charger- {showChargingEnergy ? Math.round(SamplePowerData * 100) / 100 : '0'} w
+                Charger-{' '}
+                {showChargingEnergy
+                  ? Math.round(SamplePowerData * 100) / 100
+                  : '0'}{' '}
+                w
               </Text>
             </View>
           </View>

@@ -18,7 +18,13 @@ import Toast from 'react-native-toast-message'
 // import razorpayLogo from "../../assets/mypic.jpg";
 
 import { useDispatch, useSelector } from 'react-redux'
-import { AddTrasationDetail, ChargerHistory, SendChargingCost, StopChargingMode, publicstartCharging} from '../../Redux/Action'
+import {
+  AddTrasationDetail,
+  ChargerHistory,
+  SendChargingCost,
+  StopChargingMode,
+  publicstartCharging,
+} from '../../Redux/Action'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import TimerSlider from '../TimerSlider'
 import ModalRadhe from './radheModal'
@@ -30,11 +36,12 @@ import { fetchDataAsyncStorageData } from '../../utility/asyncStorage'
 import SetCostRecommend from './SetCostRecommend'
 
 // const razorpayLogo = require('../../assets/Union.png');
-const razorpayLogo = "https://res.cloudinary.com/ddvb5pl1p/image/upload/v1715073770/vks1ypuudvmxwqz7ub88.png"
+const razorpayLogo =
+  'https://res.cloudinary.com/ddvb5pl1p/image/upload/v1715073770/vks1ypuudvmxwqz7ub88.png'
 
 const resizeImage = (source, width, height) => {
-  return `${source}?width=${width}&height=${height}`;
-};
+  return `${source}?width=${width}&height=${height}`
+}
 
 const SetCost = ({
   open,
@@ -54,7 +61,7 @@ const SetCost = ({
   setisChargingAlertVisible,
   ChargingEnergy,
   setShowPaymentCompleteModal,
-  animateNextWord
+  animateNextWord,
 }) => {
   const dispatch = useDispatch()
   const [ShowSetCost, SetShowSetCost] = useState(true)
@@ -75,7 +82,7 @@ const SetCost = ({
   if (!findchargingCostPerHour || findchargingCostPerHour == '0') {
     findchargingCostPerHour = 12
   }
-  console.log("findcharingfindcharing",findChargingEnergy);
+  console.log('findcharingfindcharing', findChargingEnergy)
   // if(!findChargingEnergy){
   //   console.log("findChargingEnergy",findChargingEnergy);
   //   findChargingEnergy="0"
@@ -101,64 +108,61 @@ const SetCost = ({
     setGetSampledata(true)
   }
 
-
-
-const handlePayment = async () => {
-  if(inputCost<=0 || !inputCost){
-    Alert.alert('Please set the cost of charging first')
-    return
-  }
-  const { storedData } = await fetchDataAsyncStorageData();
-  if (!storedData) {
-    Alert.alert("Scan please");
-    return;
-  }
- 
-  // const resizedImage = resizeImage(razorpayLogo, -50, 50);
-  const options = {
-    description: "Payment for your order",
-    // image: "https://yourwebsite.com/logo.png",
-    // image: "https://res.cloudinary.com/ddvb5pl1p/image/upload/v1714063633/cij7inmzke3q8hz88orn.jpg",
-    image: razorpayLogo,
-    currency: "INR",
-    key: "rzp_live_V4Palfsx7GsPm3",
-    amount: inputCost * 100, // amount in paisa
-    name: "Jouls Ecotech Pvt Ltd",
-    prefill: {
-      email: "customer@example.com",
-      contact: "9999999999",
-      name: "Customer Name",
-    },
-    theme: { color: "#118615" },
-  };
-
-  try {
-    const data = await RazorpayCheckout.open(options);
-    if (data && data.razorpay_payment_id) {
-      console.log("navigate to start charging");
-      onClose()
-      const sendData = {
-        inputCost,
-        Porduct_Key: storedData,
-        paymentId: data.razorpay_payment_id,
-        findchargingCost,
-      };
-      setShowPaymentCompleteModal(false);
-      setisChargingAlertVisible(true);
-
-      const response = await dispatch(ChargerHistory(sendData));
-      console.log("response", response);
-      if (response?.message === "ChargerHistory added successfully") {
-        animateNextWord();
-        startCharging();
-      }
+  const handlePayment = async () => {
+    if (inputCost <= 0 || !inputCost) {
+      Alert.alert('Please set the cost of charging first')
+      return
     }
-  } catch (error) {
-    console.error("Payment Error:", error);
-    Alert.alert("Payment Failed", "Payment failed. Please try again.");
-  }
-};
+    const { storedData } = await fetchDataAsyncStorageData()
+    if (!storedData) {
+      Alert.alert('Scan please')
+      return
+    }
 
+    // const resizedImage = resizeImage(razorpayLogo, -50, 50);
+    const options = {
+      description: 'Payment for your order',
+      // image: "https://yourwebsite.com/logo.png",
+      // image: "https://res.cloudinary.com/ddvb5pl1p/image/upload/v1714063633/cij7inmzke3q8hz88orn.jpg",
+      image: razorpayLogo,
+      currency: 'INR',
+      key: 'rzp_live_V4Palfsx7GsPm3',
+      amount: inputCost * 100, // amount in paisa
+      name: 'Jouls Ecotech Pvt Ltd',
+      prefill: {
+        email: 'customer@example.com',
+        contact: '9999999999',
+        name: 'Customer Name',
+      },
+      theme: { color: '#118615' },
+    }
+
+    try {
+      const data = await RazorpayCheckout.open(options)
+      if (data && data.razorpay_payment_id) {
+        console.log('navigate to start charging')
+        onClose()
+        const sendData = {
+          inputCost,
+          Porduct_Key: storedData,
+          paymentId: data.razorpay_payment_id,
+          findchargingCost,
+        }
+        setShowPaymentCompleteModal(false)
+        setisChargingAlertVisible(true)
+
+        const response = await dispatch(ChargerHistory(sendData))
+        console.log('response', response)
+        if (response?.message === 'ChargerHistory added successfully') {
+          animateNextWord()
+          startCharging()
+        }
+      }
+    } catch (error) {
+      console.error('Payment Error:', error)
+      Alert.alert('Payment Failed', 'Payment failed. Please try again.')
+    }
+  }
 
   const startCharging = async (paymentId) => {
     const { storedData } = await fetchDataAsyncStorageData()
@@ -171,7 +175,7 @@ const handlePayment = async () => {
     //   Porduct_Key:storedData,
     //   costofcharging:findchargingCost
     // }
-    
+
     // dispatch(SendChargingCost(sendData))
     console.log('heklo')
     if (inputCost > 0 || Time) {
@@ -453,7 +457,11 @@ const ChargingCost = ({
       </TouchableOpacity>
 
       <View>
-        <SetCostRecommend open={isModalVisible} onClose={toggleModal} CostofCharging={findchargingCost}/>
+        <SetCostRecommend
+          open={isModalVisible}
+          onClose={toggleModal}
+          CostofCharging={findchargingCost}
+        />
       </View>
     </View>
   )
