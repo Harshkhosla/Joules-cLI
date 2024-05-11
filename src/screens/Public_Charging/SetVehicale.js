@@ -14,10 +14,7 @@ import {
 } from 'react-native-responsive-dimensions'
 import Modal from 'react-native-modal'
 
-const SetVehicale = ({ open, onClose }) => {
-  const [selectedCar, setSelectedCar] = useState('')
-  const [paycost, setPaycost] = useState('')
-  const [batteryPercentage, setBatteryPercentage] = useState('')
+const SetVehicale = ({ open, onClose,selectedVehicle,setSelectedVehicle }) => {
 
   //
   const [expandedIndex, setExpandedIndex] = useState(null)
@@ -28,27 +25,29 @@ const SetVehicale = ({ open, onClose }) => {
 
   const companies = [
     {
-      name: 'OLA S1X +',
+      name: 'OLA',
       models: [
-        { modelName: 'Model A1', value: 3 },
-        { modelName: 'Model A2', value: 3 },
-        { modelName: 'Model A3', value: 3 },
+        { modelName: 'S1 X+', value: 3 },
+        { modelName: 'S1 Pro', value: 3.97 },
+        { modelName: 'S1 air', value: 3 },
+        { modelName: 'S1 X', value: 4 },
       ],
     },
     {
       name: 'Ather',
       models: [
-        { modelName: 'Model A1', value: 2.97 },
-        { modelName: 'Model A2', value: 2.97 },
-        { modelName: 'Model A3', value: 2.97 },
+        { modelName: '450 x', value: 2.97 },
+        { modelName: '4505', value: 2.9 },
+        { modelName: 'rizta', value: 3.07 },
       ],
     },
     {
       name: 'TVS',
       models: [
-        { modelName: 'Model A1', value: 3.4 },
-        { modelName: 'Model A2', value: 3.4 },
-        { modelName: 'Model A3', value: 3.4 },
+        { modelName: 'iQube', value: 3.4 },
+        { modelName: 'iQubes', value: 3.4 },
+        { modelName: 'ST', value: 3.4 },
+        { modelName: 'ST 17', value: 3.4 },
       ],
     },
     {
@@ -58,21 +57,20 @@ const SetVehicale = ({ open, onClose }) => {
         { modelName: 'Model A2', value: 5.1 },
         { modelName: 'Model A3', value: 5.1 },
       ],
+      value:""
     },
     {
-      name: 'Bajaj Chetak',
+      name: 'Bajaj',
       models: [
-        { modelName: 'Model A1', value: 3.2 },
-        { modelName: 'Model A2', value: 3.2 },
-        { modelName: 'Model A3', value: 3.2 },
+        { modelName: 'Chetak', value: 3.2 }
       ],
     },
     {
-      name: 'Jetter',
+      name: 'Okinawa',
       models: [
-        { modelName: 'Model A1', value: 2.08 },
-        { modelName: 'Model A2', value: 2.08 },
-        { modelName: 'Model A3', value: 2.08 },
+        { modelName: 'Praise Pro', value: 2.08 },
+        { modelName: 'Praise', value: 3.24 },
+        { modelName: 'iPraise +', value: 3.6 },
       ],
     },
   ]
@@ -85,8 +83,10 @@ const SetVehicale = ({ open, onClose }) => {
     }
   }
 
-  const handleModelPress = (modelName, value) => {
-    console.log('Selected model:', modelName, 'with value:', value)
+  const handleModelPress = (name,model, kwh) => {
+    console.log('Selected model:',name, model, 'with value:', kwh)
+    setSelectedVehicle({name,model,kwh})
+    onClose()
   }
   //
   return (
@@ -126,10 +126,12 @@ const SetVehicale = ({ open, onClose }) => {
                         styles.companyName,
                         expandedIndex === index && {
                           backgroundColor: '#C1E0C2',
+                          height:35,
+                          width:370,
                         },
                       ]}
                     >
-                      {company.name}
+                    {company.name}
                     </Text>
                     {expandedIndex === index && (
                       <View style={styles.modelsContainer}>
@@ -137,12 +139,12 @@ const SetVehicale = ({ open, onClose }) => {
                           <TouchableOpacity
                             key={idx}
                             onPress={() =>
-                              handleModelPress(model.modelName, model.value)
+                              handleModelPress(company.name,model.modelName, model.value)
                             }
                             style={styles.modelsContainer}
                           >
                             <Text style={styles.modelText}>
-                              {model.modelName}
+                                {model.modelName}
                               {/* : {model.value} */}
                             </Text>
                           </TouchableOpacity>
@@ -188,7 +190,7 @@ const styles = StyleSheet.create({
   },
   contentBox: {
     marginVertical: 10,
-    padding: 20,
+    // padding: 20,
     backgroundColor: '#fff',
     flex: 1,
     borderRadius: 14,
@@ -198,23 +200,29 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#6C6C6C',
-    fontSize: 16,
+    fontSize: 20,
     marginBottom: 10,
+    fontWeight:500,
+    padding:20
+
   },
 
   container2: {
-    paddingVertical: 10,
+    paddingVertical: 1,
+    marginLeft:-10
     // backgroundColor: '#f0f0f0',
   },
   companyContainer: {
     marginBottom: 10,
     borderRadius: 8,
-    padding: 10,
+    padding: 2,
+    // marginLeft:12
   },
   companyName: {
     fontSize: 18,
-    padding: 5,
-    borderRadius: 8,
+    color:"#6C6C6C",
+    marginLeft:14,  
+    // padding:10
   },
   modelsContainer: {
     marginTop: 5,
@@ -222,7 +230,8 @@ const styles = StyleSheet.create({
   modelText: {
     fontSize: 16,
     marginBottom: 5,
-    marginLeft: 20,
+    marginLeft: 35,
+    color:"#6C6C6C",
   },
   bottomColorBox: {
     position: 'absolute',

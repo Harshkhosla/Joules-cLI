@@ -90,19 +90,21 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
                 style={styles.profileimg}
                 resizeMode="contain"
               />
-              <Text style={{ fontSize: 18, color: '#118615' }}>{name}</Text>
-              <Text style={{ fontSize: 12 }}>mailg@gmail.com</Text>
-
-              <TouchableOpacity
-                style={styles.prfileEdit}
+              <Text
+                style={{ fontSize: 18, color: '#118615' }}
                 onPress={() => navigateToEdit()}
               >
-                <Image
+                {name}
+              </Text>
+              <Text style={{ fontSize: 12 }}>mailg@gmail.com</Text>
+
+              <TouchableOpacity style={styles.prfileEdit}>
+                {/* <Image
                   source={require('../assets/account_circle.png')}
                   style={{ height: 20, width: 20, resizeMode: 'contain' }}
                   resizeMode="contain"
-                />
-                <Text style={{ color: '#FFFFFF' }}>Edit Profile</Text>
+                /> */}
+                <Text style={{ color: '#FFFFFF' }}>Wallet balance : ₹100</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -179,6 +181,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#118615',
     padding: 8,
+    paddingHorizontal: 12,
     gap: 5,
     justifyContent: 'space-between',
     marginTop: 5,

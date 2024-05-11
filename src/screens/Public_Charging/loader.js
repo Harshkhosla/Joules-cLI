@@ -11,7 +11,7 @@ const BlurredModalWithLoader = ({ visible, isLoading }) => {
       <View style={styles.container}>
         <View style={styles.blurBackground} />
         <View style={styles.loaderContainer}>
-          {isLoading && <ActivityIndicator size="large" color="#ffffff" />}
+          {isLoading && <ActivityIndicator size="large" color="#118615" />}
         </View>
         {/* You can add additional UI components here */}
       </View>

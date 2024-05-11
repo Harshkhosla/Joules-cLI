@@ -34,6 +34,7 @@ import Modal from 'react-native-modal'
 import CustomModal from '../../components/CustomModal'
 import { fetchDataAsyncStorageData } from '../../utility/asyncStorage'
 import SetCostRecommend from './SetCostRecommend'
+import { Checkbox } from 'react-native-paper'
 
 // const razorpayLogo = require('../../assets/Union.png');
 const razorpayLogo =
@@ -108,62 +109,81 @@ const SetCost = ({
     setGetSampledata(true)
   }
 
-  const handlePayment = async () => {
-    if (inputCost <= 0 || !inputCost) {
-      Alert.alert('Please set the cost of charging first')
-      return
-    }
-    const { storedData } = await fetchDataAsyncStorageData()
-    if (!storedData) {
-      Alert.alert('Scan please')
-      return
-    }
 
-    // const resizedImage = resizeImage(razorpayLogo, -50, 50);
-    const options = {
-      description: 'Payment for your order',
-      // image: "https://yourwebsite.com/logo.png",
-      // image: "https://res.cloudinary.com/ddvb5pl1p/image/upload/v1714063633/cij7inmzke3q8hz88orn.jpg",
-      image: razorpayLogo,
-      currency: 'INR',
-      key: 'rzp_live_V4Palfsx7GsPm3',
-      amount: inputCost * 100, // amount in paisa
-      name: 'Jouls Ecotech Pvt Ltd',
-      prefill: {
-        email: 'customer@example.com',
-        contact: '9999999999',
-        name: 'Customer Name',
-      },
-      theme: { color: '#118615' },
-    }
 
-    try {
-      const data = await RazorpayCheckout.open(options)
-      if (data && data.razorpay_payment_id) {
-        console.log('navigate to start charging')
-        onClose()
-        const sendData = {
-          inputCost,
-          Porduct_Key: storedData,
-          paymentId: data.razorpay_payment_id,
-          findchargingCost,
-        }
-        setShowPaymentCompleteModal(false)
-        setisChargingAlertVisible(true)
-
-        const response = await dispatch(ChargerHistory(sendData))
-        console.log('response', response)
-        if (response?.message === 'ChargerHistory added successfully') {
-          animateNextWord()
-          startCharging()
-        }
-      }
-    } catch (error) {
-      console.error('Payment Error:', error)
-      Alert.alert('Payment Failed', 'Payment failed. Please try again.')
-    }
+const handlePayment = async () => {
+  if(inputCost<=0 || !inputCost){
+    Alert.alert('Please set the cost of charging first')
+    return
   }
+  const { storedData } = await fetchDataAsyncStorageData();
+  if (!storedData) {
+    Alert.alert("Scan please");
+    return;
+  }
+  // onClose()
+  // const sendData = {
+  //   inputCost,
+  //   Porduct_Key: storedData,
+  //   paymentId:"120",
+  //   findchargingCost,
+  // };
+  // setShowPaymentCompleteModal(false);
+  // setisChargingAlertVisible(true);
 
+  // const response = await dispatch(ChargerHistory(sendData));
+  // console.log("response", response);
+  // if (response?.message === "ChargerHistory added successfully") {
+  //   animateNextWord();
+  //   startCharging();
+
+  // }
+  // const resizedImage = resizeImage(razorpayLogo, -50, 50);
+  const options = {
+    description: "Payment for your order",
+    // image: "https://yourwebsite.com/logo.png",
+    // image: "https://res.cloudinary.com/ddvb5pl1p/image/upload/v1714063633/cij7inmzke3q8hz88orn.jpg",
+    image: razorpayLogo,
+    currency: "INR",
+    key: "rzp_live_V4Palfsx7GsPm3",
+    amount: inputCost * 100, // amount in paisa
+    name: "Jouls Ecotech Pvt Ltd",
+    prefill: {
+      email: "customer@example.com",
+      contact: "9999999999",
+      name: "Customer Name",
+    },
+    theme: { color: "#118615" },
+  };
+
+  try {
+    const data = await RazorpayCheckout.open(options);
+    if (data && data.razorpay_payment_id) {
+      console.log("navigate to start charging");
+      onClose()
+      const sendData = {
+        inputCost,
+        Porduct_Key: storedData,
+        paymentId: data.razorpay_payment_id,
+        findchargingCost,
+      };
+      setShowPaymentCompleteModal(false);
+      setisChargingAlertVisible(true);
+
+      const response = await dispatch(ChargerHistory(sendData));
+      console.log("response", response);
+      if (response?.message === "ChargerHistory added successfully") {
+        animateNextWord();
+        startCharging();
+      }
+    }
+  } catch (error) {
+    console.error("Payment Error:", error);
+    Alert.alert("Payment Failed", "Payment failed. Please try again.");
+  }
+};
+
+ 
   const startCharging = async (paymentId) => {
     const { storedData } = await fetchDataAsyncStorageData()
     if (!storedData) {
@@ -282,6 +302,7 @@ const SetCost = ({
                     findchargingCost={findchargingCost}
                     setinputcostfromsetcost={setinputcostfromsetcost}
                     chargingUnitsfromsetCost={chargingUnitsfromsetCost}
+                    handlePayment={handlePayment}
                   />
                 ) : (
                   <ChargingSetTime
@@ -299,7 +320,7 @@ const SetCost = ({
                   width: 110,
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginTop: 10,
+                  // marginTop: 10,
                 }}
               >
                 <View
@@ -364,7 +385,10 @@ const ChargingCost = ({
   findchargingCost,
   setinputcostfromsetcost,
   chargingUnitsfromsetCost,
+  handlePayment
 }) => {
+  const [rememberMe, setRememberMe] = useState(true)
+
   console.log(findchargingCost, 'chargincost in chargingcost')
   const handleinputchangecost = (text) => {
     setInputCost(text)
@@ -387,7 +411,7 @@ const ChargingCost = ({
           fontWeight: '600',
         }}
       >
-        Enter Amount{' '}
+        Enter Amount
       </Text>
       <View
         style={{
@@ -432,8 +456,8 @@ const ChargingCost = ({
         style={{
           color: '#6C6C6C',
           fontSize: 16,
-          fontWeight: 600,
-          marginTop: 15,
+          fontWeight: 400,
+          marginTop: 5,
         }}
       >
         {/* {Math.ceil((inputCost / findchargingCost) * 100) / 100} */}
@@ -448,7 +472,7 @@ const ChargingCost = ({
             color: '#118615',
             fontSize: 13,
             fontWeight: '600',
-            marginTop: 15,
+            marginTop: 8,
             textDecorationLine: 'underline',
           }}
         >
@@ -456,11 +480,27 @@ const ChargingCost = ({
         </Text>
       </TouchableOpacity>
 
+      <View style={styles.checkboxContainer}>
+        <Checkbox.Android
+          status={rememberMe ? 'checked' : 'unchecked'}
+          onPress={() => setRememberMe(!rememberMe)}
+          // uncheckedColor={theme.colors.primary}
+          color={'#118615'}
+          style={{ padding: 0, marginLeft: 0 }}
+        />
+        <Text style={styles.rememberMeText}>
+          Use the credits from your wallet : ₹10
+        </Text>
+      </View>
+
       <View>
         <SetCostRecommend
+        setInputCost={setInputCost}
           open={isModalVisible}
           onClose={toggleModal}
           CostofCharging={findchargingCost}
+          chargingUnitsfromsetCost={chargingUnitsfromsetCost}
+          handlePayment={handlePayment}
         />
       </View>
     </View>
@@ -619,6 +659,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'space-between',
   },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: -10,
+    marginTop: 5,
+  },
+  rememberMeText: {
+    fontSize: 14,
+    color: '#6C6C6C',
+  },
   Toggle_SetCost_SetTime: {
     flexDirection: 'row',
     height: 40,
@@ -635,7 +685,9 @@ const styles = StyleSheet.create({
   },
   paymentBox: {
     flexDirection: 'row',
-    height: 80,
+    alignContent: 'center',
+    marginTop: 10,
+    // backgroundColor: 'red',
   },
   payButton: {
     flex: 1,
@@ -650,7 +702,7 @@ const styles = StyleSheet.create({
     // marginTop: 30,
     padding: 10,
     height: 60,
-    marginTop: 20,
+    // marginTop: 20,
     backgroundColor: 'green',
   },
   payButtonText: {
