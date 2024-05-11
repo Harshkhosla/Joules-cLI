@@ -22,6 +22,10 @@ const SetVehicale = ({ open, onClose }) => {
   //
   const [expandedIndex, setExpandedIndex] = useState(null)
 
+  const handleCompanyPress = (index) => {
+    setExpandedIndex(index)
+  }
+
   const companies = [
     {
       name: 'OLA S1X +',
@@ -112,9 +116,21 @@ const SetVehicale = ({ open, onClose }) => {
                   <TouchableOpacity
                     key={index}
                     onPress={() => toggleExpand(index)}
-                    style={styles.companyContainer}
+                    style={[
+                      styles.companyContainer,
+                      // expandedIndex === index && { backgroundColor: 'red' },
+                    ]}
                   >
-                    <Text style={styles.companyName}>{company.name}</Text>
+                    <Text
+                      style={[
+                        styles.companyName,
+                        expandedIndex === index && {
+                          backgroundColor: '#C1E0C2',
+                        },
+                      ]}
+                    >
+                      {company.name}
+                    </Text>
                     {expandedIndex === index && (
                       <View style={styles.modelsContainer}>
                         {company.models.map((model, idx) => (
@@ -197,6 +213,8 @@ const styles = StyleSheet.create({
   },
   companyName: {
     fontSize: 18,
+    padding: 5,
+    borderRadius: 8,
   },
   modelsContainer: {
     marginTop: 5,
