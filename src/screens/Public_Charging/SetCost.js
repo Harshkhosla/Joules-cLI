@@ -69,13 +69,19 @@ const SetCost = ({
   const [inputCost, setInputCost] = useState('')
   const [Time, settime] = useState('')
   const [isModalVisible, setisModalVisible] = useState(false)
+
+  // const [walletValue,setWalletValue]=useState("10")
+  const [rememberMe, setRememberMe] = useState(true)
+  console.log("rememberMe",rememberMe);
   let findchargingCost = useSelector(
     (state) => state.userReducers.setchargingcost
   )
+  console.log("findchargingCost",findchargingCost);
   let findchargingCostPerHour = useSelector(
     (state) => state.userReducers.setchargingcostperhour
   )
   let findChargingEnergy = useSelector((state) => state.userReducers.SetEnergy)
+  let walletValue = useSelector((state) => state.userReducers.WallentBalance)
 
   if (!findchargingCost || findchargingCost == '0') {
     findchargingCost = 12
@@ -121,6 +127,131 @@ const handlePayment = async () => {
     Alert.alert("Scan please");
     return;
   }
+
+
+if(walletValue=="0" || Number(walletValue)==0 || !rememberMe){
+  console.log("walletValue",walletValue,inputCost);
+  const options = {
+    description: "Payment for your order",
+    // image: "https://yourwebsite.com/logo.png",
+    // image: "https://res.cloudinary.com/ddvb5pl1p/image/upload/v1714063633/cij7inmzke3q8hz88orn.jpg",
+    image: razorpayLogo,
+    currency: "INR",
+    key: "rzp_live_V4Palfsx7GsPm3",
+    amount: inputCost * 100, // amount in paisa
+    name: "Jouls Ecotech Pvt Ltd",
+    prefill: {
+      email: "customer@example.com",
+      contact: "9999999999",
+      name: "Customer Name",
+    },
+    theme: { color: "#118615" },
+  };
+  try {
+    const data = await RazorpayCheckout.open(options);
+    console.log("datadatadatadaataaa",data);
+    if (data && data.razorpay_payment_id) {
+      console.log("navigate to start charging");
+      onClose()
+      const sendData = {
+        payment:inputCost,
+        inputCost,
+        Porduct_Key: storedData,
+        paymentId: data.razorpay_payment_id,
+        findchargingCost,
+        WalletUse:"0"
+      };
+      setShowPaymentCompleteModal(false);
+      setisChargingAlertVisible(true);
+
+      const response = await dispatch(ChargerHistory(sendData));
+      console.log("response", response);
+      if (response?.message === "ChargerHistory added successfully") {
+        animateNextWord();
+        startCharging();
+      }
+      return
+    }
+  } catch (error) {
+    console.error("Payment Error:", error);
+    Alert.alert("Payment Failed", "Payment failed. Please try again.");
+  }
+}
+
+ else if(Number(inputCost)<=Number(walletValue)){
+  console.log("walletValueelse if",walletValue,inputCost);
+
+    onClose()
+   const sendData = {
+    payment:"0",
+    inputCost,
+    Porduct_Key: storedData,
+    paymentId:"Paid Using Wallet",
+    findchargingCost,
+    WalletUse:inputCost,
+  };
+  setShowPaymentCompleteModal(false);
+  setisChargingAlertVisible(true);
+
+  const response = await dispatch(ChargerHistory(sendData));
+  console.log("response", response);
+  if (response?.message === "ChargerHistory added successfully") 
+    {
+    animateNextWord();
+    startCharging();
+   }
+   return
+  }
+
+ else if(Number(inputCost)>Number(walletValue) && walletValue!==0){
+  console.log("radhe",inputCost,walletValue);
+    const options = {
+      description: "Payment for your order",
+      // image: "https://yourwebsite.com/logo.png",
+      // image: "https://res.cloudinary.com/ddvb5pl1p/image/upload/v1714063633/cij7inmzke3q8hz88orn.jpg",
+      image: razorpayLogo,
+      currency: "INR",
+      key: "rzp_live_V4Palfsx7GsPm3",
+      amount: (inputCost-walletValue) * 100, // amount in paisa
+      name: "Jouls Ecotech Pvt Ltd",
+      prefill: {
+        email: "customer@example.com",
+        contact: "9999999999",
+        name: "Customer Name",
+      },
+      theme: { color: "#118615" },
+    };
+    try {
+      const data = await RazorpayCheckout.open(options);
+      console.log("datadatadatadaataaa",data);
+      if (data && data.razorpay_payment_id) {
+        console.log("navigate to start charging");
+        onClose()
+        const sendData = {
+          payment:inputCost-walletValue,
+          inputCost,
+          Porduct_Key: storedData,
+          paymentId: data.razorpay_payment_id,
+          findchargingCost,
+          WalletUse:walletValue
+        };
+        setShowPaymentCompleteModal(false);
+        setisChargingAlertVisible(true);
+  
+        const response = await dispatch(ChargerHistory(sendData));
+        console.log("response", response);
+        if (response?.message === "ChargerHistory added successfully") {
+          animateNextWord();
+          startCharging();
+         
+        }
+      }
+    } catch (error) {
+      console.error("Payment Error:", error);
+      Alert.alert("Payment Failed", "Payment failed. Please try again.");
+    }
+
+  }
   // onClose()
   // const sendData = {
   //   inputCost,
@@ -139,48 +270,9 @@ const handlePayment = async () => {
 
   // }
   // const resizedImage = resizeImage(razorpayLogo, -50, 50);
-  const options = {
-    description: "Payment for your order",
-    // image: "https://yourwebsite.com/logo.png",
-    // image: "https://res.cloudinary.com/ddvb5pl1p/image/upload/v1714063633/cij7inmzke3q8hz88orn.jpg",
-    image: razorpayLogo,
-    currency: "INR",
-    key: "rzp_live_V4Palfsx7GsPm3",
-    amount: inputCost * 100, // amount in paisa
-    name: "Jouls Ecotech Pvt Ltd",
-    prefill: {
-      email: "customer@example.com",
-      contact: "9999999999",
-      name: "Customer Name",
-    },
-    theme: { color: "#118615" },
-  };
+  
 
-  try {
-    const data = await RazorpayCheckout.open(options);
-    if (data && data.razorpay_payment_id) {
-      console.log("navigate to start charging");
-      onClose()
-      const sendData = {
-        inputCost,
-        Porduct_Key: storedData,
-        paymentId: data.razorpay_payment_id,
-        findchargingCost,
-      };
-      setShowPaymentCompleteModal(false);
-      setisChargingAlertVisible(true);
-
-      const response = await dispatch(ChargerHistory(sendData));
-      console.log("response", response);
-      if (response?.message === "ChargerHistory added successfully") {
-        animateNextWord();
-        startCharging();
-      }
-    }
-  } catch (error) {
-    console.error("Payment Error:", error);
-    Alert.alert("Payment Failed", "Payment failed. Please try again.");
-  }
+  
 };
 
  
@@ -303,6 +395,10 @@ const handlePayment = async () => {
                     setinputcostfromsetcost={setinputcostfromsetcost}
                     chargingUnitsfromsetCost={chargingUnitsfromsetCost}
                     handlePayment={handlePayment}
+                    walletValue={walletValue}
+                    rememberMe={rememberMe}
+                    setRememberMe={setRememberMe}
+
                   />
                 ) : (
                   <ChargingSetTime
@@ -352,7 +448,15 @@ const handlePayment = async () => {
                 // onPress={startCharging}
               >
                 <View>
-                  <Text style={styles.payButtonText}>₹{inputCost}</Text>
+                  {/* <Text style={styles.payButtonText}>₹{inputCost}</Text> */}
+                  <Text style={styles.payButtonText}>
+                    ₹{
+                      !rememberMe ? inputCost :
+                      (rememberMe && (Number(inputCost) - Number(walletValue)) <= 0) ? 0 :
+                      (rememberMe && (Number(inputCost) - Number(walletValue)))
+                    }
+</Text>
+
                   <Text style={[styles.payButtonText, { fontSize: 11 }]}>
                     TOTAL
                   </Text>
@@ -385,9 +489,12 @@ const ChargingCost = ({
   findchargingCost,
   setinputcostfromsetcost,
   chargingUnitsfromsetCost,
-  handlePayment
+  handlePayment,
+  walletValue,
+  rememberMe,
+  setRememberMe
 }) => {
-  const [rememberMe, setRememberMe] = useState(true)
+  // const [rememberMe, setRememberMe] = useState(true)
 
   console.log(findchargingCost, 'chargincost in chargingcost')
   const handleinputchangecost = (text) => {
@@ -489,7 +596,7 @@ const ChargingCost = ({
           style={{ padding: 0, marginLeft: 0 }}
         />
         <Text style={styles.rememberMeText}>
-          Use the credits from your wallet : ₹10
+          Use the credits from your wallet : ₹ {walletValue}
         </Text>
       </View>
 

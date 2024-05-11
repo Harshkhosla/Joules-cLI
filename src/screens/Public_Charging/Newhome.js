@@ -105,7 +105,7 @@ const [isloadershow,setIsloaderShow]=useState(false)
       )
       console.log('chargerhistoryData', chargerhistoryData)
       if (chargerhistoryData.length > 0) {
-        setinputcostfromsetcost(chargerhistoryData[0].payment || '0')
+        setinputcostfromsetcost(chargerhistoryData[0].inputCost || '0')
         setchargingUnitsfromsetCost(
           chargerhistoryData[0].totalChargingUnits || '0'
         )

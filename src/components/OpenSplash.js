@@ -21,19 +21,19 @@ const [version,SetVersioncode]=useState("")
   let versioncode  = useSelector((state) => state?.userReducers?.versionName)
   console.log(versioncode,"sdkhjdsvbvhjbdsvj");
 
-  const fetchData = async () => {
-    try {
-      const storedMid = await AsyncStorage.getItem('mid')
-      const data = await dispatch(getUserData(storedMid))
-      SetVersioncode(data?.version)
-      console.log('userdataradhe', data?.version)
-    } catch (error) {
-      console.error('Error fetching data:', error)
-    }
-  }
-  useEffect(()=>{
-    fetchData();
-  },[])
+  // const fetchData = async () => {
+  //   try {
+  //     const storedMid = await AsyncStorage.getItem('mid')
+  //     const data = await dispatch(getUserData(storedMid))
+  //     SetVersioncode(data?.version)
+  //     console.log('userdataradhe', data?.version)
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error)
+  //   }
+  // }
+  // useEffect(()=>{
+  //   fetchData();
+  // },[])
   const [mid, setMid] = useState('')
   console.log('midmid', mid)
   const [token, setToken] = useState('')
@@ -70,18 +70,19 @@ const [version,SetVersioncode]=useState("")
           navigation.replace('SignIn')
           return
         }
-        if (versioncode!==version) {
-          // dispatch(updateUser(updatedData))
-          navigation.replace('SignIn')
-          return ;
-        }
+        // console.log("versioncode",versioncode,version);
+        // if (versioncode!==version) {
+        //   // dispatch(updateUser(updatedData))
+        //   navigation.replace('chargerSelection')
+        //   return ;
+        // }
 
-        const storedMid = await AsyncStorage.getItem('mid')
-        console.log(storedMid,"dskhjsdvb");
-        const updatedData = {
-          version: versioncode,
-          mid: mid,
-        }
+        // const storedMid = await AsyncStorage.getItem('mid')
+        // console.log(storedMid,"dskhjsdvb");
+        // const updatedData = {
+        //   version: versioncode,
+        //   mid: mid,
+        // }
         // dispatch(updateUser(updatedData,navigation))
         console.log("ddslkvdskjnvds",versioncode!==version);
         fetchChargerHistory(Appmid)
