@@ -83,31 +83,31 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  * Private function to get the list of Native Architectures you want to build.
  * This reads the value from reactNativeArchitectures in your gradle.properties
  * file and works together with the --active-arch-only flag of react-native run-android.
- */
- apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+    */
+    apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
-def reactNativeArchitectures() {
-    def value = project.getProperties().get("reactNativeArchitectures")
-    return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
-}
-
-android {
-    ndkVersion rootProject.ext.ndkVersion
-
-    compileSdkVersion rootProject.ext.compileSdkVersion
-
-    namespace "com.Jouls"
-    defaultConfig {
-        applicationId "com.Jouls"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        missingDimensionStrategy 'react-native-camera', 'general'
-        versionCode 32
-        versionName "1.2.6"
+    def reactNativeArchitectures() {
+        def value = project.getProperties().get("reactNativeArchitectures")
+        return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
     }
 
-    splits {
-        abi {
+    android {
+        ndkVersion rootProject.ext.ndkVersion
+
+        compileSdkVersion rootProject.ext.compileSdkVersion
+
+        namespace "com.Jouls"
+        defaultConfig {
+            applicationId "com.Jouls"
+            minSdkVersion rootProject.ext.minSdkVersion
+            targetSdkVersion rootProject.ext.targetSdkVersion
+            missingDimensionStrategy 'react-native-camera', 'general'
+            versionCode 32
+            versionName "1.2.6"
+        }
+
+        splits {
+            abi {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk false  // If true, also generate a universal APK

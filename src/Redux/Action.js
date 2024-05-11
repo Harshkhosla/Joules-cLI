@@ -916,7 +916,7 @@ export const signItUp = (field, navigation, setLoading) => {
 // ------------------------------------------------------CREATING UPDATE USER  -----------------------------------------//
 
 export const updateUser = (updatedData, navigation) => {
-  console.log('fron back', updatedData.name)
+  console.log('fron back', updatedData?.mid)
   return async () => {
     try {
       // Make PUT request to the backend endpoint

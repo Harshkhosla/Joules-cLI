@@ -1,16 +1,39 @@
 import React, { useEffect, useState } from 'react'
-import { View, ActivityIndicator, Image, StyleSheet } from 'react-native'
+import { View, ActivityIndicator, Image, StyleSheet, Alert } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   GetChargerHistory,
+  getUserData,
   setChargerHistoryPid,
   setChargingStarted,
+  updateUser,
 } from '../Redux/Action'
 import { fetchDataAsyncStorageData } from '../utility/asyncStorage'
+import CustomModal from './CustomModal'
+import { Text } from 'react-native-paper'
+
 
 const AuthLoadingScreen = ({ navigation }) => {
-  // let chargerhistoryData = useSelector((state) => state?.userReducers?.ChargerHistoryData)
+  const [isModalVisible, setisModalVisible] = useState(false)
+
+const [version,SetVersioncode]=useState("")
+  let versioncode  = useSelector((state) => state?.userReducers?.versionName)
+  console.log(versioncode,"sdkhjdsvbvhjbdsvj");
+
+  const fetchData = async () => {
+    try {
+      const storedMid = await AsyncStorage.getItem('mid')
+      const data = await dispatch(getUserData(storedMid))
+      SetVersioncode(data?.version)
+      console.log('userdataradhe', data?.version)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }
+  useEffect(()=>{
+    fetchData();
+  },[])
   const [mid, setMid] = useState('')
   console.log('midmid', mid)
   const [token, setToken] = useState('')
@@ -47,7 +70,20 @@ const AuthLoadingScreen = ({ navigation }) => {
           navigation.replace('SignIn')
           return
         }
+        if (versioncode!==version) {
+          // dispatch(updateUser(updatedData))
+          navigation.replace('SignIn')
+          return ;
+        }
 
+        const storedMid = await AsyncStorage.getItem('mid')
+        console.log(storedMid,"dskhjsdvb");
+        const updatedData = {
+          version: versioncode,
+          mid: mid,
+        }
+        // dispatch(updateUser(updatedData,navigation))
+        console.log("ddslkvdskjnvds",versioncode!==version);
         fetchChargerHistory(Appmid)
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -142,6 +178,12 @@ const AuthLoadingScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Image source={require('../assets/jouls.png')} style={styles.image} />
       <ActivityIndicator size="large" color="#118615" />
+      <CustomModal
+        visible={isModalVisible}
+        onClose={() => setisModalVisible(false)}
+      >
+        <Text>Currently Not Available</Text>
+      </CustomModal>
     </View>
   )
 }

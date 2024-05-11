@@ -22,7 +22,8 @@ const initialState = {
     IsSetCostModalOpen:false,
     ChargerHistoryData:[],
     checkChargingStarted:false,
-    chagerPid:""
+    chagerPid:"",
+    versionName:"1.5.6"
 }
 
 function userReducers(state = initialState, action) {
