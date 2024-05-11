@@ -16,14 +16,14 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import SetVehicale from './SetVehicale'
 import { Picker } from '@react-native-picker/picker'
 
-const SetCostRecommend = ({ open, onClose, CostofCharging }) => {
+const SetCostRecommend = ({ open, onClose, CostofCharging ,setInputCost,chargingUnitsfromsetCost,handlePayment}) => {
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible)
   }
 
-  const [selectedCar, setSelectedCar] = useState('')
+  const [selectedVehicle, setSelectedVehicle] = useState({name:"",model:"",kwh:""})
   const [paycost, setPaycost] = useState('')
   const [batteryPercentage, setBatteryPercentage] = useState('')
 
@@ -37,8 +37,9 @@ const SetCostRecommend = ({ open, onClose, CostofCharging }) => {
   }
 
   useEffect(() => {
-    if (!batteryPercentage || !selectedCar) {
+    if (!batteryPercentage || !selectedVehicle.kwh) {
       setPaycost(0)
+      setInputCost(0)
       return
     }
 
@@ -47,17 +48,29 @@ const SetCostRecommend = ({ open, onClose, CostofCharging }) => {
       return
     }
 
-    const payCostInWh = (selectedCar * 1000 * (100 - batteryPercentage)) / 100
+    const payCostInWh = (selectedVehicle.kwh * 1000 * (100 - batteryPercentage)) / 100
     const payCostInRupees = Math.ceil((CostofCharging / 1000) * payCostInWh)
     console.log(
       'payCostInWh',
       payCostInWh,
       payCostInRupees,
-      CostofCharging,
-      selectedCar
     )
     setPaycost(payCostInRupees)
-  }, [batteryPercentage, selectedCar])
+    setInputCost(payCostInRupees)
+  }, [batteryPercentage, selectedVehicle])
+
+  console.log(
+    'payCostInWh',
+    selectedVehicle
+  )
+
+
+  const handlePaycost=()=>{
+    handlePayment()
+    setTimeout(() => {
+      onClose()
+    }, 500);
+  }
 
   return (
     <Modal
@@ -85,15 +98,15 @@ const SetCostRecommend = ({ open, onClose, CostofCharging }) => {
               style={styles.pickerContainer}
               onPress={toggleModal}
             >
-              <Text style={{ fontSize: 14 }}>Select Your Vehicle</Text>
+              <Text style={{ fontSize: 14 ,color:"#6C6C6C"}}>{selectedVehicle.model?`${selectedVehicle.name} / ${selectedVehicle.model}`:"Select Your Vehicle"}</Text>
               <AntDesign name="down" size={20} color="black" />
             </TouchableOpacity>
             {/* <View style={styles.pickerContainer}></View> */}
 
             {/* <View style={styles.pickerContainer}>
               <Picker
-                selectedValue={selectedCar}
-                onValueChange={(itemValue) => setSelectedCar(itemValue)}
+                selectedValue={selectedVehicle}
+                onValueChange={(itemValue) => setselectedVehicle(itemValue)}
                 style={styles.picker}
                 prompt="Select Your Vehicle"
               >
@@ -118,11 +131,12 @@ const SetCostRecommend = ({ open, onClose, CostofCharging }) => {
             </View>
             <View style={styles.CostCharging}>
               <Text style={styles.text}>Cost of Charging : </Text>
-              <Text style={styles.text}>₹12 per Kwh (per Unit)</Text>
+              <Text style={styles.text}>₹{CostofCharging} per Kwh (per Unit)</Text>
             </View>
-            <Text style={styles.text}>Amount of Full Charge - </Text>
-            <Text style={styles.text}>Amount of charing units - </Text>
-            <TouchableOpacity style={styles.payButtonContainer}>
+            <Text style={styles.text}>Amount of Full Charge -  ₹{paycost}</Text>
+            <Text style={styles.text}>Amount of charing units - {Math.round(chargingUnitsfromsetCost * 1000) /
+          1000} kwh </Text>
+            <TouchableOpacity style={styles.payButtonContainer} onPress={handlePaycost}>
               <View style={styles.payButton}>
                 <Text style={styles.payButtonText}>Pay </Text>
                 <Text style={styles.payButtonText}>₹ {paycost}</Text>
@@ -131,7 +145,9 @@ const SetCostRecommend = ({ open, onClose, CostofCharging }) => {
           </View>
 
           <View>
-            <SetVehicale open={isModalVisible} onClose={toggleModal} />
+            <SetVehicale open={isModalVisible} onClose={toggleModal} setSelectedVehicle={setSelectedVehicle}
+            selectedVehicle={selectedVehicle}
+            />
           </View>
 
           <View
@@ -200,6 +216,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#118615',
     alignItems: 'center',
     justifyContent: 'center',
+    width: 280
   },
   payButtonText: {
     color: '#fff',
