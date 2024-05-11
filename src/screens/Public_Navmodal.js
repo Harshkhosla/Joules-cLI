@@ -10,12 +10,13 @@ import React from 'react'
 import Modal from 'react-native-modal'
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useSelector } from 'react-redux'
 // import { Item } from 'react-native-paper/lib/typescript/components/List/List'
 // import { index } from 'd3'
 
 const Navmodal = ({ naveopen, closeNave, name }) => {
   const navigation = useNavigation()
-
+  const WalletValue= useSelector((state) => state.userReducers.WallentBalance)
   const navitems = [
     {
       Nav_icon: require('../assets/historynav.png'),
@@ -104,7 +105,7 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
                   style={{ height: 20, width: 20, resizeMode: 'contain' }}
                   resizeMode="contain"
                 /> */}
-                <Text style={{ color: '#FFFFFF' }}>Wallet balance : ₹100</Text>
+                <Text style={{ color: '#FFFFFF' }}>Wallet balance : ₹ {WalletValue}</Text>
               </TouchableOpacity>
             </View>
           </View>

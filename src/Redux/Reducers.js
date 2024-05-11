@@ -1,4 +1,7 @@
-import { SET_USER_EMAIL, SET_USER_NAME, SET_AUTH_TOKEN, SET_USER_CAR,SET_USER_FLAT,SET_MODE_VALUE,SET_STATE_VALUE,SET_USER_ENERGY,SET_USER_PRODUCTKEY,SET_USER_PRODUCT, SET_USER_POWER, SET_PUBLIC_CHARGER_TIME,SET_USER_CURRENT,SET_CHARGING_COST,SET_CHARGING_COST_PER_HOUR,SET_CHARGER_NAME,SET_MODAL_OPEN, SET_CHARGER_HISTORY,SET_CHECK_CHARGING_STARTED,SET_CHARGING_HISTORY_PID} from './Action';
+import { SET_USER_EMAIL, SET_USER_NAME, SET_AUTH_TOKEN, SET_USER_CAR,SET_USER_FLAT,SET_MODE_VALUE,SET_STATE_VALUE,
+  SET_USER_ENERGY,SET_USER_PRODUCTKEY,SET_USER_PRODUCT, SET_USER_POWER, SET_PUBLIC_CHARGER_TIME,SET_USER_CURRENT,SET_CHARGING_COST,
+  SET_CHARGING_COST_PER_HOUR,
+  SET_CHARGER_NAME,SET_MODAL_OPEN, SET_CHARGER_HISTORY,SET_CHECK_CHARGING_STARTED,SET_CHARGING_HISTORY_PID,SET_WALLET_BALANCE} from './Action';
 
 const initialState = {
     Total_Current: "",
@@ -23,7 +26,8 @@ const initialState = {
     ChargerHistoryData:[],
     checkChargingStarted:false,
     chagerPid:"",
-    versionName:"1.5.6"
+    versionName:"1.5.6",
+    WallentBalance:"0"
 }
 
 function userReducers(state = initialState, action) {
@@ -88,6 +92,9 @@ function userReducers(state = initialState, action) {
       case SET_CHARGING_HISTORY_PID:
           // console.log("harshsample",action);
         return { ...state, chagerPid: action.payload };
+      case SET_WALLET_BALANCE:
+          // console.log("harshsample",action);
+        return { ...state, WallentBalance: action.payload };
       default:
         return state;
     }

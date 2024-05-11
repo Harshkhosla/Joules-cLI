@@ -27,6 +27,7 @@ export const SET_CHARGING_UNITS = 'SET_CHARGING_UNITS'
 export const SET_CHARGER_HISTORY = 'SET_CHARGER_HISTORY'
 export const SET_CHECK_CHARGING_STARTED = 'SET_CHECK_CHARGING_STARTED'
 export const SET_CHARGING_HISTORY_PID = 'SET_CHARGING_HISTORY_PID'
+export const SET_WALLET_BALANCE = 'SET_WALLET_BALANCE'
 import { Client, Message } from 'react-native-paho-mqtt'
 import Toast from 'react-native-toast-message'
 import { Alert } from 'react-native'
@@ -212,6 +213,13 @@ export const setChargingStarted= (value) => {
 export const setChargerHistoryPid= (value) => {
   return {
     type: SET_CHARGING_HISTORY_PID,
+    payload: value,
+  }
+}
+
+export const setWalletBalance= (value) => {
+  return {
+    type: SET_WALLET_BALANCE,
     payload: value,
   }
 }
@@ -517,24 +525,29 @@ export const AddTrasationDetail = (input, navigation, setLoading) => {
 // chargerhistory add to db
 export const ChargerHistory = (SendData, setLoading) => {
   return async (dispatch) => {
-    const { inputCost, Porduct_Key ,paymentId,findchargingCost} = SendData
+    const { inputCost, Porduct_Key ,paymentId,findchargingCost,payment,vehicleInfo,WalletUse} = SendData
     const { formattedDate, formattedTime } = getCurrentDateTime()
     let name, mid
    
     const userData = await getuserData()
-    console.log('userddataradhe', userData)
+    console.log('userddataradhefindchargingCost', findchargingCost)
     name = userData.name
     mid = userData.mid
     const dataObject = {
       Date: formattedDate,
       StartTime: formattedTime,
       pid: Porduct_Key,
-      payment: inputCost,
+      payment: payment,
+      inputCost,
+      WalletUse,
       // ChargerName:findchargername,
       UsedBy: name,
       Appmid: mid,
       paymentId:paymentId,
       userPanelCost:findchargingCost
+    }
+    if(vehicleInfo){
+      dataObject.vehicleInfo=vehicleInfo
     }
     try {
       const response = await fetch(`${ApiURL}/user/chargerhistory/create`, {
@@ -607,11 +620,15 @@ export const GetChargerHistory = (navigation,mid, populateChargerHistoryData,las
     try {
       const response = await fetch(`${ApiURL}/admin/user/${mid}?populateChargerHistoryData=${populateChargerHistoryData}`)
       const data = await response.json()
-      // console.log("dataingetchargerhistory",data);
+      console.log("dataingetchargerhistory",data.walletBallence);
+      
       if(data?.message=="User not found"){
         // navigation.navigate("SignIn")
         console.log("navia rerun");
         return
+      }
+      if(data?.walletBallence){
+        dispatch(setWalletBalance(Math.floor(data.walletBallence)))
       }
       if(lastchargerhistory && Array.isArray(data?.chargingHistory)){
         const ChargerHistoryData=data?.chargingHistory
@@ -1565,6 +1582,8 @@ export const SubcribingtoTopic = (topic) => {
 const allClients = []
 // =-------------------------------------------------------------------------------------Start  charging for public-------------------//
 
+
+
 export const publicstartCharging = (
   Porduct_Key,
   onClose,
@@ -1590,6 +1609,27 @@ export const publicstartCharging = (
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
+    // let chargingDataTimeout; 
+
+    // const resetChargingDataTimeout = () => {
+    //   clearTimeout(chargingDataTimeout); // Clear existing timeout
+    //   chargingDataTimeout = setTimeout(() => {
+    //     handleNoMessageReceived(Porduct_Key); // Call function if no message received for 5 seconds
+    //   }, 5000); // 5 seconds timeout
+    // };
+    // const onMessageReceived = () => {
+    //   dispatch(setMessageReceivedOnChargingData("Message Receive"))
+    //   resetChargingDataTimeout(); // Reset the timeout on message receive
+    //   // Rest of your message handling logic goes here
+    // };
+
+    // const handleNoMessageReceived = (productKey, filterData) => {
+    //   // Implement your logic here to handle the scenario when no message is received
+    //   console.log(`No message received for ${productKey}`);
+    //   dispatch(setMessageReceivedOnChargingData("No Message Receive"))
+    //   // For example, you might want to display an alert or take some other action
+    // };
+
     client.on('connectionLost', (responseObject) => {
       if (responseObject.errorCode !== 0) {
         console.log(
@@ -1673,7 +1713,7 @@ export const publicstartCharging = (
             // dispatch(ChargerHistoryEndTime("120"))
           }
         } else if (message.destinationName === `${Porduct_Key}_Charging_Data`) {
-          
+          // onMessageReceived(); // Call onMessageReceived when message received on charging data topic
           const updatedMessages = [
             ...topic2State.messages,
             message.payloadString,
@@ -1715,6 +1755,7 @@ export const publicstartCharging = (
       // })
       .then(() => {
         onConnect()
+        // resetChargingDataTimeout(); // Start the timeout after successful connection
       })
       .catch((responseObject) => {
         if (responseObject.errorCode !== 0) {
@@ -1972,12 +2013,33 @@ export const publicAlreadyChargingStarted = (
       storage: myStorage,
     })
     
-    
+    // let chargingDataTimeout; 
+
+    // const resetChargingDataTimeout = () => {
+    //   clearTimeout(chargingDataTimeout); // Clear existing timeout
+    //   chargingDataTimeout = setTimeout(() => {
+    //     handleNoMessageReceived(Porduct_Key); // Call function if no message received for 5 seconds
+    //   }, 5000); // 5 seconds timeout
+    // };
+    // const onMessageReceived = () => {
+    //   dispatch(setMessageReceivedOnChargingData("Message Receive"))
+    //   resetChargingDataTimeout(); // Reset the timeout on message receive
+    //   // Rest of your message handling logic goes here
+    // };
+
+    // const handleNoMessageReceived = (productKey, filterData) => {
+    //   // Implement your logic here to handle the scenario when no message is received
+    //   console.log(`No message received for ${productKey}`);
+    //   dispatch(setMessageReceivedOnChargingData("No Message Receive"))
+    //   // For example, you might want to display an alert or take some other action
+    // };
+
     const onConnect = () => {
       client.on('messageReceived', (message) => {
         if (message.destinationName === `${Porduct_Key}_Updates`) {
          
           if (message.payloadString == 'Charging Completed') {
+      // dispatch(setMessageReceivedOnChargingData("Charging Completed"))
             setisChargingAlertVisible(true)
             setShowPaymentCompleteModal(true)
             // Alert.alert(`Automatic Already Disconnect by Device Energy `)
@@ -1987,7 +2049,7 @@ export const publicAlreadyChargingStarted = (
             // dispatch(ChargerHistoryEndTime("120"))
           }
         } else if (message.destinationName === `${Porduct_Key}_Charging_Data`) {
-      ;
+        // onMessageReceived()
           const dataObject = JSON.parse(message.payloadString)
 
           dispatch(setEnergy(dataObject.Output_Energy))
@@ -2018,6 +2080,7 @@ export const publicAlreadyChargingStarted = (
       })
       .then(() => {
         onConnect()
+        // resetChargingDataTimeout()
       })
       .catch((responseObject) => {
         if (responseObject.errorCode !== 0) {
