@@ -34,6 +34,7 @@ import Modal from 'react-native-modal'
 import CustomModal from '../../components/CustomModal'
 import { fetchDataAsyncStorageData } from '../../utility/asyncStorage'
 import SetCostRecommend from './SetCostRecommend'
+import { Checkbox } from 'react-native-paper'
 
 // const razorpayLogo = require('../../assets/Union.png');
 const razorpayLogo =
@@ -299,7 +300,7 @@ const SetCost = ({
                   width: 110,
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginTop: 10,
+                  // marginTop: 10,
                 }}
               >
                 <View
@@ -365,6 +366,8 @@ const ChargingCost = ({
   setinputcostfromsetcost,
   chargingUnitsfromsetCost,
 }) => {
+  const [rememberMe, setRememberMe] = useState(true)
+
   console.log(findchargingCost, 'chargincost in chargingcost')
   const handleinputchangecost = (text) => {
     setInputCost(text)
@@ -387,7 +390,7 @@ const ChargingCost = ({
           fontWeight: '600',
         }}
       >
-        Enter Amount{' '}
+        Enter Amount
       </Text>
       <View
         style={{
@@ -432,8 +435,8 @@ const ChargingCost = ({
         style={{
           color: '#6C6C6C',
           fontSize: 16,
-          fontWeight: 600,
-          marginTop: 15,
+          fontWeight: 400,
+          marginTop: 5,
         }}
       >
         {/* {Math.ceil((inputCost / findchargingCost) * 100) / 100} */}
@@ -448,13 +451,26 @@ const ChargingCost = ({
             color: '#118615',
             fontSize: 13,
             fontWeight: '600',
-            marginTop: 15,
+            marginTop: 8,
             textDecorationLine: 'underline',
           }}
         >
           Get Charging Cost
         </Text>
       </TouchableOpacity>
+
+      <View style={styles.checkboxContainer}>
+        <Checkbox.Android
+          status={rememberMe ? 'checked' : 'unchecked'}
+          onPress={() => setRememberMe(!rememberMe)}
+          // uncheckedColor={theme.colors.primary}
+          color={'#118615'}
+          style={{ padding: 0, marginLeft: 0 }}
+        />
+        <Text style={styles.rememberMeText}>
+          Use the credits from your wallet : ₹10
+        </Text>
+      </View>
 
       <View>
         <SetCostRecommend
@@ -619,6 +635,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'space-between',
   },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: -10,
+    marginTop: 5,
+  },
+  rememberMeText: {
+    fontSize: 14,
+    color: '#6C6C6C',
+  },
   Toggle_SetCost_SetTime: {
     flexDirection: 'row',
     height: 40,
@@ -635,7 +661,9 @@ const styles = StyleSheet.create({
   },
   paymentBox: {
     flexDirection: 'row',
-    height: 80,
+    alignContent: 'center',
+    marginTop: 10,
+    // backgroundColor: 'red',
   },
   payButton: {
     flex: 1,
@@ -650,7 +678,7 @@ const styles = StyleSheet.create({
     // marginTop: 30,
     padding: 10,
     height: 60,
-    marginTop: 20,
+    // marginTop: 20,
     backgroundColor: 'green',
   },
   payButtonText: {
