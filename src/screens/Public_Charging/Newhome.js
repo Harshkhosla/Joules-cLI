@@ -51,8 +51,10 @@ const Newhome = ({ navigation }) => {
     useState(false)
   // charingalert modal
   const [shouldAnimate, setShouldAnimate] = useState(true)
-  const [currentWordIndex, setCurrentWordIndex] = useState(0)
-  const words = ['Payment Successful', 'Starting..', 'Charging Started']
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const words = ['Payment Successful', 'Starting..', 'Charging Started'];
+// stop charging loader
+const [isloadershow,setIsloaderShow]=useState(false)
 
   //
   const [getsample, setGetSampledata] = useState(true)
@@ -293,7 +295,8 @@ const Newhome = ({ navigation }) => {
   const handleCostAndTimeOpen = async (text, unique) => {
     // console.log('text', text, unique)
     if (text == 'Stop Charging') {
-      console.log('StopChargingStopChargingStopCharging', unique)
+      setIsloaderShow(true)
+      console.log('StopChargingStopChargingStopCharging',unique)
       handleClickStopCharging(unique)
     } else if (text == 'Start Charging' && AsyncStoragePiddata) {
       dispatch(setModal(true))
@@ -635,10 +638,15 @@ const Newhome = ({ navigation }) => {
             }}
             // onPress={()=>{handleCostAndTimeOpen("Stop Charging")}}
             style={styles.ButtonBox}
+            disabled={isloadershow}
           >
             {/* <Text style={styles.ButtonText}>{data?"Start Charging":"Scan QR"}</Text> */}
             {/* <Text style={styles.ButtonText}>{IsChargingStartedValue?"Stop Charging":buttonText}</Text> */}
+           {isloadershow?
+            <ActivityIndicator size="small" color="white" />
+            : 
             <Text style={styles.ButtonText}>{buttonText}</Text>
+          }
           </TouchableOpacity>
         </View>
         <Text
@@ -682,6 +690,7 @@ const Newhome = ({ navigation }) => {
           onClose={() => {
             setisChargingAlertVisible(false)
             setTotalSeconds(0)
+            setIsloaderShow(false)
           }}
           energyConsumed={SampleDataaa}
           cost={ChargingCost}

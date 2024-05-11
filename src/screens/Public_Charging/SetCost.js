@@ -108,62 +108,81 @@ const SetCost = ({
     setGetSampledata(true)
   }
 
-  const handlePayment = async () => {
-    if (inputCost <= 0 || !inputCost) {
-      Alert.alert('Please set the cost of charging first')
-      return
-    }
-    const { storedData } = await fetchDataAsyncStorageData()
-    if (!storedData) {
-      Alert.alert('Scan please')
-      return
-    }
 
-    // const resizedImage = resizeImage(razorpayLogo, -50, 50);
-    const options = {
-      description: 'Payment for your order',
-      // image: "https://yourwebsite.com/logo.png",
-      // image: "https://res.cloudinary.com/ddvb5pl1p/image/upload/v1714063633/cij7inmzke3q8hz88orn.jpg",
-      image: razorpayLogo,
-      currency: 'INR',
-      key: 'rzp_live_V4Palfsx7GsPm3',
-      amount: inputCost * 100, // amount in paisa
-      name: 'Jouls Ecotech Pvt Ltd',
-      prefill: {
-        email: 'customer@example.com',
-        contact: '9999999999',
-        name: 'Customer Name',
-      },
-      theme: { color: '#118615' },
-    }
 
-    try {
-      const data = await RazorpayCheckout.open(options)
-      if (data && data.razorpay_payment_id) {
-        console.log('navigate to start charging')
-        onClose()
-        const sendData = {
-          inputCost,
-          Porduct_Key: storedData,
-          paymentId: data.razorpay_payment_id,
-          findchargingCost,
-        }
-        setShowPaymentCompleteModal(false)
-        setisChargingAlertVisible(true)
-
-        const response = await dispatch(ChargerHistory(sendData))
-        console.log('response', response)
-        if (response?.message === 'ChargerHistory added successfully') {
-          animateNextWord()
-          startCharging()
-        }
-      }
-    } catch (error) {
-      console.error('Payment Error:', error)
-      Alert.alert('Payment Failed', 'Payment failed. Please try again.')
-    }
+const handlePayment = async () => {
+  if(inputCost<=0 || !inputCost){
+    Alert.alert('Please set the cost of charging first')
+    return
   }
+  const { storedData } = await fetchDataAsyncStorageData();
+  if (!storedData) {
+    Alert.alert("Scan please");
+    return;
+  }
+  // onClose()
+  // const sendData = {
+  //   inputCost,
+  //   Porduct_Key: storedData,
+  //   paymentId:"120",
+  //   findchargingCost,
+  // };
+  // setShowPaymentCompleteModal(false);
+  // setisChargingAlertVisible(true);
 
+  // const response = await dispatch(ChargerHistory(sendData));
+  // console.log("response", response);
+  // if (response?.message === "ChargerHistory added successfully") {
+  //   animateNextWord();
+  //   startCharging();
+
+  // }
+  // const resizedImage = resizeImage(razorpayLogo, -50, 50);
+  const options = {
+    description: "Payment for your order",
+    // image: "https://yourwebsite.com/logo.png",
+    // image: "https://res.cloudinary.com/ddvb5pl1p/image/upload/v1714063633/cij7inmzke3q8hz88orn.jpg",
+    image: razorpayLogo,
+    currency: "INR",
+    key: "rzp_live_V4Palfsx7GsPm3",
+    amount: inputCost * 100, // amount in paisa
+    name: "Jouls Ecotech Pvt Ltd",
+    prefill: {
+      email: "customer@example.com",
+      contact: "9999999999",
+      name: "Customer Name",
+    },
+    theme: { color: "#118615" },
+  };
+
+  try {
+    const data = await RazorpayCheckout.open(options);
+    if (data && data.razorpay_payment_id) {
+      console.log("navigate to start charging");
+      onClose()
+      const sendData = {
+        inputCost,
+        Porduct_Key: storedData,
+        paymentId: data.razorpay_payment_id,
+        findchargingCost,
+      };
+      setShowPaymentCompleteModal(false);
+      setisChargingAlertVisible(true);
+
+      const response = await dispatch(ChargerHistory(sendData));
+      console.log("response", response);
+      if (response?.message === "ChargerHistory added successfully") {
+        animateNextWord();
+        startCharging();
+      }
+    }
+  } catch (error) {
+    console.error("Payment Error:", error);
+    Alert.alert("Payment Failed", "Payment failed. Please try again.");
+  }
+};
+
+ 
   const startCharging = async (paymentId) => {
     const { storedData } = await fetchDataAsyncStorageData()
     if (!storedData) {
@@ -282,6 +301,7 @@ const SetCost = ({
                     findchargingCost={findchargingCost}
                     setinputcostfromsetcost={setinputcostfromsetcost}
                     chargingUnitsfromsetCost={chargingUnitsfromsetCost}
+                    handlePayment={handlePayment}
                   />
                 ) : (
                   <ChargingSetTime
@@ -364,6 +384,7 @@ const ChargingCost = ({
   findchargingCost,
   setinputcostfromsetcost,
   chargingUnitsfromsetCost,
+  handlePayment
 }) => {
   console.log(findchargingCost, 'chargincost in chargingcost')
   const handleinputchangecost = (text) => {
@@ -458,9 +479,12 @@ const ChargingCost = ({
 
       <View>
         <SetCostRecommend
+        setInputCost={setInputCost}
           open={isModalVisible}
           onClose={toggleModal}
           CostofCharging={findchargingCost}
+          chargingUnitsfromsetCost={chargingUnitsfromsetCost}
+          handlePayment={handlePayment}
         />
       </View>
     </View>
