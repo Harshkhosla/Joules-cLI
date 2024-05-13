@@ -50,6 +50,7 @@ const Newhome = ({ navigation }) => {
   const [showPaymentCompleteModal, setShowPaymentCompleteModal] =
     useState(false)
   // charingalert modal
+  const [isPowerCutTextVisible, setisPowerCutTextVisible] = useState(false)
   const [shouldAnimate, setShouldAnimate] = useState(true)
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const words = ['Payment Successful', 'Starting..', 'Charging Started'];
@@ -100,7 +101,8 @@ const [isloadershow,setIsloaderShow]=useState(false)
           chargingHistoryPId,
           handleCostAndTimeOpen,
           setisChargingAlertVisible,
-          setShowPaymentCompleteModal
+          setShowPaymentCompleteModal,
+          setisPowerCutTextVisible
         )
       )
       console.log('chargerhistoryData', chargerhistoryData)
@@ -405,7 +407,8 @@ const [isloadershow,setIsloaderShow]=useState(false)
           SampleDataaa,
           SetEndTime,
           setisChargingAlertVisible,
-          setShowPaymentCompleteModal
+          setShowPaymentCompleteModal,
+          setisPowerCutTextVisible
         )
       )
       console.log('aumatic discornnectby')
@@ -444,6 +447,10 @@ const [isloadershow,setIsloaderShow]=useState(false)
   const animateNextWord = () => {
     setShouldAnimate(true)
     setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length)
+  }
+
+  const handleChargingStop=()=>{
+    setisPowerCutTextVisible(false)
   }
 
   const generateHoursArray = () => {
@@ -682,6 +689,8 @@ const [isloadershow,setIsloaderShow]=useState(false)
         ChargingEnergy={SampleDataaa}
         setShowPaymentCompleteModal={setShowPaymentCompleteModal}
         animateNextWord={animateNextWord}
+        setisPowerCutTextVisible={setisPowerCutTextVisible}
+
       />
       <View>
         <Charging_alert_modal
@@ -700,6 +709,7 @@ const [isloadershow,setIsloaderShow]=useState(false)
           currentWordIndex={currentWordIndex}
           setCurrentWordIndex={setCurrentWordIndex}
           words={words}
+          isPowerCutTextVisible={isPowerCutTextVisible}
         />
       </View>
     </View>

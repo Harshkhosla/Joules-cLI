@@ -63,6 +63,7 @@ const SetCost = ({
   ChargingEnergy,
   setShowPaymentCompleteModal,
   animateNextWord,
+  setisPowerCutTextVisible
 }) => {
   const dispatch = useDispatch()
   const [ShowSetCost, SetShowSetCost] = useState(true)
@@ -115,153 +116,114 @@ const SetCost = ({
     setGetSampledata(true)
   }
 
+
+
   const handlePayment = async () => {
     if (inputCost <= 0 || !inputCost) {
-      Alert.alert('Please set the cost of charging first')
-      return
+      Alert.alert('Please set the cost of charging first');
+      return;
     }
-    const { storedData } = await fetchDataAsyncStorageData()
+  
+    const { storedData } = await fetchDataAsyncStorageData();
     if (!storedData) {
-      Alert.alert('Scan please')
-      return
+      Alert.alert("Scan please");
+      return;
     }
-
-    if (walletValue == '0' || Number(walletValue) == 0 || !rememberMe) {
-      console.log('walletValue', walletValue, inputCost)
-      const options = {
-        description: 'Payment for your order',
-        // image: "https://yourwebsite.com/logo.png",
-        // image: "https://res.cloudinary.com/ddvb5pl1p/image/upload/v1714063633/cij7inmzke3q8hz88orn.jpg",
-        image: razorpayLogo,
-        currency: 'INR',
-        key: 'rzp_live_V4Palfsx7GsPm3',
-        amount: inputCost * 100, // amount in paisa
-        name: 'Jouls Ecotech Pvt Ltd',
-        prefill: {
-          email: 'customer@example.com',
-          contact: '9999999999',
-          name: 'Customer Name',
-        },
-        theme: { color: '#118615' },
-      }
+  
+    if (walletValue === "0" || Number(walletValue) === 0 || !rememberMe) {
+      const options = getPaymentOptions(inputCost);
       try {
-        const data = await RazorpayCheckout.open(options)
-        console.log('datadatadatadaataaa', data)
+        const data = await RazorpayCheckout.open(options);
         if (data && data.razorpay_payment_id) {
-          console.log('navigate to start charging')
-          onClose()
-          const sendData = {
-            payment: inputCost,
-            inputCost,
-            Porduct_Key: storedData,
-            paymentId: data.razorpay_payment_id,
-            findchargingCost,
-            WalletUse: '0',
-          }
-          setShowPaymentCompleteModal(false)
-          setisChargingAlertVisible(true)
-
-          const response = await dispatch(ChargerHistory(sendData))
-          console.log('response', response)
-          if (response?.message === 'ChargerHistory added successfully') {
-            animateNextWord()
-            startCharging()
-          }
-          return
+          handlePaymentSuccess(inputCost, storedData, data.razorpay_payment_id, 0);
         }
       } catch (error) {
-        console.error('Payment Error:', error)
-        Alert.alert('Payment Failed', 'Payment failed. Please try again.')
+        handlePaymentError(error);
       }
     } else if (Number(inputCost) <= Number(walletValue)) {
-      console.log('walletValueelse if', walletValue, inputCost)
-
-      onClose()
-      const sendData = {
-        payment: '0',
-        inputCost,
-        Porduct_Key: storedData,
-        paymentId: 'Paid Using Wallet',
-        findchargingCost,
-        WalletUse: inputCost,
-      }
-      setShowPaymentCompleteModal(false)
-      setisChargingAlertVisible(true)
-
-      const response = await dispatch(ChargerHistory(sendData))
-      console.log('response', response)
-      if (response?.message === 'ChargerHistory added successfully') {
-        animateNextWord()
-        startCharging()
-      }
-      return
-    } else if (Number(inputCost) > Number(walletValue) && walletValue !== 0) {
-      console.log('radhe', inputCost, walletValue)
-      const options = {
-        description: 'Payment for your order',
-        // image: "https://yourwebsite.com/logo.png",
-        // image: "https://res.cloudinary.com/ddvb5pl1p/image/upload/v1714063633/cij7inmzke3q8hz88orn.jpg",
-        image: razorpayLogo,
-        currency: 'INR',
-        key: 'rzp_live_V4Palfsx7GsPm3',
-        amount: (inputCost - walletValue) * 100, // amount in paisa
-        name: 'Jouls Ecotech Pvt Ltd',
-        prefill: {
-          email: 'customer@example.com',
-          contact: '9999999999',
-          name: 'Customer Name',
-        },
-        theme: { color: '#118615' },
-      }
-      try {
-        const data = await RazorpayCheckout.open(options)
-        console.log('datadatadatadaataaa', data)
-        if (data && data.razorpay_payment_id) {
-          console.log('navigate to start charging')
-          onClose()
-          const sendData = {
-            payment: inputCost - walletValue,
-            inputCost,
-            Porduct_Key: storedData,
-            paymentId: data.razorpay_payment_id,
-            findchargingCost,
-            WalletUse: walletValue,
-          }
-          setShowPaymentCompleteModal(false)
-          setisChargingAlertVisible(true)
-
-          const response = await dispatch(ChargerHistory(sendData))
-          console.log('response', response)
-          if (response?.message === 'ChargerHistory added successfully') {
-            animateNextWord()
-            startCharging()
-          }
-        }
-      } catch (error) {
-        console.error('Payment Error:', error)
-        Alert.alert('Payment Failed', 'Payment failed. Please try again.')
-      }
+      handleWalletPayment(inputCost, storedData);
+    } else if (Number(inputCost) > Number(walletValue) && walletValue != 0) {
+      handlePartialPayment(inputCost, walletValue, storedData);
     }
-    // onClose()
-    // const sendData = {
-    //   inputCost,
-    //   Porduct_Key: storedData,
-    //   paymentId:"120",
-    //   findchargingCost,
-    // };
-    // setShowPaymentCompleteModal(false);
-    // setisChargingAlertVisible(true);
-
-    // const response = await dispatch(ChargerHistory(sendData));
-    // console.log("response", response);
-    // if (response?.message === "ChargerHistory added successfully") {
-    //   animateNextWord();
-    //   startCharging();
-
-    // }
-    // const resizedImage = resizeImage(razorpayLogo, -50, 50);
   }
+  
+  const getPaymentOptions = (cost) => ({
+    description: "Payment for your order",
+    image: razorpayLogo,
+    currency: "INR",
+    key: "rzp_live_V4Palfsx7GsPm3",
+    amount: cost * 100,
+    name: "Jouls Ecotech Pvt Ltd",
+    prefill: {
+      email: "customer@example.com",
+      contact: "9999999999",
+      name: "Customer Name",
+    },
+    theme: { color: "#118615" },
+  });
+  
+  const handlePaymentSuccess = async (payment, productKey, paymentId, walletUse) => {
+    console.log("call handlePaymentSuccess");
 
+    onClose();
+    const sendData = {
+      payment,
+      inputCost: payment,
+      Porduct_Key: productKey,
+      paymentId,
+      findchargingCost,
+      WalletUse: walletUse.toString(),
+    };
+    setShowPaymentCompleteModal(false);
+    setisChargingAlertVisible(true);
+  
+    const response = await dispatch(ChargerHistory(sendData));
+    if (response?.message === "ChargerHistory added successfully") {
+      animateNextWord();
+      startCharging();
+    }
+  }
+  
+  const handleWalletPayment = async (cost, productKey) => {
+    console.log("call handleWalletPayment");
+
+    onClose();
+    const sendData = {
+      payment: "0",
+      inputCost: cost,
+      Porduct_Key: productKey,
+      paymentId: "Paid Using Wallet",
+      findchargingCost,
+      WalletUse: cost.toString(),
+    };
+    setShowPaymentCompleteModal(false);
+    setisChargingAlertVisible(true);
+  
+    const response = await dispatch(ChargerHistory(sendData));
+    if (response?.message === "ChargerHistory added successfully") {
+      animateNextWord();
+      startCharging();
+    }
+  }
+  
+  const handlePartialPayment = async (cost, walletValue, productKey) => {
+    console.log("call handlePartialPayment");
+    const options = getPaymentOptions(cost - walletValue);
+    try { 
+      const data = await RazorpayCheckout.open(options);
+      if (data && data.razorpay_payment_id) {
+        handlePaymentSuccess(cost - walletValue, productKey, data.razorpay_payment_id, walletValue);
+      }
+    } catch (error) {
+      handlePaymentError(error);
+    }
+  }
+  
+  const handlePaymentError = (error) => {
+    console.error("Payment Error:", error);
+    Alert.alert("Payment Failed", "Payment failed. Please try again.");
+  }
+ 
   const startCharging = async (paymentId) => {
     const { storedData } = await fetchDataAsyncStorageData()
     if (!storedData) {
@@ -293,7 +255,8 @@ const SetCost = ({
           findchargingCost,
           setisChargingAlertVisible,
           setShowPaymentCompleteModal,
-          animateNextWord
+          animateNextWord,
+          setisPowerCutTextVisible
         )
       )
     } else {

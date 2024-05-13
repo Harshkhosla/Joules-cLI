@@ -21,7 +21,7 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
     {
       Nav_icon: require('../assets/historynav.png'),
       Nav_name: 'Charging history',
-      navigat: 'Charging_History',
+      navigat: 'ChargingCard_History',
     },
     {
       Nav_icon: require('../assets/directions_car.png'),

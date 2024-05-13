@@ -20,7 +20,8 @@ const ChargingAlertModal = ({
   showChargingCompleted,
   words,
   currentWordIndex,
-  shouldAnimate
+  shouldAnimate,
+  isPowerCutTextVisible
 }) => {
   // const words = ['Payment Successful', 'Starting..', 'Charging Started'];
   // const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -96,8 +97,11 @@ const ChargingAlertModal = ({
       >
         {showChargingCompleted ? (
           <View style={styles.contentContainer}>
-            <Text style={styles.heading}>Charging Complete</Text>
+            <Text style={styles.heading}>{isPowerCutTextVisible?"Charging Stopped":"Charging Complete"}</Text>
+            {/* <Text style={styles.heading}>Charging Stopped </Text> */}
             <View style={styles.horizontalLine} />
+           {isPowerCutTextVisible? <Text style={{color:"black",fontSize:12,height:25,borderColor:"black",marginTop:-12,color: '#717171'}}>By Power Cut Or WiFi Down</Text>:""}
+
             <View>
               <View style={styles.fieldContainer}>
                 <Text style={styles.fieldLabel}>Energy Consumed</Text>
