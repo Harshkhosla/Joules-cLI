@@ -13,9 +13,14 @@ import {
   responsiveWidth as wp,
 } from 'react-native-responsive-dimensions'
 import Modal from 'react-native-modal'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
-const SetVehicale = ({ open, onClose,selectedVehicle,setSelectedVehicle }) => {
-
+const SetVehicale = ({
+  open,
+  onClose,
+  selectedVehicle,
+  setSelectedVehicle,
+}) => {
   //
   const [expandedIndex, setExpandedIndex] = useState(null)
 
@@ -57,13 +62,11 @@ const SetVehicale = ({ open, onClose,selectedVehicle,setSelectedVehicle }) => {
         { modelName: 'Model A2', value: 5.1 },
         { modelName: 'Model A3', value: 5.1 },
       ],
-      value:""
+      value: '',
     },
     {
       name: 'Bajaj',
-      models: [
-        { modelName: 'Chetak', value: 3.2 }
-      ],
+      models: [{ modelName: 'Chetak', value: 3.2 }],
     },
     {
       name: 'Okinawa',
@@ -83,9 +86,9 @@ const SetVehicale = ({ open, onClose,selectedVehicle,setSelectedVehicle }) => {
     }
   }
 
-  const handleModelPress = (name,model, kwh) => {
-    console.log('Selected model:',name, model, 'with value:', kwh)
-    setSelectedVehicle({name,model,kwh})
+  const handleModelPress = (name, model, kwh) => {
+    console.log('Selected model:', name, model, 'with value:', kwh)
+    setSelectedVehicle({ name, model, kwh })
     onClose()
   }
   //
@@ -116,35 +119,45 @@ const SetVehicale = ({ open, onClose,selectedVehicle,setSelectedVehicle }) => {
                   <TouchableOpacity
                     key={index}
                     onPress={() => toggleExpand(index)}
-                    style={[
-                      styles.companyContainer,
-                      // expandedIndex === index && { backgroundColor: 'red' },
-                    ]}
+                    style={styles.companyContainer}
                   >
-                    <Text
+                    <View
                       style={[
-                        styles.companyName,
+                        {
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: 5,
+                        },
                         expandedIndex === index && {
                           backgroundColor: '#C1E0C2',
-                          height:35,
-                          width:370,
+                          alignContent: 'center',
                         },
                       ]}
                     >
-                    {company.name}
-                    </Text>
+                      <Text style={[styles.companyName]}>{company.name}</Text>
+                      {expandedIndex === index ? (
+                        <AntDesign name="down" size={16} color="#808080" />
+                      ) : (
+                        <AntDesign name="left" size={16} color="#808080" />
+                      )}
+                    </View>
                     {expandedIndex === index && (
                       <View style={styles.modelsContainer}>
                         {company.models.map((model, idx) => (
                           <TouchableOpacity
                             key={idx}
                             onPress={() =>
-                              handleModelPress(company.name,model.modelName, model.value)
+                              handleModelPress(
+                                company.name,
+                                model.modelName,
+                                model.value
+                              )
                             }
                             style={styles.modelsContainer}
                           >
                             <Text style={styles.modelText}>
-                                {model.modelName}
+                              {model.modelName}
                               {/* : {model.value} */}
                             </Text>
                           </TouchableOpacity>
@@ -189,40 +202,34 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   contentBox: {
-    marginVertical: 10,
-    // padding: 20,
-    backgroundColor: '#fff',
     flex: 1,
+    marginVertical: 10,
+    backgroundColor: '#fff',
     borderRadius: 14,
     borderColor: '#B7B7B7',
-    borderWidth: 1,
+    // borderWidth: 1,
     overflow: 'hidden',
   },
   text: {
     color: '#6C6C6C',
     fontSize: 20,
     marginBottom: 10,
-    fontWeight:500,
-    padding:20
-
+    fontWeight: 500,
+    padding: 20,
   },
 
   container2: {
-    paddingVertical: 1,
-    marginLeft:-10
+    // paddingVertical: 1,
+    // marginLeft: -10,
     // backgroundColor: '#f0f0f0',
   },
   companyContainer: {
     marginBottom: 10,
-    borderRadius: 8,
-    padding: 2,
-    // marginLeft:12
   },
   companyName: {
     fontSize: 18,
-    color:"#6C6C6C",
-    marginLeft:14,  
-    // padding:10
+    color: '#6C6C6C',
+    marginLeft: 10,
   },
   modelsContainer: {
     marginTop: 5,
@@ -231,7 +238,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 5,
     marginLeft: 35,
-    color:"#6C6C6C",
+    color: '#6C6C6C',
   },
   bottomColorBox: {
     position: 'absolute',

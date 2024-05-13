@@ -52,6 +52,7 @@ import Editprofile from './src/screens/Edit_profile/Editprofile'
 import Timer_with_package from './src/screens/Timer_with_package'
 import ble from './src/screens/SomeComponent'
 import Connect_to_WiFi from './src/screens/Connect_to_WiFi'
+import ChargingCard_History from './src/screens/ChargingCard_History'
 
 const Stack = createStackNavigator()
 
@@ -70,6 +71,10 @@ export default function App() {
               headerShown: false,
             }}
           >
+            {/* <Stack.Screen
+              name="ChargingCard_History"
+              component={ChargingCard_History}
+            /> */}
             <Stack.Screen name="Authloading" component={AuthLoadingScreen} />
 
             <Stack.Screen name="Timer_with_package" component={ble} />
