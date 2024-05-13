@@ -7,10 +7,12 @@ import {
 } from 'react-native-responsive-dimensions'
 import Navmodal from './Public_Navmodal'
 import { useNavigation } from '@react-navigation/native'
+import { getUserData } from '../Redux/Action'
+import { useDispatch } from 'react-redux'
 
 const App_top_Header = ({ navigation, title, color, isHome, name }) => {
   const navigatetotop = useNavigation()
-
+  const dispatch=useDispatch()
   const [isNavOpen, setNavOpen] = useState(false)
 
   const naveClose = () => {
@@ -18,6 +20,7 @@ const App_top_Header = ({ navigation, title, color, isHome, name }) => {
   }
 
   const navopen = () => {
+    dispatch(getUserData())
     console.log('click header nav', isNavOpen)
     setNavOpen(true)
   }

@@ -22,6 +22,19 @@ const [version, SetVersioncode]=useState("")
   console.log(versioncode,"sdkhjdsvbvhjbdsvj");
 
  
+  // const fetchData = async (mid) => {
+  //   try {
+  //     // const storedMid = await AsyncStorage.getItem('mid')
+  //     const data = await dispatch(getUserData(mid))
+  //    console.log("data",data);
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error)
+  //   }
+  // }
+  // useEffect(()=>{
+  //   fetchData();
+  // },[])
+  
   const [mid, setMid] = useState('')
   console.log('midmid', mid)
   const [token, setToken] = useState('')
@@ -40,11 +53,11 @@ const [version, SetVersioncode]=useState("")
   //   }
   //   setLoading(false)
   // },[dispatch,mid,IsapiCall])
-const versionFunction =async ()=>{
+const versionFunction =async (mid)=>{
   try {
-    const storedMid = await AsyncStorage.getItem('mid')
+    const storedMid = mid
     const data = await dispatch(getUserData(storedMid))
-    SetVersioncode(data?.version)
+    // SetVersioncode(data?.version)
     console.log('userdataradhe', data?.version)
     
   console.log(versioncode,"versioncode true1");
@@ -76,6 +89,7 @@ const versionFunction =async ()=>{
           await fetchDataAsyncStorageData()
         console.log(storedData, ChargingStartedValue, Appmid, Authtoken)
         console.log('Appmid', Appmid)
+        
         if (Appmid) {
           setMid(Appmid)
         }
@@ -89,7 +103,7 @@ const versionFunction =async ()=>{
 
         console.log("versioncode",versioncode,version);
       
-        const versionsame = versionFunction();
+        const versionsame =await versionFunction(Appmid);
         console.log("ddslkvdskjnvds",versionsame);
 
         // if (versionsame){

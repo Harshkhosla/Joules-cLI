@@ -28,6 +28,7 @@ import {
   UpdatName,
   fetchQrCodeDetails,
   findChargingCost,
+  getUserData,
   setModal,
   setProductKey,
 } from '../../Redux/Action'
@@ -157,6 +158,7 @@ if(!pid){
   try {
     // console.log("in try api calll");
     const findChargingCost1=await dispatch(findChargingCost(pid))
+    await dispatch(getUserData())
     // const response=await dispatch(NameAndPid(SendData,navigation,setloading))
     // const response=await dispatch(SendUsername(SendData))
     // console.log("response",response);

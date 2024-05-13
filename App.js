@@ -71,12 +71,12 @@ export default function App() {
               headerShown: false,
             }}
           >
-            {/* <Stack.Screen
+            
+            <Stack.Screen name="Authloading" component={AuthLoadingScreen} />
+            <Stack.Screen
               name="ChargingCard_History"
               component={ChargingCard_History}
-            /> */}
-            <Stack.Screen name="Authloading" component={AuthLoadingScreen} />
-
+            />
             <Stack.Screen name="Timer_with_package" component={ble} />
             <Stack.Screen name="Connect_to_WiFi" component={Connect_to_WiFi} />
 

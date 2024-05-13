@@ -912,6 +912,9 @@ export const signItUp = (field, navigation, setLoading) => {
           position: 'top',
         })
       }
+      if (data?.walletBalance) {
+        dispatch(setWalletBalance(Math.floor(data.walletBalance)))
+      }
       // setLoading(false)
       navigation.navigate('chargerSelection')
       return data
@@ -976,13 +979,26 @@ export const updateUser = (updatedData, navigation) => {
 // ==================================================== geting user data   ==========================================================
 
 export const getUserData = (mid) => {
-  console.log('fron back get user', mid)
-  return async () => {
+  // console.log('fron back get user', mid)
+  return async (dispatch) => {
+    const mid=await AsyncStorage.getItem("mid")
+    console.log("midmidmidmdidm",mid);
+    if(!mid){
+      return
+    }
     try {
-      const response = await fetch(`${ApiURL}/admin/user/${mid}`)
+      const response = await fetch(`${ApiURL}/admin/user/${mid}`) 
       if (response.ok) {
         const data = await response.json()
+        if(data?.message=="User not found"){
+          // navigation.navigate("SignIn")
+          console.log("navia rerun");
+          return
+        }
         console.log('get user data successfully:', data)
+        if(data?.walletBallence){
+          dispatch(setWalletBalance(Math.floor(data.walletBallence)))
+        }
         return data // Return the fetched user data
         // Handle success - display a success message, update AsyncStorage, etc.
       } else {
@@ -1598,7 +1614,8 @@ export const publicstartCharging = (
   findchargingCost,
   setisChargingAlertVisible,
   setShowPaymentCompleteModal,
-  animateNextWord
+  animateNextWord,
+  setisPowerCutTextVisible
 ) => {
   // Porduct_Key=publicProductKey
   console.log('Porduct_Key in publick start charging', Porduct_Key)
@@ -1645,6 +1662,7 @@ export const publicstartCharging = (
             return Promise.all([
               client.subscribe(`${Porduct_Key}_Updates`), // Topic 1
               client.subscribe(`${Porduct_Key}_Charging_Data`), // Topic 2
+              client.subscribe(`${Porduct_Key}_Power_Cut`), // Topic 3
             ])
           })
           // .then(() => {
@@ -1679,6 +1697,7 @@ export const publicstartCharging = (
             // onClose()
             setButtonText('Stop Charging')
             startTimer()
+            setcheckChargingStarted(true)
             // const sendData = {
             //   Porduct_Key,
             //   inputCost,
@@ -1688,7 +1707,6 @@ export const publicstartCharging = (
             // }
             // dispatch(ChargerHistory(sendData))
             // Alert.alert('charging started')
-            setcheckChargingStarted(true)
             // const response = getCurrenttime()
             // SetstartTime(response)
             // setButtonText('Stop Charging')
@@ -1704,14 +1722,16 @@ export const publicstartCharging = (
             // dispatch(ChargerHistory(sendData))
           }
           if (message.payloadString == 'Charging Completed') {
+            setisPowerCutTextVisible(false)
             setisChargingAlertVisible(true)
             // Alert.alert(`Automatic Disconnect by Device Energy ${findChargingEnergy} Cost ${inputCost}`)
             handleStopCharging('Stop Charging', 'StoppedByDevice')
             disconnectAllClients()
-            console.log("findajmerkingjameer",findChargingEnergy);
+            // console.log("findajmerkingjameer",findChargingEnergy);
             // dispatch(ChargerHistoryEndTime(findChargingEnergy))
             // dispatch(ChargerHistoryEndTime("120"))
           }
+          
         } else if (message.destinationName === `${Porduct_Key}_Charging_Data`) {
           // onMessageReceived(); // Call onMessageReceived when message received on charging data topic
           const updatedMessages = [
@@ -1735,6 +1755,14 @@ export const publicstartCharging = (
           //   dataObject.Output_Power
           // )
         }
+      else if (message.destinationName === `${Porduct_Key}_Power_Cut`) {
+        if (message.payloadString == 'Power Cut') {
+          setisChargingAlertVisible(true)
+          setisPowerCutTextVisible(true)
+          handleStopCharging('Stop Charging', 'StoppedByDevice')
+          disconnectAllClients()
+        } 
+        }
       })
     }
 
@@ -1746,6 +1774,7 @@ export const publicstartCharging = (
         return Promise.all([
           client.subscribe(`${Porduct_Key}_Updates`), // Topic 1
           client.subscribe(`${Porduct_Key}_Charging_Data`), // Topic 2
+          client.subscribe(`${Porduct_Key}_Power_Cut`), // Topic 2
         ])
       })
       // .then(() => {
@@ -1920,7 +1949,8 @@ export const publicstopCharging = (
   SampleDataaa,
   SetEndTime,
   setisChargingAlertVisible,
-  setShowPaymentCompleteModal
+  setShowPaymentCompleteModal,
+  setisPowerCutTextVisible
 ) => {
   // Porduct_Key=publicProductKey
   console.log('Porduct_Key in publickstop charging', Porduct_Key )
@@ -1956,6 +1986,7 @@ export const publicstopCharging = (
           dispatch(setStateValue(message.payloadString))
           console.log(`${Porduct_Key}_Updates:`, message.payloadString)
           if (message.payloadString == 'Charging Completed') {
+            setisPowerCutTextVisible(false)
             setisChargingAlertVisible(true)
             setShowPaymentCompleteModal(true)
             const response = getCurrenttime()
@@ -2000,7 +2031,8 @@ export const publicAlreadyChargingStarted = (
   Porduct_Key,
   handleStopCharging,
   setisChargingAlertVisible,
-  setShowPaymentCompleteModal
+  setShowPaymentCompleteModal,
+  setisPowerCutTextVisible
   
 ) => {
   // Porduct_Key=publicProductKey
@@ -2040,6 +2072,7 @@ export const publicAlreadyChargingStarted = (
          
           if (message.payloadString == 'Charging Completed') {
       // dispatch(setMessageReceivedOnChargingData("Charging Completed"))
+           setisPowerCutTextVisible(false)
             setisChargingAlertVisible(true)
             setShowPaymentCompleteModal(true)
             // Alert.alert(`Automatic Already Disconnect by Device Energy `)
