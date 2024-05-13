@@ -17,23 +17,11 @@ import { Text } from 'react-native-paper'
 const AuthLoadingScreen = ({ navigation }) => {
   const [isModalVisible, setisModalVisible] = useState(false)
 
-const [version,SetVersioncode]=useState("")
+const [version, SetVersioncode]=useState("")
   let versioncode  = useSelector((state) => state?.userReducers?.versionName)
   console.log(versioncode,"sdkhjdsvbvhjbdsvj");
 
-  // const fetchData = async () => {
-  //   try {
-  //     const storedMid = await AsyncStorage.getItem('mid')
-  //     const data = await dispatch(getUserData(storedMid))
-  //     SetVersioncode(data?.version)
-  //     console.log('userdataradhe', data?.version)
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error)
-  //   }
-  // }
-  // useEffect(()=>{
-  //   fetchData();
-  // },[])
+ 
   const [mid, setMid] = useState('')
   console.log('midmid', mid)
   const [token, setToken] = useState('')
@@ -52,6 +40,34 @@ const [version,SetVersioncode]=useState("")
   //   }
   //   setLoading(false)
   // },[dispatch,mid,IsapiCall])
+const versionFunction =async ()=>{
+  try {
+    const storedMid = await AsyncStorage.getItem('mid')
+    const data = await dispatch(getUserData(storedMid))
+    SetVersioncode(data?.version)
+    console.log('userdataradhe', data?.version)
+    
+  console.log(versioncode,"versioncode true1");
+  console.log(data?.version,"versioncode true2");
+  console.log(versioncode!==data?.version,"versioncode true3");
+  if (versioncode !== data?.version) {
+  console.log("opening the modal for the update ");
+    return false ;
+} else {
+  console.log(storedMid, "dskhjsdvb");
+  // const updatedData = {
+  //     version: versioncode,
+  //     mid: storedMid,
+  // };
+  // dispatch(updateUser(updatedData, navigation));
+    return true;
+}
+  } catch (error) {
+    console.error('Error fetching data:', error)
+  }
+   
+}
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,22 +86,15 @@ const [version,SetVersioncode]=useState("")
           navigation.replace('SignIn')
           return
         }
-        // console.log("versioncode",versioncode,version);
-        // if (versioncode!==version) {
-        //   // dispatch(updateUser(updatedData))
-        //   navigation.replace('chargerSelection')
-        //   return ;
-        // }
 
-        // const storedMid = await AsyncStorage.getItem('mid')
-        // console.log(storedMid,"dskhjsdvb");
-        // const updatedData = {
-        //   version: versioncode,
-        //   mid: mid,
+        console.log("versioncode",versioncode,version);
+      
+        const versionsame = versionFunction();
+        console.log("ddslkvdskjnvds",versionsame);
+
+        // if (versionsame){
+          fetchChargerHistory(Appmid)
         // }
-        // dispatch(updateUser(updatedData,navigation))
-        console.log("ddslkvdskjnvds",versioncode!==version);
-        fetchChargerHistory(Appmid)
       } catch (error) {
         console.error('Error fetching data:', error)
       }
