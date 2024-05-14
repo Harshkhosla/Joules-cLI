@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native'
 import {
   responsiveHeight as hp,
@@ -14,18 +15,43 @@ import {
 import Modal from 'react-native-modal'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import SetVehicale from './SetVehicale'
+import { Checkbox } from 'react-native-paper'
 import { Picker } from '@react-native-picker/picker'
 
-const SetCostRecommend = ({ open, onClose, CostofCharging ,setInputCost,chargingUnitsfromsetCost,handlePayment}) => {
+const SetCostRecommend = ({
+  open,
+  onClose,
+  CostofCharging,
+  setInputCost,
+  chargingUnitsfromsetCost,
+  handlePayment,
+}) => {
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [rememberMe, setRememberMe] = useState(true)
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible)
   }
 
-  const [selectedVehicle, setSelectedVehicle] = useState({name:"",model:"",kwh:""})
+  const [selectedVehicle, setSelectedVehicle] = useState({
+    name: '',
+    model: '',
+    kwh: '',
+  })
   const [paycost, setPaycost] = useState('')
   const [batteryPercentage, setBatteryPercentage] = useState('')
+
+  const [selectedVehicleValuePresent, setselectedVehicleValuePresent] =
+    useState({
+      show: false,
+      message: '',
+    })
+
+  const [batteryPercentageValuePresent, setBatteryPercentageValuePresent] =
+    useState({
+      show: false,
+      message: '',
+    })
 
   const handleBatteryPercentage = (percentage) => {
     if (percentage > 100) {
@@ -48,28 +74,49 @@ const SetCostRecommend = ({ open, onClose, CostofCharging ,setInputCost,charging
       return
     }
 
-    const payCostInWh = (selectedVehicle.kwh * 1000 * (100 - batteryPercentage)) / 100
+    const payCostInWh =
+      (selectedVehicle.kwh * 1000 * (100 - batteryPercentage)) / 100
     const payCostInRupees = Math.ceil((CostofCharging / 1000) * payCostInWh)
-    console.log(
-      'payCostInWh',
-      payCostInWh,
-      payCostInRupees,
-    )
+    console.log('payCostInWh', payCostInWh, payCostInRupees)
     setPaycost(payCostInRupees)
     setInputCost(payCostInRupees)
   }, [batteryPercentage, selectedVehicle])
 
-  console.log(
-    'payCostInWh',
-    selectedVehicle
-  )
+  console.log('payCostInWh', selectedVehicle)
 
-
-  const handlePaycost=()=>{
+  const handlePaycost = () => {
+    if (!selectedVehicle.kwh) {
+      setselectedVehicleValuePresent((prev) => ({
+        ...prev,
+        show: true,
+        message: 'Please Select Vehicle',
+      }))
+      return
+    } else {
+      setselectedVehicleValuePresent((prev) => ({
+        ...prev,
+        show: false,
+        message: '',
+      }))
+    }
+    if (!batteryPercentage) {
+      setBatteryPercentageValuePresent((prev) => ({
+        ...prev,
+        show: true,
+        message: 'Please Enter Battry Percenttage',
+      }))
+      return
+    } else {
+      setBatteryPercentageValuePresent((prev) => ({
+        ...prev,
+        show: false,
+        message: '',
+      }))
+    }
     handlePayment()
     setTimeout(() => {
       onClose()
-    }, 500);
+    }, 500)
   }
 
   return (
@@ -98,9 +145,18 @@ const SetCostRecommend = ({ open, onClose, CostofCharging ,setInputCost,charging
               style={styles.pickerContainer}
               onPress={toggleModal}
             >
-              <Text style={{ fontSize: 14 ,color:"#6C6C6C"}}>{selectedVehicle.model?`${selectedVehicle.name} / ${selectedVehicle.model}`:"Select Your Vehicle"}</Text>
+              <Text style={{ fontSize: 14, color: '#6C6C6C' }}>
+                {selectedVehicle.model
+                  ? `${selectedVehicle.name} / ${selectedVehicle.model}`
+                  : 'Select Your Vehicle'}
+              </Text>
               <AntDesign name="down" size={20} color="black" />
             </TouchableOpacity>
+            {selectedVehicleValuePresent.show && (
+              <Text style={{ color: 'red', marginLeft: 5 }}>
+                {selectedVehicleValuePresent.message}
+              </Text>
+            )}
             {/* <View style={styles.pickerContainer}></View> */}
 
             {/* <View style={styles.pickerContainer}>
@@ -128,15 +184,41 @@ const SetCostRecommend = ({ open, onClose, CostofCharging ,setInputCost,charging
                 value={batteryPercentage}
                 onChangeText={handleBatteryPercentage}
               />
+              {batteryPercentageValuePresent.show && (
+                <Text style={{ color: 'red', marginLeft: 5 }}>
+                  {batteryPercentageValuePresent.message}
+                </Text>
+              )}
             </View>
             <View style={styles.CostCharging}>
               <Text style={styles.text}>Cost of Charging : </Text>
-              <Text style={styles.text}>₹{CostofCharging} per Kwh (per Unit)</Text>
+              <Text style={styles.text}>
+                ₹{CostofCharging} per Kwh (per Unit)
+              </Text>
             </View>
-            <Text style={styles.text}>Amount of Full Charge -  ₹{paycost}</Text>
-            <Text style={styles.text}>Amount of charing units - {Math.round(chargingUnitsfromsetCost * 1000) /
-          1000} kwh </Text>
-            <TouchableOpacity style={styles.payButtonContainer} onPress={handlePaycost}>
+            <Text style={styles.text}>Amount of Full Charge - ₹{paycost}</Text>
+            <Text style={styles.text}>
+              Amount of charing units -{' '}
+              {Math.round(chargingUnitsfromsetCost * 1000) / 1000} kwh{' '}
+            </Text>
+
+            <View style={styles.checkboxContainer}>
+              <Checkbox.Android
+                status={rememberMe ? 'checked' : 'unchecked'}
+                onPress={() => setRememberMe(!rememberMe)}
+                // uncheckedColor={theme.colors.primary}
+                color={'#118615'}
+                style={{ padding: 0, marginLeft: 0 }}
+              />
+              <Text style={styles.rememberMeText}>
+                Write your expacted text
+              </Text>
+            </View>
+
+            <TouchableOpacity
+              style={styles.payButtonContainer}
+              onPress={handlePaycost}
+            >
               <View style={styles.payButton}>
                 <Text style={styles.payButtonText}>Pay </Text>
                 <Text style={styles.payButtonText}>₹ {paycost}</Text>
@@ -145,8 +227,11 @@ const SetCostRecommend = ({ open, onClose, CostofCharging ,setInputCost,charging
           </View>
 
           <View>
-            <SetVehicale open={isModalVisible} onClose={toggleModal} setSelectedVehicle={setSelectedVehicle}
-            selectedVehicle={selectedVehicle}
+            <SetVehicale
+              open={isModalVisible}
+              onClose={toggleModal}
+              setSelectedVehicle={setSelectedVehicle}
+              selectedVehicle={selectedVehicle}
             />
           </View>
 
@@ -193,7 +278,18 @@ const styles = StyleSheet.create({
   text: {
     color: '#6C6C6C',
     fontSize: 15,
-    marginBottom: 10,
+    marginBottom: 7,
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+
+    marginLeft: -10,
+    height: 22,
+  },
+  rememberMeText: {
+    fontSize: 15,
+    color: '#6C6C6C',
   },
   payButtonContainer: {
     flex: 1,
@@ -216,7 +312,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#118615',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 280
+    width: 280,
   },
   payButtonText: {
     color: '#fff',
@@ -243,11 +339,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#fff',
     height: 45,
-    marginBottom: hp(3),
     color: '#000000',
     marginTop: 10,
   },
   CostCharging: {
+    marginTop: hp(1),
     flexDirection: 'row',
     alignItems: 'center',
   },

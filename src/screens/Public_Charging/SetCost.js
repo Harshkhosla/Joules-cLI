@@ -63,13 +63,17 @@ const SetCost = ({
   ChargingEnergy,
   setShowPaymentCompleteModal,
   animateNextWord,
-  setisPowerCutTextVisible
+  setisPowerCutTextVisible,
 }) => {
   const dispatch = useDispatch()
   const [ShowSetCost, SetShowSetCost] = useState(true)
   const [inputCost, setInputCost] = useState('')
   const [Time, settime] = useState('')
   const [isModalVisible, setisModalVisible] = useState(false)
+  const [amountValuePresent, setAmountValuePresent] = useState({
+    show: false,
+    message: '',
+  })
 
   // const [walletValue,setWalletValue]=useState("10")
   const [rememberMe, setRememberMe] = useState(true)
@@ -116,56 +120,75 @@ const SetCost = ({
     setGetSampledata(true)
   }
 
-
-
   const handlePayment = async () => {
     if (inputCost <= 0 || !inputCost) {
-      Alert.alert('Please set the cost of charging first');
-      return;
+      setAmountValuePresent((prev) => ({
+        ...prev,
+        show: true,
+        message: 'Please enter a valid amount',
+      }))
+      return
+      // Alert.alert('Please set the cost of charging first')
+    } else {
+      setAmountValuePresent((prev) => ({
+        ...prev,
+        show: false,
+        message: '',
+      }))
     }
-  
-    const { storedData } = await fetchDataAsyncStorageData();
+
+    const { storedData } = await fetchDataAsyncStorageData()
     if (!storedData) {
-      Alert.alert("Scan please");
-      return;
+      Alert.alert('Scan please')
+      return
     }
-  
-    if (walletValue === "0" || Number(walletValue) === 0 || !rememberMe) {
-      const options = getPaymentOptions(inputCost);
+
+    if (walletValue === '0' || Number(walletValue) === 0 || !rememberMe) {
+      const options = getPaymentOptions(inputCost)
       try {
-        const data = await RazorpayCheckout.open(options);
+        const data = await RazorpayCheckout.open(options)
         if (data && data.razorpay_payment_id) {
-          handlePaymentSuccess(inputCost, storedData, data.razorpay_payment_id, 0);
+          handlePaymentSuccess(
+            inputCost,
+            storedData,
+            data.razorpay_payment_id,
+            0
+          )
         }
       } catch (error) {
-        handlePaymentError(error);
+        handlePaymentError(error)
       }
     } else if (Number(inputCost) <= Number(walletValue)) {
-      handleWalletPayment(inputCost, storedData);
+      handleWalletPayment(inputCost, storedData)
     } else if (Number(inputCost) > Number(walletValue) && walletValue != 0) {
-      handlePartialPayment(inputCost, walletValue, storedData);
+      handlePartialPayment(inputCost, walletValue, storedData)
     }
   }
-  
-  const getPaymentOptions = (cost) => ({
-    description: "Payment for your order",
-    image: razorpayLogo,
-    currency: "INR",
-    key: "rzp_live_V4Palfsx7GsPm3",
-    amount: cost * 100,
-    name: "Jouls Ecotech Pvt Ltd",
-    prefill: {
-      email: "customer@example.com",
-      contact: "9999999999",
-      name: "Customer Name",
-    },
-    theme: { color: "#118615" },
-  });
-  
-  const handlePaymentSuccess = async (payment, productKey, paymentId, walletUse) => {
-    console.log("call handlePaymentSuccess");
 
-    onClose();
+  const getPaymentOptions = (cost) => ({
+    description: 'Payment for your order',
+    image: razorpayLogo,
+    currency: 'INR',
+    key: 'rzp_live_V4Palfsx7GsPm3',
+    amount: cost * 100,
+    name: 'Jouls Ecotech Pvt Ltd',
+    prefill: {
+      email: 'customer@example.com',
+      contact: '9999999999',
+      name: 'Customer Name',
+    },
+    theme: { color: '#118615' },
+  })
+
+  const handlePaymentSuccess = async (
+    payment,
+    productKey,
+    paymentId,
+    walletUse
+  ) => {
+    console.log('call handlePaymentSuccess')
+
+    onClose()
     const sendData = {
       payment,
       inputCost: payment,
@@ -173,57 +196,62 @@ const SetCost = ({
       paymentId,
       findchargingCost,
       WalletUse: walletUse.toString(),
-    };
-    setShowPaymentCompleteModal(false);
-    setisChargingAlertVisible(true);
-  
-    const response = await dispatch(ChargerHistory(sendData));
-    if (response?.message === "ChargerHistory added successfully") {
-      animateNextWord();
-      startCharging();
+    }
+    setShowPaymentCompleteModal(false)
+    setisChargingAlertVisible(true)
+
+    const response = await dispatch(ChargerHistory(sendData))
+    if (response?.message === 'ChargerHistory added successfully') {
+      animateNextWord()
+      startCharging()
     }
   }
-  
-  const handleWalletPayment = async (cost, productKey) => {
-    console.log("call handleWalletPayment");
 
-    onClose();
+  const handleWalletPayment = async (cost, productKey) => {
+    console.log('call handleWalletPayment')
+
+    onClose()
     const sendData = {
-      payment: "0",
+      payment: '0',
       inputCost: cost,
       Porduct_Key: productKey,
-      paymentId: "Paid Using Wallet",
+      paymentId: 'Paid Using Wallet',
       findchargingCost,
       WalletUse: cost.toString(),
-    };
-    setShowPaymentCompleteModal(false);
-    setisChargingAlertVisible(true);
-  
-    const response = await dispatch(ChargerHistory(sendData));
-    if (response?.message === "ChargerHistory added successfully") {
-      animateNextWord();
-      startCharging();
+    }
+    setShowPaymentCompleteModal(false)
+    setisChargingAlertVisible(true)
+
+    const response = await dispatch(ChargerHistory(sendData))
+    if (response?.message === 'ChargerHistory added successfully') {
+      animateNextWord()
+      startCharging()
     }
   }
-  
+
   const handlePartialPayment = async (cost, walletValue, productKey) => {
-    console.log("call handlePartialPayment");
-    const options = getPaymentOptions(cost - walletValue);
-    try { 
-      const data = await RazorpayCheckout.open(options);
+    console.log('call handlePartialPayment')
+    const options = getPaymentOptions(cost - walletValue)
+    try {
+      const data = await RazorpayCheckout.open(options)
       if (data && data.razorpay_payment_id) {
-        handlePaymentSuccess(cost - walletValue, productKey, data.razorpay_payment_id, walletValue);
+        handlePaymentSuccess(
+          cost - walletValue,
+          productKey,
+          data.razorpay_payment_id,
+          walletValue
+        )
       }
     } catch (error) {
-      handlePaymentError(error);
+      handlePaymentError(error)
     }
   }
-  
+
   const handlePaymentError = (error) => {
-    console.error("Payment Error:", error);
-    Alert.alert("Payment Failed", "Payment failed. Please try again.");
+    console.error('Payment Error:', error)
+    Alert.alert('Payment Failed', 'Payment failed. Please try again.')
   }
- 
+
   const startCharging = async (paymentId) => {
     const { storedData } = await fetchDataAsyncStorageData()
     if (!storedData) {
@@ -347,6 +375,7 @@ const SetCost = ({
                     walletValue={walletValue}
                     rememberMe={rememberMe}
                     setRememberMe={setRememberMe}
+                    amountValuePresent={amountValuePresent}
                   />
                 ) : (
                   <ChargingSetTime
@@ -443,6 +472,7 @@ const ChargingCost = ({
   walletValue,
   rememberMe,
   setRememberMe,
+  amountValuePresent,
 }) => {
   // const [rememberMe, setRememberMe] = useState(true)
 
@@ -462,7 +492,6 @@ const ChargingCost = ({
     <View style={{ marginVertical: 10 }}>
       <Text
         style={{
-          marginTop: 5,
           color: '#6C6C6C',
           fontSize: 19,
           fontWeight: '600',
@@ -472,22 +501,19 @@ const ChargingCost = ({
       </Text>
       <View
         style={{
-          height: 50,
+          marginTop: 5,
           justifyContent: 'center',
           borderWidth: 1,
           borderColor: '#C8C8C8',
-          // margin: 3,
-          marginTop: 10,
           borderRadius: 10,
           paddingHorizontal: 10,
-          width: 290,
-          marginLeft: -5,
         }}
       >
         <TextInput
           style={{
             color: 'black',
             fontSize: 20,
+            height: 45,
           }}
           placeholderTextColor={'#DBDBDB'}
           keyboardType="numeric"
@@ -498,13 +524,18 @@ const ChargingCost = ({
           value={inputCost.toString()}
         />
       </View>
+      {amountValuePresent.show && (
+        <Text style={{ color: 'red', marginLeft: 5 }}>
+          {amountValuePresent.message}
+        </Text>
+      )}
       <Text
         style={{
           color: '#6C6C6C',
           fontSize: 15,
           marginVertical: 5,
           fontWeight: '400',
-          marginTop: 10,
+          marginTop: 7,
         }}
       >
         Cost of Charging : ₹{findchargingCost} per Kwh (per Unit)
