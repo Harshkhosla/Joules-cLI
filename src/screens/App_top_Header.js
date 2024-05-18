@@ -20,7 +20,7 @@ const App_top_Header = ({ navigation, title, color, isHome, name }) => {
   }
 
   const navopen = () => {
-    dispatch(getUserData())
+    // dispatch(getUserData())
     console.log('click header nav', isNavOpen)
     setNavOpen(true)
   }

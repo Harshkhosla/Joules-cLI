@@ -57,12 +57,8 @@ const SetVehicale = ({
     },
     {
       name: 'Jetter',
-      models: [
-        { modelName: 'Model A1', value: 5.1 },
-        { modelName: 'Model A2', value: 5.1 },
-        { modelName: 'Model A3', value: 5.1 },
-      ],
-      value: '',
+      models: [],
+      value: 1.2,
     },
     {
       name: 'Bajaj',
@@ -118,7 +114,15 @@ const SetVehicale = ({
                 {companies.map((company, index) => (
                   <TouchableOpacity
                     key={index}
-                    onPress={() => toggleExpand(index)}
+                    onPress={() =>{ toggleExpand(index)
+                      if (company.name == "Jetter") { // Check if company's value is greater than threshold
+                        handleModelPress(
+                          company.name,
+                          "",
+                          company.value
+                        )                      }
+                    }
+                    }
                     style={styles.companyContainer}
                   >
                     <View
