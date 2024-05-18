@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, ActivityIndicator, Image, StyleSheet, Alert } from 'react-native'
+import { View, ActivityIndicator, Image, StyleSheet, Alert, TouchableOpacity, Platform, Linking } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -65,6 +65,7 @@ const versionFunction =async (mid)=>{
   console.log(versioncode!==data?.version,"versioncode true3");
   if (versioncode !== data?.version) {
   console.log("opening the modal for the update ");
+  // setisModalVisible(true)
     return false ;
 } else {
   console.log(storedMid, "dskhjsdvb");
@@ -103,8 +104,8 @@ const versionFunction =async (mid)=>{
 
         console.log("versioncode",versioncode,version);
       
-        const versionsame =await versionFunction(Appmid);
-        console.log("ddslkvdskjnvds",versionsame);
+        // const versionsame =await versionFunction(Appmid);
+        // console.log("ddslkvdskjnvds",versionsame);
 
         // if (versionsame){
           fetchChargerHistory(Appmid)
@@ -197,18 +198,34 @@ const versionFunction =async (mid)=>{
 
   //   checkSignInStatus();
   // }, [navigation]);
+  const redirectToApp = () => {
+    // Seedha app ka package name ko scheme ke roop mein daalein.
+    const packageName = 'com.Jouls';
 
+    // Package name ko seedha URL ke saath jodein.
+    const appUrl = 'market://details?id=' + packageName;
+
+    // URL ko open karein.
+    Linking.openURL(appUrl)
+      .catch((err) => console.error('An error occurred', err));
+  };
+  
   return (
     <View style={styles.container}>
-      <Image source={require('../assets/jouls.png')} style={styles.image} />
-      <ActivityIndicator size="large" color="#118615" />
-      <CustomModal
-        visible={isModalVisible}
-        onClose={() => setisModalVisible(false)}
-      >
-        <Text>Currently Not Available</Text>
-      </CustomModal>
-    </View>
+    <Image source={require('../assets/jouls.png')} style={styles.image} />
+    <ActivityIndicator size="large" color="#118615" />
+    <CustomModal
+      visible={isModalVisible}
+      // onClose={() => setisModalVisible(false)}
+    >
+      <View style={styles.buttonContainer}>
+      <Text>App Update Required</Text>
+        <TouchableOpacity style={styles.button} onPress={redirectToApp}>
+          <Text style={styles.text}>Please Update</Text>
+        </TouchableOpacity>
+      </View>
+    </CustomModal>
+  </View>
   )
 }
 
@@ -223,6 +240,19 @@ const styles = StyleSheet.create({
     width: 200,
     height: 80,
     resizeMode: 'cover',
+  },
+  buttonContainer: {
+    marginTop: 20,
+  },
+  button: {
+    backgroundColor: '#6C6C6C',
+    padding: 10,
+    borderRadius: 10,
+  },
+  text: {
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 })
 

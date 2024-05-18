@@ -5,18 +5,34 @@ import {
   TouchableOpacity,
   Alert,
   Image,
+  ActivityIndicator,
 } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Modal from 'react-native-modal'
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { getUserData } from '../Redux/Action'
 // import { Item } from 'react-native-paper/lib/typescript/components/List/List'
 // import { index } from 'd3'
 
 const Navmodal = ({ naveopen, closeNave, name }) => {
   const navigation = useNavigation()
   const WalletValue= useSelector((state) => state.userReducers.WallentBalance)
+  const [loading,setLoading]=useState(true)
+  const dispatch=useDispatch()
+
+  useEffect(()=>{
+    const fetchData=async()=>{
+      setLoading(true)
+      const data = await dispatch(getUserData())
+      console.log("datadtadta",data);
+      if(data){
+        setLoading(false)
+      }
+    }
+   fetchData()
+  },[])
   const navitems = [
     {
       Nav_icon: require('../assets/historynav.png'),
@@ -105,7 +121,11 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
                   style={{ height: 20, width: 20, resizeMode: 'contain' }}
                   resizeMode="contain"
                 /> */}
-                <Text style={{ color: '#FFFFFF' }}>Wallet balance : ₹ {WalletValue}</Text>
+                <Text style={{ color: '#FFFFFF' }}>Wallet balance : ₹  {loading ? (
+          <ActivityIndicator size="small" color="#FFFFFF" style={{height:10,width:10}}/>
+        ) : (
+          <Text>{WalletValue}</Text>
+        )}</Text>
               </TouchableOpacity>
             </View>
           </View>
