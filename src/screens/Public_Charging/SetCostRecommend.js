@@ -66,9 +66,9 @@ const SetCostRecommend = ({
   }
 
   useEffect(() => {
-    if (!batteryPercentage || !selectedVehicle.kwh) {
+    if (!batteryPercentage || !selectedVehicle.kwh || batteryPercentage=="0") {
       setPaycost(0)
-      setInputCost(0)
+      // setInputCost(0)
       return
     }
 
@@ -80,7 +80,7 @@ const SetCostRecommend = ({
     const payCostInWh =
       (selectedVehicle.kwh * 1000 * (100 - batteryPercentage)) / 100
     const payCostInRupees = Math.ceil((CostofCharging / 1000) * payCostInWh)
-    console.log('payCostInWh', payCostInWh, payCostInRupees)
+    console.log('payCostInWhpayCostInWh', payCostInWh, payCostInRupees)
     setPaycost(payCostInRupees)
     setInputCost(payCostInRupees)
   }, [batteryPercentage, selectedVehicle])

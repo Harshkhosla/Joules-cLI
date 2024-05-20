@@ -106,6 +106,7 @@ const SetCost = ({
     }
   }, [open])
 
+  console.log("inpucostinputcost",inputCost);
   useEffect(() => {
     setDataToParent()
   }, [inputCost, findchargingCost])

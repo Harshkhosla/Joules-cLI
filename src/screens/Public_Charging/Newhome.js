@@ -91,7 +91,7 @@ const [isloadershow,setIsloaderShow]=useState(false)
     (state) => state?.userReducers?.SetCurrent
   )
 
-  console.log('timeinsec', ChargingCost, SampleDataaa)
+  console.log('timeinsecinputcostfromsetcost',inputcostfromsetcost,chargingUnitsfromsetCost)
 
   useEffect(() => {
     if (checkChargingStartedBool && chargingHistoryPId) {
@@ -356,6 +356,7 @@ const [isloadershow,setIsloaderShow]=useState(false)
   const saveDataToAsyncStorage = async () => {
     if (checkChargingStarted && AsyncStoragePiddata) {
       try {
+        console.log("saveDataToAsyncStoragesaveDataToAsyncStorage");
         // Save data to AsyncStorage
         // await AsyncStorage.setItem('ChargingStarted', "true");
         setShowChargingEnergy(true)
@@ -561,7 +562,7 @@ const [isloadershow,setIsloaderShow]=useState(false)
                   : ChargingCost || '0'} */}
                 ₹{' '}
                 {showChargingEnergy
-                  ? Math.round(ChargingCost * 1000) / 1000
+                  ? Math.round(ChargingCost * 1000) / 1000 + " / " + inputcostfromsetcost
                   : '0'}
               </Text>
               <View
