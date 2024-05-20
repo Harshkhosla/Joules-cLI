@@ -22,17 +22,17 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
   const [loading,setLoading]=useState(true)
   const dispatch=useDispatch()
 
-  useEffect(()=>{
-    const fetchData=async()=>{
-      setLoading(true)
-      const data = await dispatch(getUserData())
-      console.log("datadtadta",data);
-      if(data){
-        setLoading(false)
-      }
-    }
-   fetchData()
-  },[])
+  // useEffect(()=>{
+  //   const fetchData=async()=>{
+  //     setLoading(true)
+  //     const data = await dispatch(getUserData())
+  //     console.log("datadtadta",data);
+  //     if(data){
+  //       setLoading(false)
+  //     }
+  //   }
+  //  fetchData()
+  // },[])
   const navitems = [
     {
       Nav_icon: require('../assets/historynav.png'),
@@ -121,11 +121,12 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
                   style={{ height: 20, width: 20, resizeMode: 'contain' }}
                   resizeMode="contain"
                 /> */}
-                <Text style={{ color: '#FFFFFF' }}>Wallet balance : ₹  {loading ? (
+                {/* <Text style={{ color: '#FFFFFF' }}>Wallet balance : ₹  {loading ? (
           <ActivityIndicator size="small" color="#FFFFFF" style={{height:10,width:10}}/>
         ) : (
           <Text>{WalletValue}</Text>
-        )}</Text>
+        )}</Text> */}
+                <Text style={{ color: '#FFFFFF' }}>Wallet balance : ₹ {WalletValue}</Text>
               </TouchableOpacity>
             </View>
           </View>
