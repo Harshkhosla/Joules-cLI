@@ -25,9 +25,12 @@ const SetCostRecommend = ({
   setInputCost,
   chargingUnitsfromsetCost,
   handlePayment,
+  walletValue,
+  rememberMe,
+  setRememberMe
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const [rememberMe, setRememberMe] = useState(true)
+  // const [rememberMe, setRememberMe] = useState(true)
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible)
@@ -63,9 +66,9 @@ const SetCostRecommend = ({
   }
 
   useEffect(() => {
-    if (!batteryPercentage || !selectedVehicle.kwh) {
+    if (!batteryPercentage || !selectedVehicle.kwh || batteryPercentage=="0") {
       setPaycost(0)
-      setInputCost(0)
+      // setInputCost(0)
       return
     }
 
@@ -77,7 +80,7 @@ const SetCostRecommend = ({
     const payCostInWh =
       (selectedVehicle.kwh * 1000 * (100 - batteryPercentage)) / 100
     const payCostInRupees = Math.ceil((CostofCharging / 1000) * payCostInWh)
-    console.log('payCostInWh', payCostInWh, payCostInRupees)
+    console.log('payCostInWhpayCostInWh', payCostInWh, payCostInRupees)
     setPaycost(payCostInRupees)
     setInputCost(payCostInRupees)
   }, [batteryPercentage, selectedVehicle])
@@ -117,6 +120,11 @@ const SetCostRecommend = ({
     setTimeout(() => {
       onClose()
     }, 500)
+    setBatteryPercentage("")
+    setSelectedVehicle({name:"",model:"",kwh:""})
+    setselectedVehicleValuePresent({message:"",show:false})
+    setBatteryPercentageValuePresent({ show: false,
+      message: ''})
   }
 
   return (
@@ -146,9 +154,13 @@ const SetCostRecommend = ({
               onPress={toggleModal}
             >
               <Text style={{ fontSize: 14, color: '#6C6C6C' }}>
-                {selectedVehicle.model
-                  ? `${selectedVehicle.name} / ${selectedVehicle.model}`
-                  : 'Select Your Vehicle'}
+              {
+                  selectedVehicle.model || selectedVehicle.name 
+                    ? selectedVehicle.model 
+                      ? `${selectedVehicle.name} / ${selectedVehicle.model}`
+                      : selectedVehicle.name
+                    : 'Select Your Vehicle'
+                }
               </Text>
               <AntDesign name="down" size={20} color="black" />
             </TouchableOpacity>
@@ -211,7 +223,7 @@ const SetCostRecommend = ({
                 style={{ padding: 0, marginLeft: 0 }}
               />
               <Text style={styles.rememberMeText}>
-                Write your expacted text
+              Use the credits from your wallet : ₹ {walletValue}
               </Text>
             </View>
 
@@ -221,7 +233,13 @@ const SetCostRecommend = ({
             >
               <View style={styles.payButton}>
                 <Text style={styles.payButtonText}>Pay </Text>
-                <Text style={styles.payButtonText}>₹ {paycost}</Text>
+                {/* <Text style={styles.payButtonText}>₹ {paycost}</Text> */}
+                <Text style={styles.payButtonText}>₹ {!rememberMe
+                      ? paycost
+                      : rememberMe &&
+                        Number(paycost) - Number(walletValue) <= 0
+                      ? 0
+                      : rememberMe && Number(paycost) - Number(walletValue)}</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -288,7 +306,7 @@ const styles = StyleSheet.create({
     height: 22,
   },
   rememberMeText: {
-    fontSize: 15,
+    fontSize: 14,
     color: '#6C6C6C',
   },
   payButtonContainer: {

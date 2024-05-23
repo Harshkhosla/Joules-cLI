@@ -106,6 +106,7 @@ const SetCost = ({
     }
   }, [open])
 
+  console.log("inpucostinputcost",inputCost);
   useEffect(() => {
     setDataToParent()
   }, [inputCost, findchargingCost])
@@ -201,10 +202,14 @@ const SetCost = ({
     setisChargingAlertVisible(true)
 
     const response = await dispatch(ChargerHistory(sendData))
+    console.log("responseresponse",response)
     if (response?.message === 'ChargerHistory added successfully') {
       animateNextWord()
       startCharging()
     }
+    // else if(response.message==""){
+    //   console.log("respone",response);
+    // }
   }
 
   const handleWalletPayment = async (cost, productKey) => {
@@ -223,10 +228,17 @@ const SetCost = ({
     setisChargingAlertVisible(true)
 
     const response = await dispatch(ChargerHistory(sendData))
+    console.log("callhandleWalletPaymentcallhandleWalletPayment",response);
+  
     if (response?.message === 'ChargerHistory added successfully') {
       animateNextWord()
       startCharging()
     }
+    // else if (response?.message === 'PID not found'){
+    //   console.log("please scan");
+    // setisChargingAlertVisible(false)
+
+    // }
   }
 
   const handlePartialPayment = async (cost, walletValue, productKey) => {
@@ -478,6 +490,9 @@ const ChargingCost = ({
 
   console.log(findchargingCost, 'chargincost in chargingcost')
   const handleinputchangecost = (text) => {
+    // if (/^\d*$/.test(text)) {
+    //   setInputCost(text);
+    // }
     setInputCost(text)
     // setinputcostfromsetcost(text)
   }
@@ -589,6 +604,9 @@ const ChargingCost = ({
           CostofCharging={findchargingCost}
           chargingUnitsfromsetCost={chargingUnitsfromsetCost}
           handlePayment={handlePayment}
+          walletValue={walletValue}
+          rememberMe={rememberMe}
+          setRememberMe={setRememberMe}
         />
       </View>
     </View>
