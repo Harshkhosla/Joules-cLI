@@ -1643,6 +1643,7 @@ export const publicstartCharging = (
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
+    let isFirstUpdate = true;
     // let chargingDataTimeout; 
 
     // const resetChargingDataTimeout = () => {
@@ -1692,11 +1693,13 @@ export const publicstartCharging = (
           })
       }
     })
-    client.on('messageReceived', (message) => {
-      console.log('message in on client', message.payloadString)
-    })
+    // let isFirstUpdate = true;
+    // client.on('messageReceived', (message) => {
+    //   console.log('message in on client', message)
+    // })
     const onConnect = () => {
       client.on('messageReceived', (message) => {
+        console.log('message in on client start charing', message.payloadString)
         if (message.destinationName === `${Porduct_Key}_Updates`) {
           // const updatedMessages = [
           //   ...topic1State.messages,
@@ -1706,15 +1709,17 @@ export const publicstartCharging = (
           // console.log('topic1State', topic1State)
           // // const sample=message.payloadString
           // dispatch(setStateValue(message.payloadString))
-          console.log(`${Porduct_Key}_Updates:`, message.payloadString)
-          if (message.payloadString == 'Charging Started') {
+          console.log(`${Porduct_Key}_Updates:`, message)
+          if (message.payloadString == 'Charging Started' && isFirstUpdate) {
+            console.log("instartchargingactions");
             animateNextWord()
-          setisChargingAlertVisible(false)
-          setShowPaymentCompleteModal(true)
+            setShowPaymentCompleteModal(true)
+          setisChargingAlertVisible(false)  
             // onClose()
             setButtonText('Stop Charging')
             startTimer()
             setcheckChargingStarted(true)
+            isFirstUpdate = false;
             // const sendData = {
             //   Porduct_Key,
             //   inputCost,
@@ -1750,6 +1755,7 @@ export const publicstartCharging = (
           }
           
         } else if (message.destinationName === `${Porduct_Key}_Charging_Data`) {
+          console.log("inCharingDatainaction");
           // onMessageReceived(); // Call onMessageReceived when message received on charging data topic
           const updatedMessages = [
             ...topic2State.messages,
@@ -1762,6 +1768,16 @@ export const publicstartCharging = (
           dispatch(setEnergy(dataObject.Output_Energy))
           dispatch(setPower(dataObject.Output_Power))
           dispatch(setCurrent(dataObject.Output_Current))
+          if (isFirstUpdate) {
+            console.log("inchargingDataactionsinchargingDataactions");
+            animateNextWord();
+            setisChargingAlertVisible(false);
+            setShowPaymentCompleteModal(true);
+            setButtonText('Stop Charging')
+            startTimer()
+            setcheckChargingStarted(true)
+            isFirstUpdate = false; // Ensure this block runs only once
+          }
           // console.log(`${Porduct_Key}_Charging_Data:`, message.payloadString)
           // console.log(
           //   'message?.payloadString?.Output_Energy',
@@ -1936,7 +1952,7 @@ export const DoorOpening = (Porduct_Key) => {
     //   }
     // })
     client.on('messageReceived', (message) => {
-      console.log('message in on client', message.payloadString)
+      console.log('message in on client Door Open', message.payloadString)
     })
     client
       .connect()
@@ -1988,7 +2004,7 @@ export const publicstopCharging = (
       }
     })
     client.on('messageReceived', (message) => {
-      console.log('message in on client', message.payloadString)
+      console.log('message in on client stop charging', message.payloadString)
     })
     const onConnect = () => {
       client.on('messageReceived', (message) => {

@@ -171,52 +171,68 @@ if(!pid){
 
   // Function to check MQTT messages for a given topic
   const checkMQTTMessages = (topic, callback) => {
-    // MQTT connection setup
-    // const client = mqtt.connect(MqqtUrl);
-    const client = new Client({
-      uri: MqqtUrl,
-      clientId: 'client' + Math.random().toString(36).substring(7),
-      storage: myStorage,
-    })
-
-    // Variable to track whether message received or not
-    let messageReceived = false
-
-    // MQTT connect event listener
-    client.connect().then(() => {
-      client.subscribe(`${topic}_Updates`)
-      client.subscribe(`${topic}_Charging_Data`)
-      // allClients.push(client)
-      console.log('mqtt connect in chekmeqqt message')
-    })
-
-    // MQTT error event listener
-
-    client.on('messageReceived', (message) => {
-      console.log('message in on client chekmeqqt', message.payloadString)
-      if (message.destinationName === `${topic}_Updates`) {
-        if (message.payloadString == 'Door is open') {
-          messageReceived = true
-          callback("abletouse")
-          client.disconnect()
+    try {
+      // MQTT connection setup
+      const client = new Client({
+        uri: MqqtUrl,
+        clientId: 'client' + Math.random().toString(36).substring(7),
+        storage: myStorage,
+      });
+  
+      // Variable to track whether message received or not
+      let messageReceived = false;
+  
+      // MQTT connect event listener
+      client.connect().then(() => {
+        client.subscribe(`${topic}_Updates`);
+        client.subscribe(`${topic}_Charging_Data`);
+        console.log('mqtt connect in checkMQTTMessages');
+      }).catch((err) => {
+        console.error('Error during connection or subscription:', err);
+        client.disconnect();
+      });
+  
+      // Set a timeout to handle no message received on _Updates topic
+      const messageTimeout = setTimeout(() => {
+        if (!messageReceived) {
+          callback("Stop");
+          client.disconnect();
+          console.log('Disconnected from MQTT broker');
         }
-      }
-      else if(message.destinationName === `${topic}_Charging_Data`){
-        messageReceived = true
-        callback("alreadyUse")
-        client.disconnect()
-        return
-      }
-    })
-
-    setTimeout(() => {
-      if (!messageReceived) {
-        callback("Stop")
-        client.disconnect()
-        console.log('Disconnected from MQTT broker')
-      }
-    }, 5000)
-  }
+      }, 6000); // 5000 milliseconds (5 seconds), adjust the time as needed
+  
+      // MQTT message event listener
+      client.on('messageReceived', (message) => {
+        console.log('message in on client checkMQTTMessages', message.payloadString);
+  
+        if (message.destinationName === `${topic}_Updates`) {
+          if (message.payloadString === 'Door is open') {
+            messageReceived = true;
+            clearTimeout(messageTimeout); // Clear the timeout if message is received
+            callback("abletouse");
+            client.disconnect();
+          }
+        } else if (message.destinationName === `${topic}_Charging_Data`) {
+          clearTimeout(messageTimeout); // Clear the timeout if message is received
+          messageReceived = true;
+          callback("alreadyuse");
+          client.disconnect();
+        }
+      });
+  
+      client.on('connectionLost', (responseObject) => {
+        if (responseObject.errorCode !== 0) {
+          console.error('Connection lost:', responseObject.errorMessage);
+        }
+      });
+  
+    } catch (err) {
+      console.error('Unexpected error:', err);
+    }
+  };
+  
+  
+  
 
   // Example usage:
 
@@ -265,7 +281,7 @@ const handleSendMessage=async(pid)=>{
       console.log('navigate to newhome')
       await AsyncStorage.setItem('pid', pid)
       navigation.navigate('Newhome')
-    } else if (result=="alreadyUse") {
+    } else if (result=="alreadyuse") {
           setloading(false)
           setScannerMessage("Charger already in use")
           setisModalVisible(true)
