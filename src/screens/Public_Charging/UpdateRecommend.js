@@ -1,13 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, TouchableHighlight, TouchableNativeFeedback, TouchableOpacityBase } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  TouchableHighlight,
+  TouchableNativeFeedback,
+  TouchableOpacityBase,
+} from 'react-native'
 import {
   responsiveHeight as hp,
   responsiveWidth as wp,
-} from 'react-native-responsive-dimensions';
-import Modal from 'react-native-modal';
+} from 'react-native-responsive-dimensions'
+import Modal from 'react-native-modal'
 
-const UpdateRecommend = ({ navigation,open, onClose ,handleUpdate}) => {
-  
+const UpdateRecommend = ({ navigation, open, onClose, handleUpdate }) => {
   // useEffect(() => {
   //   const unsubscribe = navigation.addListener('focus', () => {
   //     // Call your function to refresh here
@@ -19,10 +27,7 @@ const UpdateRecommend = ({ navigation,open, onClose ,handleUpdate}) => {
   // }, [navigation]);
 
   return (
-    <Modal
-      isVisible={open}
-      style={styles.modal}
-    >
+    <Modal isVisible={open} style={styles.modal}>
       <View style={styles.container}>
         <View style={styles.contents}>
           <View style={styles.contentBox}>
@@ -66,11 +71,14 @@ const UpdateRecommend = ({ navigation,open, onClose ,handleUpdate}) => {
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.UpdateButtonContainer} onPress={handleUpdate}>
+            <TouchableOpacity
+              style={styles.UpdateButtonContainer}
+              onPress={handleUpdate}
+            >
               <View style={styles.UpdateButton}>
                 <Text style={styles.UpdateText}>Update Now</Text>
               </View>
-              <Text style={{ marginTop: 2 ,color:"#000000"}}>
+              <Text style={{ marginTop: 2, color: '#000000' }}>
                 Please Update the App before Charging
               </Text>
             </TouchableOpacity>
@@ -82,10 +90,10 @@ const UpdateRecommend = ({ navigation,open, onClose ,handleUpdate}) => {
         </View>
       </View>
     </Modal>
-  );
+  )
 }
 
-export default UpdateRecommend;
+export default UpdateRecommend
 
 const styles = StyleSheet.create({
   modal: {
@@ -159,4 +167,4 @@ const styles = StyleSheet.create({
     width: wp(100),
     zIndex: -1,
   },
-});
+})

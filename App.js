@@ -43,7 +43,7 @@ import Wave from './src/components/wave'
 import ChargingAnimation from './src/screens/ChargingAnimation'
 import Customdrawer from './Customdrawer'
 import Support from './src/components/Support'
-import { TouchableOpacity, View } from 'react-native'
+import { Alert, TouchableOpacity, View } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import HeaderWithArrow from './src/components/ChatSupport'
 import AddRfid from './src/components/AddRfid'
@@ -53,6 +53,8 @@ import Timer_with_package from './src/screens/Timer_with_package'
 import ble from './src/screens/SomeComponent'
 import Connect_to_WiFi from './src/screens/Connect_to_WiFi'
 import ChargingCard_History from './src/screens/ChargingCard_History'
+import { firebase } from './firebase'
+import messaging from '@react-native-firebase/messaging'
 
 const Stack = createStackNavigator()
 
@@ -61,6 +63,27 @@ const Drawer = createDrawerNavigator()
 export default function App() {
   // const data = AsyncStorage.getItem('mid')
   // console.log(data)
+
+  useEffect(() => {
+    // Example: Check if user is signed in
+    const subscriber = firebase.auth().onAuthStateChanged((user) => {
+      console.log('fetching data: fetching data: fetching data:', user)
+    })
+    return subscriber // Unsubscribe on unmount
+  }, [])
+
+  // useEffect(() => {
+  //   const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+  //     Alert.alert(
+  //       'Hello from ' + remoteMessage.collapseKey,
+  //       JSON.stringify(remoteMessage.notification.body)
+  //     )
+  //     console.log(remoteMessage)
+  //   })
+
+  //   return unsubscribe
+  // }, [])
+
   return (
     <Sample store={Store}>
       <Provider theme={theme}>
@@ -71,7 +94,6 @@ export default function App() {
               headerShown: false,
             }}
           >
-            
             <Stack.Screen name="Authloading" component={AuthLoadingScreen} />
             <Stack.Screen
               name="ChargingCard_History"

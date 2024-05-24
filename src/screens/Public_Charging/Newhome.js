@@ -10,7 +10,6 @@ import {
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { fetchDataAsyncStorageData } from '../../utility/asyncStorage'
-import SetCost from './SetCost'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -21,10 +20,12 @@ import {
   setChargingStarted,
   setModal,
 } from '../../Redux/Action'
+import SetCost from './SetCost'
 import HomeScreenCircles from '../HomeScreenCircle'
 import Wave from '../../components/wave'
 import App_top_Header from '../App_top_Header'
 import Charging_alert_modal from './Charging_alert_modal'
+
 const Newhome = ({ navigation }) => {
   const dispatch = useDispatch()
   // for 10 min not click start charging
@@ -52,10 +53,10 @@ const Newhome = ({ navigation }) => {
   // charingalert modal
   const [isPowerCutTextVisible, setisPowerCutTextVisible] = useState(false)
   const [shouldAnimate, setShouldAnimate] = useState(true)
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const words = ['Payment Successful', 'Starting..', 'Charging Started'];
-// stop charging loader
-const [isloadershow,setIsloaderShow]=useState(false)
+  const [currentWordIndex, setCurrentWordIndex] = useState(0)
+  const words = ['Payment Successful', 'Starting..', 'Charging Started']
+  // stop charging loader
+  const [isloadershow, setIsloaderShow] = useState(false)
 
   //
   const [getsample, setGetSampledata] = useState(true)
@@ -91,7 +92,11 @@ const [isloadershow,setIsloaderShow]=useState(false)
     (state) => state?.userReducers?.SetCurrent
   )
 
-  console.log('timeinsecinputcostfromsetcost',inputcostfromsetcost,chargingUnitsfromsetCost)
+  console.log(
+    'timeinsecinputcostfromsetcost',
+    inputcostfromsetcost,
+    chargingUnitsfromsetCost
+  )
 
   useEffect(() => {
     if (checkChargingStartedBool && chargingHistoryPId) {
@@ -298,7 +303,7 @@ const [isloadershow,setIsloaderShow]=useState(false)
     // console.log('text', text, unique)
     if (text == 'Stop Charging') {
       setIsloaderShow(true)
-      console.log('StopChargingStopChargingStopCharging',unique)
+      console.log('StopChargingStopChargingStopCharging', unique)
       handleClickStopCharging(unique)
     } else if (text == 'Start Charging' && AsyncStoragePiddata) {
       dispatch(setModal(true))
@@ -356,7 +361,7 @@ const [isloadershow,setIsloaderShow]=useState(false)
   const saveDataToAsyncStorage = async () => {
     if (checkChargingStarted && AsyncStoragePiddata) {
       try {
-        console.log("saveDataToAsyncStoragesaveDataToAsyncStorage");
+        console.log('saveDataToAsyncStoragesaveDataToAsyncStorage')
         // Save data to AsyncStorage
         // await AsyncStorage.setItem('ChargingStarted', "true");
         setShowChargingEnergy(true)
@@ -450,7 +455,7 @@ const [isloadershow,setIsloaderShow]=useState(false)
     setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length)
   }
 
-  const handleChargingStop=()=>{
+  const handleChargingStop = () => {
     setisPowerCutTextVisible(false)
   }
 
@@ -562,7 +567,9 @@ const [isloadershow,setIsloaderShow]=useState(false)
                   : ChargingCost || '0'} */}
                 ₹{' '}
                 {showChargingEnergy
-                  ? Math.round(ChargingCost * 1000) / 1000 + " / " + inputcostfromsetcost
+                  ? Math.round(ChargingCost * 1000) / 1000 +
+                    ' / ' +
+                    inputcostfromsetcost
                   : '0'}
               </Text>
               <View
@@ -650,11 +657,11 @@ const [isloadershow,setIsloaderShow]=useState(false)
           >
             {/* <Text style={styles.ButtonText}>{data?"Start Charging":"Scan QR"}</Text> */}
             {/* <Text style={styles.ButtonText}>{IsChargingStartedValue?"Stop Charging":buttonText}</Text> */}
-           {isloadershow?
-            <ActivityIndicator size="small" color="white" />
-            : 
-            <Text style={styles.ButtonText}>{buttonText}</Text>
-          }
+            {isloadershow ? (
+              <ActivityIndicator size="small" color="white" />
+            ) : (
+              <Text style={styles.ButtonText}>{buttonText}</Text>
+            )}
           </TouchableOpacity>
         </View>
         <Text
@@ -691,7 +698,6 @@ const [isloadershow,setIsloaderShow]=useState(false)
         setShowPaymentCompleteModal={setShowPaymentCompleteModal}
         animateNextWord={animateNextWord}
         setisPowerCutTextVisible={setisPowerCutTextVisible}
-
       />
       <View>
         <Charging_alert_modal
