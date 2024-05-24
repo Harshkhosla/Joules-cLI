@@ -47,7 +47,7 @@ import CustomModal from '../../components/CustomModal'
 import BlurredModalWithLoader from './loader'
 
 export default function Dashboard({ navigation, route }) {
-  const MqqtUrl = 'ws://34.100.251.160:9001/mqtt'
+  const MqqtUrl = 'wss://mqtt.jouls.co.in/mqtt'
   const dispatch = useDispatch()
   const [isModalVisible, setisModalVisible] = useState(false)
   const [isloaderModalVisible,setIsloaderModalVisible]=useState(false)
@@ -185,6 +185,7 @@ if(!pid){
     // MQTT connect event listener
     client.connect().then(() => {
       client.subscribe(`${topic}_Updates`)
+      client.subscribe(`${topic}_Charging_Data`)
       // allClients.push(client)
       console.log('mqtt connect in chekmeqqt message')
     })
@@ -196,15 +197,21 @@ if(!pid){
       if (message.destinationName === `${topic}_Updates`) {
         if (message.payloadString == 'Door is open') {
           messageReceived = true
-          callback(true)
+          callback("abletouse")
           client.disconnect()
         }
+      }
+      else if(message.destinationName === `${topic}_Charging_Data`){
+        messageReceived = true
+        callback("alreadyUse")
+        client.disconnect()
+        return
       }
     })
 
     setTimeout(() => {
       if (!messageReceived) {
-        callback(false)
+        callback("Stop")
         client.disconnect()
         console.log('Disconnected from MQTT broker')
       }
@@ -252,15 +259,21 @@ const handleSendMessage=async(pid)=>{
 
   checkMQTTMessages(pid, async(result) => {
     console.log('resultresultradhe', result)
-    if (result) {
+    if (result=="abletouse") {
       dispatch(setModal(true))
       apicall(pid)
       console.log('navigate to newhome')
       await AsyncStorage.setItem('pid', pid)
       navigation.navigate('Newhome')
-    } else if (!result) {
+    } else if (result=="alreadyUse") {
           setloading(false)
-          setScannerMessage("Charger Already in Use")
+          setScannerMessage("Charger already in use")
+          setisModalVisible(true)
+          return
+        }
+        else if (result=="Stop") {
+          setloading(false)
+          setScannerMessage("Charger Not Working")
           setisModalVisible(true)
           return
         }

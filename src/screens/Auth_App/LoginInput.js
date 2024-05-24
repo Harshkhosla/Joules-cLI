@@ -29,7 +29,8 @@ import {
 import { color } from 'd3'
 
 const LoginInput = ({ navigation }) => {
-  const ApiURL = 'http://165.22.223.26:5000' // live url
+  const ApiURL = 'http://23.22.111.5:5000' // live url
+  // const ApiURL = 'http://165.22.223.26:5000' // live url
   // const ApiURL = 'http://192.168.1.6:5200' // live url
   const [loading, setLoading] = useState(false)
   const [userData, setuserData] = useState({ email: '', password: '' })
