@@ -49,11 +49,11 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
       Nav_name: 'Support',
       navigat: 'support',
     },
-    {
-      Nav_icon: require('../assets/wifiicon.png'),
-      Nav_name: 'Change Wifi',
-      navigat: 'Timer_with_package',
-    },
+    // {
+    //   Nav_icon: require('../assets/wifiicon.png'),
+    //   Nav_name: 'Change Wifi',
+    //   navigat: 'Timer_with_package',
+    // },
   ]
 
   const removeItemFromAsyncStorage = async () => {

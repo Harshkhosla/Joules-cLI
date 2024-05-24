@@ -27,7 +27,7 @@ const initialState = {
     ChargerHistoryData:[],
     checkChargingStarted:false,
     chagerPid:"",
-    versionName:"1.7.6",
+    versionName:"1.4.8",
     WallentBalance:"0",
     AllChargerHistoryData:[],
 
