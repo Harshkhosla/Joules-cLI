@@ -7,11 +7,13 @@ import {
   getUserData,
   setChargerHistoryPid,
   setChargingStarted,
+  setMIDValue,
   updateUser,
 } from '../Redux/Action'
 import { fetchDataAsyncStorageData } from '../utility/asyncStorage'
 import CustomModal from './CustomModal'
 import { Text } from 'react-native-paper'
+import UpdateRecommend from '../screens/Public_Charging/UpdateRecommend'
 
 
 const AuthLoadingScreen = ({ navigation }) => {
@@ -21,42 +23,20 @@ const [version, SetVersioncode]=useState("")
   let versioncode  = useSelector((state) => state?.userReducers?.versionName)
   console.log(versioncode,"sdkhjdsvbvhjbdsvj");
 
- 
-  // const fetchData = async (mid) => {
-  //   try {
-  //     // const storedMid = await AsyncStorage.getItem('mid')
-  //     const data = await dispatch(getUserData(mid))
-  //    console.log("data",data);
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error)
-  //   }
-  // }
-  // useEffect(()=>{
-  //   fetchData();
-  // },[])
   
   const [mid, setMid] = useState('')
   console.log('midmid', mid)
   const [token, setToken] = useState('')
-  const [loading, setLoading] = useState(true)
-  const [IsapiCall, setIsapiCall] = useState(false)
+
   // console.log("chargerhistoryDatachargerhistoryData",chargerhistoryData);
   // const mid="MID1714586025767578"
   const populateChargerHistoryData = true
   const lastchargerhistory = true
   const dispatch = useDispatch()
-  // useEffect(()=>{
-  //   if(IsapiCall && mid)
-  //   setLoading(true)
-  //   if(mid){
-  //     dispatch(GetChargerHistory(navigation,mid,populateChargerHistoryData,lastchargerhistory))
-  //   }
-  //   setLoading(false)
-  // },[dispatch,mid,IsapiCall])
+ 
 const versionFunction =async (mid)=>{
   try {
-    const storedMid = mid
-    const data = await dispatch(getUserData(storedMid))
+    const data = await dispatch(getUserData(mid))
     // SetVersioncode(data?.version)
     console.log('userdataradhe', data?.version)
     
@@ -65,10 +45,10 @@ const versionFunction =async (mid)=>{
   console.log(versioncode!==data?.version,"versioncode true3");
   if (versioncode !== data?.version) {
   console.log("opening the modal for the update ");
-  // setisModalVisible(true)
+  setisModalVisible(true)
     return false ;
 } else {
-  console.log(storedMid, "dskhjsdvb");
+  console.log(mid, "dskhjsdvb");
   // const updatedData = {
   //     version: versioncode,
   //     mid: storedMid,
@@ -92,6 +72,7 @@ const versionFunction =async (mid)=>{
         console.log('Appmid', Appmid)
         
         if (Appmid) {
+          dispatch(setMIDValue(Appmid))
           setMid(Appmid)
         }
         if (Authtoken) {
@@ -102,14 +83,14 @@ const versionFunction =async (mid)=>{
           return
         }
 
-        console.log("versioncode",versioncode,version);
+        // console.log("versioncode",versioncode,version);
       
-        // const versionsame =await versionFunction(Appmid);
-        // console.log("ddslkvdskjnvds",versionsame);
+        const versionsame =await versionFunction(Appmid);
+        console.log("ddslkvdskjnvds",versionsame);
+        if(!versionsame) return
 
-        // if (versionsame){
-          fetchChargerHistory(Appmid)
-        // }
+        fetchChargerHistory(Appmid)
+        
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -198,6 +179,7 @@ const versionFunction =async (mid)=>{
 
   //   checkSignInStatus();
   // }, [navigation]);
+  
   const redirectToApp = () => {
     // Seedha app ka package name ko scheme ke roop mein daalein.
     const packageName = 'com.Jouls';
@@ -209,22 +191,26 @@ const versionFunction =async (mid)=>{
     Linking.openURL(appUrl)
       .catch((err) => console.error('An error occurred', err));
   };
+
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener('focus', () => {
+  //     // Call your function to refresh here
+  //     // For example, fetchData();
+  //     console.log("in vapis playstore in opensplash");
+  //   });
+
+  //   return unsubscribe;
+  // }, [navigation]);
   
   return (
     <View style={styles.container}>
     <Image source={require('../assets/jouls.png')} style={styles.image} />
     <ActivityIndicator size="large" color="#118615" />
-    <CustomModal
-      visible={isModalVisible}
-      // onClose={() => setisModalVisible(false)}
-    >
-      <View style={styles.buttonContainer}>
-      <Text>App Update Required</Text>
-        <TouchableOpacity style={styles.button} onPress={redirectToApp}>
-          <Text style={styles.text}>Please Update</Text>
-        </TouchableOpacity>
-      </View>
-    </CustomModal>
+   <UpdateRecommend 
+   navigation={navigation}
+   open={isModalVisible}
+   handleUpdate={redirectToApp}
+   />
   </View>
   )
 }

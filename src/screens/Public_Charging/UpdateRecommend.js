@@ -1,41 +1,40 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity, TouchableHighlight, TouchableNativeFeedback, TouchableOpacityBase } from 'react-native';
 import {
   responsiveHeight as hp,
   responsiveWidth as wp,
-} from 'react-native-responsive-dimensions'
-import Modal from 'react-native-modal'
+} from 'react-native-responsive-dimensions';
+import Modal from 'react-native-modal';
 
-const UpdateRecommend = ({ open, onClose }) => {
+const UpdateRecommend = ({ navigation,open, onClose ,handleUpdate}) => {
+  
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener('focus', () => {
+  //     // Call your function to refresh here
+  //     // For example, fetchData();
+  //     console.log("in vapis playstore in updaterecoment");
+  //   });
+
+  //   return unsubscribe;
+  // }, [navigation]);
+
   return (
     <Modal
-      // isVisible={true}
       isVisible={open}
-      onSwipeComplete={onClose}
-      swipeDirection={['down']}
-      onBackdropPress={onClose}
-      onBackButtonPress={onClose}
       style={styles.modal}
     >
       <View style={styles.container}>
         <View style={styles.contents}>
-          {/* <View style={styles.cancelButton}>
-            <TouchableOpacity onPress={onClose}>
-              <Image source={require('../../assets/cancel.png')} />
-            </TouchableOpacity>
-          </View> */}
           <View style={styles.contentBox}>
             <View style={styles.cancelButton}>
-              <TouchableOpacity onPress={onClose}>
-                <Image
-                  style={{
-                    resizeMode: 'contain',
-                    height: 60,
-                    width: 120,
-                  }}
-                  source={require('../../assets/jouls.png')}
-                />
-              </TouchableOpacity>
+              <Image
+                style={{
+                  resizeMode: 'contain',
+                  height: 60,
+                  width: 120,
+                }}
+                source={require('../../assets/jouls.png')}
+              />
             </View>
 
             <Text style={styles.text}>Hey there,</Text>
@@ -53,7 +52,7 @@ const UpdateRecommend = ({ open, onClose }) => {
               </Text>
             </View>
 
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleUpdate}>
               <Text
                 style={{
                   color: '#118615',
@@ -67,11 +66,11 @@ const UpdateRecommend = ({ open, onClose }) => {
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.UpdateButtonContainer}>
+            <TouchableOpacity style={styles.UpdateButtonContainer} onPress={handleUpdate}>
               <View style={styles.UpdateButton}>
                 <Text style={styles.UpdateText}>Update Now</Text>
               </View>
-              <Text style={{ marginTop: 2 }}>
+              <Text style={{ marginTop: 2 ,color:"#000000"}}>
                 Please Update the App before Charging
               </Text>
             </TouchableOpacity>
@@ -83,10 +82,10 @@ const UpdateRecommend = ({ open, onClose }) => {
         </View>
       </View>
     </Modal>
-  )
+  );
 }
 
-export default UpdateRecommend
+export default UpdateRecommend;
 
 const styles = StyleSheet.create({
   modal: {
@@ -160,4 +159,4 @@ const styles = StyleSheet.create({
     width: wp(100),
     zIndex: -1,
   },
-})
+});

@@ -25,6 +25,7 @@ export const SET_MID_VALUE = 'SET_MID_VALUE'
 export const SET_MODAL_OPEN = 'SET_MODAL_OPEN'
 export const SET_CHARGING_UNITS = 'SET_CHARGING_UNITS'
 export const SET_CHARGER_HISTORY = 'SET_CHARGER_HISTORY'
+export const SET_ALL_CHARGER_HISTORY = 'SET_ALL_CHARGER_HISTORY'
 export const SET_CHECK_CHARGING_STARTED = 'SET_CHECK_CHARGING_STARTED'
 export const SET_CHARGING_HISTORY_PID = 'SET_CHARGING_HISTORY_PID'
 export const SET_WALLET_BALANCE = 'SET_WALLET_BALANCE'
@@ -35,9 +36,11 @@ import { Alert } from 'react-native'
 // const [data34, setData34] = useState('')
 // const [data123, setData123] = useState('')
 
-const MqqtUrl = 'ws://34.100.251.160:9001/mqtt'
+// const MqqtUrl = 'ws://34.100.251.160:9001/mqtt'
+const MqqtUrl = 'wss://mqtt.jouls.co.in/mqtt'
 // const ApiURL="https://adminbackendjouls-production.up.railway.app"
-const ApiURL = 'http://165.22.223.26:5000' // live url
+// const ApiURL = 'http://165.22.223.26:5000' // live url
+const ApiURL = 'http://23.22.111.5:5000' // live url
 
 // const ApiURL="http://192.168.45.3:5200" // localhost
 
@@ -168,6 +171,13 @@ export const setChargerHistory = (user_Energy) => {
     payload: user_Energy,
   }
 }
+export const setAllChargerHistory = (user_Energy) => {
+  console.log("house_voltage",user_Energy);
+  return {
+    type: SET_ALL_CHARGER_HISTORY,
+    payload: user_Energy,
+  }
+}
 
 export const setChargingCostPerHour = (user_Energy) => {
   // console.log(house_voltage);
@@ -284,7 +294,7 @@ export const CarDetails = (value) => {
     //   });
 
     const client = new Client({
-      uri: 'ws://34.100.251.160:9001/mqtt',
+      uri: MqqtUrl,
       clientId: 'clientRadhe',
       storage: myStorage,
     })
@@ -615,12 +625,12 @@ export const ChargerHistoryEndTime = (SendData, setLoading) => {
   }
 }
 
-export const GetChargerHistory = (navigation,mid, populateChargerHistoryData,lastchargerhistory) => {
+export const GetChargerHistory = (navigation,mid, populateChargerHistoryData,lastchargerhistory,getallchargerhistory) => {
   return async (dispatch) => {
     try {
       const response = await fetch(`${ApiURL}/admin/user/${mid}?populateChargerHistoryData=${populateChargerHistoryData}`)
       const data = await response.json()
-      console.log("dataingetchargerhistory",data.walletBallence);
+      console.log("dataingetchargerhistory",data);
       
       if(data?.message=="User not found"){
         // navigation.navigate("SignIn")
@@ -633,7 +643,7 @@ export const GetChargerHistory = (navigation,mid, populateChargerHistoryData,las
       if(lastchargerhistory && Array.isArray(data?.chargingHistory)){
         const ChargerHistoryData=data?.chargingHistory
         if(ChargerHistoryData.length==0){
-          dispatch(setChargerHistory([]))
+          dispatch(setChargerHistory([])) 
           return []
         }
         else{
@@ -643,7 +653,12 @@ export const GetChargerHistory = (navigation,mid, populateChargerHistoryData,las
            return [ReturnData]
         }
       }
-      // dispatch(setChargerHistory([data]))
+
+      if (getallchargerhistory && Array.isArray(data?.chargingHistory)) {
+        const ChargerHistoryData = data?.chargingHistory.reverse();
+        console.log("chargerhistordr", ChargerHistoryData);
+        dispatch(setAllChargerHistory(ChargerHistoryData));
+    }
       return 
     } catch (err) {
       console.log(err, 'catch ke chargerhistory action.js')
@@ -783,6 +798,7 @@ export const loginuser = (input, navigation, setLoading) => {
       }
       if (data?.mid) {
         const mid = data?.mid
+        dispatch(setMIDValue(mid))
         await AsyncStorage.setItem('mid', mid)
       }
       if (data?.name) {
@@ -853,7 +869,7 @@ export const signItUp = (field, navigation, setLoading) => {
           }),
         }
       )
-
+      console.log("response",response);
       const data = await response.json()
       console.log(data, 'login data ')
       if (data?.message == 'Invalid email or password') {
@@ -891,6 +907,7 @@ export const signItUp = (field, navigation, setLoading) => {
 
       if (data?.mid) {
         const mid = data.mid
+        dispatch(setMIDValue(mid))
         await AsyncStorage.setItem('mid', mid)
       }
       if (data?.name) {
