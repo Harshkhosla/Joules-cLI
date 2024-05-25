@@ -24,59 +24,80 @@ import CustomModal from './CustomModal'
 import { Text } from 'react-native-paper'
 import messaging from '@react-native-firebase/messaging'
 import UpdateRecommend from '../screens/Public_Charging/UpdateRecommend'
+// import PermissionModal from './PermissionModal'
 
 const AuthLoadingScreen = ({ navigation }) => {
   const [isModalVisible, setisModalVisible] = useState(false)
-
+  const [modalVisible, setModalVisible] = useState(false);
   const [version, SetVersioncode] = useState('')
   let versioncode = useSelector((state) => state?.userReducers?.versionName)
+  // let versioncode = useSelector((state) => state?.userReducers?.versionName)
   console.log(versioncode, 'sdkhjdsvbvhjbdsvj')
 
-  useEffect(() => {
-    getMsgToken()
-  }, [])
+  // useEffect(() => {
+  //   const checkPermission = async () => {
+  //     const authStatus = await messaging().hasPermission();
+  //     const enabled =
+  //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+  //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+      
+  //     console.log("authstatus",authStatus,enabled);
+  //     if (!enabled) {
+  //       setModalVisible(true);
+  //     } else {
+  //       // Optionally, get the token immediately if permissions are already granted
+  //       const token = await messaging().getToken();
+  //       console.log('FCM token:', token);
+  //     }
+  //   };
 
-  const getMsgToken = async () => {
-    try {
-      // Register the device for remote messages
-      await messaging().registerDeviceForRemoteMessages()
+  //   checkPermission();
+  // }, []);
+  // useEffect(() => {
+  //   getMsgToken()
+  // }, [])
 
-      // Get the FCM token
-      const token = await messaging().getToken()
-      console.log('FCM token:', token)
+  // const getMsgToken = async () => {
+  //   try {
+  //     // Register the device for remote messages
+  //     await messaging().registerDeviceForRemoteMessages()
 
-      if (token) {
-        try {
-          // Example notification content
-          const notificationContent = {
-            title: 'Notification Title',
-            body: 'Notification Body',
-            token: token,
-          }
+  //     // Get the FCM token
+  //     const token = await messaging().getToken()
+  //     console.log('FCM token:', token)
 
-          // Make a POST request to your server with the notification content
-          const response = await fetch('http://192.168.177.108:5000', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(notificationContent),
-          })
+  //     if (token) {
+  //       try {
+  //         // Example notification content
+  //         const notificationContent = {
+  //           title: 'Notification Title',
+  //           body: 'Notification Body',
+  //           token: token,
+  //         }
 
-          if (response.ok) {
-            const data = await response.json()
-            console.log('Data from server:', data)
-          } else {
-            console.log('Server responded with status:', response.status)
-          }
-        } catch (error) {
-          console.log('Fetch error:', error.message)
-        }
-      }
-    } catch (error) {
-      console.log('FCM error:', error)
-    }
-  }
+  //         // Make a POST request to your server with the notification content
+  //         const response = await fetch('http://192.168.177.108:5000', {
+  //           method: 'POST',
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //           },
+  //           body: JSON.stringify(notificationContent),
+  //         })
+
+  //         if (response.ok) {
+  //           const data = await response.json()
+  //           console.log('Data from server:', data)
+  //         } else {
+  //           console.log('Server responded with status:', response.status)
+  //         }
+  //       } catch (error) {
+  //         console.log('Fetch error:', error.message)
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.log('FCM error:', error)
+  //   }
+  // }
 
   // const getMsgToken = async () => {
   //   try {
@@ -193,6 +214,18 @@ const AuthLoadingScreen = ({ navigation }) => {
 
   // },[chargerhistoryData,navigation,token,loading,IsapiCall])
 
+  // const requestPermission = async () => {
+  //   try {
+  //     await messaging().requestPermission();
+  //     const token = await messaging().getToken();
+  //     console.log('FCM token:', token);
+  //     setModalVisible(false);
+  //   } catch (error) {
+  //     console.log('Permission request error:', error.message);
+  //     setModalVisible(false);
+  //   }
+  // };
+
   const fetchChargerHistory = async (Appmid) => {
     const response = await dispatch(
       GetChargerHistory(
@@ -286,6 +319,11 @@ const AuthLoadingScreen = ({ navigation }) => {
         open={isModalVisible}
         handleUpdate={redirectToApp}
       />
+       {/* <PermissionModal
+        visible={modalVisible}
+        onRequestPermission={requestPermission}
+        onCancel={() => setModalVisible(false)}
+      /> */}
     </View>
   )
 }
