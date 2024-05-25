@@ -53,8 +53,8 @@ import Timer_with_package from './src/screens/Timer_with_package'
 import ble from './src/screens/SomeComponent'
 import Connect_to_WiFi from './src/screens/Connect_to_WiFi'
 import ChargingCard_History from './src/screens/ChargingCard_History'
-import { firebase } from './firebase'
-import messaging from '@react-native-firebase/messaging'
+// import { firebase } from './firebase'
+// import messaging from '@react-native-firebase/messaging'
 
 const Stack = createStackNavigator()
 
@@ -64,13 +64,13 @@ export default function App() {
   // const data = AsyncStorage.getItem('mid')
   // console.log(data)
 
-  useEffect(() => {
-    // Example: Check if user is signed in
-    const subscriber = firebase.auth().onAuthStateChanged((user) => {
-      console.log('fetching data: fetching data: fetching data:', user)
-    })
-    return subscriber // Unsubscribe on unmount
-  }, [])
+  // useEffect(() => {
+  //   // Example: Check if user is signed in
+  //   const subscriber = firebase.auth().onAuthStateChanged((user) => {
+  //     console.log('fetching data: fetching data: fetching data:', user)
+  //   })
+  //   return subscriber // Unsubscribe on unmount
+  // }, [])
 
   // useEffect(() => {
   //   const unsubscribe = messaging().onMessage(async (remoteMessage) => {
@@ -84,6 +84,14 @@ export default function App() {
   //   return unsubscribe
   // }, [])
 
+  // useEffect(() => {
+  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
+  //     Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+  //   });
+
+  //   return unsubscribe;
+  // }, []);
+  
   return (
     <Sample store={Store}>
       <Provider theme={theme}>
