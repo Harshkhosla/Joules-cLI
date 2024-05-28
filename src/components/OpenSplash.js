@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Platform,
   Linking,
+  PermissionsAndroid,
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,14 +17,16 @@ import {
   getUserData,
   setChargerHistoryPid,
   setChargingStarted,
+  setDeviceToken,
   setMIDValue,
   updateUser,
 } from '../Redux/Action'
-import { fetchDataAsyncStorageData } from '../utility/asyncStorage'
+import { configureNotifications, fetchDataAsyncStorageData, getUserDeviceToken } from '../utility/asyncStorage'
 import CustomModal from './CustomModal'
 import { Text } from 'react-native-paper'
 import messaging from '@react-native-firebase/messaging'
 import UpdateRecommend from '../screens/Public_Charging/UpdateRecommend'
+import PushNotification from 'react-native-push-notification';
 // import PermissionModal from './PermissionModal'
 
 const AuthLoadingScreen = ({ navigation }) => {
@@ -34,6 +37,12 @@ const AuthLoadingScreen = ({ navigation }) => {
   // let versioncode = useSelector((state) => state?.userReducers?.versionName)
   console.log(versioncode, 'sdkhjdsvbvhjbdsvj')
 
+  
+  
+  
+  // useEffect(() => {
+  //   checkApplicationPermission();
+  // }, []);
   // useEffect(() => {
   //   const checkPermission = async () => {
   //     const authStatus = await messaging().hasPermission();
@@ -158,7 +167,6 @@ const AuthLoadingScreen = ({ navigation }) => {
       console.error('Error fetching data:', error)
     }
   }
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -166,18 +174,26 @@ const AuthLoadingScreen = ({ navigation }) => {
           await fetchDataAsyncStorageData()
         console.log(storedData, ChargingStartedValue, Appmid, Authtoken)
         console.log('Appmid', Appmid)
-
-        if (Appmid) {
-          dispatch(setMIDValue(Appmid))
-          setMid(Appmid)
+        const NotificationPermisssion=await checkApplicationPermission()
+        if(NotificationPermisssion){
+          const token = await getUserDeviceToken()
+          dispatch(setDeviceToken(token))
+          configureNotifications()
+          // console.log("token ",token);
         }
-        if (Authtoken) {
-          setToken(Authtoken)
-        }
+        console.log(NotificationPermisssion,"NotificationPermisssion");
         if (!Authtoken || !Appmid) {
           navigation.replace('SignIn')
           return
         }
+
+        dispatch(setMIDValue(Appmid))
+          // setMid(Appmid)
+        
+        // if (Authtoken) {
+        //   setToken(Authtoken)
+        // }
+        
 
         // console.log("versioncode",versioncode,version);
 
@@ -193,6 +209,41 @@ const AuthLoadingScreen = ({ navigation }) => {
 
     fetchData() // Call the async function immediately
   }, [])
+
+  const checkApplicationPermission = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const status = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+        if (status) {
+          console.log("Permission already granted");
+          return true; // Permission granted
+        } else {
+          const result = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+          );
+          console.log("Result", result);
+          if (result === PermissionsAndroid.RESULTS.GRANTED) {
+            return true; // Permission granted
+          } else if (result === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+            Alert.alert(
+              "Permission Required",
+              "Notification permission is required for this app to function correctly. Please enable it in the app settings.",
+              [
+                { text: "Open Settings", onPress: () => Linking.openSettings() }
+              ]
+            );
+            return false; // Permission denied with "never ask again"
+          } else {
+            return false; // Permission denied
+          }
+        }
+      } catch (error) {
+        console.error("Permission request error", error);
+        return false; // Error in permission request
+      }
+    }
+    return false; // Not an Android platform
+  }
 
   // useEffect(()=>{
   //   setTimeout(() => {
@@ -292,7 +343,8 @@ const AuthLoadingScreen = ({ navigation }) => {
     const packageName = 'com.Jouls'
 
     // Package name ko seedha URL ke saath jodein.
-    const appUrl = 'market://details?id=' + packageName
+    // const appUrl = 'market://details?id=' + packageName
+    const appUrl = "https://play.google.com/store/apps/details?id=com.Jouls"
 
     // URL ko open karein.
     Linking.openURL(appUrl).catch((err) =>
@@ -309,6 +361,32 @@ const AuthLoadingScreen = ({ navigation }) => {
 
   //   return unsubscribe;
   // }, [navigation]);
+
+  const handleNotification = () => {
+  // const channelId=  PushNotification.createChannel(
+  //     {
+  //       channelId: 'default-channel-id', // (required)
+  //       channelName: 'Default channel', // (required)
+  //       channelDescription: 'A default channel', // (optional) default: undefined.
+  //       soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
+  //       importance: 4, // (optional) default: 4. Int value of the importance level
+  //       vibrate: true, // (optional) default: true. Creates the default vibration pattern if true.
+  //     },
+  //     (created) => console.log(`CreateChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+  //   );
+
+  //   console.log(channelId,"channelId");
+
+    PushNotification.localNotification({
+      channelId: 'default-channel-id', channelName: 'Default channel', soundName: 'default', vibrate: true, 
+      title: 'Button Clicked',
+      message: 'Notification triggered by button click',
+      largeIcon: "",
+    });
+    <TouchableOpacity onPress={handleNotification}>
+    <Text>Send Notification</Text>
+  </TouchableOpacity>
+  };
 
   return (
     <View style={styles.container}>
