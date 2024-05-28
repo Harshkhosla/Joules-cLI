@@ -29,9 +29,11 @@ export const SET_ALL_CHARGER_HISTORY = 'SET_ALL_CHARGER_HISTORY'
 export const SET_CHECK_CHARGING_STARTED = 'SET_CHECK_CHARGING_STARTED'
 export const SET_CHARGING_HISTORY_PID = 'SET_CHARGING_HISTORY_PID'
 export const SET_WALLET_BALANCE = 'SET_WALLET_BALANCE'
+export const SET_DEVICE_TOKEN = 'SET_DEVICE_TOKEN'
 import { Client, Message } from 'react-native-paho-mqtt'
 import Toast from 'react-native-toast-message'
 import { Alert } from 'react-native'
+import { handleSendNotification } from '../utility/asyncStorage'
 
 // const [data34, setData34] = useState('')
 // const [data123, setData123] = useState('')
@@ -230,6 +232,13 @@ export const setChargerHistoryPid= (value) => {
 export const setWalletBalance= (value) => {
   return {
     type: SET_WALLET_BALANCE,
+    payload: value,
+  }
+}
+
+export const setDeviceToken= (value) => {
+  return {
+    type: SET_DEVICE_TOKEN,
     payload: value,
   }
 }
@@ -535,7 +544,7 @@ export const AddTrasationDetail = (input, navigation, setLoading) => {
 // chargerhistory add to db
 export const ChargerHistory = (SendData, setLoading) => {
   return async (dispatch) => {
-    const { inputCost, Porduct_Key ,paymentId,findchargingCost,payment,vehicleInfo,WalletUse} = SendData
+    const { inputCost, Porduct_Key ,paymentId,findchargingCost,payment,vehicleInfo,WalletUse,DeviceToken} = SendData
     const { formattedDate, formattedTime } = getCurrentDateTime()
     let name, mid
    
@@ -554,11 +563,13 @@ export const ChargerHistory = (SendData, setLoading) => {
       UsedBy: name,
       Appmid: mid,
       paymentId:paymentId,
-      userPanelCost:findchargingCost
+      userPanelCost:findchargingCost,
+      DeviceToken
     }
     if(vehicleInfo){
       dataObject.vehicleInfo=vehicleInfo
     }
+    console.log("DeviceTokenDeviceToken",DeviceToken);
     try {
       const response = await fetch(`${ApiURL}/user/chargerhistory/create`, {
       // const response = await fetch(`http://192.168.91.3:5000/user/chargerhistory/create`, {
@@ -1776,6 +1787,9 @@ export const publicstartCharging = (
             setButtonText('Stop Charging')
             startTimer()
             setcheckChargingStarted(true)
+            // send notification
+            handleSendNotification("ChargingStatus","your charging Start")
+            
             isFirstUpdate = false; // Ensure this block runs only once
           }
           // console.log(`${Porduct_Key}_Charging_Data:`, message.payloadString)

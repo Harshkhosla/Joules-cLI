@@ -1,5 +1,4 @@
-import firebase from '@react-native-firebase/app'
-import '@react-native-firebase/auth' // Import other Firebase services as needed
+import { initializeApp, getApp, getApps } from '@react-native-firebase/app';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAN7nqxM_uxsbuCmVO6PbaO44QxC85ewTA',
@@ -11,8 +10,23 @@ const firebaseConfig = {
   appId: '1:156987578910:android:eb43ee753f55cf064e6c0f',
 }
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig)
-}
+// if (!firebase.apps.length) {
+//   firebase.initializeApp(firebaseConfig)
+// console.log("in firebase ");
+// }
+export const initializeFirebase = async () => {
+  try {
+    if (getApps().length === 0) {
+      initializeApp(firebaseConfig);
+      console.log('Firebase initialized successfully');
+    } else {
+      console.log('Firebase app already initialized');
+    }
+    return true;
+  } catch (error) {
+    console.error('Firebase initialization error:', error.message);
+    return false;
+  }
+};
 
-export { firebase }
+

@@ -43,7 +43,7 @@ import Wave from './src/components/wave'
 import ChargingAnimation from './src/screens/ChargingAnimation'
 import Customdrawer from './Customdrawer'
 import Support from './src/components/Support'
-import { Alert, TouchableOpacity, View } from 'react-native'
+import { Alert, PermissionsAndroid, TouchableOpacity, View } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import HeaderWithArrow from './src/components/ChatSupport'
 import AddRfid from './src/components/AddRfid'
@@ -92,6 +92,22 @@ export default function App() {
   //   return unsubscribe;
   // }, []);
   
+  // const checkApplicationPermission=async()=>{
+  //   if(Platform.OS==="android"){
+  //     try{
+  //      const a= await PermissionsAndroid.request(
+  //         PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+  //       )
+  //       console.log("in andround permision",a);
+  //     }
+  //     catch(error){}
+  //   }
+  // }
+
+  // useEffect(()=>{
+  //   checkApplicationPermission()
+  // },[])
+
   return (
     <Sample store={Store}>
       <Provider theme={theme}>

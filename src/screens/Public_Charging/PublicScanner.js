@@ -45,6 +45,7 @@ import LoaderComponent from '../../components/loader'
 import { launchImageLibrary } from 'react-native-image-picker'
 import CustomModal from '../../components/CustomModal'
 import BlurredModalWithLoader from './loader'
+import { handleSendNotification } from '../../utility/asyncStorage'
 
 export default function Dashboard({ navigation, route }) {
   const MqqtUrl = 'wss://mqtt.jouls.co.in/mqtt'
@@ -199,7 +200,7 @@ if(!pid){
           client.disconnect();
           console.log('Disconnected from MQTT broker');
         }
-      }, 6000); // 5000 milliseconds (5 seconds), adjust the time as needed
+      }, 7000); // 5000 milliseconds (5 seconds), adjust the time as needed
   
       // MQTT message event listener
       client.on('messageReceived', (message) => {
@@ -304,6 +305,7 @@ const handleSendMessage=async(pid)=>{
 
   const delfn = () => {
     console.log('delfun')
+    // handleSendNotification("radhe","kumawat")
     // setIsScannerActive(!isScannerActive)
     // const sendData = {
     //   Porduct_Key: 'radhe',

@@ -1,7 +1,7 @@
 import { SET_USER_EMAIL, SET_USER_NAME, SET_AUTH_TOKEN, SET_USER_CAR,SET_USER_FLAT,SET_MODE_VALUE,SET_STATE_VALUE,
   SET_USER_ENERGY,SET_USER_PRODUCTKEY,SET_USER_PRODUCT, SET_USER_POWER, SET_PUBLIC_CHARGER_TIME,SET_USER_CURRENT,SET_CHARGING_COST,
   SET_CHARGING_COST_PER_HOUR,
-  SET_CHARGER_NAME,SET_MODAL_OPEN, SET_CHARGER_HISTORY,SET_CHECK_CHARGING_STARTED,SET_CHARGING_HISTORY_PID,SET_WALLET_BALANCE,SET_MID_VALUE,SET_ALL_CHARGER_HISTORY} from './Action';
+  SET_CHARGER_NAME,SET_MODAL_OPEN, SET_CHARGER_HISTORY,SET_CHECK_CHARGING_STARTED,SET_CHARGING_HISTORY_PID,SET_WALLET_BALANCE,SET_MID_VALUE,SET_ALL_CHARGER_HISTORY,SET_DEVICE_TOKEN} from './Action';
 
 const initialState = {
     UserMid:"",
@@ -30,6 +30,7 @@ const initialState = {
     versionName:"1.4.8",
     WallentBalance:"0",
     AllChargerHistoryData:[],
+    deviceToken:""
 
 }
 
@@ -103,6 +104,9 @@ function userReducers(state = initialState, action) {
       case SET_ALL_CHARGER_HISTORY:
           // console.log("harshsample",action);
         return { ...state, AllChargerHistoryData: action.payload };
+      case SET_DEVICE_TOKEN:
+          // console.log("harshsample",action);
+        return { ...state, deviceToken: action.payload };
       default:
         return state;
     }
