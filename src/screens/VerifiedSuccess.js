@@ -21,7 +21,7 @@ const VerifiedSuccess = ({ verifyStatus, setIsVerify }) => {
       }}
       onShow={() => {
         setTimeout(() => {
-          navigation.navigate('HomechargingHomepage')
+          // navigation.navigate('HomechargingHomepage')
         }, 2000)
       }}
     >

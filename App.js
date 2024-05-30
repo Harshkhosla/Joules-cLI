@@ -53,8 +53,11 @@ import Timer_with_package from './src/screens/Timer_with_package'
 import ble from './src/screens/SomeComponent'
 import Connect_to_WiFi from './src/screens/Connect_to_WiFi'
 import ChargingCard_History from './src/screens/ChargingCard_History'
-// import { firebase } from './firebase'
-// import messaging from '@react-native-firebase/messaging'
+import { firebase } from './firebase'
+import messaging from '@react-native-firebase/messaging'
+import PhoneSignIn from './PhoneSignIn'
+import MobileNoGetOtp from './src/screens/Auth_App/MobileNoGetOtp'
+import MobileVerifyOtp from './src/screens/Auth_App/MobileVerifyOtp'
 
 const Stack = createStackNavigator()
 
@@ -91,7 +94,7 @@ export default function App() {
 
   //   return unsubscribe;
   // }, []);
-  
+
   // const checkApplicationPermission=async()=>{
   //   if(Platform.OS==="android"){
   //     try{
@@ -118,6 +121,9 @@ export default function App() {
               headerShown: false,
             }}
           >
+            {/* <Stack.Screen name="MobileNoGetOtp" component={MobileNoGetOtp} />
+            <Stack.Screen name="MobileVerifyOtp" component={MobileVerifyOtp} /> */}
+            {/* <Stack.Screen name="PhoneSignIn" component={PhoneSignIn} /> */}
             <Stack.Screen name="Authloading" component={AuthLoadingScreen} />
             <Stack.Screen
               name="ChargingCard_History"

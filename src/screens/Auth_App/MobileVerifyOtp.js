@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, TextInput } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import {
   responsiveHeight as hp,
   responsiveWidth as wp,
@@ -7,8 +7,11 @@ import {
 } from 'react-native-responsive-dimensions'
 import NewAllButton from '../../components/NewAllButton'
 import EvCharging from '../../components/EvCharging'
+import VerifiedSuccess from '../VerifiedSuccess'
 
-const MobileNoGetOtp = ({ navigation }) => {
+const MobileVerifyOtp = () => {
+  const [IsVerify, setIsVerify] = useState(false)
+
   return (
     <View style={styles.cotainer}>
       <View style={styles.LogoContainer}>
@@ -22,28 +25,32 @@ const MobileNoGetOtp = ({ navigation }) => {
       <View style={styles.containerContent}>
         <View>
           <Text style={[styles.text, { color: 'green' }]}>Hey Aman,</Text>
-          <Text style={styles.text}>
-            We need to verify your{' '}
-            <Text style={[styles.text, { color: 'green' }]}>Mobile Number</Text>{' '}
-            for our better understanding
-          </Text>
+          <Text style={styles.text}>We have sent an OTP on</Text>
+          <Text style={[styles.text, { color: 'green' }]}>8118817882</Text>
           <TextInput placeholder="Enter Phone" style={styles.inputBox} />
+          <Text style={{ fontSize: 15 }}>
+            Didn’t get one? We can
+            <Text style={{ color: 'green' }}> resend it in 10 sec</Text>
+          </Text>
         </View>
+
         <NewAllButton
-          title={'Get OTP'}
+          title={'Verify OTP'}
           action={() => {
-            navigation.navigate('MobileVerifyOtp')
+            setIsVerify(true)
           }}
         />
+
         <View style={styles.evCharging}>
           <EvCharging />
         </View>
       </View>
+      <VerifiedSuccess verifyStatus={IsVerify} setIsVerify={setIsVerify} />
     </View>
   )
 }
 
-export default MobileNoGetOtp
+export default MobileVerifyOtp
 
 const styles = StyleSheet.create({
   cotainer: {
@@ -74,11 +81,12 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     fontWeight: '400',
+    color: '#666666',
   },
   inputBox: {
     fontSize: 18,
-    marginVertical: 10,
-
+    marginTop: 10,
+    marginBottom: 5,
     height: 50,
     borderRadius: 8,
     padding: 10,
