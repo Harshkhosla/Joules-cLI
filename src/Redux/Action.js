@@ -41,8 +41,8 @@ import { handleSendNotification } from '../utility/asyncStorage'
 // const MqqtUrl = 'ws://34.100.251.160:9001/mqtt'
 const MqqtUrl = 'wss://mqtt.jouls.co.in/mqtt'
 // const ApiURL="https://adminbackendjouls-production.up.railway.app"
-// const ApiURL = 'http://165.22.223.26:5000' // live url
-const ApiURL = 'http://23.22.111.5:5000' // live url
+const ApiURL = 'http://165.22.223.26:5000' // live url
+// const ApiURL = 'http://23.22.111.5:5000' // live url
 
 // const ApiURL="http://192.168.45.3:5200" // localhost
 
@@ -1788,7 +1788,7 @@ export const publicstartCharging = (
             startTimer()
             setcheckChargingStarted(true)
             // send notification
-            handleSendNotification("ChargingStatus","your charging Start")
+            handleSendNotification("Charging Started !!!","Thank you for choosing EcoLite & making your way to sustainable living..")
             
             isFirstUpdate = false; // Ensure this block runs only once
           }
