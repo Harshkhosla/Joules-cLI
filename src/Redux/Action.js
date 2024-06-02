@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import init from 'react_native_mqtt'
 // import { AsyncStorage } from 'react-native';
 // import PushNotification from 'react-native-push-notification';
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState, version } from 'react'
 // import { AsyncStorage } from "react-native";
 import { useDispatch, useSelector } from 'react-redux'
 export const SET_USER_NAME = 'SET_USER_NAME'
@@ -766,12 +766,12 @@ export const NameAndPid = (input, navigation, setLoading) => {
 
 // ----------------------------------------CREATING ACCOUNT DATA--------------------------------------------------------------------------------//
 
-export const loginuser = (input, navigation, setLoading) => {
+export const loginuser = (input,version,FcmToken, navigation, setLoading) => {
   return async (dispatch) => {
     const lowercaseKeysObject = Object.fromEntries(
       Object.entries(input).map(([key, value]) => [key.toLowerCase(), value])
     )
-    const { name, email, password } = lowercaseKeysObject
+    const { name, email, password ,confirmpassword} = lowercaseKeysObject
     // console.log(name);
     try {
       const response = await fetch(
@@ -788,6 +788,9 @@ export const loginuser = (input, navigation, setLoading) => {
             name,
             email,
             password,
+            version,
+            FcmToken,
+            confirmpassword
           }),
         }
       )
@@ -857,7 +860,7 @@ export const loginuser = (input, navigation, setLoading) => {
 
 // ------------------------------------------------------CREATING LOGIN AUTHTOKEN AND SENDING IT -----------------------------------------//
 
-export const signItUp = (field, navigation, setLoading) => {
+export const signItUp = (field,setisModalVisible,version, navigation, setLoading) => {
   return async (dispatch) => {
     const lowercaseKeysObject = Object.fromEntries(
       Object.entries(field).map(([key, value]) => [key.toLowerCase(), value])
@@ -882,7 +885,7 @@ export const signItUp = (field, navigation, setLoading) => {
       )
       console.log("response",response);
       const data = await response.json()
-      console.log(data, 'login data ')
+      console.log(data, 'logindatadatainsignitup')
       if (data?.message == 'Invalid email or password') {
         setLoading(false)
         Toast.show({
@@ -904,6 +907,7 @@ export const signItUp = (field, navigation, setLoading) => {
         })
         return
       }
+
       if (data?.success) {
         setLoading(false)
         Toast.show({
@@ -942,6 +946,11 @@ export const signItUp = (field, navigation, setLoading) => {
       }
       if (data?.walletBalance) {
         dispatch(setWalletBalance(Math.floor(data.walletBalance)))
+      }
+      if (data?.version != version) {
+        setLoading(false)
+       setisModalVisible(true)
+      return
       }
       // setLoading(false)
       navigation.navigate('chargerSelection')
@@ -2079,7 +2088,9 @@ export const publicAlreadyChargingStarted = (
   handleStopCharging,
   setisChargingAlertVisible,
   setShowPaymentCompleteModal,
-  setisPowerCutTextVisible
+  setisPowerCutTextVisible,
+  handleButtonClick7Sec,
+  CloseModal7sec
   
 ) => {
   // Porduct_Key=publicProductKey
@@ -2091,7 +2102,7 @@ export const publicAlreadyChargingStarted = (
       clientId: 'client' + Math.random().toString(36).substring(7),
       storage: myStorage,
     })
-    
+
     // let chargingDataTimeout; 
 
     // const resetChargingDataTimeout = () => {
@@ -2113,6 +2124,8 @@ export const publicAlreadyChargingStarted = (
     //   // For example, you might want to display an alert or take some other action
     // };
 
+
+
     const onConnect = () => {
       client.on('messageReceived', (message) => {
         if (message.destinationName === `${Porduct_Key}_Updates`) {
@@ -2130,6 +2143,8 @@ export const publicAlreadyChargingStarted = (
           }
         } else if (message.destinationName === `${Porduct_Key}_Charging_Data`) {
         // onMessageReceived()
+          // handleButtonClick7Sec()
+
           const dataObject = JSON.parse(message.payloadString)
 
           dispatch(setEnergy(dataObject.Output_Energy))
@@ -2145,6 +2160,21 @@ export const publicAlreadyChargingStarted = (
           //   dataObject.Output_Power
           // )
         }
+        else if(message.destinationName === `${Porduct_Key}_Power_Cut`){
+
+          if (message.payloadString == 'Power Cut') {
+            // dispatch(setMessageReceivedOnChargingData("Charging Completed"))
+            // CloseModal7sec()
+           setisPowerCutTextVisible(false)
+            setisChargingAlertVisible(true)
+            setShowPaymentCompleteModal(true)
+            // Alert.alert(`Automatic Already Disconnect by Device Energy `)
+            handleStopCharging('Stop Charging', 'StoppedByDevice')
+            disconnectAllClients()
+            // dispatch(ChargerHistoryEndTime(findChargingEnergy))
+            // dispatch(ChargerHistoryEndTime("120"))
+          }
+        }
       })
     }
 
@@ -2156,9 +2186,11 @@ export const publicAlreadyChargingStarted = (
         return Promise.all([
           client.subscribe(`${Porduct_Key}_Updates`), // Topic 1
           client.subscribe(`${Porduct_Key}_Charging_Data`), // Topic 2
+          client.subscribe(`${Porduct_Key}_Power_Cut`), // Topic 2
         ])
       })
       .then(() => {
+        handleButtonClick7Sec()
         onConnect()
         // resetChargingDataTimeout()
       })

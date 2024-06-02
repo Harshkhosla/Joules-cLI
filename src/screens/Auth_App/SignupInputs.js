@@ -18,7 +18,7 @@ import {
 import InputBoxTwo from '../../components/InputBoxTwo'
 
 import { Checkbox } from 'react-native-paper'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { loginuser } from '../../Redux/Action'
 import Toast from 'react-native-toast-message'
 
@@ -31,6 +31,9 @@ const SignupInputs = ({ navigation }) => {
     ConfirmPassword: '',
   })
   const dispatch = useDispatch()
+
+  const version=useSelector((state)=> state?.userReducers?.versionName)
+  const FcmToken=useSelector((state)=> state?.userReducers?.deviceToken)
 
   const [nameValuePresent, setNameValuePresent] = useState({
     show: false,
@@ -119,7 +122,7 @@ const SignupInputs = ({ navigation }) => {
       if (allValuesEmpty) {
         try {
           setLoading(true)
-          const response =await dispatch(loginuser(userData, navigation, setLoading))
+          const response =await dispatch(loginuser(userData,version,FcmToken,navigation, setLoading))
           if(response){
             setuserData({ Name: '', Email: '', Password: '', ConfirmPassword: '' })
           }

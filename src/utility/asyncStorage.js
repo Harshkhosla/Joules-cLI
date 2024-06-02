@@ -2,17 +2,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import { initializeFirebase } from '../../firebase';
 import PushNotification from 'react-native-push-notification';
+import { Platform, Linking } from 'react-native';
+
 const fetchDataAsyncStorageData = async () => {
   try {
     const storedData = await AsyncStorage.getItem('pid');
-    const ChargingStartedValue = await AsyncStorage.getItem('ChargingStarted');
     const Appmid = await AsyncStorage.getItem('mid');
     const Authtoken = await AsyncStorage.getItem('Authtoken');
-    console.log('storedDataradhe', storedData);
-    console.log('storedDataradhe', Appmid);
-    console.log('storedDataradhe', Authtoken);
-    console.log('ChargingStartedValue', ChargingStartedValue);
-    return { storedData, ChargingStartedValue,Appmid ,Authtoken};
+   
+    return { storedData,Appmid ,Authtoken};
   } catch (error) {
     console.error('Error fetching data:', error);
     // throw error; // Re-throw the error to handle it outside of this function
@@ -195,6 +193,39 @@ const handleSendNotification = (title, message) => {
   }
 };
 
+// navigate to play store
 
 
-export {fetchDataAsyncStorageData,calculateTimeDifferenceStartTimeEndTime,getUserDeviceToken,configureNotifications,handleSendNotification}
+const redirectToApp = () => {
+  const packageName = 'com.Jouls';
+  
+  let appUrl;
+  if (Platform.OS === 'ios') {
+    // iOS app store URL
+    appUrl = `https://apps.apple.com/app/id<YOUR_APP_ID>`;
+  } else if (Platform.OS === 'android') {
+    // Android Play Store URL
+    appUrl = `https://play.google.com/store/apps/details?id=${packageName}`;
+  } else {
+    // If platform is neither iOS nor Android, return an error or handle accordingly
+    console.error('Unsupported platform');
+    return;
+  }
+
+  // Open the URL
+  Linking.openURL(appUrl).catch((err) =>
+    console.error('An error occurred', err)
+  );
+}
+
+
+
+const ShowMessageModalData = [
+  { subheading: "Connecting", message: "Don't worry your charging session won't get hurt" },
+  { subheading: "Check the Charging WiFi", message: "Don't worry your charging session won't get hurt" },
+  { subheading: "It Seems the Charger is Disconnected", message: "Don't worry your charging session won't get hurt" },
+  { subheading: "Charging is Interrupted", message: "Please check your charging cable and connection" },
+  { subheading: "Charger Connected", message: "Please check your charging cable and connection" }
+];
+
+export {fetchDataAsyncStorageData,calculateTimeDifferenceStartTimeEndTime,getUserDeviceToken,configureNotifications,handleSendNotification,ShowMessageModalData,redirectToApp}
