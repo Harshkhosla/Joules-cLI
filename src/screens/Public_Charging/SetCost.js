@@ -88,7 +88,7 @@ const SetCost = ({
   let findChargingEnergy = useSelector((state) => state.userReducers.SetEnergy)
   let walletValue = useSelector((state) => state.userReducers.WallentBalance)
   let DeviceToken = useSelector((state) => state.userReducers.deviceToken)
-// console.log("DeviceTokenDeviceToken",DeviceToken);
+  // console.log("DeviceTokenDeviceToken",DeviceToken);
   if (!findchargingCost || findchargingCost == '0') {
     findchargingCost = 12
   }
@@ -107,7 +107,7 @@ const SetCost = ({
     }
   }, [open])
 
-  console.log("inpucostinputcost",inputCost);
+  console.log('inpucostinputcost', inputCost)
   useEffect(() => {
     setDataToParent()
   }, [inputCost, findchargingCost])
@@ -198,13 +198,13 @@ const SetCost = ({
       paymentId,
       findchargingCost,
       WalletUse: walletUse.toString(),
-      DeviceToken: DeviceToken || ""
+      DeviceToken: DeviceToken || '',
     }
     setShowPaymentCompleteModal(false)
     setisChargingAlertVisible(true)
 
     const response = await dispatch(ChargerHistory(sendData))
-    console.log("responseresponse",response)
+    console.log('responseresponse', response)
     if (response?.message === 'ChargerHistory added successfully') {
       animateNextWord()
       startCharging()
@@ -225,14 +225,14 @@ const SetCost = ({
       paymentId: 'Paid Using Wallet',
       findchargingCost,
       WalletUse: cost.toString(),
-      DeviceToken: DeviceToken || ""
+      DeviceToken: DeviceToken || '',
     }
     setShowPaymentCompleteModal(false)
     setisChargingAlertVisible(true)
 
     const response = await dispatch(ChargerHistory(sendData))
-    console.log("callhandleWalletPaymentcallhandleWalletPayment",response);
-  
+    console.log('callhandleWalletPaymentcallhandleWalletPayment', response)
+
     if (response?.message === 'ChargerHistory added successfully') {
       animateNextWord()
       startCharging()
@@ -355,7 +355,7 @@ const SetCost = ({
                     Set Cost
                   </Text>
                 </TouchableOpacity>
-                <View
+                {/* <View
                   style={{
                     height: 40,
                     borderWidth: 1,
@@ -376,7 +376,7 @@ const SetCost = ({
                   >
                     Set Time
                   </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
               <View>
                 {ShowSetCost ? (

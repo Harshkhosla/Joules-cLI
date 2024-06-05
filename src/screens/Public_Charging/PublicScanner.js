@@ -51,7 +51,7 @@ export default function Dashboard({ navigation, route }) {
   const MqqtUrl = 'wss://mqtt.jouls.co.in/mqtt'
   const dispatch = useDispatch()
   const [isModalVisible, setisModalVisible] = useState(false)
-  const [isloaderModalVisible,setIsloaderModalVisible]=useState(false)
+  const [isloaderModalVisible, setIsloaderModalVisible] = useState(false)
   const [loading, setloading] = useState(false)
   const [hasPermission, setHasPermission] = useState(null)
   const [scanned, setScanned] = useState(false)
@@ -62,7 +62,7 @@ export default function Dashboard({ navigation, route }) {
 
   const [qrScannerImg, setqrScannerImg] = useState(null)
   const [isScannerActive, setIsScannerActive] = useState(true)
-  const [scannerMessage, setScannerMessage] = useState("")
+  const [scannerMessage, setScannerMessage] = useState('')
   // require('../../assets/defaultuser.png')
   console.log('isScannerActive', isScannerActive)
   const myStorage = {
@@ -93,38 +93,38 @@ export default function Dashboard({ navigation, route }) {
   const selectImageFromGallery = async () => {
     const options = {
       mediaType: 'photo',
-    };
-  
+    }
+
     launchImageLibrary(options, async (response) => {
-      console.log("response",response);
+      console.log('response', response)
       if (!response.didCancel && !response.error) {
         setIsloaderModalVisible(true)
-      
-        const formData = new FormData();
+
+        const formData = new FormData()
         formData.append('image', {
           uri: response.assets[0].uri,
           type: response.assets[0].type,
           name: response.assets[0].fileName,
-        });
-        const response2=await dispatch(fetchQrCodeDetails(formData))
-        console.log(response2,"response");
-        if(!response2 || response2.error){
+        })
+        const response2 = await dispatch(fetchQrCodeDetails(formData))
+        console.log(response2, 'response')
+        if (!response2 || response2.error) {
           setIsloaderModalVisible(false)
-          setScannerMessage("Seems to be an invalid QR Code.\n Try with a different QR Code.")
+          setScannerMessage(
+            'Seems to be an invalid QR Code.\n Try with a different QR Code.'
+          )
           setisModalVisible(true)
           return
         }
 
-        if(response2?.qrCodeData){
+        if (response2?.qrCodeData) {
           setIsloaderModalVisible(false)
-          const pid=response2.qrCodeData
+          const pid = response2.qrCodeData
           handleSendMessage(pid)
         }
       }
-    });
-  };
-  
-
+    })
+  }
 
   const receivedData = route.params?.name || 'User'
 
@@ -132,9 +132,9 @@ export default function Dashboard({ navigation, route }) {
 
   const onSuccess = async (e) => {
     const cleanedWifiString = e.data
-    console.log("cleanedWifiString",cleanedWifiString);
+    console.log('cleanedWifiString', cleanedWifiString)
     handleSendMessage(cleanedWifiString)
-  
+
     // const isCharger = checkIsCharger(cleanedWifiString)
     // if (!isCharger) {
     //   setScannerMessage("Sorry, this rarely happens\nPleasr try again")
@@ -145,30 +145,28 @@ export default function Dashboard({ navigation, route }) {
     // console.log("resultresultresultvidhal");
   }
 
-const apicall=async(pid)=>{
-// let SendData={}
-if(!pid){
-  return 
-}
-  // if(pid){  
-  //   SendData.Porduct_Key=pid
-  // }
-  // if(receivedData){
-  //   SendData.name=receivedData
-  // }
-  try {
-    // console.log("in try api calll");
-    const findChargingCost1=await dispatch(findChargingCost(pid))
-    await dispatch(getUserData())
-    // const response=await dispatch(NameAndPid(SendData,navigation,setloading))
-    // const response=await dispatch(SendUsername(SendData))
-    // console.log("response",response);
-
-  } catch (error) {
-    console.log("Error",error)
+  const apicall = async (pid) => {
+    // let SendData={}
+    if (!pid) {
+      return
+    }
+    // if(pid){
+    //   SendData.Porduct_Key=pid
+    // }
+    // if(receivedData){
+    //   SendData.name=receivedData
+    // }
+    try {
+      // console.log("in try api calll");
+      const findChargingCost1 = await dispatch(findChargingCost(pid))
+      await dispatch(getUserData())
+      // const response=await dispatch(NameAndPid(SendData,navigation,setloading))
+      // const response=await dispatch(SendUsername(SendData))
+      // console.log("response",response);
+    } catch (error) {
+      console.log('Error', error)
+    }
   }
-}
-
 
   // Function to check MQTT messages for a given topic
   const checkMQTTMessages = (topic, callback) => {
@@ -178,70 +176,72 @@ if(!pid){
         uri: MqqtUrl,
         clientId: 'client' + Math.random().toString(36).substring(7),
         storage: myStorage,
-      });
-  
+      })
+
       // Variable to track whether message received or not
-      let messageReceived = false;
-  
+      let messageReceived = false
+
       // MQTT connect event listener
-      client.connect().then(() => {
-        client.subscribe(`${topic}_Updates`);
-        client.subscribe(`${topic}_Charging_Data`);
-        console.log('mqtt connect in checkMQTTMessages');
-      }).catch((err) => {
-        console.error('Error during connection or subscription:', err);
-        client.disconnect();
-      });
-  
+      client
+        .connect()
+        .then(() => {
+          client.subscribe(`${topic}_Updates`)
+          client.subscribe(`${topic}_Charging_Data`)
+          console.log('mqtt connect in checkMQTTMessages')
+        })
+        .catch((err) => {
+          console.error('Error during connection or subscription:', err)
+          client.disconnect()
+        })
+
       // Set a timeout to handle no message received on _Updates topic
       const messageTimeout = setTimeout(() => {
         if (!messageReceived) {
-          callback("Stop");
-          client.disconnect();
-          console.log('Disconnected from MQTT broker');
+          callback('Stop')
+          client.disconnect()
+          console.log('Disconnected from MQTT broker')
         }
-      }, 7000); // 5000 milliseconds (5 seconds), adjust the time as needed
-  
+      }, 7000) // 5000 milliseconds (5 seconds), adjust the time as needed
+
       // MQTT message event listener
       client.on('messageReceived', (message) => {
-        console.log('message in on client checkMQTTMessages', message.payloadString);
-  
+        console.log(
+          'message in on client checkMQTTMessages',
+          message.payloadString
+        )
+
         if (message.destinationName === `${topic}_Updates`) {
           if (message.payloadString === 'Door is open') {
-            messageReceived = true;
-            clearTimeout(messageTimeout); // Clear the timeout if message is received
-            callback("abletouse");
-            client.disconnect();
+            messageReceived = true
+            clearTimeout(messageTimeout) // Clear the timeout if message is received
+            callback('abletouse')
+            client.disconnect()
           }
         } else if (message.destinationName === `${topic}_Charging_Data`) {
-          clearTimeout(messageTimeout); // Clear the timeout if message is received
-          messageReceived = true;
-          callback("alreadyuse");
-          client.disconnect();
+          clearTimeout(messageTimeout) // Clear the timeout if message is received
+          messageReceived = true
+          callback('alreadyuse')
+          client.disconnect()
         }
-      });
-  
+      })
+
       client.on('connectionLost', (responseObject) => {
         if (responseObject.errorCode !== 0) {
-          console.error('Connection lost:', responseObject.errorMessage);
+          console.error('Connection lost:', responseObject.errorMessage)
         }
-      });
-  
+      })
     } catch (err) {
-      console.error('Unexpected error:', err);
+      console.error('Unexpected error:', err)
     }
-  };
-  
-  
-  
+  }
 
   // Example usage:
 
   const checkIsCharger = (pid) => {
     // PID ko lowercase mein convert karein
-    console.log(pid.length,"length");
+    console.log(pid.length, 'length')
     const lowercasePID = pid.toLowerCase()
-    if(pid=="2x7z6m8y9n1o0p3q4r5s"){
+    if (pid == '2x7z6m8y9n1o0p3q4r5s') {
       return true
     }
     // if (pid.length <= 30 && pid.length>19) {
@@ -261,41 +261,39 @@ if(!pid){
     }
   }
 
+  const handleSendMessage = async (pid) => {
+    const isCharger = checkIsCharger(pid)
+    if (!isCharger) {
+      setScannerMessage('Sorry, this rarely happens\nPleasr try again')
+      setisModalVisible(true)
+      console.log('Is not Charger')
+      return
+    }
 
-const handleSendMessage=async(pid)=>{
-  const isCharger = checkIsCharger(pid)
-  if (!isCharger) {
-    setScannerMessage("Sorry, this rarely happens\nPleasr try again")
-    setisModalVisible(true)
-    console.log('Is not Charger')
-    return
+    setloading(true)
+    dispatch(DoorOpening(pid))
+
+    checkMQTTMessages(pid, async (result) => {
+      console.log('resultresultradhe', result)
+      if (result == 'abletouse') {
+        dispatch(setModal(true))
+        apicall(pid)
+        console.log('navigate to newhome')
+        await AsyncStorage.setItem('pid', pid)
+        navigation.navigate('Newhome')
+      } else if (result == 'alreadyuse') {
+        setloading(false)
+        setScannerMessage('Charger already in use')
+        setisModalVisible(true)
+        return
+      } else if (result == 'Stop') {
+        setloading(false)
+        setScannerMessage('Charger Not Working')
+        setisModalVisible(true)
+        return
+      }
+    })
   }
-
-  setloading(true)
-  dispatch(DoorOpening(pid))
-
-  checkMQTTMessages(pid, async(result) => {
-    console.log('resultresultradhe', result)
-    if (result=="abletouse") {
-      dispatch(setModal(true))
-      apicall(pid)
-      console.log('navigate to newhome')
-      await AsyncStorage.setItem('pid', pid)
-      navigation.navigate('Newhome')
-    } else if (result=="alreadyuse") {
-          setloading(false)
-          setScannerMessage("Charger already in use")
-          setisModalVisible(true)
-          return
-        }
-        else if (result=="Stop") {
-          setloading(false)
-          setScannerMessage("Charger Not Working")
-          setisModalVisible(true)
-          return
-        }
-    });
-}
 
   const ReScanClick = () => {
     console.log('rescanclick', isModalVisible)
@@ -424,11 +422,14 @@ const handleSendMessage=async(pid)=>{
               {/* {!scannerMessage
                 ? 'Sorry, this rarely happens\nPleasr try again'
                 : 'Charger Already in Use'} */}
-                {scannerMessage}
+              {scannerMessage}
             </Text>
             {/* "Seems to be an invalid QR Code. Try with a different QR Code." */}
           </CustomModal>
-          <BlurredModalWithLoader visible={isloaderModalVisible} isLoading={true}/>
+          <BlurredModalWithLoader
+            visible={isloaderModalVisible}
+            isLoading={true}
+          />
         </View>
       ) : (
         <View>

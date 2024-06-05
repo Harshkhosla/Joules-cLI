@@ -63,14 +63,20 @@ const UpdateRecommend = ({ navigation, open, onClose, handleUpdate }) => {
                   color: '#118615',
                   fontSize: 13,
                   fontWeight: '600',
-                  marginTop: 50,
+                  marginTop: 40,
+                  marginBottom: 5,
                   textDecorationLine: 'underline',
                 }}
               >
                 See what’s new
               </Text>
             </TouchableOpacity>
-
+            <Text style={{ fontSize: 14, textAlignVertical: 'center' }}>
+              * first point
+            </Text>
+            <Text style={{ fontSize: 14, textAlignVertical: 'center' }}>
+              * Second point
+            </Text>
             <TouchableOpacity
               style={styles.UpdateButtonContainer}
               onPress={handleUpdate}

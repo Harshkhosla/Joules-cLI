@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
+  ActivityIndicator,
 } from 'react-native'
 import {
   responsiveHeight as hp,
@@ -19,21 +20,116 @@ import { GetChargerHistory } from '../Redux/Action'
 import { calculateTimeDifferenceStartTimeEndTime } from '../utility/asyncStorage'
 
 const ChargingCard_History = ({ navigation, route }) => {
-  
+  const [loading, setloading] = useState(true)
+  const dispatch = useDispatch()
+  const mid = useSelector((state) => state.userReducers.UserMid)
+  const AllChargingHistoryData = useSelector(
+    (state) => state.userReducers.AllChargerHistoryData
+  )
 
-  const [loading,setLoading]=useState(true)
-  const dispatch=useDispatch()
-  const mid=useSelector((state)=>state.userReducers.UserMid)
-  const AllChargingHistoryData=useSelector((state)=>state.userReducers.AllChargerHistoryData)
   const populateChargerHistoryData = true
   const lastchargerhistory = false
-  const getallchargerhistory=true
-  console.log("midmidmidmidmidmidmidmid",mid);
-  console.log("AllChargingHistoryData",AllChargingHistoryData);
-  useEffect(()=>{
-    dispatch(GetChargerHistory("",mid,populateChargerHistoryData,lastchargerhistory,getallchargerhistory))
-  },[])
-  
+  const getallchargerhistory = true
+  console.log('midmidmidmidmidmidmidmid', mid)
+  console.log(
+    'AllChargingHistoryData ==  ==  =  == = == = = =  =>',
+    AllChargingHistoryData
+  )
+
+  useEffect(() => {
+    dispatch(
+      GetChargerHistory(
+        '',
+        mid,
+        populateChargerHistoryData,
+        lastchargerhistory,
+        getallchargerhistory
+      )
+    )
+  }, [])
+
+  const data = [
+    {
+      rupee: '₹ 20',
+      date: '04 May, 2024',
+      chargerName: 'Charger Name 1',
+      energy: 'Energy 1',
+      startTime: 'Start Time - 12:10 am',
+      timeTaken: 'Time Taken 1',
+    },
+    {
+      rupee: '₹ 25',
+      date: '05 May, 2024',
+      chargerName: 'Charger Name 2',
+      energy: 'Energy 2',
+      startTime: 'Start Time - 12:20 am',
+      timeTaken: 'Time Taken 2',
+    },
+    {
+      rupee: '₹ 30',
+      date: '06 May, 2024',
+      chargerName: 'Charger Name 3',
+      energy: 'Energy 3',
+      startTime: 'Start Time - 12:30 am',
+      timeTaken: 'Time Taken 3',
+    },
+    {
+      rupee: '₹ 35',
+      date: '07 May, 2024',
+      chargerName: 'Charger Name 4',
+      energy: 'Energy 4',
+      startTime: 'Start Time - 12:40 am',
+      timeTaken: 'Time Taken 4',
+    },
+    {
+      rupee: '₹ 40',
+      date: '08 May, 2024',
+      chargerName: 'Charger Name 5',
+      energy: 'Energy 5',
+      startTime: 'Start Time - 12:50 am',
+      timeTaken: 'Time Taken 5',
+    },
+    {
+      rupee: '₹ 45',
+      date: '09 May, 2024',
+      chargerName: 'Charger Name 6',
+      energy: 'Energy 6',
+      startTime: 'Start Time - 01:00 am',
+      timeTaken: 'Time Taken 6',
+    },
+    {
+      rupee: '₹ 50',
+      date: '10 May, 2024',
+      chargerName: 'Charger Name 7',
+      energy: 'Energy 7',
+      startTime: 'Start Time - 01:10 am',
+      timeTaken: 'Time Taken 7',
+    },
+    {
+      rupee: '₹ 55',
+      date: '11 May, 2024',
+      chargerName: 'Charger Name 8',
+      energy: 'Energy 8',
+      startTime: 'Start Time - 01:20 am',
+      timeTaken: 'Time Taken 8',
+    },
+    {
+      rupee: '₹ 60',
+      date: '12 May, 2024',
+      chargerName: 'Charger Name 9',
+      energy: 'Energy 9',
+      startTime: 'Start Time - 01:30 am',
+      timeTaken: 'Time Taken 9',
+    },
+    {
+      rupee: '₹ 65',
+      date: '13 May, 2024',
+      chargerName: 'Charger Name 10',
+      energy: 'Energy 10',
+      startTime: 'Start Time - 01:40 am',
+      timeTaken: 'Time Taken 10',
+    },
+  ]
 
   return (
     <View style={styles.container}>
@@ -42,52 +138,70 @@ const ChargingCard_History = ({ navigation, route }) => {
         navigation={navigation}
         color={'#C1E0C2'}
       />
-      <View style={styles.containerContent}>
-        <FlatList
-          data={AllChargingHistoryData}
-          renderItem={({ item }) => (
-            <View style={styles.card}>
-              <View style={styles.rupeeBox}>
-                <Text style={styles.rupeeText}>₹{item.inputCost}</Text>
-              </View>
-              <View style={styles.detailsBox}>
-                {/* <Text style={styles.DateText}>04 May, 2024</Text> */}
-                <Text style={styles.DateText}>{item.Date}</Text>
-                <View style={styles.ChDetails}>
-                  <View style={styles.ChNameEnergy}>
-                    <View style={styles.detailRow}>
-                      <View style={styles.styleBox}></View>
-                      <Text style={styles.detailsText}>{item?.ChargerName}</Text>
+      {!AllChargingHistoryData ? (
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <ActivityIndicator size="large" color="#118615" />
+        </View>
+      ) : (
+        <View style={styles.containerContent}>
+          <FlatList
+            data={AllChargingHistoryData}
+            renderItem={({ item }) => (
+              <View style={styles.card}>
+                <View style={styles.rupeeBox}>
+                  <Text style={styles.rupeeText}>₹{item.inputCost}</Text>
+                </View>
+                <View style={styles.detailsBox}>
+                  {/* <Text style={styles.DateText}>04 May, 2024</Text> */}
+                  <Text style={styles.DateText}>{item.Date}</Text>
+                  <View style={styles.ChDetails}>
+                    <View style={styles.ChNameEnergy}>
+                      <View style={styles.detailRow}>
+                        <View style={styles.styleBox}></View>
+                        <Text style={styles.detailsText}>
+                          {item?.ChargerName}
+                        </Text>
+                      </View>
+                      <View style={styles.detailRow}>
+                        <View style={styles.styleBox}></View>
+                        {/* <Text style={styles.detailsText}>Energy</Text> */}
+                        <Text style={styles.detailsText}>
+                          {isNaN(item.EnergyUsed)
+                            ? '0.000 Wh'
+                            : (Math.floor(item.EnergyUsed * 10) / 10).toFixed(
+                                1
+                              ) + ' Wh'}
+                        </Text>
+                      </View>
                     </View>
-                    <View style={styles.detailRow}>
-                      <View style={styles.styleBox}></View>
-                      {/* <Text style={styles.detailsText}>Energy</Text> */}
-                      <Text style={styles.detailsText}>{isNaN(item.EnergyUsed) 
-                          ? '0.000 Wh' 
-                        : (Math.floor(item.EnergyUsed * 10) / 10).toFixed(1)+" Wh" }</Text>
-                    </View>
-                  </View>
-                  <View style={[styles.ChNameEnergy, { marginLeft: -wp(10) }]}>
-                    <View style={styles.detailRow}>
-                      <View style={styles.styleBox}></View>
-                      <Text style={styles.detailsText}>
-                        {/* Start Time - 12:10 am */}
-                       {item.StartTime}
-                      </Text>
-                    </View>
-                    <View style={styles.detailRow}>
-                      <View style={styles.styleBox}></View>
-                      {/* <Text style={styles.detailsText}>Time Taken</Text> */}
-                      <Text style={styles.detailsText}>{calculateTimeDifferenceStartTimeEndTime(item.StartTime,item.EndTime)}</Text>
+                    <View
+                      style={[styles.ChNameEnergy, { marginLeft: -wp(10) }]}
+                    >
+                      <View style={styles.detailRow}>
+                        <View style={styles.styleBox}></View>
+                        <Text style={styles.detailsText}>
+                          {/* Start Time - 12:10 am */}
+                          {item.StartTime}
+                        </Text>
+                      </View>
+                      <View style={styles.detailRow}>
+                        <View style={styles.styleBox}></View>
+                        {/* <Text style={styles.detailsText}>Time Taken</Text> */}
+                        <Text style={styles.detailsText}>
+                          {calculateTimeDifferenceStartTimeEndTime(
+                            item.StartTime,
+                            item.EndTime
+                          )}
+                        </Text>
+                      </View>
                     </View>
                   </View>
                 </View>
               </View>
-            </View>
-          )}
-          keyExtractor={(item, index) => index.toString()}
-        />
-{/* 
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
+          {/* 
         <View style={styles.card}>
           <View style={styles.rupeeBox}>
             <Text style={styles.rupeeText}>₹ 20</Text>
@@ -119,7 +233,7 @@ const ChargingCard_History = ({ navigation, route }) => {
           </View>
         </View> */}
 
-        {/* <View style={styles.card}>
+          {/* <View style={styles.card}>
           <View style={styles.rupeeBox}>
             <Text style={styles.rupeeText}>₹ 20</Text>
           </View>
@@ -149,6 +263,13 @@ const ChargingCard_History = ({ navigation, route }) => {
             </View>
           </View>
         </View> */}
+        </View>
+      )}
+
+      <View style={[styles.poweredbyBox, { backgroundColor: '#118615' }]}>
+        <Text style={{ fontSize: 20, color: '#fff' }}>
+          powered by Jouls Ecotech
+        </Text>
       </View>
     </View>
   )
@@ -165,7 +286,7 @@ const styles = StyleSheet.create({
     // flex: 1,
     padding: 10,
     // backgroundColor: 'pink',
-    marginBottom: 65,
+    marginBottom: 120,
   },
   card: {
     flex: 1,
@@ -226,5 +347,13 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     marginRight: 5,
     backgroundColor: '#424242',
+  },
+  poweredbyBox: {
+    position: 'absolute',
+    bottom: 0,
+    height: hp(8),
+    width: wp(100),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })
