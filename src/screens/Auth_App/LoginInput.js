@@ -64,23 +64,6 @@ const LoginInput = ({ navigation,setisModalVisible }) => {
       }))
       return
     }
-    const generalEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    const isValid =
-      generalEmailRegex.test(userData.email) &&
-      userData.email.toLowerCase().includes('@gmail.com')
-    if (!isValid) {
-      setEmailValuePresent((prev) => ({
-        ...prev,
-        show: true,
-        message: "Email must include characters '@' and '.'",
-      }))
-      setPasswordValuePresent((prev) => ({
-        ...prev,
-        show: false,
-        message: '',
-      }))
-      return
-    }
 
     if (!userData.password) {
       setEmailValuePresent((prev) => ({
@@ -97,7 +80,7 @@ const LoginInput = ({ navigation,setisModalVisible }) => {
     }
 
     const isValidpassword = isPasswordValid(userData.password)
-    console.log(isValid) // Output: true
+    // console.log(isValid) // Output: true
     if (!isValidpassword) {
       setEmailValuePresent((prev) => ({
         ...prev,
@@ -412,3 +395,22 @@ const styles = StyleSheet.create({
 })
 
 export default LoginInput
+
+
+//const generalEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    // const isValid =
+    //   generalEmailRegex.test(userData.email) &&
+    //   userData.email.toLowerCase().includes('@gmail.com')
+    // if (!isValid) {
+    //   setEmailValuePresent((prev) => ({
+    //     ...prev,
+    //     show: true,
+    //     message: "Email must include characters '@' and '.'",
+    //   }))
+    //   setPasswordValuePresent((prev) => ({
+    //     ...prev,
+    //     show: false,
+    //     message: '',
+    //   }))
+    //   return
+    // }

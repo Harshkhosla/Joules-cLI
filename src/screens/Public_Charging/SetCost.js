@@ -90,10 +90,10 @@ const SetCost = ({
   let DeviceToken = useSelector((state) => state.userReducers.deviceToken)
   // console.log("DeviceTokenDeviceToken",DeviceToken);
   if (!findchargingCost || findchargingCost == '0') {
-    findchargingCost = 12
+    findchargingCost = 10
   }
   if (!findchargingCostPerHour || findchargingCostPerHour == '0') {
-    findchargingCostPerHour = 12
+    findchargingCostPerHour = 10
   }
   console.log('findcharingfindcharing', findChargingEnergy)
   // if(!findChargingEnergy){

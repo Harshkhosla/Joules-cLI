@@ -71,17 +71,8 @@ const SignupInputs = ({ navigation }) => {
         setEmailValuePresent({ show: true, message: 'Please enter a valid email address' })
         return false
       } else {
-        const generalEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-        const isValidEmail =
-          generalEmailRegex.test(userData.Email) &&
-          userData.Email.toLowerCase().includes('@gmail.com')
-        if (!isValidEmail) {
-          setEmailValuePresent({ show: true, message: "Email must include characters '@' and '.'" })
-          return false
-        } else {
           setEmailValuePresent({ show: false, message: '' })
           return true
-        }
       }
     }
     
