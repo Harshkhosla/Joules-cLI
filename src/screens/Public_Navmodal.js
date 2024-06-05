@@ -9,6 +9,11 @@ import {
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Modal from 'react-native-modal'
+import {
+  responsiveHeight as hp,
+  responsiveWidth as wp,
+  responsiveFontSize as fp,
+} from 'react-native-responsive-dimensions'
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
@@ -18,9 +23,9 @@ import { getUserData } from '../Redux/Action'
 
 const Navmodal = ({ naveopen, closeNave, name }) => {
   const navigation = useNavigation()
-  const WalletValue= useSelector((state) => state.userReducers.WallentBalance)
-  const [loading,setLoading]=useState(true)
-  const dispatch=useDispatch()
+  const WalletValue = useSelector((state) => state.userReducers.WallentBalance)
+  const [loading, setLoading] = useState(true)
+  const dispatch = useDispatch()
 
   // useEffect(()=>{
   //   const fetchData=async()=>{
@@ -126,7 +131,9 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
         ) : (
           <Text>{WalletValue}</Text>
         )}</Text> */}
-                <Text style={{ color: '#FFFFFF' }}>Wallet balance : ₹ {WalletValue}</Text>
+                <Text style={{ color: '#FFFFFF' }}>
+                  Wallet balance : ₹ {WalletValue}
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -170,6 +177,21 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
                 <Text style={{ fontSize: 16, color: '#118615' }}>Sign Out</Text>
               </View>
             </TouchableOpacity>
+            <Text
+              style={{
+                fontSize: 16,
+                color: '#a7aba7',
+                alignSelf: 'center',
+                marginTop: 20,
+              }}
+            >
+              Version - 0.0.1
+            </Text>
+          </View>
+          <View style={[styles.poweredbyBox, { backgroundColor: '#118615' }]}>
+            <Text style={{ fontSize: 18, color: '#fff' }}>
+              powered by Jouls Ecotech
+            </Text>
           </View>
         </View>
       </Modal>
@@ -229,5 +251,13 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 2,
     borderColor: '#B7B7B7',
+  },
+  poweredbyBox: {
+    position: 'absolute',
+    bottom: 0,
+    height: hp(6),
+    width: wp(80),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })
