@@ -403,7 +403,7 @@ const SetCost = ({
               </View>
             </View>
             <View style={styles.paymentBox}>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={{
                   width: 110,
                   alignItems: 'center',
@@ -433,7 +433,7 @@ const SetCost = ({
                 >
                   Razorpay
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <TouchableOpacity
                 style={styles.payButton}
                 onPress={handlePayment}
@@ -451,13 +451,13 @@ const SetCost = ({
                       : rememberMe && Number(inputCost) - Number(walletValue)}
                   </Text>
 
-                  <Text style={[styles.payButtonText, { fontSize: 11 }]}>
+                  {/* <Text style={[styles.payButtonText, { fontSize: 11 }]}>
                     TOTAL
-                  </Text>
+                  </Text> */}
                 </View>
                 <View>
                   <Text style={[styles.payButtonText, { fontSize: 17 }]}>
-                    Pay Charge{' '}
+                    Pay Charge
                   </Text>
                   {/* <Text style={styles.payButtonText}>Charge</Text> */}
                 </View>
@@ -496,7 +496,7 @@ const ChargingCost = ({
     // if (/^\d*$/.test(text)) {
     //   setInputCost(text);
     // }
-    setInputCost(text)
+    setInputCost(text.trim())
     // setinputcostfromsetcost(text)
   }
 
@@ -530,12 +530,12 @@ const ChargingCost = ({
         <TextInput
           style={{
             color: 'black',
-            fontSize: 20,
+            fontSize: 15,
             height: 45,
           }}
           placeholderTextColor={'#DBDBDB'}
           keyboardType="numeric"
-          placeholder="For example ₹50"
+          placeholder="Enter the Charging Cost"
           onChangeText={(text) => {
             handleinputchangecost(text)
           }}
@@ -803,7 +803,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 15,
     width: 40,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     // backgroundColor: 'red',
     // alignItems: 'center',
@@ -817,6 +817,7 @@ const styles = StyleSheet.create({
   payButtonText: {
     fontSize: fp(2.6),
     color: '#fff',
+    marginLeft:10
   },
   bottomColorBox: {
     position: 'absolute',
