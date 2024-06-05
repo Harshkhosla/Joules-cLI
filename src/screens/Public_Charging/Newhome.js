@@ -565,7 +565,7 @@ const CloseModal7sec = (index) => {
               ? // Condition 1: Only AsyncStorage data is available
                 'Your charger is connected'
               : // Default case: No data available
-                'Not Connected To Your Any Charger'}
+                'Not Connected'}
           </Text>
         </View>
         <View style={styles.powerAndCharging}>

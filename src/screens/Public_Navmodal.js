@@ -24,6 +24,7 @@ import { getUserData } from '../Redux/Action'
 const Navmodal = ({ naveopen, closeNave, name }) => {
   const navigation = useNavigation()
   const WalletValue = useSelector((state) => state.userReducers.WallentBalance)
+  let versioncode = useSelector((state) => state?.userReducers?.versionName)
   const [loading, setLoading] = useState(true)
   const dispatch = useDispatch()
 
@@ -179,18 +180,18 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
             </TouchableOpacity>
             <Text
               style={{
-                fontSize: 16,
-                color: '#a7aba7',
-                alignSelf: 'center',
-                marginTop: 20,
+                fontSize: 12,
+                color: '#000000',
+                alignSelf: "center",
+                // marginTop: 20,
               }}
             >
-              Version - 0.0.1
+              version {versioncode}
             </Text>
           </View>
-          <View style={[styles.poweredbyBox, { backgroundColor: '#118615' }]}>
-            <Text style={{ fontSize: 18, color: '#fff' }}>
-              powered by Jouls Ecotech
+          <View style={[styles.poweredbyBox]}>
+            <Text style={{ fontSize: 12, color: '#118615' }}>
+            Powered by Jouls Ecotech Pvt. Ltd.
             </Text>
           </View>
         </View>
@@ -243,7 +244,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   logout: {
-    marginTop: 5,
+    marginTop: 300,
     flexDirection: 'row',
     justifyContent: 'center',
     width: '40%',
@@ -251,11 +252,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 2,
     borderColor: '#B7B7B7',
+    alignSelf:"center"
   },
   poweredbyBox: {
     position: 'absolute',
     bottom: 0,
-    height: hp(6),
+    height: hp(5),
     width: wp(80),
     alignItems: 'center',
     justifyContent: 'center',

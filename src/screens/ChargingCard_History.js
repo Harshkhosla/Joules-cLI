@@ -138,7 +138,7 @@ const ChargingCard_History = ({ navigation, route }) => {
         navigation={navigation}
         color={'#C1E0C2'}
       />
-      {!AllChargingHistoryData ? (
+      {Array.isArray(AllChargingHistoryData) && AllChargingHistoryData.length<=0  ? (
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <ActivityIndicator size="large" color="#118615" />
         </View>
@@ -266,9 +266,9 @@ const ChargingCard_History = ({ navigation, route }) => {
         </View>
       )}
 
-      <View style={[styles.poweredbyBox, { backgroundColor: '#118615' }]}>
-        <Text style={{ fontSize: 20, color: '#fff' }}>
-          powered by Jouls Ecotech
+      <View style={[styles.poweredbyBox]}>
+        <Text style={{ fontSize: 12, color: '#118615' }}>
+          Powered by Jouls Ecotech Pvt. Ltd.
         </Text>
       </View>
     </View>
@@ -351,9 +351,10 @@ const styles = StyleSheet.create({
   poweredbyBox: {
     position: 'absolute',
     bottom: 0,
-    height: hp(8),
+    height: hp(5),
     width: wp(100),
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius:10
   },
 })
