@@ -108,13 +108,14 @@ export default function App() {
   // }
 
   // useEffect(()=>{
+    
   //   checkApplicationPermission()
   // },[])
 
   return (
     <Sample store={Store}>
       <Provider theme={theme}>
-        <NavigationContainer>
+        <NavigationContainer >
           <Stack.Navigator
             initialRouteName="StartScreen"
             screenOptions={{

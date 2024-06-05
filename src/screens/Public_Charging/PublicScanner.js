@@ -303,7 +303,10 @@ export default function Dashboard({ navigation, route }) {
 
   const delfn = () => {
     console.log('delfun')
-    // handleSendNotification("radhe","kumawat")
+    handleSendNotification("radhe","kumawat")
+    // <TouchableOpacity onPress={delfn}>
+    //     <Text style={{color:"red",fontSize:20}}>api call</Text> 
+    //   </TouchableOpacity>
     // setIsScannerActive(!isScannerActive)
     // const sendData = {
     //   Porduct_Key: 'radhe',
@@ -322,9 +325,7 @@ export default function Dashboard({ navigation, route }) {
             color={'#C1E0C2'}
             isHome={true}
           />
-          {/* <TouchableOpacity onPress={delfn}>
-        <Text style={{color:"red",fontSize:20}}>api call</Text> 
-      </TouchableOpacity> */}
+          
           <View style={styles.containerContentBox}>
             <Text style={{ fontSize: 18, fontWeight: '400', color: '#707070' }}>
               To start charging, please scan the
