@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { fetchDataAsyncStorageData } from '../../utility/asyncStorage'
+import React, { useEffect, useRef, useState } from 'react'
+import { ShowMessageModalData, fetchDataAsyncStorageData } from '../../utility/asyncStorage'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -25,6 +25,7 @@ import HomeScreenCircles from '../HomeScreenCircle'
 import Wave from '../../components/wave'
 import App_top_Header from '../App_top_Header'
 import Charging_alert_modal from './Charging_alert_modal'
+import CustomModal7Sec from '../../components/ChargingMessage7sec'
 
 const Newhome = ({ navigation }) => {
   const dispatch = useDispatch()
@@ -55,9 +56,14 @@ const Newhome = ({ navigation }) => {
   const [shouldAnimate, setShouldAnimate] = useState(true)
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const words = ['Payment Successful', 'Starting..', 'Charging Started']
+  
   // stop charging loader
   const [isloadershow, setIsloaderShow] = useState(false)
 
+  // use for 7 sec modal
+  const timerRefs = useRef([null, null, null, null]);
+  const [modalVisible7Sec, setModalVisible7Sec] = useState(false);
+  const [currentIndex7Sec, setCurrentIndex7Sec] = useState(0);
   //
   const [getsample, setGetSampledata] = useState(true)
   const [totalTime, setTotalTime] = useState(0)
@@ -107,7 +113,9 @@ const Newhome = ({ navigation }) => {
           handleCostAndTimeOpen,
           setisChargingAlertVisible,
           setShowPaymentCompleteModal,
-          setisPowerCutTextVisible
+          setisPowerCutTextVisible,
+          handleButtonClick7Sec,
+          CloseModal7sec
         )
       )
       console.log('chargerhistoryData', chargerhistoryData)
@@ -454,6 +462,40 @@ const Newhome = ({ navigation }) => {
     setShouldAnimate(true)
     setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length)
   }
+// for 7 sec 
+const handleButtonClick7Sec = () => {
+  clearTimers7sec();
+
+  if (modalVisible7Sec) {
+    setCurrentIndex7Sec(4); // Show "Charger Connected" message
+    setTimeout(() => setModalVisible7Sec(false), 1000);
+  } else {
+    startTimerSequence7Sec();
+  }
+};
+
+const startTimerSequence7Sec = () => {
+  const durations = [7000, 14000, 21000, 28000];
+  durations.forEach((duration, index) => {
+    timerRefs.current[index] = setTimeout(() => showModal7sec(index), duration);
+  });
+};
+
+
+const clearTimers7sec = () => {
+  timerRefs.current.forEach(timer => clearTimeout(timer));
+};
+
+const showModal7sec = (index) => {
+  console.log(`No action received for ${index * 7 + 7} seconds`);
+  setCurrentIndex7Sec(index);
+  setModalVisible7Sec(true);
+};
+const CloseModal7sec = (index) => {
+  clearTimers7sec()
+  setModalVisible7Sec(false)
+};
+
 
   const handleChargingStop = () => {
     setisPowerCutTextVisible(false)
@@ -699,7 +741,7 @@ const Newhome = ({ navigation }) => {
         animateNextWord={animateNextWord}
         setisPowerCutTextVisible={setisPowerCutTextVisible}
       />
-      <View>
+       <View>
         <Charging_alert_modal
           showChargingCompleted={showPaymentCompleteModal}
           visible={isCharginAlertVisible}
@@ -719,6 +761,15 @@ const Newhome = ({ navigation }) => {
           isPowerCutTextVisible={isPowerCutTextVisible}
         />
       </View>
+      {/* <View>
+        <CustomModal7Sec
+        data={ShowMessageModalData}
+        heading="Charging Status"
+        index={currentIndex7Sec}
+        visible={modalVisible7Sec}
+        onClose={CloseModal7sec}
+        />
+      </View> */}
     </View>
   )
 }

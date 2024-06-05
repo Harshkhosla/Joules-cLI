@@ -21,9 +21,12 @@ import SignupInputs from './SignupInputs'
 import Circle from '../Circle'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from '@react-navigation/native'
+import UpdateRecommend from '../Public_Charging/UpdateRecommend'
+import { redirectToApp } from '../../utility/asyncStorage'
 
 const SignIn = ({ navigation }) => {
   const [login, setLogin] = useState(true)
+  const [isModalVisible, setisModalVisible] = useState(false)
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
@@ -35,6 +38,9 @@ const SignIn = ({ navigation }) => {
 
     return () => backHandler.remove()
   }, [navigation])
+
+  
+
   return (
     <ScrollView style={styles.Container}>
       <KeyboardAvoidingView
@@ -58,27 +64,27 @@ const SignIn = ({ navigation }) => {
           <View style={styles.SignInBoxContainer}>
             <View style={styles.SignIn_UpBox}>
               <View style={styles.Toggle_Login_SignUp}>
-                <Text
-                  style={login ? styles.TogglerText : styles.onclickTogglerText}
+              <Text
+                  style={
+                    login ? styles.TogglerText : styles.onclickTogglerText
+                  }
                   onPress={() => setLogin(true)}
                 >
-                  Login
+                  Sign up
                 </Text>
                 <Text style={[{ fontSize: fp(4), color: '#BFBFBF' }]}>|</Text>
                 <Text
-                  style={
-                    !login ? styles.TogglerText : styles.onclickTogglerText
-                  }
+                  style={!login ? styles.TogglerText : styles.onclickTogglerText}
                   onPress={() => setLogin(false)}
                 >
-                  Sign up
+                  Login
                 </Text>
               </View>
               <View style={styles.Inputs}>
                 {login ? (
-                  <LoginInput navigation={navigation} />
-                ) : (
                   <SignupInputs navigation={navigation} />
+                ) : (
+                  <LoginInput navigation={navigation} setisModalVisible={setisModalVisible}/>
                 )}
                 <View style={styles.row}>
                   <Text style={styles.message}>
@@ -88,7 +94,7 @@ const SignIn = ({ navigation }) => {
                   </Text>
                   <TouchableOpacity onPress={() => setLogin(!login)}>
                     <Text style={styles.link}>
-                      {login ? 'Sign up' : 'Login'}
+                      {login ? 'Login' : 'Sign up'}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -97,6 +103,10 @@ const SignIn = ({ navigation }) => {
           </View>
         </View>
       </KeyboardAvoidingView>
+      <UpdateRecommend
+        open={isModalVisible}
+        handleUpdate={redirectToApp}
+      />
     </ScrollView>
   )
 }

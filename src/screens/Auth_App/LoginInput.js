@@ -18,7 +18,7 @@ import TextInput from '../../components/Inputbox'
 import InputBoxTwo from '../../components/InputBoxTwo'
 import { Checkbox } from 'react-native-paper'
 import { setAuthtoken, signItUp } from '../../Redux/Action'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 // import axios from 'axios';
 import Toast, { BaseToast } from 'react-native-toast-message'
 import {
@@ -28,10 +28,12 @@ import {
 } from '@react-native-google-signin/google-signin'
 import { color } from 'd3'
 
-const LoginInput = ({ navigation }) => {
+const LoginInput = ({ navigation,setisModalVisible }) => {
   const ApiURL = 'http://23.22.111.5:5000' // live url
   // const ApiURL = 'http://165.22.223.26:5000' // live url
   // const ApiURL = 'http://192.168.1.6:5200' // live url
+  const version=useSelector((state)=> state?.userReducers?.versionName)
+
   const [loading, setLoading] = useState(false)
   const [userData, setuserData] = useState({ email: '', password: '' })
   const [emailValuePresent, setEmailValuePresent] = useState({
@@ -114,7 +116,7 @@ const LoginInput = ({ navigation }) => {
       try {
         setLoading(true)
         const response = await dispatch(
-          signItUp(userData, navigation, setLoading)
+          signItUp(userData,setisModalVisible,version, navigation, setLoading)
         )
         console.log('clickinoginbuttonresponse', response)
         if (response) {
