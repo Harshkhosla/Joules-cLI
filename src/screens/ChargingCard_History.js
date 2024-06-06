@@ -46,6 +46,7 @@ const ChargingCard_History = ({ navigation, route }) => {
         getallchargerhistory
       )
     )
+    setloading(false)
   }, [])
 
   const data = [
@@ -138,70 +139,99 @@ const ChargingCard_History = ({ navigation, route }) => {
         navigation={navigation}
         color={'#C1E0C2'}
       />
-      {Array.isArray(AllChargingHistoryData) && AllChargingHistoryData.length<=0  ? (
-        <View style={{ flex: 1, justifyContent: 'center' }}>
+
+      {loading ? (
+        <View
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        >
           <ActivityIndicator size="large" color="#118615" />
         </View>
       ) : (
-        <View style={styles.containerContent}>
-          <FlatList
-            data={AllChargingHistoryData}
-            renderItem={({ item }) => (
-              <View style={styles.card}>
-                <View style={styles.rupeeBox}>
-                  <Text style={styles.rupeeText}>₹{item.inputCost}</Text>
-                </View>
-                <View style={styles.detailsBox}>
-                  {/* <Text style={styles.DateText}>04 May, 2024</Text> */}
-                  <Text style={styles.DateText}>{item.Date}</Text>
-                  <View style={styles.ChDetails}>
-                    <View style={styles.ChNameEnergy}>
-                      <View style={styles.detailRow}>
-                        <View style={styles.styleBox}></View>
-                        <Text style={styles.detailsText}>
-                          {item?.ChargerName}
-                        </Text>
-                      </View>
-                      <View style={styles.detailRow}>
-                        <View style={styles.styleBox}></View>
-                        {/* <Text style={styles.detailsText}>Energy</Text> */}
-                        <Text style={styles.detailsText}>
-                          {isNaN(item.EnergyUsed)
-                            ? '0.000 Wh'
-                            : (Math.floor(item.EnergyUsed * 10) / 10).toFixed(
-                                1
-                              ) + ' Wh'}
-                        </Text>
-                      </View>
+        <>
+          {Array.isArray(AllChargingHistoryData) &&
+          AllChargingHistoryData.length <= 0 ? (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={styles.nullHistory}>
+                  You are missing your first charging session 🙁
+                </Text>
+              </View>
+              <TouchableOpacity style={styles.ButtonBox}>
+                <Text style={styles.ButtonText}>Scan QR</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.containerContent}>
+              <FlatList
+                data={AllChargingHistoryData}
+                renderItem={({ item }) => (
+                  <View style={styles.card}>
+                    <View style={styles.rupeeBox}>
+                      <Text style={styles.rupeeText}>₹{item.inputCost}</Text>
                     </View>
-                    <View
-                      style={[styles.ChNameEnergy, { marginLeft: -wp(10) }]}
-                    >
-                      <View style={styles.detailRow}>
-                        <View style={styles.styleBox}></View>
-                        <Text style={styles.detailsText}>
-                          {/* Start Time - 12:10 am */}
-                          {item.StartTime}
-                        </Text>
-                      </View>
-                      <View style={styles.detailRow}>
-                        <View style={styles.styleBox}></View>
-                        {/* <Text style={styles.detailsText}>Time Taken</Text> */}
-                        <Text style={styles.detailsText}>
-                          {calculateTimeDifferenceStartTimeEndTime(
-                            item.StartTime,
-                            item.EndTime
-                          )}
-                        </Text>
+                    <View style={styles.detailsBox}>
+                      {/* <Text style={styles.DateText}>04 May, 2024</Text> */}
+                      <Text style={styles.DateText}>{item.Date}</Text>
+                      <View style={styles.ChDetails}>
+                        <View style={styles.ChNameEnergy}>
+                          <View style={styles.detailRow}>
+                            <View style={styles.styleBox}></View>
+                            <Text style={styles.detailsText}>
+                              {item?.ChargerName}
+                            </Text>
+                          </View>
+                          <View style={styles.detailRow}>
+                            <View style={styles.styleBox}></View>
+                            {/* <Text style={styles.detailsText}>Energy</Text> */}
+                            <Text style={styles.detailsText}>
+                              {isNaN(item.EnergyUsed)
+                                ? '0.000 Wh'
+                                : (
+                                    Math.floor(item.EnergyUsed * 10) / 10
+                                  ).toFixed(1) + ' Wh'}
+                            </Text>
+                          </View>
+                        </View>
+                        <View
+                          style={[styles.ChNameEnergy, { marginLeft: -wp(10) }]}
+                        >
+                          <View style={styles.detailRow}>
+                            <View style={styles.styleBox}></View>
+                            <Text style={styles.detailsText}>
+                              {/* Start Time - 12:10 am */}
+                              {item.StartTime}
+                            </Text>
+                          </View>
+                          <View style={styles.detailRow}>
+                            <View style={styles.styleBox}></View>
+                            {/* <Text style={styles.detailsText}>Time Taken</Text> */}
+                            <Text style={styles.detailsText}>
+                              {calculateTimeDifferenceStartTimeEndTime(
+                                item.StartTime,
+                                item.EndTime
+                              )}
+                            </Text>
+                          </View>
+                        </View>
                       </View>
                     </View>
                   </View>
-                </View>
-              </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
-          {/* 
+                )}
+                keyExtractor={(item, index) => index.toString()}
+              />
+              {/* 
         <View style={styles.card}>
           <View style={styles.rupeeBox}>
             <Text style={styles.rupeeText}>₹ 20</Text>
@@ -233,7 +263,7 @@ const ChargingCard_History = ({ navigation, route }) => {
           </View>
         </View> */}
 
-          {/* <View style={styles.card}>
+              {/* <View style={styles.card}>
           <View style={styles.rupeeBox}>
             <Text style={styles.rupeeText}>₹ 20</Text>
           </View>
@@ -263,7 +293,9 @@ const ChargingCard_History = ({ navigation, route }) => {
             </View>
           </View>
         </View> */}
-        </View>
+            </View>
+          )}
+        </>
       )}
 
       <View style={[styles.poweredbyBox]}>
@@ -281,6 +313,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  nullHistory: {
+    marginBottom: 4,
+    color: '#000000',
+    fontWeight: '600',
+  },
+  ButtonBox: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '90%',
+    padding: 8,
+    marginBottom: 35,
+    borderRadius: 8,
+    borderWidth: 2,
+    backgroundColor: 'green',
+    borderColor: 'green',
+  },
+  ButtonText: {
+    fontSize: 20,
+    color: '#fff',
   },
   containerContent: {
     // flex: 1,
@@ -316,6 +368,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     // backgroundColor: 'blue',
   },
+
   DateText: {
     marginBottom: 4,
     color: '#000000',
@@ -355,6 +408,6 @@ const styles = StyleSheet.create({
     width: wp(100),
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius:10
+    borderRadius: 10,
   },
 })

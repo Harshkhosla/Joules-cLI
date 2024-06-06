@@ -170,6 +170,8 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
                 />
               </TouchableOpacity>
             ))}
+          </View>
+          <View style={[styles.poweredbyBox]}>
             <TouchableOpacity
               style={styles.logout}
               onPress={removeItemFromAsyncStorage}
@@ -182,16 +184,15 @@ const Navmodal = ({ naveopen, closeNave, name }) => {
               style={{
                 fontSize: 12,
                 color: '#000000',
-                alignSelf: "center",
-                // marginTop: 20,
+                alignSelf: 'center',
+                marginBottom: 5,
               }}
             >
               version {versioncode}
             </Text>
-          </View>
-          <View style={[styles.poweredbyBox]}>
+
             <Text style={{ fontSize: 12, color: '#118615' }}>
-            Powered by Jouls Ecotech Pvt. Ltd.
+              Powered by Jouls Ecotech Pvt. Ltd.
             </Text>
           </View>
         </View>
@@ -244,7 +245,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   logout: {
-    marginTop: 300,
+    // marginTop: 300,
     flexDirection: 'row',
     justifyContent: 'center',
     width: '40%',
@@ -252,12 +253,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 2,
     borderColor: '#B7B7B7',
-    alignSelf:"center"
+    alignSelf: 'center',
   },
   poweredbyBox: {
     position: 'absolute',
-    bottom: 0,
-    height: hp(5),
+    bottom: 5,
+    // height: hp(5),
     width: wp(80),
     alignItems: 'center',
     justifyContent: 'center',
