@@ -37,17 +37,21 @@ const ChargingCard_History = ({ navigation, route }) => {
   )
 
   useEffect(() => {
-    dispatch(
-      GetChargerHistory(
-        '',
-        mid,
-        populateChargerHistoryData,
-        lastchargerhistory,
-        getallchargerhistory
-      )
-    )
-    setloading(false)
-  }, [])
+    const fetchData =async()=>{
+      setloading(true)
+      await dispatch(
+         GetChargerHistory(
+           '',
+           mid,
+           populateChargerHistoryData,
+           lastchargerhistory,
+           getallchargerhistory
+         )
+       )
+       setloading(false)
+    }
+   fetchData()
+  }, [dispatch])
 
   const data = [
     {
@@ -132,6 +136,10 @@ const ChargingCard_History = ({ navigation, route }) => {
     },
   ]
 
+  const handleScanQrClick=()=>{
+    navigation.navigate("PublicScanner")
+  }
+
   return (
     <View style={styles.container}>
       <App_top_Header
@@ -168,7 +176,7 @@ const ChargingCard_History = ({ navigation, route }) => {
                   You are missing your first charging session 🙁
                 </Text>
               </View>
-              <TouchableOpacity style={styles.ButtonBox}>
+              <TouchableOpacity style={styles.ButtonBox} onPress={handleScanQrClick}>
                 <Text style={styles.ButtonText}>Scan QR</Text>
               </TouchableOpacity>
             </View>
